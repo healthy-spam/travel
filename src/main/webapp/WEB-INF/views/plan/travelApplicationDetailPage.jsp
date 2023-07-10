@@ -487,9 +487,9 @@
 <title>모집 디테일 페이지</title>
 </head>
 <body>
-	<jsp:include page="../common/topNavi.jsp"></jsp:include>
-
 	<div class="container">
+		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		
 		<div class="row">
 			<div class="col">
 				<div class="row">

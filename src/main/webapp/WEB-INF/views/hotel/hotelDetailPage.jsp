@@ -276,7 +276,9 @@
 <body>
     
 <div class="container-fluid">
-	<jsp:include page="../common/topNavi.jsp"></jsp:include>
+	<div class="container">
+		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+	</div>
     <div class="row main">
         <div class="col"></div>
         <div class="col-7">

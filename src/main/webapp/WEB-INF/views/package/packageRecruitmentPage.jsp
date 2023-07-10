@@ -9,9 +9,9 @@
 <title>패키지 파티 모집 페이지</title>
 </head>
 <body>
-	<jsp:include page="../common/topNavi.jsp"></jsp:include>
-
 	<div class="container">
+		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		
 		<div class="row">
 			<div class="col">
 				<form action="./packageRecruitmentProcess?plan_id=${plan_id}" method="post">

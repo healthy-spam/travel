@@ -535,7 +535,9 @@
 
 </head>
 <body>
-<jsp:include page="../common/topNavi.jsp"></jsp:include>
+	<div class="container">
+		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+	</div>
 
    	<div class="row bg-light">
 	    <div class="col align-items-center">			    	

@@ -14,9 +14,9 @@
 <title>플래너 수정하기 페이지</title>
 </head>
 <body>
-<div class="container">
+	<div class="container">
 	
-	<jsp:include page="../common/topNavi.jsp"></jsp:include>
+	<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 	
 	<div class="row mt-4">
 		<div class="col-4">

@@ -56,8 +56,8 @@
 </script>
 </head>
 <body>
-	<div class="container-fluid">
-		<jsp:include page="../common/topNavi.jsp"></jsp:include>
+	<div class="container">
+		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 	</div>
 	<div class="container py-5 px-5">
         <div class="row m-3">

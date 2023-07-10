@@ -328,10 +328,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </head>
 <body>
-	<jsp:include page="../common/topNavi.jsp"></jsp:include>
-
 	<div class="container-fluid p-0">
-		<div class="container">
+	<div class="container">
+		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 			<div class="row">
 				<div class="col">
 					<nav class="navbar navbar-expand-lg navbar-light">

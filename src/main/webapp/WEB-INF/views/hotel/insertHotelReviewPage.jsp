@@ -13,8 +13,10 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 </head>
 <body>
-<jsp:include page="../common/topNavi.jsp"></jsp:include>
+
 <div class="container">
+	<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+	
 	<div class="row d-flex justify-content-center">
 		<div class="col-6">
 			<div class="card">

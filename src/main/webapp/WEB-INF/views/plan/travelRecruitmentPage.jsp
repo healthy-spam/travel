@@ -319,9 +319,11 @@ body {
 <title>파티 모집 페이지</title>
 </head>
 <body>
-	<jsp:include page="../common/topNavi.jsp"></jsp:include>
+	
 
 	<div class="container">
+		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		
 		<div class="row mt-2">
 			<div class="col-4">
 				<form action="./travelRecruitmentProcess?plan_id=${plan_id}" method="post">

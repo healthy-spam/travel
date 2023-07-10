@@ -14,9 +14,9 @@
 	crossorigin="anonymous">
 </head>
 <body>
-	<jsp:include page="../common/topNavi.jsp"></jsp:include>
-
 	<div class="container">
+		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		
 		<div class="row mt-5">
 			<div class="col-11">
 				<div class="row">
