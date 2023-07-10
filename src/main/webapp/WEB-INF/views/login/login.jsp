@@ -52,7 +52,7 @@
 <style>
 .btn {
 	color: white;
-	background-color: #DB4465;
+	background-color: #D63255;
 	border: none;
 	height: 45px;
 	font-family: 'Noto Sans KR', sans-serif;
@@ -102,7 +102,7 @@ i {
 }
 
 h1 {
-	background: linear-gradient(to right, #DB4465, #FF7A85);
+	background-color: #D63255;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	font-weight: bold;
@@ -164,7 +164,7 @@ h1 {
 			<div class="col-4">
 				<div class="row">
 					<div class="col">
-						<div class="myCard">
+						<div class="myCard shadow">
 							<div class="card-body">
 								<h1>
 									<a href="./main">TripStation</a>
