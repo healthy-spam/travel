@@ -20,11 +20,13 @@
 
 </head>
 <body>
-
-	
 	
 	<div class="container-fluid">
-	<jsp:include page="../common/topNavi.jsp"></jsp:include>
+	
+	<div class="container">
+		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+	</div>
+	
 		<div class="row mx-5">
 	    	<div class="col">
 		        <ul style="list-style: none; display: flex; margin: 0; padding: 0; ">

@@ -19,9 +19,12 @@
 
 </head>
 <body>
-<jsp:include page="../common/topNavi.jsp"></jsp:include>
 
     <div class="container-fluid background">
+	    <div class="container">
+			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		</div>
+		
         <div class="row">
             <div class="col text-center">
                 <span>카테고리</span>

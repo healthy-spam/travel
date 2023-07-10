@@ -386,11 +386,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	<div class="container">
 
-		<div class="row">
-			<div class="col" >
-				<jsp:include page="../common/topNavi.jsp"></jsp:include>  	
-			</div>
-		</div>
+		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 	
 		<div class="row mt-1 ">
 			<div class="col-12 p-0">
