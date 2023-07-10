@@ -203,7 +203,7 @@ h1 {
 												<a href="/travel/signin">회원가입</a>
 											</div>
 											<div class="col custom-link d-flex justify-content-end">
-												<a href="/travel/signin">아이디 / 비밀번호 찾기</a>
+												<a href="#">아이디 / 비밀번호 찾기</a>
 											</div>
 										</div>
 									</form>

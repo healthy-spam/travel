@@ -43,10 +43,7 @@
 							</div>
 						</c:when>
 						<c:otherwise>
-							<a class="btn me-1" href="/travel/login"
-								style="color: white; background-color: #DB4465; height: 35px;">로그인</a>
-							<a class="btn " href="/travel/signin"
-								style="color: white; border: none; background-color: #DB4465; height: 35px;">회원가입</a>
+							<a class="btn me-1" href="/travel/login" style="color: white; height: 35px;">로그인</a>
 						</c:otherwise>
 					</c:choose>
 				</div>
