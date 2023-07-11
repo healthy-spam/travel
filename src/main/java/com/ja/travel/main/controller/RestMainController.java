@@ -79,4 +79,18 @@ public class RestMainController {
 		return map;
 	}
 	
+	@RequestMapping("/reloadMessageGet")
+	public Map<String, Object> reloadMessageGet(HttpSession session){
+		Map<String, Object> map = new HashMap<>();
+		
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		int userId = sessionUser.getUser_id();
+		
+		List<Map<String, Object>> messageGetList = mainService.getMessageGotById(userId);
+		
+		map.put("result", "success");
+		map.put("messageGetList", messageGetList);
+		return map;
+	}
+	
 }

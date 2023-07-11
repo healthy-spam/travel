@@ -87,15 +87,15 @@
 								
 								for(data of response.messageGetList){
 								
-								var messageSendDate = new Date(data.message_reg_date);
+								var messageSendDate = new Date(data.messageDto.message_reg_date);
 								
 								var messageSendDateFormatted = formatDate(messageSendDate, 'yy-MM-dd hh:mm:ss');
 								
 								const row1 = document.createElement("div");
-								row1.classList.add("row", "mt-3", "border-top", "border-1", "p-2");
+								row1.classList.add("row", "border-top", "border-1");
 								
 								const row1col1 = document.createElement("div");
-								row1col1.classList.add("col-auto", "d-flex", "align-items-center", "mt-2");
+								row1col1.classList.add("col-auto", "d-flex", "align-self-center");
 								row1.appendChild(row1col1);
 								
 								const input1 = document.createElement("input");
@@ -106,7 +106,7 @@
 								row1col1.appendChild(input1);
 								
 								const row1col2 = document.createElement("div");
-								row1col2.classList.add("col-auto", "d-flex", "align-items-center", "mt-2");
+								row1col2.classList.add("col-auto", "d-flex", "align-self-center");
 								row1.appendChild(row1col2);
 								
 								const i1 = document.createElement("i");
@@ -114,7 +114,7 @@
 								row1col2.appendChild(i1);
 								
 								const row1col3 = document.createElement("div");
-								row1col3.classList.add("col-auto", "d-flex", "align-items-center", "mt-2");
+								row1col3.classList.add("col-auto", "d-flex", "align-self-center");
 								row1.appendChild(row1col3);
 								
 								const i2 = document.createElement("i");
@@ -122,35 +122,35 @@
 								row1col3.appendChild(i2);
 								
 								const row1col4 = document.createElement("div");
-								row1col4.classList.add("col", "align-self-center", "mt-2", "text-center");
-								row1col4.innerText = data.user_nickname;
+								row1col4.classList.add("col", "align-self-center","text-center");
+								row1col4.innerText = data.userDto.user_nickname;
 								row1.appendChild(row1col4);
 								
 								const row1col5 = document.createElement("div");
-								row1col5.classList.add("col", "d-flex", "align-items-center", "mt-2");
+								row1col5.classList.add("col", "d-flex", "align-self-center");
 								row1.appendChild(row1col5);
 								
 								const a1 = document.createElement("a");
-								a1.href="./readMessageGot?id=" + data.message_id;
-								a1.innerText = data.message_title;
+								a1.href="./readMessageGot?id=" + data.messageDto.message_id;
+								a1.innerText = data.messageDto.message_title;
 								row1col5.appendChild(a1);
 								
 								const row1col6 = document.createElement("div");
-								row1col6.classList.add("col", "d-flex", "align-items-center", "mt-2");
+								row1col6.classList.add("col", "align-self-center", "text-center", "ms-2");
 								row1col6.innerText = messageSendDateFormatted;
 								row1.appendChild(row1col6);
 								
 
 								
 								const row1col7 = document.createElement("div");
-								row1col7.classList.add("col", "d-flex", "align-items-center", "mt-2");
+								row1col7.classList.add("col", "align-self-center", "text-center", "ms-auto");
 								row1.appendChild(row1col7);
 								
 								const deleteButton = document.createElement("button");
 								deleteButton.classList.add("btn", "btn-sm", "border", "border-dark");
 								deleteButton.type = "button";
 								deleteButton.onclick = function() {
-									location.href = "./deleteMessageProcess?id=" + data.message_id;
+									location.href = "./deleteMessageProcess?id=" + data.messageDto.message_id;
 								};
 								deleteButton.innerText = "삭제";
 								row1col7.appendChild(deleteButton);
@@ -180,7 +180,7 @@
 	<body>
 		<div class="container-fluid">
 			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-			<div class="container m-0">
+			<div class="container-fluid">
 
 					<div class="row mt-5 mb-3">
 					 <div class="col-2 rounded ms-4" style = "background-color : #e8e8e8; height : 100vh;">
@@ -231,6 +231,11 @@
 					 <div class = "col-9 mx-4">
 					  <div class = "row">
 					  	<div class = "col" id="targetCol">
+					  		<div class = "row mb-3 h2">
+					  			<div class = "col">
+					  				받은 편지함
+					  			</div>
+					  		</div>
 					  		<div class = "row">
 						  		<div class = "col-auto mx-2">
 						  			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
@@ -250,7 +255,7 @@
 			</div>
 		</div>
 		
-		<div class="fixed-bottom d-none" role="alert">
+		<div class="fixed-bottom" role="alert">
 			<div class="row">
 				<div class="ms-auto col-3 alert alert-success">읽지 않은 쪽지가 3개 있습니다.</div>
 				<div class="col-1"></div>

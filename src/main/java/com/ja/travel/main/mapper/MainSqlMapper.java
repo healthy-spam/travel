@@ -71,5 +71,5 @@ public interface MainSqlMapper {
 
 	public int checkExhausted(int couponId);
 
-	
+	public List<MessageDto> getMessageList(int userId);
 }

@@ -200,4 +200,6 @@ public class MainService {
 		return mainSqlMapper.checkExhausted(couponId) > 0;
 	}
 
+	
+
 }
