@@ -323,7 +323,7 @@ button {
 				<div class="row">
 					<div class="col">
 						<div class="title-container">
-							<h1>최고의 동행 파트너를 찾아보세요ㅁㄴㅁㅇㅁㅇㄴㅁㅇㄴㅁㅇ</h1>
+							<h1>최고의 동행 파트너를 찾아보세요</h1>
 							<span style="font-weight: 400; font-size: 1.4em;">함께하는 여행의 즐거움을 더욱 풍부하게 만들어줄 파트너를 찾아보세요</span>
 						</div>
 					</div>
