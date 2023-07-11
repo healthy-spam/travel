@@ -336,25 +336,25 @@
                             </div>
                             <div class="row">
                                 <div class="col-auto pe-0">
-                                    <span style="font-size: 14px;">최대 인원7명</span>
+                                    <span style="font-size: 14px;">최대 인원${hotelMap.hotelDto.hotel_limit_number }명</span>
                                 </div>
                                 <div class="col-auto px-1">
                                     <span>∙</span>
                                 </div>
                                 <div class="col-auto px-0">
-                                    <span style="font-size: 14px;">침실4개</span>
+                                    <span style="font-size: 14px;">침실${hotelMap.hotelDto.hotel_bedRoom }개</span>
                                 </div>
                                 <div class="col-auto px-1">
                                     <span>∙</span>
                                 </div>
                                 <div class="col-auto px-0">
-                                    <span style="font-size: 14px;">침대3개</span>
+                                    <span style="font-size: 14px;">침대${hotelMap.hotelDto.hotel_bed }개</span>
                                 </div>
                                 <div class="col-auto px-1">
                                     <span>∙</span>
                                 </div>
                                 <div class="col-auto px-0">
-                                    <span style="font-size: 14px;">욕실4개</span>
+                                    <span style="font-size: 14px;">욕실${hotelMap.hotelDto.hotel_bathRoom }개</span>
                                 </div>
                             </div>
                         </div>
@@ -794,7 +794,7 @@
                             <span style="font-size: 14px;">체크인 가능 시간:</span>
                         </div>
                         <div class="col px-0">
-                            <span style="font-size: 14px;">오후 3:00 이후</span>
+                            <span style="font-size: 14px;">오후 ${hotelMap.hotelDto.hotel_check_in_time }:00 이후</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -802,7 +802,7 @@
                             <span style="font-size: 14px;">체크아웃 가능 시간:</span>
                         </div>
                         <div class="col px-0">
-                            <span style="font-size: 14px;">오전 11:00 전까지</span>
+                            <span style="font-size: 14px;">오전 ${hotelMap.hotelDto.hotel_check_out_time}:00 전까지</span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -810,7 +810,7 @@
                             <span style="font-size: 14px;">게스트 정원</span>
                         </div>
                         <div class="col px-0">
-                            <span style="font-size: 14px;">7명</span>
+                            <span style="font-size: 14px;">${hotelMap.hotelDto.hotel_limit_number }명</span>
                         </div>
                     </div>
                 </div>

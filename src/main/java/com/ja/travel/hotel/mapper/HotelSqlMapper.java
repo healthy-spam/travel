@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.ja.travel.dto.HotelCategoryDto;
 import com.ja.travel.dto.HotelDto;
+import com.ja.travel.dto.HotelFacilityDto;
 import com.ja.travel.dto.HotelImageDetailsDto;
 import com.ja.travel.dto.HotelReservationDto;
 import com.ja.travel.dto.HotelReviewDto;
@@ -59,4 +60,6 @@ public interface HotelSqlMapper {
 	public HotelReviewDto selectReviewByHotelReservationId(int hotel_reservation_id);
 	
 	public HotelCategoryDto selectHotelCategoryById(int hotel_category_id);
+	
+	public void insertHotelFacility(HotelFacilityDto hotelFacilityDto);
 }

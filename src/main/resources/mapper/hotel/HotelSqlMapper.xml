@@ -4,6 +4,14 @@
 
 <mapper namespace="com.ja.travel.hotel.mapper.HotelSqlMapper">
 
+	<insert id="insertHotelFacility">
+		INSERT INTO hotel_facility VALUES(
+			hotel_facility_seq.nextval,
+			#{hotel_facility_name},
+			#{hotel_facility_image}
+		)
+	</insert>
+
 	<select id="selectHotelCategoryById" resultType="com.ja.travel.dto.HotelCategoryDto">
 		SELECT * FROM hotel_category WHERE hotel_category_id = #{hotel_category_id}
 	</select>
@@ -101,6 +109,12 @@
 		#{hotel_content},
 		#{hotel_address},
 		#{hotel_price},
+		#{hotel_bedRoom},
+		#{hotel_bed},
+		#{hotel_bathRoom},
+		#{hotel_limit_number},
+		#{hotel_check_in_time},
+		#{hotel_check_out_time},
 		#{hotel_reserve_start_date},
 		#{hotel_reserve_end_date},
 		SYSDATE

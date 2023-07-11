@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ja.travel.dto.HotelCategoryDto;
 import com.ja.travel.dto.HotelDto;
+import com.ja.travel.dto.HotelFacilityDto;
 import com.ja.travel.dto.HotelImageDetailsDto;
 import com.ja.travel.dto.HotelReservationDto;
 import com.ja.travel.dto.HotelReviewDto;
@@ -317,5 +318,56 @@ public class HotelService {
 		
 		return hotelReviewPoint;
 	}
-}
+	
+//	HotelFacility 데이터 삽입
+	public void insertHotelFacility(HotelFacilityDto hotelFacilityDto, MultipartFile facilityImage) {
+		
+		if (facilityImage != null) {
+
+				String rootFolder = "C:/uploadFiles/";
+
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
+				String today = sdf.format(new Date());
+
+				File targetFolder = new File(rootFolder + today);
+
+				if (!targetFolder.exists()) {
+					targetFolder.mkdirs();
+				}
+
+				String fileName = UUID.randomUUID().toString();
+
+				fileName += "_" + System.currentTimeMillis();
+
+				String originalFileName = facilityImage.getOriginalFilename();
+
+				String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+
+				String saveFileName = today + "/" + fileName + ext;
+
+				try {
+
+					facilityImage.transferTo(new File(rootFolder + saveFileName));
+
+				} catch (Exception e) {
+
+					e.printStackTrace();
+
+				}
+
+				hotelFacilityDto.setHotel_facility_image(saveFileName);
+				
+				System.out.println(saveFileName + "사진 업로드 완료");
+
+				hotelSqlMapper.insertHotelFacility(hotelFacilityDto);
+				
+				System.out.println("hotelFacilityDto insert success");
+
+			}
+			
+		}
+		
+	}
+	
 	

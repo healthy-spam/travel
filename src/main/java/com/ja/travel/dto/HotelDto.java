@@ -14,6 +14,12 @@ public class HotelDto {
 	private String hotel_content;
 	private String hotel_address;
 	private int hotel_price;
+	private int hotel_bedRoom;
+	private int hotel_bed;
+	private int hotel_bathRoom;
+	private int hotel_limit_number;
+	private int hotel_check_in_time;
+	private int hotel_check_out_time;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date hotel_reserve_start_date;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -25,8 +31,9 @@ public class HotelDto {
 	}
 
 	public HotelDto(int hotel_id, int user_id, int hotel_category_id, String hotel_title, String hotel_main_image,
-			String hotel_content, String hotel_address, int hotel_price, Date hotel_reserve_start_date,
-			Date hotel_reserve_end_date, Date hotel_reg_date) {
+			String hotel_content, String hotel_address, int hotel_price, int hotel_bedRoom, int hotel_bed,
+			int hotel_bathRoom, int hotel_limit_number, int hotel_check_in_time, int hotel_check_out_time,
+			Date hotel_reserve_start_date, Date hotel_reserve_end_date, Date hotel_reg_date) {
 		super();
 		this.hotel_id = hotel_id;
 		this.user_id = user_id;
@@ -36,6 +43,12 @@ public class HotelDto {
 		this.hotel_content = hotel_content;
 		this.hotel_address = hotel_address;
 		this.hotel_price = hotel_price;
+		this.hotel_bedRoom = hotel_bedRoom;
+		this.hotel_bed = hotel_bed;
+		this.hotel_bathRoom = hotel_bathRoom;
+		this.hotel_limit_number = hotel_limit_number;
+		this.hotel_check_in_time = hotel_check_in_time;
+		this.hotel_check_out_time = hotel_check_out_time;
 		this.hotel_reserve_start_date = hotel_reserve_start_date;
 		this.hotel_reserve_end_date = hotel_reserve_end_date;
 		this.hotel_reg_date = hotel_reg_date;
@@ -105,6 +118,54 @@ public class HotelDto {
 		this.hotel_price = hotel_price;
 	}
 
+	public int getHotel_bedRoom() {
+		return hotel_bedRoom;
+	}
+
+	public void setHotel_bedRoom(int hotel_bedRoom) {
+		this.hotel_bedRoom = hotel_bedRoom;
+	}
+
+	public int getHotel_bed() {
+		return hotel_bed;
+	}
+
+	public void setHotel_bed(int hotel_bed) {
+		this.hotel_bed = hotel_bed;
+	}
+
+	public int getHotel_bathRoom() {
+		return hotel_bathRoom;
+	}
+
+	public void setHotel_bathRoom(int hotel_bathRoom) {
+		this.hotel_bathRoom = hotel_bathRoom;
+	}
+
+	public int getHotel_limit_number() {
+		return hotel_limit_number;
+	}
+
+	public void setHotel_limit_number(int hotel_limit_number) {
+		this.hotel_limit_number = hotel_limit_number;
+	}
+
+	public int getHotel_check_in_time() {
+		return hotel_check_in_time;
+	}
+
+	public void setHotel_check_in_time(int hotel_check_in_time) {
+		this.hotel_check_in_time = hotel_check_in_time;
+	}
+
+	public int getHotel_check_out_time() {
+		return hotel_check_out_time;
+	}
+
+	public void setHotel_check_out_time(int hotel_check_out_time) {
+		this.hotel_check_out_time = hotel_check_out_time;
+	}
+
 	public Date getHotel_reserve_start_date() {
 		return hotel_reserve_start_date;
 	}
@@ -134,8 +195,11 @@ public class HotelDto {
 		return "HotelDto [hotel_id=" + hotel_id + ", user_id=" + user_id + ", hotel_category_id=" + hotel_category_id
 				+ ", hotel_title=" + hotel_title + ", hotel_main_image=" + hotel_main_image + ", hotel_content="
 				+ hotel_content + ", hotel_address=" + hotel_address + ", hotel_price=" + hotel_price
-				+ ", hotel_reserve_start_date=" + hotel_reserve_start_date + ", hotel_reserve_end_date="
-				+ hotel_reserve_end_date + ", hotel_reg_date=" + hotel_reg_date + "]";
+				+ ", hotel_bedRoom=" + hotel_bedRoom + ", hotel_bed=" + hotel_bed + ", hotel_bathRoom=" + hotel_bathRoom
+				+ ", hotel_limit_number=" + hotel_limit_number + ", hotel_check_in_time=" + hotel_check_in_time
+				+ ", hotel_check_out_time=" + hotel_check_out_time + ", hotel_reserve_start_date="
+				+ hotel_reserve_start_date + ", hotel_reserve_end_date=" + hotel_reserve_end_date + ", hotel_reg_date="
+				+ hotel_reg_date + "]";
 	}
 
 }

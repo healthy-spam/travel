@@ -128,7 +128,7 @@
 				<div class="row">
 					<div class="col text-center">
         					<c:if test="${!empty sessionuser}">
-								<a style="border-radius: 20px; color: white; position: fixed; z-index: 9999; bottom: 5%; left: 50%; transform: translate(-50%, -50%);" class="btn btn-gradient" href="./hotelRegisterPage"><span>나만의 숙소 등록하기</span></a>
+								<a style="border-radius: 20px; color: white; position: fixed; z-index: 9999; bottom: 5%; left: 50%; transform: translate(-50%, -50%);" class="btn btn-gradient" href="./hotelRegisterPage1"><span>나만의 숙소 등록하기</span></a>
 							</c:if>
         				</div>
 				</div>

@@ -95,10 +95,36 @@
 					</div>
 					<div class="row mt-2">
 						<div class="col">
-							<input class="btn btn-outline-dark form-control" type="time" name="hotel_check_in_time">
+							<select class="form-control" name="hotel_check_in_time">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+							</select>
 						</div>
 						<div class="col">
-							<input class="btn btn-outline-dark form-control" type="time" name="hotel_check_out_time">
+							<select class="form-control" name="hotel_check_out_time">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+							</select>
 						</div>
 					</div>
 					<div class="row mt-3">
