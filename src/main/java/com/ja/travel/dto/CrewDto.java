@@ -105,5 +105,13 @@ public class CrewDto {
 		this.crew_member_amount = crew_member_amount;
 	}
 
+	@Override
+	public String toString() {
+		return "CrewDto [crew_id=" + crew_id + ", master_id=" + master_id + ", crew_name=" + crew_name
+				+ ", crew_thumbnail=" + crew_thumbnail + ", crew_desc=" + crew_desc + ", crew_point=" + crew_point
+				+ ", crew_reg_date=" + crew_reg_date + ", crew_domain=" + crew_domain + ", crew_member_amount="
+				+ crew_member_amount + "]";
+	}
+
 	
 }

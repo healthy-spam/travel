@@ -88,29 +88,54 @@ public class CrewService {
 //	}
 	
 	
-	public String createcrew(CrewDto crewDto) {
-		crewDto.setCrew_thumbnail("");
-		if(crewDto.getCrew_domain()==null) {
-			if(crewMapper.getcrewdomain()==null) {
-				crewDto.setCrew_domain("1");
-			} else {
-				crewDto.setCrew_domain(Integer.toString(crewMapper.getcrewdomain()+1));
+	public void createcrew(Map<String, Object> requestBody, HttpSession session) {
+		CrewDto crewDto = new CrewDto();
+		crewDto.setCrew_name((String) requestBody.get("crew_name"));
+		crewDto.setCrew_domain((String)requestBody.get("crew_domain"));
+		if(crewDto.getCrew_domain()=="") {
+			crewDto.setCrew_domain(crewMapper.getcrewdomain().toString());
+		}
+		crewDto.setCrew_desc((String) requestBody.get("crew_desc"));
+		
+		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
+		crewDto.setMaster_id(userDto.getUser_id());
+		
+		MultipartFile file = (MultipartFile) requestBody.get("crew_thumbnail");
+		
+		if(!file.isEmpty()) {
+			System.out.println("파일명: " + file.getOriginalFilename());
+			
+			String rootFolder = "C://CrewThumbnail/";
+			
+			File targetFolder = new File(rootFolder + crewMapper.getcrewdomain().toString()); // C:/CrewThumbnail/crew_id
+			
+			if(!targetFolder.exists()) {
+				targetFolder.mkdirs();
 			}
+			
+			// 저장 파일명 만들기. 핵심은 파일명 충돌 방지 = 랜덤 + 시간
+			String fileName = "1";
+//			fileName += "_" + System.currentTimeMillis();
+			
+			// 확장자 추출
+			String originalFileName = file.getOriginalFilename();
+			
+			String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+			
+			String saveFileName = "/" +  fileName + ext;
+			
+			try {
+				file.transferTo(new File(rootFolder + crewMapper.getcrewdomain().toString() +saveFileName));
+			}catch(Exception e) {
+				System.out.println(e);
+				e.printStackTrace();
+			}
+
+			crewDto.setCrew_thumbnail(saveFileName);
+
+			System.out.println(crewDto);
 		}
-		try {
-			crewMapper.createcrew(crewDto);
-			CrewMemberDto crewMemberDto = new CrewMemberDto();
-			crewMemberDto.setCrew_domain(crewMapper.getCrewDomainByMasterId(crewDto.getMaster_id()));
-			crewMemberDto.setUser_id(crewDto.getMaster_id());
-			crewMemberDto.setCrew_member_grade_default_id(1);
-			crewMemberDto.setCrew_join_request_intro("");
-			crewMemberDto.setCrew_join_status("member");
-			crewMapper.addcrewmember(crewMemberDto);
-			return "redirect:/crew/main";
-		} catch (Exception e) {
-			System.out.println(e);
-			return "redirect:/crew/createcrew";
-		}
+
 	}
 
 	
@@ -581,6 +606,20 @@ public class CrewService {
 	}
 
 
+	public Boolean checkcrewname(String crew_name) {
+		Integer get = crewMapper.checkcrewname(crew_name);
+		if(get==null) {
+			return true;
+		}
+			return false;
+	}
 
 
+	public Boolean checkcrewdomain(String crew_domain) {
+		Integer get = crewMapper.checkcrewdomain(crew_domain);
+		if(get==null) {
+			return true;
+		}
+			return false;
+	}
 }

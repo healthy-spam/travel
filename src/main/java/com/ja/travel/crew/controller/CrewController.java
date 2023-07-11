@@ -48,9 +48,19 @@ public class CrewController {
 		return "crew/createcrew";
 	}
 	
+	@RequestMapping("/checkcrewname")
+	public @ResponseBody Boolean checkcrewname(@RequestParam("crew_name") String crew_name) {
+		return crewService.checkcrewname(crew_name);
+	}
+	
+	@RequestMapping("/checkcrewdomain")
+	public @ResponseBody Boolean checkcrewdomain(@RequestParam("crew_domain") String crew_domain) {
+		return crewService.checkcrewdomain(crew_domain);
+	}
+	
 	@RequestMapping("/crewregister")
-	public String crewregister(CrewDto crewDto) {
-		return crewService.createcrew(crewDto);
+	public @ResponseBody void crewregister(@RequestBody Map<String, Object> requestBody, HttpSession session) {
+		crewService.createcrew(requestBody, session);
 	}
 	
 	@RequestMapping("/crewhome/{crew_domain}")

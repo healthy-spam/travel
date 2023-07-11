@@ -121,5 +121,9 @@ public interface CrewMapper {
 	public void boardmodify(CrewBoardDto crewBoardDto);
 
 	public int getLastCrewBoardIdByCrewMemberId(int crew_member_id);
+
+	public Integer checkcrewname(String crew_name);
+
+	public Integer checkcrewdomain(String crew_domain);
 	
 }

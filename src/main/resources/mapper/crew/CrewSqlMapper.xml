@@ -15,8 +15,13 @@
 		)
 	</insert>
 
+	<select id="checkcrewname" resultType="Integer">
+		select count(*) from crew natural join crew_close where crew_status != 'closed' and crew_name = #{crew_name}
+	</select>
 
-
+	<select id="checkcrewdomain" resultType="Integer">
+		select count(*) from crew natural join crew_close where crew_status != 'closed' and crew_domain = #{crew_domain}
+	</select>
 
 	<select id="getCrewDtoByUserId" resultType="com.ja.travel.dto.CrewDto">
 		select * from crew

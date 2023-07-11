@@ -10,6 +10,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <link rel="stylesheet" href="<c:url value="/resources/css/crew/findcrew.css" />">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <title>메인 페이지</title>
 
@@ -27,6 +28,15 @@
         text-align: center;
         vertical-align: top;
     }
+    .btnpink {
+		background-color: #DB4465;
+		color: white;
+	}
+	.btn-outline {
+		background-color:white;
+		color:#DB4465;
+		border-color:#DB4465;
+	}
 </style>
 
 <script type="text/javascript">
@@ -53,6 +63,121 @@
 			changeBackColor = true;
 		}		
 	}
+	
+	function createcrew() {
+		var crew_name = document.getElementById("crew_name").value;
+		var crew_domain = document.getElementById("crew_domain").value;
+		var crew_desc = document.getElementById("crew_desc").value;
+		var crew_thumbnail = document.getElementById("crew_thumbnail").files[0];
+		
+		if(!document.getElementById("flexCheckDefault").checked) {
+			alert("크루 개인정보보호정책에 동의해주세요.");return;
+		}
+		if(crew_name == "") {
+			alert("크루 이름을 확인해주세요");return;
+		}
+		if(!document.getElementById("checkcrewnameresult").innerHTML == ("사용 가능한 크루 이름입니다.") || !document.getElementById("checkcrewdomainresult").innerHTML == '입력하지 않을 시 임의로 도메인 값이 자동 생성됩니다.') {
+			alert("크루 도메인을 확인해주세요");return;
+		}
+		if(crew_desc=="") {
+			alert("크루 설명글을 입력해주세요");return;
+		}
+		
+		
+		  // AJAX 요청 보내기
+        $.ajax({
+            url: "/travel/crew/crewregister",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "crew_name": crew_name,
+                "crew_domain": crew_domain,
+                "crew_desc": crew_desc
+            }),
+            success: function(res) {
+            alert("크루 생성이 완료되었어요!");
+            },
+            error: function(err) {
+                console.error("댓글 작성 실패", err);
+            }
+        });
+	}
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var crewNameInput = document.getElementById("crew_name");
+    crewNameInput.addEventListener("input", function() {
+        var crewName = crewNameInput.value;
+        
+        if(crewName === '') {
+        	document.getElementById("checkcrewnameresult").innerHTML = '';
+        } else if(!/^[가-힣|a-zA-Z|0-9]*$/.test(crewName)) {
+        	document.getElementById("checkcrewnameresult").innerHTML = '유효하지 않은 크루 이름입니다.';
+        } else if(crewName.length < 4 || crewName.length > 15) {
+        	document.getElementById("checkcrewnameresult").innerHTML = '크루 이름은 4자 이상, 15자 이하여야 합니다.';
+        }  else {
+            if (crewName !== "" || crewName != null) {
+                $.ajax({
+                    url: "/travel/crew/checkcrewname",
+                    type: "POST",
+                    data: { crew_name: crewName },
+                    success: function(response) {
+                        if (response.exists) {
+                            // 이미 존재하는 이름일 경우 처리할 로직을 작성합니다.
+                            document.getElementById("checkcrewnameresult").innerHTML = ("이미 존재하는 크루 이름입니다.");
+                        } else {
+                            // 존재하지 않는 이름일 경우 처리할 로직을 작성합니다.
+                            // 예를 들어, 입력된 이름이 유효하다는 표시를 표시할 수 있습니다.
+                            document.getElementById("checkcrewnameresult").innerHTML = ("사용 가능한 크루 이름입니다.");
+                        }
+                    },
+                    error: function(err) {
+                        console.error("이름 확인 실패", err);
+                    }
+                });
+            }
+        }
+    });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var crewDomainInput = document.getElementById("crew_domain");
+    crewDomainInput.addEventListener("input", function() {
+        var crewDomain = crewDomainInput.value;
+        
+        if(crewDomain === '') {
+        	document.getElementById("checkcrewdomainresult").innerHTML = '입력하지 않을 시 임의로 도메인 값이 자동 생성됩니다.';
+        } else if(!/^[a-z|0-9]*$/.test(crewDomain)) {
+        	document.getElementById("checkcrewdomainresult").innerHTML = '유효하지 않은 크루 주소입니다.';
+        } else if(!/[a-zA-Z]/.test(crewDomain))  {
+        	document.getElementById("checkcrewdomainresult").innerHTML = '크루 주소에는 적어도 하나의 알파벳을 포함해야 합니다.';
+        } else if(crewDomain.length < 4 || crewDomain.length > 15) {
+        	document.getElementById("checkcrewdomainresult").innerHTML = '크루 주소는 4자 이상, 15자 이하여야 합니다.';
+        }  else {
+            if (crewDomain !== "" || crewDomain != null) {
+                $.ajax({
+                    url: "/travel/crew/checkcrewdomain",
+                    type: "POST",
+                    data: { crew_domain: crewDomain },
+                    success: function(response) {
+                        if (response.exists) {
+                            // 이미 존재하는 이름일 경우 처리할 로직을 작성합니다.
+                            document.getElementById("checkcrewdomainresult").innerHTML = ("이미 존재하는 주소입니다.");
+                        } else {
+                            // 존재하지 않는 이름일 경우 처리할 로직을 작성합니다.
+                            // 예를 들어, 입력된 이름이 유효하다는 표시를 표시할 수 있습니다.
+                            document.getElementById("checkcrewdomainresult").innerHTML = ("사용 가능한 주소입니다.");
+                        }
+                    },
+                    error: function(err) {
+                        console.error("이름 확인 실패", err);
+                    }
+                });
+            }
+        }
+    });
+});
 </script>
 </head>
 <body>
@@ -60,14 +185,13 @@
 		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 	</div>
 	<div class="container py-5 px-5">
-        <div class="row m-3">
+        <div class="row my-3">
         	<div class="col"></div>
         	<div class="col-10">
         		<h1>크루 만들기</h1>
         	</div>
     	    <div class="col"></div>
         </div>
-        <form method="POST" action="crewregister">
         <div class="row">
         	<div class="col"></div>
         	<div class="col-10">
@@ -78,7 +202,8 @@
 				  			<div class="input_title mt-1"><strong class="tit">크루 이름<span class="mandatory">*</span></strong></div>
 				  		</div>
 				  		<div class="col">
-				  			<div class="input_area"><div class="FormInputText"><input type="text" placeholder="크루 이름을 입력해주세요." title="크루이름" class="form-control" name="crew_name"></div></div>
+				  			<div class="input_area"><div class="FormInputText"><input type="text" placeholder="크루 이름을 입력해주세요." title="크루이름" class="form-control" id="crew_name"></div></div>
+				  			<p class="txt" id="checkcrewnameresult"></p>
 				  		</div>
 				  	</div>
 				  	<hr>
@@ -91,9 +216,9 @@
 					    <div class="col">
 					        <div class="input-group">
 					            <span class="aaa me-3 mt-1">http://localhost:8181/travel/crew/</span>
-					            <input type="text" class="form-control" name="crew_domain">
+					            <input type="text" class="form-control" id="crew_domain">
 					        </div>
-                            <p class="txt">
+                            <p class="txt" id="checkcrewdomainresult">
                                 입력하지 않을 시 임의로 도메인 값이 자동 생성됩니다.
                             </p>
 					    </div>
@@ -120,7 +245,7 @@
 					    </div>
 					    <div class="col">
 					        <div class="input-group">
-                                <textarea placeholder="크루 설명을 입력해주세요." class="textarea_input input_txt form-control" style="height: 60px;" name="crew_desc"></textarea>
+                                <textarea placeholder="크루 설명을 입력해주세요." class="textarea_input input_txt form-control" style="height: 60px;" id="crew_desc"></textarea>
 					        </div>
                             <p class="txt">
                                 입력한 내용이 크루 메인, 크루 리스트에 반영 됩니다.
@@ -153,18 +278,16 @@
 				</div>
                 <div class="row buttons pt-2">
                     <div class="col text-end">
-                        <a href="#" onclick="history.back(); return false;"><button type="button" class="btn btn-outline-success">취소하기</button></a>
+                        <button type="button" onclick="history.back(); return false;" class="btn btn-outline">취소하기</button>
                     </div>
                     <div class="col ">
-                        <button type="submit" class="btn btn-success">생성하기</button>
+                        <button class="btn btnpink" onclick="createcrew()">생성하기</button>
                     </div>
                 </div>
 			</div>
 		</div>
 			<div class="col"></div>
         </div>
-        <input type="hidden" name="master_id" value="${sessionuser.user_id }">
-        </form>
     </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
