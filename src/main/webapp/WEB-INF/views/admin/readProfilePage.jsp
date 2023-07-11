@@ -48,7 +48,7 @@ pageEncoding="UTF-8"%>
 					<div>
 						<input type="hidden" value="${map.guideApplyDto.guide_apply_id}" name="guide_apply_id">
 						<input type="hidden" value="${map.guideApplyDto.user_id}" name="user_id">
-						<input type="hidden" value="<fmt:formatDate value="${guideApplyDto.guide_apply_date}" pattern="yyyy-MM-dd" />"  name="guide_apply_date">
+						<input type="hidden" value="<fmt:formatDate value="${map.guideApplyDto.guide_apply_date}" pattern="yyyy-MM-dd" />"  name="guide_apply_date">
 						<input type="hidden" value="${map.guideApplyDto.guide_apply_profile}" name="guide_apply_profile">
 						<input type="hidden" value="${map.guideApplyDto.guide_apply_name}" name="guide_apply_name">
 						<input type="submit" value="승인" formaction="../admin/applyGuideProcess">
