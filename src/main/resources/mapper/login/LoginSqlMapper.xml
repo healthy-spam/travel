@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ja.travel.login.mapper.LoginSqlMapper">
-		<insert id="register">
+	<insert id="register">
 		insert into member values(
 			member_seq.nextval,
 			#{user_email},
@@ -11,13 +11,12 @@
 			#{user_nickname},
 			#{user_phone},
 			#{user_gender},
+			#{user_image},
 			#{user_birth},
 			#{user_address},
-			#{user_image},			
-			SYSDATE
+			sysdate
 		)
 	</insert>
-
 
 
 	<select id="getUserDtoByIdandPw" resultType="com.ja.travel.dto.UserDto">
