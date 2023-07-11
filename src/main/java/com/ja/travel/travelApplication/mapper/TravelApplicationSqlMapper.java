@@ -26,7 +26,7 @@ public interface TravelApplicationSqlMapper {
 	
 	public void insertPlanningApplicationParty(PlanningApplicationDto planningApplicationDto);
 
-	public List<PlanningApplicationDto> getPlanningAcceptCountByPlanningId(int planning_id);
+	public List<UserDto> getPlanningAcceptCountByPlanningId(int planning_id);
 
 	public PlanningApplicationDto getApplicationStatus(PlanningApplicationDto planningApplicationDto);
 
@@ -58,7 +58,8 @@ public interface TravelApplicationSqlMapper {
 
 	// 디테일 페이지 댓글 부분
 	public void createComment(PlanningComment planningComment);
-	public List<PlanningComment> getCommentList();
+	public List<PlanningComment> getCommentList(int planning_id);
+	public UserDto getUserOfCommentByPlanningId(int planning_comment_id);
 	public void addLike(PlanningCommentLove planningCommentLove);
 	public void deleteLike(PlanningCommentLove planningCommentLove);
 	public PlanningCommentLove getLikeByCommentIdAndUserId(PlanningCommentLove planningCommentLove);

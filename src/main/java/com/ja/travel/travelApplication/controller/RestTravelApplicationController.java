@@ -23,14 +23,14 @@ public class RestTravelApplicationController {
 	@Autowired
 	private TravelApplicationService travelApplicationService;
 
-	@RequestMapping("updateApplicationaStatusByUser")
-	public Map<String, Object> updateApplicationaStatusByUser(PlanningApplicationDto planningApplicationDto,
-			String value) {
-		Map<String, Object> map = travelApplicationService.updateApplicationaStatusByUser(planningApplicationDto,
-				value);
-
-		return map;
-	}
+//	@RequestMapping("updateApplicationaStatusByUser")
+//	public Map<String, Object> updateApplicationaStatusByUser(PlanningApplicationDto planningApplicationDto,
+//			String value) {
+//		Map<String, Object> map = travelApplicationService.updateApplicationaStatusByUser(planningApplicationDto,
+//				value);
+//
+//		return map;
+//	}
 
 	@RequestMapping("getTravelApplicationList")
 	public Map<String, Object> getTravelApplicationList(TravelApplicationRequestDto travelApplicationRequestDto) {
@@ -74,8 +74,8 @@ public class RestTravelApplicationController {
 	}
 	
 	@RequestMapping("getCommentList")
-	public Map<String, Object> getCommentList() {
-		List<Map<String, Object>> list = travelApplicationService.getCommentList();
+	public Map<String, Object> getCommentList(int planning_id, HttpSession session) {
+		List<Map<String, Object>> list = travelApplicationService.getCommentList(planning_id, session);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		

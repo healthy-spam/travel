@@ -39,41 +39,44 @@ public class TravelApplicationService {
 	@Autowired
 	private PlanPlaceSqlMapper planPlaceSqlMapper;
 	
-	public void planningApplicationParty(HttpSession session, PlanningApplicationDto planningApplicationDto) {
-		planningApplicationDto.setUser_id(getSessionUserInfo(session).getUser_id());
-		PlanningApplicationDto applicationStatus = travelApplicationSqlMapper
-				.getApplicationStatus(planningApplicationDto);
-
-		if (applicationStatus == null) {
-			travelApplicationSqlMapper.insertPlanningApplicationParty(planningApplicationDto);
-		}
-	}
-
 	private UserDto getSessionUserInfo(HttpSession session) {
-		UserDto userInfo = (UserDto) session.getAttribute("sessionuser");
+		UserDto userInfo = new UserDto();
+		
+		if (session.getAttribute("sessionuser") != null) {
+			userInfo = (UserDto) session.getAttribute("sessionuser");	
+		}
+		
 		return userInfo;
 	}
+	
+//	public void planningApplicationParty(HttpSession session, PlanningApplicationDto planningApplicationDto) {
+//		planningApplicationDto.setUser_id(getSessionUserInfo(session).getUser_id());
+//		PlanningApplicationDto applicationStatus = travelApplicationSqlMapper.getApplicationStatus(planningApplicationDto);
+//
+//		if (applicationStatus == null) {
+//			travelApplicationSqlMapper.insertPlanningApplicationParty(planningApplicationDto);
+//		}
+//	}
 
-	public Map<String, Object> updateApplicationaStatusByUser(PlanningApplicationDto planningApplicationDto,
-			String value) {
-		if (value.equals("수락")) {
-			travelApplicationSqlMapper.acceptApplicationaStatusByUser(planningApplicationDto);
-		} else {
-			travelApplicationSqlMapper.refusalApplicationaStatusByUser(planningApplicationDto);
-		}
-
-		PlanningApplicationDto planningStatus = travelApplicationSqlMapper.getApplicationStatus(planningApplicationDto);
-		PlanningDto planning = travelApplicationSqlMapper.getPlanningByPlanningId(planningStatus.getPlanning_id());
-		List<PlanningApplicationDto> count = travelApplicationSqlMapper
-				.getPlanningAcceptCountByPlanningId(planning.getPlanning_id());
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("planningStatus", planningStatus);
-		map.put("planning", planning);
-		map.put("planningAcceptCount", count);
-
-		return map;
-	}
+//	public Map<String, Object> updateApplicationaStatusByUser(PlanningApplicationDto planningApplicationDto,
+//			String value) {
+//		if (value.equals("수락")) {
+//			travelApplicationSqlMapper.acceptApplicationaStatusByUser(planningApplicationDto);
+//		} else {
+//			travelApplicationSqlMapper.refusalApplicationaStatusByUser(planningApplicationDto);
+//		}
+//
+//		PlanningApplicationDto planningStatus = travelApplicationSqlMapper.getApplicationStatus(planningApplicationDto);
+//		PlanningDto planning = travelApplicationSqlMapper.getPlanningByPlanningId(planningStatus.getPlanning_id());
+//		List<PlanningApplicationDto> count = travelApplicationSqlMapper.getPlanningAcceptCountByPlanningId(planning.getPlanning_id());
+//
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("planningStatus", planningStatus);
+//		map.put("planning", planning);
+//		map.put("planningAcceptCount", count);
+//
+//		return map;
+//	}
 
 	public List<Map<String, Object>> getPlanningList(TravelApplicationRequestDto travelApplicationRequestDto) {
 		List<PlanningDto> planningList = travelApplicationSqlMapper.getPlanningList(travelApplicationRequestDto);
@@ -157,6 +160,7 @@ public class TravelApplicationService {
 		UserDto user = travelApplicationSqlMapper.getUserByPlanningId(planning_id);
 		List<PlanDayDto> planDayList = travelApplicationSqlMapper.getPlanDayByPlanId(plan.getPlan_id());
 		PlanningDto planningDto = travelApplicationSqlMapper.getPlanningByPlanningId(planning_id);
+		List<UserDto> planningApplicationList = travelApplicationSqlMapper.getPlanningAcceptCountByPlanningId(planningDto.getPlanning_id());
 		int planDayListSize = planDayList.size();
 
 		List<Map<String, Object>> list = new ArrayList<>();
@@ -173,6 +177,7 @@ public class TravelApplicationService {
 
 		Map<String, Object> resultMap = new HashMap<>();
 
+		resultMap.put("planningApplicationList", planningApplicationList);
 		resultMap.put("user", user);
 		resultMap.put("planDayListSize", planDayListSize);
 		resultMap.put("planningDto", planningDto);
@@ -182,15 +187,30 @@ public class TravelApplicationService {
 		return resultMap;
 	}
 
-	public List<Map<String, Object>> getCommentList() {
-		List<PlanningComment> planningCommentList = travelApplicationSqlMapper.getCommentList();
+	public List<Map<String, Object>> getCommentList(int planning_id, HttpSession session) {
+		List<PlanningComment> planningCommentList = travelApplicationSqlMapper.getCommentList(planning_id);
+		UserDto userDto = getSessionUserInfo(session);
 		
 		List<Map<String, Object>> list = new ArrayList<>();
 		
 		for (PlanningComment planningComment : planningCommentList) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			
-			UserDto user = travelApplicationSqlMapper.getUserByPlanningId(planningComment.getPlanning_id());
+			if (userDto != null) {
+				PlanningCommentLove planningCommentLove = new PlanningCommentLove();
+				planningCommentLove.setPlanning_comment_id(planningComment.getPlanning_comment_id());
+				planningCommentLove.setUser_id(userDto.getUser_id());
+				
+				PlanningCommentLove planningLove = travelApplicationSqlMapper.getLikeByCommentIdAndUserId(planningCommentLove);
+				
+				if (planningLove != null) {
+					map.put("isLove", "ok");
+				} else {
+					map.put("isLove", "no");
+				}	
+			}
+			
+			UserDto user = travelApplicationSqlMapper.getUserOfCommentByPlanningId(planningComment.getPlanning_comment_id());
 			int totalLike = travelApplicationSqlMapper.getTotalLike(planningComment.getPlanning_comment_id());
 			
 			if (totalLike == 0) {
@@ -216,24 +236,18 @@ public class TravelApplicationService {
 	}
 
 	public void addLike(int comment_id, HttpSession session) {
-		PlanningCommentLove planningCommentLove = getLoveDto(comment_id, session);
-		
-		if (planningCommentLove != null) {
-			travelApplicationSqlMapper.deleteLike(planningCommentLove);
-		} else {
-			travelApplicationSqlMapper.addLike(planningCommentLove);
-		}
-	}
-	
-	public PlanningCommentLove getLoveDto(int comment_id, HttpSession session) {
 		UserDto userDto = getSessionUserInfo(session);
 		
 		PlanningCommentLove planningCommentLove = new PlanningCommentLove();
 		planningCommentLove.setPlanning_comment_id(comment_id);
 		planningCommentLove.setUser_id(userDto.getUser_id());
 		
-		planningCommentLove = travelApplicationSqlMapper.getLikeByCommentIdAndUserId(planningCommentLove);
+		PlanningCommentLove planningLove = travelApplicationSqlMapper.getLikeByCommentIdAndUserId(planningCommentLove);
 		
-		return planningCommentLove;
+		if (planningLove != null) {
+			travelApplicationSqlMapper.deleteLike(planningCommentLove);
+		} else {
+			travelApplicationSqlMapper.addLike(planningCommentLove);
+		}
 	}
 }

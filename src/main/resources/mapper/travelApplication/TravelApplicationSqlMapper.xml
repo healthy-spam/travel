@@ -17,17 +17,22 @@
 	
 	<select id="getCommentList" resultType="com.ja.travel.dto.PlanningComment">
 		SELECT * FROM planning_comment
+		WHERE planning_id = #{planning_id}
 		ORDER BY planning_comment_id DESC
 	</select>
 	
-	<select id="getUserByPlanningId"
-		resultType="com.ja.travel.dto.UserDto">
+	<select id="getUserByPlanningId" resultType="com.ja.travel.dto.UserDto">
 		SELECT * FROM member
-		INNER JOIN planning ON member.user_id =
-		planning.user_id
+		INNER JOIN planning ON member.user_id = planning.user_id
 		WHERE planning_id = #{planning_id}
 	</select>
 
+	<select id="getUserOfCommentByPlanningId" resultType="com.ja.travel.dto.UserDto">
+		SELECT * FROM planning_comment
+		INNER JOIN member ON planning_comment.user_id = member.user_id
+		WHERE planning_comment_id = #{planning_comment_id}
+	</select>
+	
 	<select id="getPlanningList" resultType="com.ja.travel.dto.PlanningDto">
 	    SELECT *
 		FROM (
@@ -145,33 +150,29 @@
 			AND planning_title LIKE '%' || #{searchWord} || '%'
 	</select>
 
-	<select id="getPlanningByPlanningId"
-		resultType="com.ja.travel.dto.PlanningDto">
+	<select id="getPlanningByPlanningId" resultType="com.ja.travel.dto.PlanningDto">
 		SELECT * FROM planning WHERE planning_id = #{planning_id}
 	</select>
 
-	<select id="getPlanAndPlanningInfoByPlanId"
-		resultType="com.ja.travel.dto.PlanningDto">
+	<select id="getPlanAndPlanningInfoByPlanId" resultType="com.ja.travel.dto.PlanningDto">
 		SELECT * FROM planning
-		INNER JOIN plan ON plan.plan_id =
-		planning.plan_id
+		INNER JOIN plan ON plan.plan_id = planning.plan_id
 		WHERE plan_statuse = '기획중'
 		AND plan.plan_id =
 		#{plan_id}
 	</select>
 
-	<select id="getPlanStatusByPlanId"
-		resultType="com.ja.travel.dto.PlanningDto">
+	<select id="getPlanStatusByPlanId" resultType="com.ja.travel.dto.PlanningDto">
 		SELECT * FROM planning
-		INNER JOIN plan ON plan.plan_id =
-		planning.plan_id
+		INNER JOIN plan ON plan.plan_id = planning.plan_id
 		WHERE plan_statuse = '모집중'
 		AND plan.plan_id =
 		#{plan_id}
 	</select>
 
-	<select id="getPlanningAcceptCountByPlanningId" resultType="com.ja.travel.dto.PlanningApplicationDto">
+	<select id="getPlanningAcceptCountByPlanningId" resultType="com.ja.travel.dto.UserDto">
 		SELECT * FROM planning_application
+		INNER JOIN member ON planning_application.user_id = member.user_id
 		WHERE planning_id = #{planning_id}
 		AND planning_member_status = '수락'
 	</select>

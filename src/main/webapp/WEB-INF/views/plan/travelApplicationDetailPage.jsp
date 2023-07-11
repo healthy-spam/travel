@@ -16,6 +16,13 @@
 	var commentList;
 	var planning_id = '${map.planningDto.planning_id}';
 	
+	function loginCheck() {
+		var sessionUser = '${sessionuser}';
+		if (sessionUser == '') {
+			location.href = '../login';
+		}
+	}
+	
 	function createCommentFunc() {
 		var comment = document.querySelector('.comment');
 		
@@ -60,6 +67,7 @@
 					boardInfo.innerText = boardRegDate + ' · 댓글 ' + response.list.length;
 					
 					for (let i in response.list) {
+						console.log(response.list[i]);
 						commentList = document.querySelector('.comment-list');
 						
 						var date = new Date(response.list[i].planningComment.reg_date);
@@ -76,7 +84,7 @@
 					    const img = document.createElement('img');
 					    img.classList.add('user-thumbnail');
 					    img.alt = "썸네일";
-					    img.src = "https://via.placeholder.com/40x40";
+					    img.src = '/uploadFiles/profileImage/'+response.list[i].user.user_image;
 					    col1Div.appendChild(img);
 					    
 					    // Col div
@@ -105,13 +113,13 @@
 					    button.classList.add('comment-reply');
 					    button.innerText = '답글 달기';
 					    var heartIcon = document.createElement("i");
-					    heartIcon.classList.add("bi", "bi-heart");
+					    heartIcon.className = response.list[i].isLove == 'ok' ? 'bi, bi-heart-fill' : 'bi, bi-heart'; 
 					    heartIcon.onclick = function() {
 							addLike(response.list[i].planningComment.planning_comment_id);	
 						}
 					    const span = document.createElement('span');
 					    span.classList.add('comment-love');
-					    span.innerHTML = '좋아요 ' + response.list[i].totalLike + '개';
+					    span.innerHTML = '좋아요 ' + response.list[i].totalLike + '개 ';
 					    span.appendChild(heartIcon);
 					    anotherCol12Div.appendChild(button);
 					    anotherCol12Div.appendChild(span);
@@ -130,7 +138,7 @@
 		//post
 		xhr.open("post", "./getCommentList");
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhr.send();
+		xhr.send("planning_id="+planning_id);
 	}
 	
 	function addLike(comment_id) {
@@ -214,7 +222,6 @@
 				// js 작업//
 
 				if (response.list != null) {
-					console.log(response.list);
 
 					for ( var i in response.list) {
 						placeAddressList.push(response.list[i].placeDto);
@@ -568,7 +575,7 @@
 									<div class="col-12 mb-3 comment-info">
 										<span class="board-info"></span>
 									</div>
-									<div class="col mb-3 comment-wrapper">
+									<div class="col mb-3 comment-wrapper" onclick="loginCheck()">
 										<input class="form-control comment p-2" type="text" placeholder="댓글을 입력해주세요.">
 										<button class="comment-button" type="button" onclick="createCommentFunc()">작성</button>
 									</div>
@@ -611,7 +618,9 @@
 								<div class="col">
 									<div class="user-list-container">
 										<ul class="user-list">
-											<li><img class="user-thumbnail" alt="썸네일" src="https://via.placeholder.com/40x40"></li>
+											<c:forEach items="${map.planningApplicationList}" var="data">
+												<li><img class="user-thumbnail" alt="썸네일" src="/uploadFiles/profileImage/${data.user_image}"></li>
+											</c:forEach>
 										</ul>
 									</div>
 								</div>
