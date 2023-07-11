@@ -43,7 +43,7 @@
 							</div>
 						</c:when>
 						<c:otherwise>
-							<a class="btn me-1" href="/travel/login" style="color: white; height: 35px;">로그인</a>
+							<a class="btn me-1" href="/travel/login" style="height: 35px;">로그인</a>
 						</c:otherwise>
 					</c:choose>
 				</div>

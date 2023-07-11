@@ -144,7 +144,9 @@ public class TravelApplicationService {
 
 	public void completePlanning(PlanningDto planningDto, HttpSession session) {
 		planningDto.setUser_id(getSessionUserInfo(session).getUser_id());
+		planningDto.setPlanning_id(travelApplicationSqlMapper.createPlanningPK());
 		
+		System.out.println(planningDto);
 		travelApplicationSqlMapper.insertPlanningData(planningDto);
 		travelApplicationSqlMapper.insertMyInfoWhenRecruting(planningDto);
 		travelApplicationSqlMapper.updateToRecruiting(planningDto);

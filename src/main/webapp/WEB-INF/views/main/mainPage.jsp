@@ -87,7 +87,7 @@
 					var row = document.createElement('div');
 					row.className = 'row mainRow';
 
-					for ( var i in response.list) {
+					for ( let i in response.list) {
 						console.log(response.list[i]);
 
 						// 요소 생성
@@ -131,8 +131,7 @@
 						var planDuration = planDay * dayInMilliseconds;
 
 						// 여행 종료일 설정
-						var endDate = new Date(startDate.getTime()
-								+ planDuration);
+						var endDate = new Date(startDate.getTime() + planDuration);
 
 						userInfo1.textContent = (startDate.getMonth() + 1) + '/' + startDate.getDate() + ' - ' + (endDate.getMonth() + 1) + '/' + endDate.getDate() + ' · ' + planDay + '일';
 
@@ -335,17 +334,12 @@ button {
 								<div class="col-10">
 									<div class="row">
 										<div class="col">
-											<span
-												style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">제목
-												검색</span> <input class="form-control py-0" id="searchWord"
-												type="text" placeholder="서울 관광"
-												style="border: none; font-size: 1.4em;">
+											<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">제목 검색</span> <input class="form-control py-0" id="searchWord" type="text" placeholder="서울 관광" style="border: none; font-size: 1.4em;">
 										</div>
 									</div>
 									<div class="row mt-4">
 										<div class="col">
-											<span
-												style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">정렬</span>
+											<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">정렬</span>
 											<div style="margin-left: 10px; margin-top: 5px;">
 												<i class="bi bi-funnel-fill"></i>
 												<select id="searchType" style="border: none;">
@@ -378,14 +372,9 @@ button {
 											</div>
 										</div>
 										<div class="col">
-											<span
-												style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">모집
-												인원</span>
-											<div class="d-flex justify-content-center"
-												style="margin-left: 10px; margin-top: 5px;">
-												<i class="bi bi-people-fill me-1"></i> <input class="count"
-													type="text" placeholder="인원" name="planning_member"
-													style="border: none;">
+											<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">모집 인원</span>
+											<div class="d-flex justify-content-center" style="margin-left: 10px; margin-top: 5px;">
+												<i class="bi bi-people-fill me-1"></i> <input class="count" type="text" placeholder="인원" name="planning_member" style="border: none;">
 											</div>
 										</div>
 									</div>

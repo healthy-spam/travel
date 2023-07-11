@@ -170,26 +170,21 @@
 		#{plan_id}
 	</select>
 
-	<select id="getPlanningAcceptCountByPlanningId"
-		resultType="com.ja.travel.dto.PlanningApplicationDto">
+	<select id="getPlanningAcceptCountByPlanningId" resultType="com.ja.travel.dto.PlanningApplicationDto">
 		SELECT * FROM planning_application
-		WHERE planning_id =
-		#{planning_id}
+		WHERE planning_id = #{planning_id}
 		AND planning_member_status = '수락'
 	</select>
 
-	<select id="getApplicationStatus"
-		resultType="com.ja.travel.dto.PlanningApplicationDto">
+	<select id="getApplicationStatus" resultType="com.ja.travel.dto.PlanningApplicationDto">
 		SELECT * FROM planning_application
-		WHERE planning_id =
-		#{planning_id}
+		WHERE planning_id = #{planning_id}
 		AND user_id = #{user_id}
 	</select>
 
 	<update id="acceptApplicationaStatusByUser">
 		UPDATE planning_application
-		SET planning_member_status
-		= '수락'
+		SET planning_member_status = '수락'
 		WHERE planning_id = ${planning_id}
 		AND user_id = ${user_id}
 	</update>
@@ -227,12 +222,9 @@
 	</update>
 
 	<update id="updateToRecruiting">
-		UPDATE plan
-		SET
+		UPDATE plan SET
 		plan_statuse = '모집중'
-		WHERE
-		plan_id =
-		#{plan_id}
+		WHERE plan_id = #{plan_id}
 	</update>
 
 	<insert id="insertPlanningApplicationParty">
@@ -248,12 +240,16 @@
 		)
 	</insert>
 
+	<select id="createPlanningPK" resultType="int">
+		SELECT planning_seq.nextval FROM dual
+	</select>
+	
 	<insert id="insertPlanningData">
 		INSERT INTO
-		planning
+			planning
 		VALUES
 		(
-		planning_seq.nextval,
+		#{planning_id},
 		#{plan_id},
 		#{user_id},
 		#{planning_title},

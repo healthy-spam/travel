@@ -19,12 +19,11 @@ public interface TravelApplicationSqlMapper {
 	public PlanningDto getPlanningByPlanningId(int planning_id);
 
 	// 플래닝 인서트 및 업데이트
+	public int createPlanningPK();
 	public void insertPlanningData(PlanningDto planningDto);
-
 	public void insertMyInfoWhenRecruting(PlanningDto planningDto);
-
 	public void updateToRecruiting(PlanningDto planningDto);
-
+	
 	public void insertPlanningApplicationParty(PlanningApplicationDto planningApplicationDto);
 
 	public List<PlanningApplicationDto> getPlanningAcceptCountByPlanningId(int planning_id);

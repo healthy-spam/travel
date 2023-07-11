@@ -372,6 +372,8 @@
 	border-radius: 50%;
 	border: 2px solid #DB4465;
 	margin-right: 10px;
+	width: 50px;
+	height: 50px;
 }
 
 .user-list-container {
@@ -494,8 +496,7 @@
 			<div class="col">
 				<div class="row">
 					<div class="col img-wrapper">
-						<img class="banner" alt="배너"
-							src="/uploadFiles/${map.plan.plan_thumbnail}">
+						<img class="banner" alt="배너" src="/uploadFiles/${map.plan.plan_thumbnail}">
 					</div>
 				</div>
 				<div class="row content-wrapper">
@@ -582,7 +583,7 @@
 						<div class="profile">
 							<div class="row">
 								<div class="col-2 me-1">
-									<img class="user-thumbnail" alt="썸네일" src="https://via.placeholder.com/45x45">
+									<img class="user-thumbnail" alt="썸네일" src="/uploadFiles/profileImage/${map.user.user_image}">
 								</div>
 								<div class="col">
 									<div class="row">
@@ -610,11 +611,6 @@
 								<div class="col">
 									<div class="user-list-container">
 										<ul class="user-list">
-											<li><img class="user-thumbnail" alt="썸네일" src="https://via.placeholder.com/40x40"></li>
-											<li><img class="user-thumbnail" alt="썸네일" src="https://via.placeholder.com/40x40"></li>
-											<li><img class="user-thumbnail" alt="썸네일" src="https://via.placeholder.com/40x40"></li>
-											<li><img class="user-thumbnail" alt="썸네일" src="https://via.placeholder.com/40x40"></li>
-											<li><img class="user-thumbnail" alt="썸네일" src="https://via.placeholder.com/40x40"></li>
 											<li><img class="user-thumbnail" alt="썸네일" src="https://via.placeholder.com/40x40"></li>
 										</ul>
 									</div>
