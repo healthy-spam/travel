@@ -53,7 +53,7 @@
 			crew_seq.nextval,
 			#{master_id},
 			#{crew_name},
-			#{crew_thumbnail},
+			null,
 			#{crew_desc},
 			0,
 			sysdate,
@@ -302,4 +302,8 @@
 	<select id="getLastCrewBoardIdByCrewMemberId" resultType="Integer">
 		select max(crew_board_id) from crew_board where crew_member_id = #{crew_member_id}
 	</select>
+	
+	<update id="addCrewThumbnailByCrewDomain">
+		update crew set crew_thumbnail = #{crew_thumbnail} where crew_domain = #{crew_domain}
+	</update>
 </mapper>

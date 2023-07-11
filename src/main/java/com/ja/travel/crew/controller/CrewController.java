@@ -59,9 +59,15 @@ public class CrewController {
 	}
 	
 	@RequestMapping("/crewregister")
-	public @ResponseBody void crewregister(@RequestBody Map<String, Object> requestBody, HttpSession session) {
+	public @ResponseBody void crewregister(@RequestBody Map<String, String> requestBody, HttpSession session) {
 		crewService.createcrew(requestBody, session);
 	}
+	
+
+    @RequestMapping("/uploadphoto")
+    public @ResponseBody void uploadPhoto(@RequestParam("crew_thumbnail") MultipartFile photo, HttpSession session) {
+        crewService.uploadcrewphoto(photo, session);
+    }
 	
 	@RequestMapping("/crewhome/{crew_domain}")
 	public String crewhome(@PathVariable("crew_domain") String crew_domain, Model model, HttpSession session) {

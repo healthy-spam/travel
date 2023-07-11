@@ -125,5 +125,7 @@ public interface CrewMapper {
 	public Integer checkcrewname(String crew_name);
 
 	public Integer checkcrewdomain(String crew_domain);
+
+	public void addCrewThumbnailByCrewDomain(@Param("crew_thumbnail") String crew_thumbnail, @Param("crew_domain") String crew_domain);
 	
 }

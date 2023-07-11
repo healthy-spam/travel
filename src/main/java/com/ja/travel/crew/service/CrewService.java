@@ -88,10 +88,10 @@ public class CrewService {
 //	}
 	
 	
-	public void createcrew(Map<String, Object> requestBody, HttpSession session) {
+	public void createcrew(Map<String, String> requestBody, HttpSession session) {
 		CrewDto crewDto = new CrewDto();
-		crewDto.setCrew_name((String) requestBody.get("crew_name"));
-		crewDto.setCrew_domain((String)requestBody.get("crew_domain"));
+		crewDto.setCrew_name(requestBody.get("crew_name"));
+		crewDto.setCrew_domain(requestBody.get("crew_domain"));
 		if(crewDto.getCrew_domain()=="") {
 			crewDto.setCrew_domain(crewMapper.getcrewdomain().toString());
 		}
@@ -99,44 +99,10 @@ public class CrewService {
 		
 		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
 		crewDto.setMaster_id(userDto.getUser_id());
-		
-		MultipartFile file = (MultipartFile) requestBody.get("crew_thumbnail");
-		
-		if(!file.isEmpty()) {
-			System.out.println("파일명: " + file.getOriginalFilename());
-			
-			String rootFolder = "C://CrewThumbnail/";
-			
-			File targetFolder = new File(rootFolder + crewMapper.getcrewdomain().toString()); // C:/CrewThumbnail/crew_id
-			
-			if(!targetFolder.exists()) {
-				targetFolder.mkdirs();
-			}
-			
-			// 저장 파일명 만들기. 핵심은 파일명 충돌 방지 = 랜덤 + 시간
-			String fileName = "1";
-//			fileName += "_" + System.currentTimeMillis();
-			
-			// 확장자 추출
-			String originalFileName = file.getOriginalFilename();
-			
-			String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
-			
-			String saveFileName = "/" +  fileName + ext;
-			
-			try {
-				file.transferTo(new File(rootFolder + crewMapper.getcrewdomain().toString() +saveFileName));
-			}catch(Exception e) {
-				System.out.println(e);
-				e.printStackTrace();
-			}
-
-			crewDto.setCrew_thumbnail(saveFileName);
-
-			System.out.println(crewDto);
+		crewMapper.createcrew(crewDto);
 		}
 
-	}
+
 
 	
 	//크루 홈 불러오기!!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@!!!!!!!!!!!!!!
@@ -622,4 +588,42 @@ public class CrewService {
 		}
 			return false;
 	}
+
+
+	public void uploadcrewphoto(MultipartFile photo, HttpSession session) {
+
+			UserDto userDto = (UserDto) session.getAttribute("sessionuser");
+			String crew_domain = crewMapper.getCrewDomainByMasterId(userDto.getUser_id());
+			
+			System.out.println("파일명: " + photo.getOriginalFilename());
+			
+			String rootFolder = "C://CrewFiles/crewthumbnail/";
+			
+			File targetFolder = new File(rootFolder); // C:/uploadFolder/crewthumbnail
+			
+			if(!targetFolder.exists()) {
+				targetFolder.mkdirs();
+			}
+			
+			// 저장 파일명 만들기.
+			String fileName = crew_domain;
+
+			
+			// 확장자 추출
+			String originalFileName = photo.getOriginalFilename();
+			
+			String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+			
+			String saveFileName = fileName + ext;
+			
+			try {
+				photo.transferTo(new File(rootFolder + saveFileName));
+			}catch(Exception e) {
+				System.out.println(e);
+				e.printStackTrace();
+			}
+			String crew_thumbnail = rootFolder + crew_domain;
+			crewMapper.addCrewThumbnailByCrewDomain(crew_thumbnail, crew_domain);
+		}
+		
 }

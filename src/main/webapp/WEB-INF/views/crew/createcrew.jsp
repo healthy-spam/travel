@@ -40,6 +40,9 @@
 </style>
 
 <script type="text/javascript">
+var check1 = 0;
+var check2 = 0;
+
 	var changeBackColor = true;
 	
 	function changeBackGround() {	
@@ -83,27 +86,32 @@
 			alert("크루 설명글을 입력해주세요");return;
 		}
 		
-		
-		  // AJAX 요청 보내기
-        $.ajax({
-            url: "/travel/crew/crewregister",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                "crew_name": crew_name,
-                "crew_domain": crew_domain,
-                "crew_desc": crew_desc
-            }),
-            success: function(res) {
-            alert("크루 생성이 완료되었어요!");
-            },
-            error: function(err) {
-                console.error("댓글 작성 실패", err);
-            }
-        });
+		if(check1 ==1 && check2 ==1) {
+			console.log("check 완료!")
+			  // AJAX 요청 보내기
+	        $.ajax({
+	            url: "/travel/crew/crewregister",
+	            type: "POST",
+	            contentType: "application/json",
+	            data: JSON.stringify({
+	                "crew_name": crew_name,
+	                "crew_domain": crew_domain,
+	                "crew_desc": crew_desc
+	            }),
+	            success: function(res) {
+	            	uploadPhotos();
+	            
+	            },
+	            error: function(err) {
+	                console.error("댓글 작성 실패", err);
+	            }
+	        });
+		} else {
+			console.log("조건불충족")
+		}
+
 	}
-</script>
-<script>
+
 document.addEventListener("DOMContentLoaded", function() {
     var crewNameInput = document.getElementById("crew_name");
     crewNameInput.addEventListener("input", function() {
@@ -111,10 +119,13 @@ document.addEventListener("DOMContentLoaded", function() {
         
         if(crewName === '') {
         	document.getElementById("checkcrewnameresult").innerHTML = '';
+        	check1 = 0;
         } else if(!/^[가-힣|a-zA-Z|0-9]*$/.test(crewName)) {
         	document.getElementById("checkcrewnameresult").innerHTML = '유효하지 않은 크루 이름입니다.';
+        	check1 = 0;
         } else if(crewName.length < 4 || crewName.length > 15) {
         	document.getElementById("checkcrewnameresult").innerHTML = '크루 이름은 4자 이상, 15자 이하여야 합니다.';
+        	check1 = 0;
         }  else {
             if (crewName !== "" || crewName != null) {
                 $.ajax({
@@ -125,10 +136,12 @@ document.addEventListener("DOMContentLoaded", function() {
                         if (response.exists) {
                             // 이미 존재하는 이름일 경우 처리할 로직을 작성합니다.
                             document.getElementById("checkcrewnameresult").innerHTML = ("이미 존재하는 크루 이름입니다.");
+                            check1 = 0;
                         } else {
                             // 존재하지 않는 이름일 경우 처리할 로직을 작성합니다.
                             // 예를 들어, 입력된 이름이 유효하다는 표시를 표시할 수 있습니다.
                             document.getElementById("checkcrewnameresult").innerHTML = ("사용 가능한 크루 이름입니다.");
+                            check1 = 1;
                         }
                     },
                     error: function(err) {
@@ -139,8 +152,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
-</script>
-<script>
+
 document.addEventListener("DOMContentLoaded", function() {
     var crewDomainInput = document.getElementById("crew_domain");
     crewDomainInput.addEventListener("input", function() {
@@ -148,12 +160,16 @@ document.addEventListener("DOMContentLoaded", function() {
         
         if(crewDomain === '') {
         	document.getElementById("checkcrewdomainresult").innerHTML = '입력하지 않을 시 임의로 도메인 값이 자동 생성됩니다.';
+        	check2= 0;
         } else if(!/^[a-z|0-9]*$/.test(crewDomain)) {
         	document.getElementById("checkcrewdomainresult").innerHTML = '유효하지 않은 크루 주소입니다.';
+        	check2= 0;
         } else if(!/[a-zA-Z]/.test(crewDomain))  {
         	document.getElementById("checkcrewdomainresult").innerHTML = '크루 주소에는 적어도 하나의 알파벳을 포함해야 합니다.';
+        	check2= 0;
         } else if(crewDomain.length < 4 || crewDomain.length > 15) {
         	document.getElementById("checkcrewdomainresult").innerHTML = '크루 주소는 4자 이상, 15자 이하여야 합니다.';
+        	check2= 0;
         }  else {
             if (crewDomain !== "" || crewDomain != null) {
                 $.ajax({
@@ -164,10 +180,12 @@ document.addEventListener("DOMContentLoaded", function() {
                         if (response.exists) {
                             // 이미 존재하는 이름일 경우 처리할 로직을 작성합니다.
                             document.getElementById("checkcrewdomainresult").innerHTML = ("이미 존재하는 주소입니다.");
+                            check2= 0;
                         } else {
                             // 존재하지 않는 이름일 경우 처리할 로직을 작성합니다.
                             // 예를 들어, 입력된 이름이 유효하다는 표시를 표시할 수 있습니다.
                             document.getElementById("checkcrewdomainresult").innerHTML = ("사용 가능한 주소입니다.");
+                            check2= 1;
                         }
                     },
                     error: function(err) {
@@ -178,6 +196,31 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+function uploadPhotos() {
+	const formData = new FormData();
+	const crew_thumbnail = document.getElementById('crew_thumbnail').files[0];
+	  if (crew_thumbnail) {
+	    formData.append('crew_thumbnail', crew_thumbnail);
+	  }
+	// AJAX 요청 보내기
+	  const xhr = new XMLHttpRequest();
+	  xhr.open('POST', '/travel/crew/uploadphoto', true);
+
+	  xhr.onreadystatechange = function() {
+	    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+	      // 요청이 성공적으로 완료되었을 때 처리할 로직
+	      alert("크루 생성이 완료되었습니다.");
+	      window.location.href = "/travel/crew/main";
+	      
+	      console.log(xhr.responseText);
+	    }
+	  };
+
+	  xhr.send(formData);
+
+	}
+
 </script>
 </head>
 <body>
