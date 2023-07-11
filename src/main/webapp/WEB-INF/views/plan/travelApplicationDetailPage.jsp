@@ -183,7 +183,6 @@
 		var isDown = false;
 		var startX;
 		var scrollLeft;
-
 		var userListContainer = document.querySelector('.user-list-container');
 
 		userListContainer.addEventListener('mousedown', function(e) {
@@ -211,6 +210,68 @@
 	});
 </script>
 <script type="text/javascript">
+
+	function animateSize(element, duration, toWidth, toHeight) {
+		var start = null;
+		var initialWidth = element.offsetWidth;
+		var initialHeight = element.offsetHeight;
+		function step(timestamp) {
+			if (!start)
+				start = timestamp;
+			var elapsed = timestamp - start;
+			var progress = Math.min(elapsed / duration, 1);
+			element.style.width = (initialWidth + progress * (toWidth - initialWidth)) + '%';
+			element.style.height = (initialHeight + progress * (toHeight - initialHeight)) + 'px';
+			if (progress < 1) {
+				requestAnimationFrame(step);
+			}
+		}
+		requestAnimationFrame(step);
+	}
+	
+	var chatBox = null;
+	
+	function showChatBox() {
+		var chatContainer = document.getElementById('chat-container');
+
+		if (chatBox === null) {
+			// Create chat-box dynamically
+			chatBox = document.createElement('div');
+			chatBox.className = 'chat-box';
+			chatBox.style.width = '0px'; // Initially the width is 0
+			chatBox.style.height = '0px'; // Initially the height is 0
+			chatBox.style.border = 'none';
+			chatBox.style.margin = '5px 35px 10px 35px';
+			chatBox.style.borderRadius = '0.375rem';
+			chatBox.style.boxShadow = '5px 5px 10px rgba(0, 0, 0, 0.2)'; // Add semi-transparent shadow to all directions
+			chatBox.style.overflow = 'hidden';
+	        chatContainer.appendChild(chatBox);
+			
+			var chatBoxInRow = document.createElement('div');
+			chatBoxInRow.className = 'row';
+			
+			var chatBoxInCol = document.createElement('div');
+			chatBoxInCol.className = 'col mt-1 mx-1';
+			chatBoxInCol.innerText = '모든대화참여자';
+			
+			chatBoxInRow.appendChild(chatBoxInCol);
+			chatBox.appendChild(chatBoxInRow);
+
+			// Animate chat-box to appear
+			animateSize(chatBox, 300, 100, 500); // Change 100 and 500 to your desired width and height
+		} else {
+			// Animate chat-box to disappear
+			animateSize(chatBox, 300, 0, 0);
+
+			// Once the transition is complete, remove the chat-box
+			setTimeout(function() {
+				chatContainer.removeChild(chatBox);
+				chatBox = null;
+			}, 300); // Must match the duration of the transition
+		}
+	};
+</script>
+<script type="text/javascript">
 	function getAddresList() {
 		var plan_id = '${map.plan.plan_id}';
 		var placeAddressList = [];
@@ -233,8 +294,7 @@
 
 		//post
 		xhr.open("post", "./getAddresList");
-		xhr.setRequestHeader("Content-type",
-				"application/x-www-form-urlencoded");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhr.send("plan_id=" + plan_id);
 
 	}
@@ -369,10 +429,26 @@
 
 .profile {
 	font-family: 'Noto Sans KR', sans-serif;
-	padding: 40px 40px 0 40px;
+	padding: 20px 20px 0 20px;
 	border: 1px solid lightgrey;
 	border-radius: 0.4rem;
-	margin: 15px 15px 10px 15px;
+	margin: 5px 35px 10px 35px;
+}
+
+.chat {
+	width: 1.8em;
+	height: 1.8em;
+	border-radius: 50%;
+	font-size: 2.5em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	right: 40px;
+}
+
+#chat-container {
+    min-height: 600px;
+    overflow: hidden;
 }
 
 .user-thumbnail {
@@ -400,10 +476,6 @@
 	position: relative;
 	margin-bottom: 25px;
 	padding-bottom: 30px;
-}
-
-.card-wrapper i {
-	color: #DB4465;
 }
 
 .card-wrapper::after {
@@ -492,6 +564,7 @@
 	margin-left: 5px;
 	font-size: 0.9em;
 }
+
 </style>
 <title>모집 디테일 페이지</title>
 </head>
@@ -587,42 +660,56 @@
 						</div>
 					</div>
 					<div class="col-4">
-						<div class="profile">
-							<div class="row">
-								<div class="col-2 me-1">
-									<img class="user-thumbnail" alt="썸네일" src="/uploadFiles/profileImage/${map.user.user_image}">
-								</div>
-								<div class="col">
+						<div class="row">
+							<div class="col">
+								<div class="profile">
 									<div class="row">
-										<div class="col">${map.user.user_nickname}</div>
+										<div class="col-2 me-1">
+											<img class="user-thumbnail" alt="썸네일"
+												src="/uploadFiles/profileImage/${map.user.user_image}">
+										</div>
+										<div class="col">
+											<div class="row">
+												<div class="col">${map.user.user_nickname}</div>
+											</div>
+											<div class="row">
+												<div class="col">
+													<div id="user-profile">20대 · 남성</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row mt-5">
+										<div class="col d-grid">
+											<div class="mb-1" style="font-weight: 500;">
+												<i class="bi bi-exclamation-circle-fill" style="color: #DB4465;"></i> 지금 동행을 신청해보세요!
+											</div>
+											<button class="commit">동행 신청하기</button>
+										</div>
+									</div>
+									<div class="row" style="margin-top: 40px;">
+										<div class="col">함께하는 동행</div>
 									</div>
 									<div class="row">
 										<div class="col">
-											<div id="user-profile">20대 · 남성</div>
+											<div class="user-list-container">
+												<ul class="user-list">
+													<c:forEach items="${map.planningApplicationList}" var="data">
+														<li>
+															<img class="user-thumbnail" alt="썸네일" src="/uploadFiles/profileImage/${data.user_image}">
+														</li>
+													</c:forEach>
+												</ul>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="row mt-5">
-								<div class="col d-grid">
-									<div class="mb-1" style="font-weight: 500;">
-										<i class="bi bi-exclamation-circle-fill" style="color: #DB4465;"></i> 지금 동행을 신청해보세요!
-									</div>
-									<button class="commit">동행 신청하기</button>
-								</div>
-							</div>
-							<div class="row" style="margin-top: 40px;">
-								<div class="col">함께하는 동행</div>
-							</div>
-							<div class="row">
-								<div class="col">
-									<div class="user-list-container">
-										<ul class="user-list">
-											<c:forEach items="${map.planningApplicationList}" var="data">
-												<li><img class="user-thumbnail" alt="썸네일" src="/uploadFiles/profileImage/${data.user_image}"></li>
-											</c:forEach>
-										</ul>
-									</div>
+						</div>
+						<div class="row">
+							<div class="col d-flex justify-content-end align-items-end pb-5" id="chat-container" style="position: relative;">
+								<div class="chat" style="position: absolute;" onclick="showChatBox()">
+									<i class="bi bi-chat-dots-fill" style="color: #DB4465"></i>
 								</div>
 							</div>
 						</div>
