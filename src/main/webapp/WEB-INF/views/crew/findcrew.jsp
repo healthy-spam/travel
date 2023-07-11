@@ -11,6 +11,12 @@
 <link rel="stylesheet" href="<c:url value="/resources/css/crew/findcrew.css" />">
 
 <title>메인 페이지</title>
+<style>
+.btn {
+background-color: #DB4465;
+color: white;
+}
+</style>
 <script type="text/javascript">
 	var changeBackColor = true;
 	
@@ -43,12 +49,14 @@
 </head>
 <body>
 	<div class="container-fluid">
+	<div class="container">
 				<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+				</div>
 	</div>
 	<div class="container py-5 px-5">
         <div class="row mb-3">
         	<div class="col">
-        		<h1>크루 리스트</h1>
+        		<h1>내 크루</h1>
         	</div>
         </div>
         <div class="row">
@@ -64,7 +72,7 @@
 					               <h6>크루를 생성할 수도 있어요.</h6>
 				               </div>
 				               <div class="col">
-					               <a href="/travel/crew/createcrew"><button type="button" class="btn btn-info">크루 생성하기</button></a>
+					               <a href="/travel/crew/createcrew"><button type="button" class="btn">크루 생성하기</button></a>
 				               </div>
 			               </div>			               
 			            </c:when>
@@ -95,20 +103,48 @@
 					               <h6>가입 승인 결과는 여기에 표시 될 거예요.</h6>
 				               </div>
 				               <div class="col">
-					               <a href="/travel/crew/crewhome/${crewDto.crew_domain }"><button type="button" class="btn btn-info">크루 홈 이동</button></a>
+					               <a href="/travel/crew/crewhome/${crewDto.crew_domain }"><button type="button" class="btn">크루 홈 이동</button></a>
 				               </div>
 			               </div>			               
 			            </c:when>
 			            <c:otherwise>
-			               <h4>내 크루</h4>
+			            	<div class="row">
+			            		<div class="col">
+			            			<h4><strong>${crewDto.crew_name}</strong></h4>
+			            		</div>
+			            		<div class="col text-end">
+			            			<button class="btn btn-sm" id="checkmycrewlog">나의 크루 내역</button>
+			            		</div>
+			            	</div>
 			               <hr>
 				           <div class="card-body">
-	                            <h5 class="card-title">${crewDto.crew_name}</h5>
-	                            크루 마스터: <p class="card-text">${master}</p>
-	                            나의 직위: <p class="card-text">${myGrade}</p>
+	                           	<div class="row">
+	                           		<div class="col-2">
+	                           			크루마스터
+	                           		</div>
+	                           		<div class="col card-text">
+	                           			<strong>${master}</strong>
+	                           		</div>
+	                           	</div>
+	                           	<div class="row">
+	                           		<div class="col-2">
+	                           			인원수
+	                           		</div>
+	                           		<div class="col card-text">
+	                           			<strong>${myGrade}</strong>
+	                           		</div>
+	                           	</div>
+	                           	<div class="row">
+	                           		<div class="col-2">
+	                           			나의 직위
+	                           		</div>
+	                           		<div class="col card-text">
+	                           			<strong>${myGrade}</strong>
+	                           		</div>
+	                           	</div>
 	                            <form id="crewForm" method="Post" action="/travel/crew/crewhome/${crewDto.crew_domain }">
 										  <input type="hidden" name="crewDomainInput" value="${crewDto.crew_domain }">
-										  <button type="submit" class="btn btn-info" onclick="openCrewDetailsWithParam()">크루 홈 이동</button>
+										  <button type="submit" class="btn" style="background-color: #DB4465; color: white; onclick="openCrewDetailsWithParam()">크루 홈 이동</button>
 								</form>
 	                        </div>
 			            </c:otherwise>
@@ -134,7 +170,7 @@
                             		크루 마스터
                             	</div>
                             	<div class="col ">
-                            		<p class="card-text">${crew.mastername}</p>
+                            		<p class="card-text"><strong>${crew.mastername}</strong></p>
                             	</div>
                             </div>
                              
@@ -152,7 +188,7 @@
                             		<c:when test="${empty crewDto }">
                             		<form method="Post" action="/travel/crew/join/${crew.crew.crew_domain}">
                             			<input type="hidden" value="${crew.crew.crew_id }" name="crew_id">
-                            			<button type="submit" class="btn btn-info btn-sm text-white"> 가입하기</button>
+                            			<button type="submit" class="btn btn-sm text-white"> 가입하기</button>
                             		</form>
                             		</c:when>
                             		<c:otherwise>
