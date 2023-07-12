@@ -42,7 +42,13 @@ color: white;
 		}
 	}
 			
-
+	document.addEventListener("DOMContentLoaded", function(event) {
+	    var opencrewhome = document.getElementById("opencrewhome");
+	    opencrewhome.addEventListener("click", function() {
+	        var crew_domain = document.getElementById("crew_domain").value;
+	        window.open("/travel/crew/crewhome/"+crew_domain, "pop", "width=1350px,height=750px,location=no")
+	    });
+	});
 
 
 </script>
@@ -118,34 +124,51 @@ color: white;
 			            	</div>
 			               <hr>
 				           <div class="card-body">
-	                           	<div class="row">
-	                           		<div class="col-2">
-	                           			크루마스터
-	                           		</div>
-	                           		<div class="col card-text">
-	                           			<strong>${master}</strong>
-	                           		</div>
-	                           	</div>
-	                           	<div class="row">
-	                           		<div class="col-2">
-	                           			인원수
-	                           		</div>
-	                           		<div class="col card-text">
-	                           			<strong>${myGrade}</strong>
-	                           		</div>
-	                           	</div>
-	                           	<div class="row">
-	                           		<div class="col-2">
-	                           			나의 직위
-	                           		</div>
-	                           		<div class="col card-text">
-	                           			<strong>${myGrade}</strong>
-	                           		</div>
-	                           	</div>
-	                            <form id="crewForm" method="Post" action="/travel/crew/crewhome/${crewDto.crew_domain }">
-										  <input type="hidden" name="crewDomainInput" value="${crewDto.crew_domain }">
-										  <button type="submit" class="btn" style="background-color: #DB4465; color: white; onclick="openCrewDetailsWithParam()">크루 홈 이동</button>
-								</form>
+				           	<div class="row">
+				           		<div class="col-9">
+				           			<div class="row">
+		                           		<div class="col-2">
+		                           			크루마스터
+		                           		</div>
+		                           		<div class="col card-text">
+		                           			<strong>${master}</strong>
+		                           		</div>
+		                           	</div>
+		                           	<div class="row">
+		                           		<div class="col-2">
+		                           			인원수
+		                           		</div>
+		                           		<div class="col card-text">
+		                           			<strong>${crewamount} / 20</strong>
+		                           		</div>
+		                           	</div>
+		                           	<div class="row">
+		                           		<div class="col-2">
+		                           			나의 직위
+		                           		</div>
+		                           		<div class="col card-text">
+		                           			<strong>${myGrade}</strong>
+		                           		</div>
+		                           	</div>
+		                           	<div class="row">
+		                           		<div class="col-2">
+		                           			나의 기여포인트
+		                           		</div>
+		                           		<div class="col card-text">
+		                           			<strong>${myPoint}</strong>
+		                           		</div>
+		                           	</div>
+		                           	<div class="row mt-3">
+		                           		<input type="hidden" id="crew_domain" value="${crewDto.crew_domain }">
+		                           		<button class="btn" id="opencrewhome" style="background-color: #DB4465; color: white;">크루 홈 이동</button>
+		                           	</div>
+				           		</div>
+				           		<div class="col">
+				           			<img src="" width="100" height="100">
+				           		</div>
+				           	</div>
+	                           	
+
 	                        </div>
 			            </c:otherwise>
 			         </c:choose>

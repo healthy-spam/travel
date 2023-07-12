@@ -56,7 +56,8 @@ public class CrewService {
 			model.addAttribute("myGrade", crewMapper.getGradeNameByGradeId(crewMemberDto.getCrew_member_grade_default_id()));
 			model.addAttribute("crewamount", Integer.toString(crewMapper.getCrewMemberListByCrewDomain(crewDto.getCrew_domain()).size()));
 			model.addAttribute("master", crewMapper.getUserNameById(crewDto.getMaster_id()));
-			System.out.println(crewMapper.getGradeNameByGradeId(crewMemberDto.getCrew_member_grade_default_id()));
+			model.addAttribute("myPoint", crewMapper.getMyPointByCrewMemberId(crewMemberDto.getCrew_member_id())== null ? 0 : crewMapper.getMyPointByCrewMemberId(crewMemberDto.getCrew_member_id()));
+			model.addAttribute("crewThumbnail", crewDto.getCrew_thumbnail());
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -610,7 +611,7 @@ public class CrewService {
 				System.out.println(e);
 				e.printStackTrace();
 			}
-			String crew_thumbnail = rootFolder + crew_domain;
+			String crew_thumbnail = rootFolder + saveFileName;
 			crewMapper.addCrewThumbnailByCrewDomain(crew_thumbnail, crew_domain);
 		}
 		
