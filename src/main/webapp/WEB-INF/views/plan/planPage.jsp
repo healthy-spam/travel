@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <title>플래너 페이지</title>
 <style >
  
@@ -272,8 +273,8 @@ function myPlanList() {
                         planCardBox.querySelector(".plan-thumbnail").src = "/uploadFiles/" + plan.planDto.plan_thumbnail;
                         planCardBox.querySelector(".plan-title").innerText = plan.planDto.plan_title; 
                         planCardBox.querySelector(".plan-content").innerText = plan.planDto.plan_content;
-                        planCardBox.querySelector(".user-name").innerText = plan.userDto.user_nickname;
-                        planCardBox.querySelector(".user-img").src = "/uploadFiles/profileImage/"+ plan.userDto.user_image;
+                        //planCardBox.querySelector(".user-name").innerText = plan.userDto.user_nickname;
+                        //planCardBox.querySelector(".user-img").src = "/uploadFiles/profileImage/"+ plan.userDto.user_image;
                         planCardBox.querySelector(".readPlan").href = "./readPlanPage?id="+ plan.planDto.plan_id;
                         
                         planPublicList.appendChild(planCardBox);
@@ -312,7 +313,8 @@ function planSearch() {
             while (planPublicList.firstChild) {
                 planPublicList.removeChild(planPublicList.firstChild);
             }
-
+			
+            
             for(let plan of response.planSearchList) {
                 if(plan.planDto.plan_disclosure_status === '공개') {
                     const planCardBox = planCardBoxOriginal.cloneNode(true);
@@ -321,11 +323,13 @@ function planSearch() {
                     planCardBox.querySelector(".plan-thumbnail").src = "/uploadFiles/" + plan.planDto.plan_thumbnail;
                     planCardBox.querySelector(".plan-title").innerText = plan.planDto.plan_title; 
                     //planCardBox.querySelector(".plan-content").innerText = plan.planDto.plan_content;
-                    planCardBox.querySelector(".user-name").innerText = plan.userDto.user_nickname;
-                    planCardBox.querySelector(".user-img").src = "/uploadFiles/profileImage/"+ plan.userDto.user_image;
+                    //planCardBox.querySelector(".user-name").innerText = plan.userDto.user_nickname;
+                    //planCardBox.querySelector(".user-img").src = "/uploadFiles/profileImage/"+ plan.userDto.user_image;
                     planCardBox.querySelector(".readPlan").href = "./readPlanPage?id="+ plan.planDto.plan_id;
                     
                     planPublicList.appendChild(planCardBox);
+                    
+                    init(); // day버튼
                 }
             }
         }
@@ -335,20 +339,120 @@ function planSearch() {
     xhr.send();
 }
 
+//Day버튼 시작
+function init() {
+	setDayButtonEvents();
+	setScrollEvents();
+	setLandmarkScrollEvents();
+}
+
+function setDayButtonEvents() {
+	let buttons = document.getElementsByClassName('day-btn');
+
+	for (let i = 0; i < buttons.length; i++) {
+
+		buttons[i].addEventListener('click', function() {
+			// 모든 버튼을 원래 색상으로 되돌림
+			for (let j = 0; j < buttons.length; j++) {
+				buttons[j].style.background = '';
+				buttons[j].style.color = '';
+				
+				// Remove icon from all buttons
+				let icon = buttons[j].getElementsByClassName('bi bi-send')[0];
+				if (icon) {
+					buttons[j].removeChild(icon);
+				}
+			}
+
+			// 클릭한 버튼의 색상을 변경하고 아이콘을 추가
+			this.style.background = 'linear-gradient(to right, #ff356b, #f41b55, #ff1c59, #ff0044)';
+			this.style.color = 'white';
+			
+			// Add icon to the clicked button
+			let iconHtml = document.createElement('i');
+			iconHtml.className = 'bi bi-send';
+			this.prepend(iconHtml);
+		});
+	}
+}
+
+function setScrollEvents() {
+	var scrollableDiv = document.querySelector('.scrollable-div');
+	var pos = { left: 0, x: 0 };
+
+	scrollableDiv.addEventListener('mousedown', function(e) {
+		e.preventDefault();
+		pos = { left: scrollableDiv.scrollLeft, x: e.clientX };
+		scrollableDiv.style.cursor = 'grabbing';
+		scrollableDiv.style.userSelect = 'none';
+
+		scrollableDiv.addEventListener('mousemove', moveScroll);
+	});
+
+	scrollableDiv.addEventListener('mouseup', stopScroll);
+	scrollableDiv.addEventListener('mouseout', stopScroll);
+
+	function moveScroll(e) {
+		e.preventDefault();
+		if (pos) {
+			var dx = e.clientX - pos.x;
+			scrollableDiv.scrollLeft = pos.left - dx;
+		}
+	}
+
+	function stopScroll() {
+		scrollableDiv.style.cursor = 'grab';
+		scrollableDiv.style.removeProperty('user-select');
+		scrollableDiv.removeEventListener('mousemove', moveScroll);
+		pos = null;
+	}
+}
+//Day버튼 끝
+
+//day별 명소 스크롤 시작
+function setLandmarkScrollEvents() {
+	var scrollableDiv = document.querySelector('.scrollable-div-landmark');
+	var pos = { left: 0, x: 0 };
+
+	scrollableDiv.addEventListener('mousedown', function(e) {
+		e.preventDefault();
+		pos = { left: scrollableDiv.scrollLeft, x: e.clientX };
+		scrollableDiv.style.cursor = 'grabbing';
+		scrollableDiv.style.userSelect = 'none';
+
+		scrollableDiv.addEventListener('mousemove', moveScroll);
+	});
+
+	scrollableDiv.addEventListener('mouseup', stopScroll);
+	scrollableDiv.addEventListener('mouseout', stopScroll);
+
+	function moveScroll(e) {
+		e.preventDefault();
+		if (pos) {
+			var dx = e.clientX - pos.x;
+			scrollableDiv.scrollLeft = pos.left - dx;
+		}
+	}
+
+	function stopScroll() {
+		scrollableDiv.style.cursor = 'grab';
+		scrollableDiv.style.removeProperty('user-select');
+		scrollableDiv.removeEventListener('mousemove', moveScroll);
+		pos = null;
+	}
+}
+
+//day별 명소 스크롤 끝
+
 window.addEventListener("DOMContentLoaded", () => {
     planCardBoxOriginal = document.getElementById('planCardBox').cloneNode(true);
     planSearch();
+    
 });
 
 </script>
 
 <style type="text/css">
-/* 	body {
-	  height: 100%;
-	  margin: 0;
-	  background: linear-gradient(#f5d3df 0%, #f5d3df 10%, #ffffff 30%, #ffffff 100%);
-	  /* background: linear-gradient(#ff335f 0%, #ff335f 10%, #ffffff 30%, #ffffff 100%); */
-	} */
 	
 	.btn-l{
  	width:200px;
@@ -379,6 +483,25 @@ window.addEventListener("DOMContentLoaded", () => {
     	margin-top: 150px;
     	color: white;
     }
+    
+    	.scrollable-div {
+    	overflow: hidden; /* 스크롤을 숨깁니다 */
+	}
+
+	.scrollable-div::-webkit-scrollbar {
+	/* Chrome, Safari, Edge */
+		display: none;
+	}
+
+	.scrollable-div-landmark {
+    	overflow: hidden; /* 스크롤을 숨깁니다 */
+	}
+
+	.scrollable-div-landmark::-webkit-scrollbar {
+	/* Chrome, Safari, Edge */
+		display: none;
+	}
+	
 </style>
 
 </head>
@@ -402,7 +525,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	 
 		<div class="row mt-3" style="background-image: url('/travel/resources/img/plan7.PNG'); background-size: 100%; min-height: 400px; width: auto; background-repeat: no-repeat;">
 				
-			<div class="p-0">
+			
 	
 				<div class="col">
 	
@@ -417,7 +540,7 @@ window.addEventListener("DOMContentLoaded", () => {
 						<div class="col-2">&nbsp;</div>
 						<div class="col">
 	
-							<a class=" btn d-grid reserveButton text-canter" onclick="showModal();">플래너 시작하기</a>
+							<a class="btn" onclick="showModal();" style="border-radius: 15px; background: linear-gradient(to right, #ff356b, #f41b55, #ff1c59, #ff0044); font-size: 20px; color: white;" >플래너 시작하기</a>
 	
 						</div>
 						<div class="col-5">&nbsp;</div>
@@ -425,19 +548,11 @@ window.addEventListener("DOMContentLoaded", () => {
 							
 				</div>
 	
-			</div>
+			
 	
-		</div>
-
-	
-		<div class="row mt-4">
-			<div class="col-12">
-	      		<!-- <img alt="" src="/travel/resources/img/planBanner.PNG" style="width: 100%; height: 100%"> -->
-	      		<p class="h4">준비중인 여행자들의 플래너</p>
-	      	</div>
 		</div>
       
-		<div class="row mt-2">
+		<div class="row mt-3">
 		    
 		    <div class="col">
 		        <input onchange="planSearch()" type="text" class="form-control" id="plan_search_text_box">
@@ -455,50 +570,100 @@ window.addEventListener("DOMContentLoaded", () => {
 		    <div class="col-2"></div>
 		    
 		</div>
-
    
 		<div class="row mt-2" id="planPublicList">
 	      
 			<div class="col-3 mt-2 m-0" id="planCardBox">
 	            
-				<div class="card h-100" style="border-radius: 15px; border: none;"  onclick="" >
+				<div class="card h-100 mt-1 shadow-lg" style="border-radius: 15px; border: none;"  onclick="" >
 					<div class="text-center">
-						<a class="readPlan" href=""> 
-						<img src="" class="card-img-top plan-thumbnail img-fluid" style=" width: 370px; height: 260px;">
-						</a>
+						
+						<img src="" class="card-img-top plan-thumbnail img-fluid" style=" width: 380px; height: 250px;">
+						
 					</div>
 					
 					<div class="card-body pt-2">
 					
-						<div class="row">
-	                  		<div class="col-9">
+						<div class="row align-items-center">
+	                  		<div class="col-8">
 								<p class="h5 plan-title m-0" style="font-weight: bold; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
 								${map.planDto.plan_title}
 								</p>          		
 							</div>
-	                  		<div class="col text-end">
-								<p class="m-0"><img src="/travel/resources/img/copy-icon.png" style="width: 1rem"> 1</p>
+	                  		<div class="col text-end pe-0">
+								<i class="bi bi-bookmark-fill" style="width: 4rem; color: #ff356b;"></i>
 	                  		</div>
-	                  	</div>
-	                  	
-	                  	<div class="row">
-							<div class="col-7">
-								<p class="card-text plan-content m-0" style="font-size: 14px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">${map.planDto.plan_content}</p>
+	                  		<div class="col align-items-center">
+								<span style="font-size: 15px; font-weight: bolder;">1125</span>
 							</div>
-	                  	</div>
+	                  	</div>	                  		         
 	                  	
 						<div class="row mt-2">					
-							<div class="col">
-							    <div class="row">
-							        <div class="col-2">
-							            <img class="user-img border border-danger-subtle " src="" style="width: 2rem; height: 2rem; border-radius: 50%;"/>${map.userDto.user_nickname}
-							        </div>
-							        <div class="col-3 ps-0">
-							            <p class="card-text user-name text-secondary" style="margin-top: 5px; font-size: 1rem;"></p>                  		
-							        </div>
-							    </div>
+							<div class="col-12">
+							    <div class="row scrollable-div" style="display: flex; overflow-x: auto; white-space: nowrap;">
+									<div class="col">
+										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">1Day</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">2Day</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">3Day</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">4Day</button>
+										<!-- 추가 버튼들 -->
+										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">5Day</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">6Day</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">7Day</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">8Day</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">9Day</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">10Day</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">11Day</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">12Day</button>
+									</div>
+								</div>
 							</div>
 						</div>	
+	                  	
+	                  	<div class="row mt-3 scrollable-div-landmark" style="overflow-x: auto; white-space: nowrap;">
+							<div class="col-12">
+								<div class="bolder">
+									<div class="row ">
+																				
+										<div class="col">
+											<div class="row">
+												<div class="col-auto">
+													<img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
+												</div>
+												<div class="col-1 p-0">
+													<div class="row">
+														<div class="col">
+															<span style="font-weight: bolder; font-size: 13px;">롯데타워</span>
+														</div>
+														<div class="col">
+															<span style="font-size: 11px; ">한국에서 제일 높은 빌딩</span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+											
+									</div>
+								</div>
+							</div>
+						</div>
+	                  	
+	                  	<div class="row mt-2">
+							<div class="col-12">
+								<div class="row">
+									<div class="col d-grid">
+										<a class="btn" style="border-radius: 15px; border-color: #ff356b; border-width: 2px; color: #ff356b; font-weight: 600;" href="">
+											<i class="bi bi-bookmark" style="width: 1rem; filter: drop-shadow(0 0 1px #ff356b);"></i>일정담기
+										</a>
+									</div>
+									<div class="col d-grid">
+										<a class="btn readPlan" style="border-radius: 15px; border-color: #ff356b; border-width: 2px; color: #ff356b; font-weight: 600;" href="">
+											<i class="bi bi-list-ul" style="width: 1rem; filter: drop-shadow(0 0 1px #ff356b);"></i> 상세보기
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
 	                  		
 					</div>
 				</div>
