@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ja.travel.dto.PlanningApplicationDto;
 import com.ja.travel.dto.PlanningComment;
 import com.ja.travel.dto.TravelApplicationRequestDto;
+import com.ja.travel.dto.UserDto;
 import com.ja.travel.travelApplication.service.TravelApplicationService;
 
 @RequestMapping("/plan/*")
@@ -91,6 +92,26 @@ public class RestTravelApplicationController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("ok", "ok");
+		
+		return map;
+	}
+	
+	@RequestMapping("getCompanyList")
+	public Map<String, Object> getCompanyList(int planning_id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<UserDto> companyList = travelApplicationService.getCompanyList(planning_id);
+		
+		map.put("companyList", companyList);
+		
+		return map;
+	}
+	
+	@RequestMapping("insertMessage")
+	public Map<String, Object> insertMessage(String message) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		travelApplicationService.insertMessage(message);
+		
+//		map.put("companyList", companyList);
 		
 		return map;
 	}

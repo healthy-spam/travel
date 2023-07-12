@@ -109,34 +109,24 @@
 	    ]]>
 	</select>
 
-	<select id="getPlaceByPlanId"
-		resultType="com.ja.travel.dto.PlanPlaceDto">
+	<select id="getPlaceByPlanId" resultType="com.ja.travel.dto.PlanPlaceDto">
 		SELECT plan_place.* FROM plan_place
-		INNER JOIN
-		plan_route_city ON plan_route_city.plan_place_id =
-		plan_place.plan_place_id
-		INNER JOIN plan_day_city ON
-		plan_day_city.plan_day_city_id = plan_route_city.plan_day_city_id
-		INNER JOIN plan_day ON plan_day.plan_day_id =
-		plan_day_city.plan_day_id
+			INNER JOIN plan_route_city ON plan_route_city.plan_place_id = plan_place.plan_place_id
+			INNER JOIN plan_day_city ON plan_day_city.plan_day_city_id = plan_route_city.plan_day_city_id
+			INNER JOIN plan_day ON plan_day.plan_day_id = plan_day_city.plan_day_id
 		WHERE plan_day.plan_day = #{plan_day}
-		AND
-		plan_day.plan_id = #{plan_id}
+		AND plan_day.plan_id = #{plan_id}
 	</select>
 
-	<select id="getPlanDayByPlanId"
-		resultType="com.ja.travel.dto.PlanDayDto">
+	<select id="getPlanDayByPlanId" resultType="com.ja.travel.dto.PlanDayDto">
 		SELECT * FROM plan_day
-		INNER JOIN plan ON plan.plan_id =
-		plan_day.plan_id
+		INNER JOIN plan ON plan.plan_id = plan_day.plan_id
 		WHERE plan.plan_id = #{plan_id}
 	</select>
 
-	<select id="getPlanByPlanningId"
-		resultType="com.ja.travel.dto.PlanDto">
+	<select id="getPlanByPlanningId" resultType="com.ja.travel.dto.PlanDto">
 		SELECT * FROM planning
-		INNER JOIN plan ON plan.plan_id =
-		planning.plan_id
+		INNER JOIN plan ON plan.plan_id = planning.plan_id
 		WHERE planning_id = #{planning_id}
 	</select>
 
@@ -230,14 +220,14 @@
 
 	<insert id="insertPlanningApplicationParty">
 		INSERT INTO
-		planning_application
+			planning_application
 		VALUES
 		(
-		planning_application_seq.nextval,
-		#{user_id},
-		#{planning_id},
-		#{planning_application_content},
-		'신청'
+			planning_application_seq.nextval,
+			#{user_id},
+			#{planning_id},
+			#{planning_application_content},
+			'신청'
 		)
 	</insert>
 

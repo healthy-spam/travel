@@ -51,16 +51,16 @@ public class TravelApplicationController {
 		return "plan/travelApplicationDetailPage";
 	}
 
-//	@RequestMapping("travelApplicationProcess")
-//	public String travelApplicationProcess(HttpSession session, PlanningApplicationDto planningApplicationDto) {
-//		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
-//		
-//		if (sessionUser == null) {
-//			return "redirect:../login";
-//		}
-//		
-//		travelApplicationService.planningApplicationParty(session, planningApplicationDto);
-//
-//		return "redirect:/main";
-//	}
+	@RequestMapping("travelApplicationProcess")
+	public String travelApplicationProcess(HttpSession session, PlanningApplicationDto planningApplicationDto) {
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		
+		if (sessionUser == null) {
+			return "redirect:../login";
+		}
+		
+		travelApplicationService.planningApplicationParty(session, planningApplicationDto);
+
+		return "redirect:/main";
+	}
 }
