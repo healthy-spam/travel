@@ -28,11 +28,11 @@ public class HotelController {
 	@RequestMapping("hotelPage")
 	public String hotelPage(Model model) {
 		
-		List<Map<String, Object>> hotelList = hotelService.selectAllHotelList();
+//		List<Map<String, Object>> hotelList = hotelService.selectAllHotelList();
 		
 		List<Map<String, Object>> hotelCategoryList =  hotelService.selectAllHotelCategoryList();
 		
-		model.addAttribute("hotelList", hotelList);
+//		model.addAttribute("hotelList", hotelList);
 		model.addAttribute("hotelCategoryList", hotelCategoryList);
 	
 		return "hotel/hotelPage";

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ja.travel.dto.HotelDto;
 import com.ja.travel.dto.HotelReservationDto;
 import com.ja.travel.dto.UserDto;
 import com.ja.travel.hotel.service.HotelService;
@@ -32,16 +33,56 @@ public class RestHotelController {
 		return map;
 	}
 	
-	@RequestMapping("insertReservationInfo")
-	public Map<String, Object> insertReservationInfo(HttpSession session, HotelReservationDto hotelReservationDto) {
+	@RequestMapping("inserthotelInfo1")
+	public Map<String, Object> inserthotelInfo1(HttpSession session, String spanText) {
 		
 		Map<String, Object> map = new HashMap<>();
 		
-		UserDto sessionUser = (UserDto)session.getAttribute("sessionuser");
+		HotelDto hotelDto = new HotelDto();
 		
-		hotelReservationDto.setUser_id(sessionUser.getUser_id()); 
+		System.out.println(spanText);
 		
-		hotelService.insertReservationOfHotel(hotelReservationDto);
+		hotelDto.setHotel_category(spanText);
+		
+		System.out.println(hotelDto);
+		
+		session.setAttribute("hotelDto", hotelDto);
+		
+		map.put("result", "success");
+		
+		return map;
+	}
+	
+	@RequestMapping("inserthotelInfo2")
+	public Map<String, Object> inserthotelInfo2(HttpSession session, HotelDto hotelDto) {
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		HotelDto hotelDto1 =  (HotelDto)session.getAttribute("hotelDto");
+		
+		hotelDto.setHotel_category(hotelDto1.getHotel_category());
+		
+		System.out.println(hotelDto);
+		
+		session.setAttribute("hotelDto", hotelDto);
+		
+		map.put("result", "success");
+		
+		return map;
+	}
+	
+	@RequestMapping("inserthotelInfo3")
+	public Map<String, Object> inserthotelInfo3(HttpSession session, HotelDto hotelDto) {
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		HotelDto hotelDto1 =  (HotelDto)session.getAttribute("hotelDto");
+		
+		hotelDto.setHotel_category(hotelDto1.getHotel_category());
+		
+		System.out.println(hotelDto);
+		
+		session.setAttribute("hotelDto", hotelDto);
 		
 		map.put("result", "success");
 		

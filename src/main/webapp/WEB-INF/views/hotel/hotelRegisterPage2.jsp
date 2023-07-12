@@ -7,31 +7,76 @@
 <title>Insert title here</title>
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
  
- <!-- <script type="text/javascript">
- 
-	function clickBox() {
+<script type="text/javascript">
+
+	
+	let spanText = null;
+
+	function clickProcess() {
 		
-		const box1 = document.querySelector(".box1");
+		const boxElement = this;
 		
-		function boxClick() {
+		if (boxElement.classList == "box") {
 			
-			box1.classList.add('boxClick');
+			boxElement.classList.replace("box", "selectedBox");
+			
+			spanText = this.querySelector("span").innerText;
+			
+			console.log(spanText);
+			
+		} else {
+			
+			boxElement.classList.replace("selectedBox", "box");
 			
 		}
 		
-		box1.addEventListener('click', boxClick);
+	}
+
+	function clickCategory() {
+		
+		const boxElements = document.querySelectorAll(".box");
+		
+		for (let i = 0; i < boxElements.length; i++) {
+			
+			const boxElement = boxElements[i];
+			
+			boxElement.addEventListener("click", clickProcess);
+			
+		}
 		
 	}
 	
+	function sendCategory() {
+			
+			const xhr = new XMLHttpRequest();
+			
+			xhr.onreadystatechange = function() {
+				
+				if (xhr.readyState == 4 && xhr.status == 200) {
+					
+					const response = JSON.parse(xhr.responseText);
+					
+					
+				}
+			}
+			
+			xhr.open("get", "./inserthotelInfo1?spanText=" + spanText);
+			xhr.send();
+			
+			window.location.href = "/travel/hotel/hotelRegisterPage3";
+		}
+
+
+	
 	window.addEventListener("DOMContentLoaded", function() {
 		
-		clickBox();
+		clickCategory();
 		
 	});
 	 
 
  
- </script> -->
+</script>
  
     <style>
 
@@ -62,13 +107,13 @@
     	padding: 16px 14px;
     }
     
-    .boxClick {
+    .selectedBox {
         width: auto;
         height: auto;
-        border: solid rgb(205, 205, 205) 2px;
+        border: solid black 2px;
         border-radius: 10px;
         padding: 16px 14px;
-        background-color: gray;
+        background-color: #f5f5f5;
 
     }
     
@@ -112,7 +157,7 @@
                             
                             <!-- 반복문 -->
                             <div class="col-4 px-2 py-2">
-                                <div class="box" id="box1">
+                                <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
                                         <img src="/uploadFiles/categoryIcon/free-icon-building-77486.png" alt="" style="width: 30px;">
@@ -335,7 +380,7 @@
             </div>
             <div class="col"></div>
             <div class="col-auto px-5">
-                <div class="reserveButton">
+                <div class="reserveButton" onclick="sendCategory()">
                     <span>다음</span>
                 </div>
             </div>

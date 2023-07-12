@@ -16,6 +16,10 @@
 background-color: #DB4465;
 color: white;
 }
+
+.crewinfo {
+font-size: 16px
+}
 </style>
 <script type="text/javascript">
 	var changeBackColor = true;
@@ -86,7 +90,7 @@ color: white;
 			            <h4>현재 가입신청 중이에요.</h4>
 			               <br><br>
 			               <div class="row">
-			               	<div class="col-2">
+			               	<div class="col-6">
 			               		<strong>크루명</strong>
 			               	</div>
 			               	<div class="col">
@@ -94,7 +98,7 @@ color: white;
 			               	</div>
 			               </div>
 			               <div class="row">
-			               	<div class="col-2">
+			               	<div class="col-6">
 			               		<Strong>가입 신청 일자</Strong>
 			               	</div>
 			               	<div class="col">
@@ -125,9 +129,9 @@ color: white;
 			               <hr>
 				           <div class="card-body">
 				           	<div class="row">
-				           		<div class="col-9">
+				           		<div class="col-9 crewinfo mt-4">
 				           			<div class="row">
-		                           		<div class="col-2">
+		                           		<div class="col-6">
 		                           			크루마스터
 		                           		</div>
 		                           		<div class="col card-text">
@@ -135,7 +139,7 @@ color: white;
 		                           		</div>
 		                           	</div>
 		                           	<div class="row">
-		                           		<div class="col-2">
+		                           		<div class="col-6">
 		                           			인원수
 		                           		</div>
 		                           		<div class="col card-text">
@@ -143,7 +147,7 @@ color: white;
 		                           		</div>
 		                           	</div>
 		                           	<div class="row">
-		                           		<div class="col-2">
+		                           		<div class="col-6">
 		                           			나의 직위
 		                           		</div>
 		                           		<div class="col card-text">
@@ -151,23 +155,23 @@ color: white;
 		                           		</div>
 		                           	</div>
 		                           	<div class="row">
-		                           		<div class="col-2">
+		                           		<div class="col-6">
 		                           			나의 기여포인트
 		                           		</div>
 		                           		<div class="col card-text">
 		                           			<strong>${myPoint}</strong>
 		                           		</div>
 		                           	</div>
-		                           	<div class="row mt-3">
+
+				           		</div>
+				           		<div class="col">
+				           			<img src="/uploadFiles/crewFiles/crewthumbnail/${crewDto.crew_thumbnail}" width="200" height="200">
+				           		</div>
+				           	</div>
+	                         <div class="row mt-3">
 		                           		<input type="hidden" id="crew_domain" value="${crewDto.crew_domain }">
 		                           		<button class="btn" id="opencrewhome" style="background-color: #DB4465; color: white;">크루 홈 이동</button>
 		                           	</div>
-				           		</div>
-				           		<div class="col">
-				           			<img src="" width="100" height="100">
-				           		</div>
-				           	</div>
-	                           	
 
 	                        </div>
 			            </c:otherwise>
