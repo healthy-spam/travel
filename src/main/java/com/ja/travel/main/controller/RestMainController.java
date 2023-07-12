@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.ja.travel.dto.CouponDto;
 import com.ja.travel.dto.MemberRestrictDto;
+import com.ja.travel.dto.MessageDto;
 import com.ja.travel.dto.UserDto;
 import com.ja.travel.main.service.MainService;
 
@@ -93,4 +94,17 @@ public class RestMainController {
 		return map;
 	}
 	
+	@RequestMapping("/reloadMessageSend")
+	public Map<String, Object> reloadMessageSend(HttpSession session){
+		Map<String, Object> map = new HashMap<>();
+		
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		int userId = sessionUser.getUser_id();
+		
+		List<MessageDto> messageGetList = mainService.getMessageSendById(userId);
+		
+		map.put("result", "success");
+		map.put("messageGetList", messageGetList);
+		return map;
+	}
 }

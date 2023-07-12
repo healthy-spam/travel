@@ -115,26 +115,6 @@ public class MainService {
 
 	}
 
-	public List<Map<String, Object>> getMessageGotById(int userId) {
-		UserDto userDto = mainSqlMapper.getUserDtoByUserId(userId);
-		String user_nickname = userDto.getUser_nickname();
-		List<MessageDto> messageList = mainSqlMapper.selectAllMessageGotByNickName(user_nickname);
-		List<Map<String, Object>> list = new ArrayList<>();
-
-		for (MessageDto messageDto : messageList) {
-			Map<String, Object> map = new HashMap<>();
-
-			userId = messageDto.getUser_id();
-			userDto = mainSqlMapper.getUserDtoByUserId(userId);
-
-			map.put("messageDto", messageDto);
-			map.put("userDto", userDto);
-
-			list.add(map);
-		}
-		return list;
-
-	}
 
 	public MessageDto getMessageGotByMessageId(int id) {
 
@@ -178,7 +158,7 @@ public class MainService {
 		mainSqlMapper.insertUserCoupon2(userCouponDto);
 
 	}
-
+	// 유저가 쿠폰 갖고있는지 체크
 	public boolean hasCoupon(int userId, int couponId) {
 
 		UserCouponDto userCouponDto = new UserCouponDto();
@@ -188,16 +168,46 @@ public class MainService {
 		return mainSqlMapper.countCoupon(userCouponDto) > 0;
 
 	}
-
+	// 쿠폰이 만료되었는지 체크
 	public boolean isExpired(int couponId) {
 		// TODO Auto-generated method stub
 
 		return mainSqlMapper.checkExpired(couponId) > 0;
 	}
-
+	// 쿠폰이 소진되었는지 체크
 	public boolean isExhausted(int couponId) {
 		// TODO Auto-generated method stub
 		return mainSqlMapper.checkExhausted(couponId) > 0;
+	}
+	
+	// 받은 메시지 가져오기
+	public List<Map<String, Object>> getMessageGotById(int userId) {
+		UserDto userDto = mainSqlMapper.getUserDtoByUserId(userId);
+		String user_nickname = userDto.getUser_nickname();
+		List<MessageDto> messageList = mainSqlMapper.selectAllMessageGotByNickName(user_nickname);
+		List<Map<String, Object>> list = new ArrayList<>();
+
+		for (MessageDto messageDto : messageList) {
+			Map<String, Object> map = new HashMap<>();
+
+			userId = messageDto.getUser_id();
+			userDto = mainSqlMapper.getUserDtoByUserId(userId);
+
+			map.put("messageDto", messageDto);
+			map.put("userDto", userDto);
+
+			list.add(map);
+		}
+		return list;
+
+	}
+	
+	// 보낸 메시지 가져오기
+	public List<MessageDto> getMessageSendById(int userId) {
+		
+		List<MessageDto> messageSendList = mainSqlMapper.selectAllMessageWroteByUserId(userId);
+
+		return messageSendList;
 	}
 
 	

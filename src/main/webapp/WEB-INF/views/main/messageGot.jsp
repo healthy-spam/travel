@@ -92,7 +92,8 @@
 								var messageSendDateFormatted = formatDate(messageSendDate, 'yy-MM-dd hh:mm:ss');
 								
 								const row1 = document.createElement("div");
-								row1.classList.add("row", "border-top", "border-1");
+								row1.classList.add("row", "border-top", "border-1", "p-3");
+								
 								
 								const row1col1 = document.createElement("div");
 								row1col1.classList.add("col-auto", "d-flex", "align-self-center");
@@ -169,6 +170,101 @@
 
 		}
 		
+		
+		function reloadMessageSend(){
+			
+			const xhr = new XMLHttpRequest();
+						
+						xhr.onreadystatechange = function(){
+							if(xhr.readyState == 4 && xhr.status == 200){
+								const response = JSON.parse(xhr.responseText);
+								// js 작업..
+
+								
+								for(data of response.messageSendList){
+								
+								var messageSendDate = new Date(data.message_reg_date);
+								
+								var messageSendDateFormatted = formatDate(messageSendDate, 'yy-MM-dd hh:mm:ss');
+								
+								const row1 = document.createElement("div");
+								row1.classList.add("row", "border-top", "border-1", "my-2");
+								
+								const row1col1 = document.createElement("div");
+								row1col1.classList.add("col-auto", "d-flex", "align-self-center");
+								row1.appendChild(row1col1);
+								
+								const input1 = document.createElement("input");
+								input1.classList.add("form-check-input");
+								input1.type = "checkbox";
+								input1.value = "";
+								input1.id = "flexCheckDefault";
+								row1col1.appendChild(input1);
+								
+								const row1col2 = document.createElement("div");
+								row1col2.classList.add("col-auto", "d-flex", "align-self-center");
+								row1.appendChild(row1col2);
+								
+								const i1 = document.createElement("i");
+								i1.classList.add("bi", "bi-star");
+								row1col2.appendChild(i1);
+								
+								const row1col3 = document.createElement("div");
+								row1col3.classList.add("col-auto", "d-flex", "align-self-center");
+								row1.appendChild(row1col3);
+								
+								const i2 = document.createElement("i");
+								i2.classList.add("bi", "bi-envelope");
+								row1col3.appendChild(i2);
+								
+								const row1col4 = document.createElement("div");
+								row1col4.classList.add("col", "align-self-center","text-center");
+								row1col4.innerText = data.user_nickname;
+								row1.appendChild(row1col4);
+								
+								const row1col5 = document.createElement("div");
+								row1col5.classList.add("col", "d-flex", "align-self-center");
+								row1.appendChild(row1col5);
+								
+								const a1 = document.createElement("a");
+								a1.href="./readMessageWrote?id=" + data.message_id;
+								a1.innerText = data.message_title;
+								row1col5.appendChild(a1);
+								
+								const row1col6 = document.createElement("div");
+								row1col6.classList.add("col", "align-self-center", "text-center", "ms-2");
+								row1col6.innerText = messageSendDateFormatted;
+								row1.appendChild(row1col6);
+								
+
+								
+								const row1col7 = document.createElement("div");
+								row1col7.classList.add("col", "align-self-center", "text-center", "ms-auto");
+								row1.appendChild(row1col7);
+								
+								const deleteButton = document.createElement("button");
+								deleteButton.classList.add("btn", "btn-sm", "border", "border-dark");
+								deleteButton.type = "button";
+								deleteButton.onclick = function() {
+									location.href = "./deleteMessageProcess?id=" + data.message_id;
+								};
+								deleteButton.innerText = "삭제";
+								row1col7.appendChild(deleteButton);
+								
+								targetCol.appendChild(row1);
+								}
+								
+
+							}
+						}
+						
+						//get
+						xhr.open("get", "./reloadMessageSend");
+						xhr.send();
+						
+
+		}
+		
 		window.addEventListener("DOMContentLoaded", function(){
 			//사실상 시작 시점...
 			reloadMessageGet();
@@ -236,8 +332,8 @@
 					  				받은 편지함
 					  			</div>
 					  		</div>
-					  		<div class = "row">
-						  		<div class = "col-auto mx-2">
+					  		<div class = "row mb-3">
+						  		<div class = "col-auto mx-3 align-self-center me-0">
 						  			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
 						  		</div>
 
@@ -245,9 +341,7 @@
 								 	<button class="btn btn-sm btn-default border border-dark" type="button" onclick ="location.href='./deleteMessageProcess'">삭제
 								 	</button>						  			
 						  		</div>
-					  		</div>
-						  
-							  
+					  		</div>				  
 						</div>
 					  </div>
 					</div>
