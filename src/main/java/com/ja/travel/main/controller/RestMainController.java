@@ -101,10 +101,10 @@ public class RestMainController {
 		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
 		int userId = sessionUser.getUser_id();
 		
-		List<MessageDto> messageGetList = mainService.getMessageSendById(userId);
+		List<MessageDto> messageSendList = mainService.getMessageSendById(userId);
 		
 		map.put("result", "success");
-		map.put("messageGetList", messageGetList);
+		map.put("messageSendList", messageSendList);
 		return map;
 	}
 }
