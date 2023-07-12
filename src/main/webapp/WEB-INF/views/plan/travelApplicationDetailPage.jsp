@@ -247,15 +247,57 @@
 			chatBox.style.overflow = 'hidden';
 	        chatContainer.appendChild(chatBox);
 			
-			var chatBoxInRow = document.createElement('div');
-			chatBoxInRow.className = 'row';
+			var chatBoxInRow1 = document.createElement('div');
+			chatBoxInRow1.className = 'row';
 			
-			var chatBoxInCol = document.createElement('div');
-			chatBoxInCol.className = 'col mt-1 mx-1';
-			chatBoxInCol.innerText = '모든대화참여자';
+			var chatBoxInCol1 = document.createElement('div');
+			chatBoxInCol1.className = 'col mt-1 mx-1';
+			chatBoxInCol1.innerText = '모든대화참여자';
 			
-			chatBoxInRow.appendChild(chatBoxInCol);
-			chatBox.appendChild(chatBoxInRow);
+			var chatBoxInRow2 = document.createElement('div');
+			chatBoxInRow2.className = 'row';
+			chatBoxInRow2.style.height = '80%';
+			
+			var chatBoxInCol2 = document.createElement('div');
+			chatBoxInCol2.className = 'col mt-1 mx-1';
+			
+			var chatBoxInRow3 = document.createElement('div');
+			chatBoxInRow3.className = 'row';
+			
+			var chatBoxInCol3 = document.createElement('div');
+			chatBoxInCol3.className = 'col mt-1 mx-1';
+			
+			// 부모 요소 생성
+			var inputGroup = document.createElement('div');
+			inputGroup.classList.add('input-group');
+			inputGroup.style.margin = '0 10px 0 10px';
+			
+			// 입력 필드 생성
+			var input = document.createElement('input');
+			input.setAttribute('type', 'text');
+			input.classList.add('form-control');
+			input.setAttribute('placeholder', "메세지를 입력해주세요");
+			input.style.borderRight = 'none';
+			inputGroup.appendChild(input);
+
+			// 버튼 생성
+			var button = document.createElement('button');
+			button.setAttribute('type', 'button');
+			button.classList.add('bi', 'bi-send-fill');
+			button.setAttribute('id', 'button-addon2');
+			button.style.border = '1px solid lightgrey';
+			button.style.borderRadius = '0 0.375rem 0.375rem 0';
+			button.style.width = '50px';
+			inputGroup.appendChild(button);
+			chatBoxInCol3.appendChild(inputGroup);
+			
+			chatBoxInRow1.appendChild(chatBoxInCol1);
+			chatBoxInRow2.appendChild(chatBoxInCol2);
+			chatBoxInRow3.appendChild(chatBoxInCol3);
+			
+			chatBox.appendChild(chatBoxInRow1);
+			chatBox.appendChild(chatBoxInRow2);
+			chatBox.appendChild(chatBoxInRow3);
 
 			// Animate chat-box to appear
 			animateSize(chatBox, 300, 100, 500); // Change 100 and 500 to your desired width and height
@@ -443,7 +485,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	right: 40px;
+	bottom: -1px;
 }
 
 #chat-container {
