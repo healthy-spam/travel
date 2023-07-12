@@ -102,7 +102,7 @@
                            </c:if>
                            
                             <div class="col ">
-                               <c:if test="${sessionuser.user_id != data.planDto.user_id && data.planDto.plan_disclosure_status == '공개'}">
+                               <c:if test="${!empty sessionuser && sessionuser.user_id != data.planDto.user_id && data.planDto.plan_disclosure_status == '공개'}">
                                    <a href="./copyPlanProcess?plan_id=${data.planDto.plan_id}" class="btn btn-primary">참조하기</a>
                                </c:if>
                             </div>
