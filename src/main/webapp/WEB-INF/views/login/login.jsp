@@ -27,7 +27,7 @@
                 xhr.onreadystatechange = function() {
                    if (xhr.readyState == 4 && xhr.status == 200) {
                       const response = JSON.parse(xhr.responseText);
-
+	
                       // 로그인 후 페이지로 리다이렉트
                       window.location.href = './main';
                    }
@@ -50,9 +50,9 @@
 <head>
 <title>로그인</title>
 <style>
-.btn {
+.btn22 {
 	color: white;
-	background-color: #D63255;
+	background: linear-gradient(to right, #ff356b, #f41b55, #ff1c59, #ff0044);
 	border: none;
 	height: 45px;
 	font-family: 'Noto Sans KR', sans-serif;
@@ -102,7 +102,7 @@ i {
 }
 
 h1 {
-	background-color: #D63255;
+	background: linear-gradient(to right, #ff356b, #f41b55, #ff1c59, #ff0044);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	font-weight: bold;
@@ -183,7 +183,7 @@ h1 {
 												name="user_pw" placeholder="비밀번호" required>
 										</div>
 										<div class="d-grid mt-4">
-											<button type="submit" class="btn btn-primary">로그인</button>
+											<button type="submit" class="btn22">로그인</button>
 										</div>
 										<div class="line-with-text">
 											<div>
@@ -221,6 +221,6 @@ h1 {
 			<div class="col"></div>
 		</div>
 	</div>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>
