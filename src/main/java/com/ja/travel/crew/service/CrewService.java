@@ -586,7 +586,7 @@ public class CrewService {
 			
 			System.out.println("파일명: " + photo.getOriginalFilename());
 			
-			String rootFolder = "C://CrewFiles/crewthumbnail/";
+			String rootFolder = "C:/uploadFiles/crewFiles/crewthumbnail/";
 			
 			File targetFolder = new File(rootFolder); // C:/uploadFolder/crewthumbnail
 			
@@ -611,7 +611,7 @@ public class CrewService {
 				System.out.println(e);
 				e.printStackTrace();
 			}
-			String crew_thumbnail = rootFolder + saveFileName;
+			String crew_thumbnail = saveFileName;
 			crewMapper.addCrewThumbnailByCrewDomain(crew_thumbnail, crew_domain);
 		}
 		
