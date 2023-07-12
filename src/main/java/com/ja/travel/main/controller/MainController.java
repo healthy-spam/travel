@@ -45,6 +45,12 @@ public class MainController {
 		return "main/myPage";
 	}
 	
+	public String bbb() {
+		System.out.println("반갑습니다.");
+		
+		return "";
+	}
+	
 	@RequestMapping("/main/readRestrictPage")
 	public String readRestrictPage(Model model, int id) {
 		
