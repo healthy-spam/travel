@@ -11,10 +11,9 @@ public class CrewDto {
 	private int crew_point;
 	private Date crew_reg_date;
 	private String crew_domain;
-	private int crew_member_amount;
 
 	public CrewDto(int crew_id, int master_id, String crew_name, String crew_thumbnail, String crew_desc,
-			int crew_point, Date crew_reg_date, String crew_domain, int crew_member_amount) {
+			int crew_point, Date crew_reg_date, String crew_domain) {
 		super();
 		this.crew_id = crew_id;
 		this.master_id = master_id;
@@ -24,7 +23,6 @@ public class CrewDto {
 		this.crew_point = crew_point;
 		this.crew_reg_date = crew_reg_date;
 		this.crew_domain = crew_domain;
-		this.crew_member_amount = crew_member_amount;
 	}
 
 	public CrewDto() {
@@ -97,20 +95,13 @@ public class CrewDto {
 		this.crew_domain = crew_domain;
 	}
 
-	public int getCrew_member_amount() {
-		return crew_member_amount;
-	}
-
-	public void setCrew_member_amount(int crew_member_amount) {
-		this.crew_member_amount = crew_member_amount;
-	}
 
 	@Override
 	public String toString() {
 		return "CrewDto [crew_id=" + crew_id + ", master_id=" + master_id + ", crew_name=" + crew_name
 				+ ", crew_thumbnail=" + crew_thumbnail + ", crew_desc=" + crew_desc + ", crew_point=" + crew_point
 				+ ", crew_reg_date=" + crew_reg_date + ", crew_domain=" + crew_domain + ", crew_member_amount="
-				+ crew_member_amount + "]";
+				+ "]";
 	}
 
 	

@@ -39,7 +39,7 @@ public class CrewService {
 		List<Map<String, Object>> crewList = new ArrayList<>();
 		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
 		
-		//crewList 가져오기
+		//전체crewList 가져오기
 		for(CrewDto crew: arrlist) {
 			int master_id = crew.getMaster_id();
 			String mastername = crewMapper.getUserNameById(master_id);
@@ -48,44 +48,23 @@ public class CrewService {
 			map.put("crew", crew);
 			crewList.add(map);
 		}
-		try {
-			
-			//가입신청 또는 가입중인 크루 Dto 가져오기
-			CrewDto crewDto = crewMapper.getCrewDtoByUserId(userDto.getUser_id());
-			model.addAttribute("crewDto", crewDto); //내 크루 정보
-			List<CrewMemberDto> mycrewlog = crewMapper.getMyAllRequestLogByUserId(userDto.getUser_id());
-			for(CrewMemberDto crewMemberDto : mycrewlog) {
-				if(crewMemberDto.getCrew_domain().equals(crewDto.getCrew_domain()) && crewMemberDto.getCrew_join_status().equals("member")) {
-					String master = crewMapper.getUserNameById(crewDto.getMaster_id());
-					model.addAttribute("master", master);
-					CrewMemberDto myInfo = crewMapper.getMyCrewInfo(userDto.getUser_id());
-					String myGrade = crewMapper.getGradeNameByGradeId(myInfo.getCrew_member_grade_default_id());
-					model.addAttribute("myGrade", myGrade); //나의 크루 내 등급 받아오기
-					model.addAttribute("myInfo", myInfo); //크루 내 나의 정보
-					model.addAttribute("crewDto", crewDto); //내 크루 정보
-					System.out.println(myGrade);
-					System.out.println(master);
-				}
-				if(crewMemberDto.getCrew_domain().equals(crewDto.getCrew_domain())&& crewMemberDto.getCrew_join_status().equals("applied")) {
-					model.addAttribute("applied", crewMemberDto);
-				}
-			}
-
-			
-			
-			
+		
+		try { //크루 멤버일경우
+			CrewMemberDto crewMemberDto = crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id()); //자신의 크루 멤버 정보 가져오기
+			CrewDto crewDto = crewMapper.getCrewDtoByCrewDomain(crewMemberDto.getCrew_domain()); //가입한 크루 정보 가져오기
+			model.addAttribute("crewDto", crewDto);
+			model.addAttribute("myGrade", crewMapper.getGradeNameByGradeId(crewMemberDto.getCrew_member_grade_default_id()));
+			model.addAttribute("crewamount", Integer.toString(crewMapper.getCrewMemberListByCrewDomain(crewDto.getCrew_domain()).size()));
+			model.addAttribute("master", crewMapper.getUserNameById(crewDto.getMaster_id()));
+			System.out.println(crewMapper.getGradeNameByGradeId(crewMemberDto.getCrew_member_grade_default_id()));
 		} catch (Exception e) {
+			// TODO: handle exception
 		}
+		
 		model.addAttribute("crewList", crewList);
-
-
 	
 		return "crew/findcrew";
 	}
-//	
-//	public List<Map<String,Object>> list() {
-//		return "";
-//	}
 	
 	
 	public void createcrew(Map<String, String> requestBody, HttpSession session) {
@@ -99,7 +78,16 @@ public class CrewService {
 		
 		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
 		crewDto.setMaster_id(userDto.getUser_id());
+		
+		//crewMemberDto에 크루마스터 정보 넣기
+		CrewMemberDto crewMemberDto = new CrewMemberDto();
+		crewMemberDto.setCrew_domain(crewDto.getCrew_domain());
+		crewMemberDto.setCrew_join_request_intro("");
+		crewMemberDto.setCrew_member_grade_default_id(1);
+		crewMemberDto.setUser_id(userDto.getUser_id());
+		crewMemberDto.setCrew_join_status("member");
 		crewMapper.createcrew(crewDto);
+		crewMapper.addcrewmember(crewMemberDto);
 		}
 
 
