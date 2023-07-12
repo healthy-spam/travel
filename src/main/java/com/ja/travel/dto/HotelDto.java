@@ -8,7 +8,7 @@ public class HotelDto {
 
 	private int hotel_id;
 	private int user_id;
-	private int hotel_category_id;
+	private String hotel_category;
 	private String hotel_title;
 	private String hotel_main_image;
 	private String hotel_content;
@@ -25,19 +25,19 @@ public class HotelDto {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date hotel_reserve_end_date;
 	private Date hotel_reg_date;
-
+	
 	public HotelDto() {
 		super();
 	}
 
-	public HotelDto(int hotel_id, int user_id, int hotel_category_id, String hotel_title, String hotel_main_image,
+	public HotelDto(int hotel_id, int user_id, String hotel_category, String hotel_title, String hotel_main_image,
 			String hotel_content, String hotel_address, int hotel_price, int hotel_bedRoom, int hotel_bed,
 			int hotel_bathRoom, int hotel_limit_number, int hotel_check_in_time, int hotel_check_out_time,
 			Date hotel_reserve_start_date, Date hotel_reserve_end_date, Date hotel_reg_date) {
 		super();
 		this.hotel_id = hotel_id;
 		this.user_id = user_id;
-		this.hotel_category_id = hotel_category_id;
+		this.hotel_category = hotel_category;
 		this.hotel_title = hotel_title;
 		this.hotel_main_image = hotel_main_image;
 		this.hotel_content = hotel_content;
@@ -70,12 +70,12 @@ public class HotelDto {
 		this.user_id = user_id;
 	}
 
-	public int getHotel_category_id() {
-		return hotel_category_id;
+	public String getHotel_category() {
+		return hotel_category;
 	}
 
-	public void setHotel_category_id(int hotel_category_id) {
-		this.hotel_category_id = hotel_category_id;
+	public void setHotel_category(String hotel_category) {
+		this.hotel_category = hotel_category;
 	}
 
 	public String getHotel_title() {
@@ -192,7 +192,7 @@ public class HotelDto {
 
 	@Override
 	public String toString() {
-		return "HotelDto [hotel_id=" + hotel_id + ", user_id=" + user_id + ", hotel_category_id=" + hotel_category_id
+		return "HotelDto [hotel_id=" + hotel_id + ", user_id=" + user_id + ", hotel_category=" + hotel_category
 				+ ", hotel_title=" + hotel_title + ", hotel_main_image=" + hotel_main_image + ", hotel_content="
 				+ hotel_content + ", hotel_address=" + hotel_address + ", hotel_price=" + hotel_price
 				+ ", hotel_bedRoom=" + hotel_bedRoom + ", hotel_bed=" + hotel_bed + ", hotel_bathRoom=" + hotel_bathRoom

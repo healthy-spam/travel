@@ -163,40 +163,40 @@ public class HotelService {
 	}
 
 //	모든 숙소 리스트 출력
-	public List<Map<String, Object>> selectAllHotelList() {
-
-		List<Map<String, Object>> hotelList = new ArrayList<>();
-
-		List<HotelDto> hotelDtoList = hotelSqlMapper.selectAllHotelList();
-
-		for (HotelDto hotelDto : hotelDtoList) {
-
-			Map<String, Object> map = new HashMap<>();
-			
-			int user_id = hotelDto.getUser_id();
-			
-			int hotel_id = hotelDto.getHotel_id();
-			
-			int hotel_category_id = hotelDto.getHotel_category_id();
-			
-			Integer hotelReviewPointCount = hotelSqlMapper.searchCountReviewPoint(hotel_id);
-			Integer hotelReviewCount = hotelSqlMapper.searchCountReview(hotel_id);
-			UserDto userDto = planPlaceSqlMapper.selectUserById(user_id);
-			HotelCategoryDto hotelCategoryDto = hotelSqlMapper.selectHotelCategoryById(hotel_category_id);
-			
-			map.put("userDto", userDto);
-			map.put("hotelDto", hotelDto);
-			map.put("hotelReviewPointCount", hotelReviewPointCount);
-			map.put("hotelReviewCount", hotelReviewCount);
-			map.put("hotelCategoryDto", hotelCategoryDto);
-
-			hotelList.add(map);
-		}
-
-		return hotelList;
-
-	}
-	
+	/*
+	 * public List<Map<String, Object>> selectAllHotelList() {
+	 * 
+	 * List<Map<String, Object>> hotelList = new ArrayList<>();
+	 * 
+	 * List<HotelDto> hotelDtoList = hotelSqlMapper.selectAllHotelList();
+	 * 
+	 * for (HotelDto hotelDto : hotelDtoList) {
+	 * 
+	 * Map<String, Object> map = new HashMap<>();
+	 * 
+	 * int user_id = hotelDto.getUser_id();
+	 * 
+	 * int hotel_id = hotelDto.getHotel_id();
+	 * 
+	 * int hotel_category_id = hotelDto.getHotel_category_id();
+	 * 
+	 * Integer hotelReviewPointCount =
+	 * hotelSqlMapper.searchCountReviewPoint(hotel_id); Integer hotelReviewCount =
+	 * hotelSqlMapper.searchCountReview(hotel_id); UserDto userDto =
+	 * planPlaceSqlMapper.selectUserById(user_id); HotelCategoryDto hotelCategoryDto
+	 * = hotelSqlMapper.selectHotelCategoryById(hotel_category_id);
+	 * 
+	 * map.put("userDto", userDto); map.put("hotelDto", hotelDto);
+	 * map.put("hotelReviewPointCount", hotelReviewPointCount);
+	 * map.put("hotelReviewCount", hotelReviewCount); map.put("hotelCategoryDto",
+	 * hotelCategoryDto);
+	 * 
+	 * hotelList.add(map); }
+	 * 
+	 * return hotelList;
+	 * 
+	 * }
+	 */
 //	PK로 숙소 정보 출력
 	public Map<String, Object> searchHotel(int hotel_id) {
 		
