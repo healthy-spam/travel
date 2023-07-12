@@ -138,7 +138,10 @@ public class PackageService {
 	}
 
 	public Map<String, Object> getPlaceByDayForPlan(int guide_planning_id) {
-
+		List<GuidePlanningApplicationDto> count = packageSqlMapper
+				.getGuidePlanningAcceptCountByGuidePlanningId(guide_planning_id);
+		
+		int packageMember = count.size() - 1;
 		PlanDto plan = packageSqlMapper.getPlanByGuidePlanningId(guide_planning_id);
 		UserDto user = packageSqlMapper.getUserByGuidePlanningId(guide_planning_id);
 		List<PlanDayDto> planDayList = packageSqlMapper.getPlanDayByPlanId(plan.getPlan_id());
@@ -174,7 +177,8 @@ public class PackageService {
 		resultMap.put("planDayListSize", planDayListSize);
 		resultMap.put("guidePlanningDto", guidePlanningDto);
 		resultMap.put("list", list);
-
+		resultMap.put("planDto",plan);
+		resultMap.put("packageMember",packageMember);
 		return resultMap;
 
 	}

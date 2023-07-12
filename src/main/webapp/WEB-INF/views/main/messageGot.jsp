@@ -83,7 +83,13 @@
 							if(xhr.readyState == 4 && xhr.status == 200){
 								const response = JSON.parse(xhr.responseText);
 								// js 작업..
-
+								const targetCol = document.getElementById("targetCol");
+								
+								// 기존의 쪽지 목록을 찾아 제거
+							      const existingRows = targetCol.querySelectorAll(".row.border-top.border-1.p-3");
+							      existingRows.forEach(function(row) {
+							        targetCol.removeChild(row);
+							      });
 								
 								for(data of response.messageGetList){
 								
@@ -93,7 +99,7 @@
 								
 								const row1 = document.createElement("div");
 								row1.classList.add("row", "border-top", "border-1", "p-3");
-								
+								row1.setAttribute("id", "row1");
 								
 								const row1col1 = document.createElement("div");
 								row1col1.classList.add("col-auto", "d-flex", "align-self-center");
@@ -159,7 +165,7 @@
 								targetCol.appendChild(row1);
 								}
 								
-
+							   
 							}
 						}
 						
@@ -179,7 +185,13 @@
 							if(xhr.readyState == 4 && xhr.status == 200){
 								const response = JSON.parse(xhr.responseText);
 								// js 작업..
-
+								const targetCol = document.getElementById("targetCol");
+								
+								// 기존의 쪽지 목록을 찾아 제거
+							      const existingRows = targetCol.querySelectorAll(".row.border-top.border-1.p-3");
+							      existingRows.forEach(function(row) {
+							        targetCol.removeChild(row);
+							      });
 								
 								for(data of response.messageSendList){
 								
@@ -188,7 +200,7 @@
 								var messageSendDateFormatted = formatDate(messageSendDate, 'yy-MM-dd hh:mm:ss');
 								
 								const row1 = document.createElement("div");
-								row1.classList.add("row", "border-top", "border-1", "my-2");
+								row1.classList.add("row", "border-top", "border-1", "p-3");
 								
 								const row1col1 = document.createElement("div");
 								row1col1.classList.add("col-auto", "d-flex", "align-self-center");
@@ -297,8 +309,8 @@
 					 		<div class="col-2 p-3 border-secondary border-2 border-bottom" style="--bs-border-opacity: .5;">
 					 			<i class="bi bi-arrow-left" style="margin-left: -8px;"></i>
 					 		</div>
-					 		<div class="col p-3 border-secondary border-2 border-bottom" style="--bs-border-opacity: .5;">
-					 			<a class="dropdown-item" href="./messageGot">받은쪽지</a>
+					 		<div class="col p-3 border-secondary border-2 border-bottom" onclick="reloadMessageGet()" style="--bs-border-opacity: .5; cursor : pointer;">
+					 			받은쪽지
 					 		</div>
 					 	</div>
 					 	<div class = "row">
@@ -308,8 +320,8 @@
 					 		<div class="col-2 p-3 border-secondary border-2 border-bottom" style="--bs-border-opacity: .5;">
 					 			<i class="bi bi-arrow-right" style="margin-left: -8px;"></i>					 			
 					 		</div>
-					 		<div class="col p-3 border-secondary border-2 border-bottom" style="--bs-border-opacity: .5;">
-					 			<a class="dropdown-item" href="./messageWrote">보낸쪽지</a>
+					 		<div class="col p-3 border-secondary border-2 border-bottom" onclick="reloadMessageSend()" style="--bs-border-opacity: .5; cursor : pointer;">
+					 			보낸쪽지
 					 		</div>
 					 	</div>
 					 	<div class = "row">
@@ -328,8 +340,8 @@
 					  <div class = "row">
 					  	<div class = "col" id="targetCol">
 					  		<div class = "row mb-3 h2">
-					  			<div class = "col">
-					  				받은 편지함
+					  			<div class = "col" id="messageType">
+					  				받은 쪽지함
 					  			</div>
 					  		</div>
 					  		<div class = "row mb-3">

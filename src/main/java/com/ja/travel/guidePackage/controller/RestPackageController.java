@@ -56,8 +56,6 @@ public class RestPackageController {
 
 		Map<String, Object> map = packageService.getPlaceByDayForPlan(guide_planning_id);
 
-		model.addAttribute("map", map);
-		model.addAttribute("guide_planning_id", guide_planning_id);
 
 		return map;
 	}

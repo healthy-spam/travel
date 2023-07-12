@@ -28,12 +28,12 @@
       var searchTypeSelect = document.getElementById('searchType');
       var searchWordSelect = document.getElementById('searchWord');
 
-      // searchWord 값이 변경되었을 때 호출되는 함수
+      /* // searchWord 값이 변경되었을 때 호출되는 함수
       searchWordSelect.addEventListener('change', function() {
          searchWord = searchWordSelect.value;
          pageNum = 1; // 검색어가 변경되면 페이지 번호를 초기화하고 새로운 리스트를 가져옵니다.
          clearListAndTravel();
-      });
+      }); */
 
       // searchType 값이 변경되었을 때 호출되는 함수
       searchTypeSelect.addEventListener('change', function() {
@@ -197,8 +197,19 @@
                   p.classList.add('card-text');
                   p.innerText = response.list[i].guidePlanning.guide_planning_title;
                   cardBody.appendChild(p);
-
+                  
                   if (response.sessionUser != null) {
+                	  
+                	  
+                	  card.addEventListener('click', function() {
+                		  
+                		  goToPackageApplicationDetailPage(response.list[i].guidePlanning.guide_planning_id);
+                         });
+                	  
+                  
+                  }
+
+            /*       if (response.sessionUser != null) {
                      var isSameUser = false;
 
                      for (var j = 0; j < response.list[i].guidePlanningAcceptCount.length; j++) {
@@ -229,7 +240,7 @@
                      iconSpan.classList.add('iconSpan');
                      iconSpan.innerText = '동행 신청';
                      iconWrapper.appendChild(iconSpan);
-                  }
+                  } */
                }
 
                mainContainer.appendChild(childRow);
@@ -279,333 +290,8 @@
       travelList();
    }
 
-   function modalShow(data) {
-      createModal(data);
-      modal = new bootstrap.Modal(document.getElementById('dynamicModal'));
-      modal.show();
-   }
+  
 
-   function removeModal() {
-      var modal = document.getElementById('dynamicModal');
-      modal.remove();
-   }
-
-   function createModal(data) {
-
-      // 모달 요소 생성
-      var modalDiv = document.createElement('div');
-      modalDiv.classList.add('modal');
-      modalDiv.classList.add('fade');
-      modalDiv.id = 'dynamicModal';
-      modalDiv.setAttribute('data-bs-backdrop', 'static');
-      modalDiv.setAttribute('data-bs-keyboard', 'false');
-      modalDiv.setAttribute('tabindex', '-1');
-      modalDiv.setAttribute('aria-labelledby', 'dynamicModalLabel');
-      modalDiv.setAttribute('aria-hidden', 'true');
-
-      // 모달 다이얼로그 생성
-      var modalDialogDiv = document.createElement('div');
-      modalDialogDiv.classList.add('modal-dialog');
-      modalDialogDiv.classList.add('modal-dialog-centered');
-      modalDialogDiv.classList.add('modal-dialog-scrollable');
-      modalDialogDiv.classList.add('modal-lg');
-
-      // 모달 콘텐츠 생성
-      var modalContentDiv = document.createElement('div');
-      modalContentDiv.classList.add('modal-content');
-
-      // 모달 헤더 생성
-      var modalHeaderDiv = document.createElement('div');
-      modalHeaderDiv.classList.add('modal-header');
-
-      // 모달 제목 생성
-      var modalTitleH1 = document.createElement('h1');
-      modalTitleH1.classList.add('modal-title');
-      modalTitleH1.classList.add('fs-5');
-      modalTitleH1.id = 'dynamicModalLabel';
-      modalTitleH1.innerText = data.guidePlanning.guide_planning_title;
-
-      // 모달 닫기 버튼 생성
-      var closeButton = document.createElement('button');
-      closeButton.type = 'button';
-      closeButton.classList.add('btn-close');
-      closeButton.setAttribute('data-bs-dismiss', 'modal');
-      closeButton.setAttribute('aria-label', 'Close');
-      closeButton.setAttribute('onclick', 'removeModal()');
-
-      // 모달 바디 생성
-      var modalBodyDiv = document.createElement('div');
-      modalBodyDiv.classList.add('modal-body');
-
-      // 모달 바디내 container생성
-      var containerDiv = document.createElement('div');
-      containerDiv.classList.add('container');
-      modalBodyDiv.appendChild(containerDiv);
-
-      // 모달 바디내 container내 row 생성
-      var rowDiv = document.createElement('div');
-      rowDiv.classList.add('row');
-      containerDiv.appendChild(rowDiv);
-
-      // 모달 바디내 container내 row내 col1 생성
-      var col1Div = document.createElement('div');
-      col1Div.classList.add('col');
-      rowDiv.appendChild(col1Div);
-     
-      // 0 번째 row
-      var row0 = document.createElement('div');
-      row0.classList.add('row');
-      row0.classList.add('mt-4');
-      col1Div.appendChild(row0);
-
-      var row0Col1 = document.createElement('div');
-      row0Col1.classList.add('col');
-      row0.appendChild(row0Col1);
-
-      var row0Col1Icon = document.createElement('i');
-      row0Col1Icon.classList.add('bi');
-      row0Col1Icon.classList.add('bi-chat-square-dots');
-      row0Col1Icon.classList.add('me-1');
-      row0Col1.appendChild(row0Col1Icon);
-
-      var row0Col1Span = document.createElement('span');
-      row0Col1Span.innerText = '루트';
-      row0Col1.appendChild(row0Col1Span);
-
-      
-      
-      
-      // 첫 번째 
-      var row1 = document.createElement('div');
-      row1.classList.add('row');
-      row1.classList.add('mt-4');
-      col1Div.appendChild(row1);
-
-      var row1Col1 = document.createElement('div');
-      row1Col1.classList.add('col');
-      row1.appendChild(row1Col1);
-
-      var row1Col1Icon = document.createElement('i');
-      row1Col1Icon.classList.add('bi');
-      row1Col1Icon.classList.add('bi-chat-square-dots');
-      row1Col1Icon.classList.add('me-1');
-      row1Col1.appendChild(row1Col1Icon);
-
-      var row1Col1Span = document.createElement('span');
-      row1Col1Span.innerText = '모집 내용';
-      row1Col1.appendChild(row1Col1Span);
-
-      var row1Col2 = document.createElement('div');
-      row1Col2.classList.add('col-12');
-      row1Col2.classList.add('mt-1');
-      row1.appendChild(row1Col2);
-
-      var row1Col2Span = document.createElement('span');
-      row1Col2Span.classList.add('form-control');
-      row1Col2Span.style.height = '50px';
-      row1Col2Span.innerText = data.guidePlanning.guide_planning_content;
-      row1Col2.appendChild(row1Col2Span);
-
-      // 두 번째 row
-      var row2 = document.createElement('div');
-      row2.classList.add('row');
-      row2.classList.add('mt-2');
-      col1Div.appendChild(row2);
-
-      var row2Col1 = document.createElement('div');
-      row2Col1.classList.add('col');
-      row2.appendChild(row2Col1);
-
-      var row2Col1Icon = document.createElement('i');
-      row2Col1Icon.classList.add('bi');
-      row2Col1Icon.classList.add('bi-geo-alt');
-      row2Col1Icon.classList.add('me-1');
-      row2Col1.appendChild(row2Col1Icon);
-
-      var row2Col1Span = document.createElement('span');
-      row2Col1Span.innerText = '모집 위치';
-      row2Col1.appendChild(row2Col1Span);
-
-      var row2Col2 = document.createElement('div');
-      row2Col2.classList.add('col-12');
-      row2Col2.classList.add('mt-1');
-      row2.appendChild(row2Col2);
-
-      var row2Col2Span = document.createElement('span');
-      row2Col2Span.classList.add('form-control');
-      row2Col2Span.innerText = data.guidePlanning.guide_planning_start_point;
-      row2Col2.appendChild(row2Col2Span);
-
-      // 세 번째 row
-      var row3 = document.createElement('div');
-      row3.classList.add('row');
-      row3.classList.add('mt-2');
-      col1Div.appendChild(row3);
-
-      var row3Col1 = document.createElement('div');
-      row3Col1.classList.add('col');
-      row3.appendChild(row3Col1);
-
-      var row3Col1Icon = document.createElement('i');
-      row3Col1Icon.classList.add('bi');
-      row3Col1Icon.classList.add('bi-people');
-      row3Col1Icon.classList.add('me-1');
-      row3Col1.appendChild(row3Col1Icon);
-
-      var row3Col1Span = document.createElement('span');
-      row3Col1Span.innerText = '모집 인원';
-      row3Col1.appendChild(row3Col1Span);
-
-      var row3Col2 = document.createElement('div');
-      row3Col2.classList.add('col');
-      row3.appendChild(row3Col2);
-
-      var row3Col2Icon = document.createElement('i');
-      row3Col2Icon.classList.add('bi');
-      row3Col2Icon.classList.add('bi-calendar-check');
-      row3Col2Icon.classList.add('me-1');
-      row3Col2.appendChild(row3Col2Icon);
-
-      var row3Col2Span = document.createElement('span');
-      row3Col2Span.innerText = '모집 종료 날짜';
-      row3Col2.appendChild(row3Col2Span);
-      
-      var row3Col3 = document.createElement('div');
-      row3Col3.classList.add('col');
-      row3.appendChild(row3Col3);
-
-      
-      var row3Col3Icon = document.createElement('i');
-      row3Col3Icon.classList.add('bi');
-      row3Col3Icon.classList.add('bi-calculator-fill');
-      row3Col3Icon.classList.add('me-1');
-      row3Col3.appendChild(row3Col3Icon);
-
-      var row3Col3Span = document.createElement('span');
-      row3Col3Span.innerText = '패키지 비용';
-      row3Col3.appendChild(row3Col3Span);
-
-      // 네 번째 row
-      var row4 = document.createElement('div');
-      row4.classList.add('row');
-      col1Div.appendChild(row4);
-
-      var row4Col1 = document.createElement('div');
-      row4Col1.classList.add('col');
-      row4.appendChild(row4Col1);
-
-      var row4Col1Span = document.createElement('span');
-      row4Col1Span.classList.add('form-control');
-      row4Col1Span.id = 'memberCount';
-      row4Col1Span.innerText = data.guidePlanningAcceptCount.length + ' / '
-            + data.guidePlanning.guide_planning_member;
-      row4Col1.appendChild(row4Col1Span);
-
-      var row4Col2 = document.createElement('div');
-      row4Col2.classList.add('col');
-      row4.appendChild(row4Col2);
-
-      var row4Col2Span = document.createElement('span');
-      row4Col2Span.classList.add('form-control');
-      row4Col2Span.innerText = formatDate(data.guidePlanning.guide_planning_end_date);
-      row4Col2.appendChild(row4Col2Span);
-      
-      var row4Col3 = document.createElement('div');
-      row4Col3.classList.add('col');
-      row4.appendChild(row4Col3);
-      
-      var row4Col3Span = document.createElement('span');
-      row4Col3Span.classList.add('form-control');
-      row4Col3Span.innerText = data.guidePlanning.guide_planning_price +'원' ;
-      row4Col3.appendChild(row4Col3Span);
-
-      // 다섯 번째 row
-      var row5 = document.createElement('div');
-      row5.classList.add('row');
-      row5.classList.add('mt-4');
-      col1Div.appendChild(row5);
-
-      var row5Col1 = document.createElement('div');
-      row5Col1.classList.add('col');
-      row5.appendChild(row5Col1);
-
-      var row5Col1Icon = document.createElement('i');
-      row5Col1Icon.classList.add('bi');
-      row5Col1Icon.classList.add('bi-pencil-square');
-      row5Col1Icon.classList.add('me-1');
-      row5Col1.appendChild(row5Col1Icon);
-
-      var row5Col1Span = document.createElement('span');
-      row5Col1Span.innerText = '신청 코멘트';
-      row5Col1.appendChild(row5Col1Span);
-
-      var row5Col2 = document.createElement('div');
-      row5Col2.classList.add('col-12');
-      row5Col2.classList.add('mt-1');
-      row5.appendChild(row5Col2);
-
-      var formGroupDiv = document.createElement('div');
-      formGroupDiv.classList.add('form-group');
-      formGroupDiv.style.position = 'relative';
-
-      // 폼 생성
-      var form = document.createElement('form');
-      form.setAttribute('method', 'POST');
-      form.setAttribute('action',
-            './plan/travelApplicationProcess?guide_planning_id='
-                  + data.guidePlanning.guide_planning_id);
-
-      // textarea 생성
-      var textarea = document.createElement('textarea');
-      textarea.classList.add('form-control');
-      textarea.placeholder = '작성...';
-      textarea.id = 'floatingTextarea2';
-      textarea.name = 'guide_planning_application_co';
-      textarea.style.height = '100px';
-      textarea.style.resize = 'none';
-
-      // "신청" 버튼 생성
-      var submitButton = document.createElement('button');
-      submitButton.type = 'submit';
-      submitButton.classList.add('text-secondary');
-      submitButton.classList.add('opacity-75');
-      submitButton.classList.add('btn');
-      submitButton.classList.add('btn-link');
-      submitButton.style.textDecoration = 'none';
-      submitButton.style.position = 'absolute';
-      submitButton.style.bottom = '5px';
-      submitButton.style.right = '5px';
-      submitButton.innerText = '신청';
-
-      // textarea와 버튼을 폼에 추가
-      form.appendChild(textarea);
-      form.appendChild(submitButton);
-
-      formGroupDiv.appendChild(form);
-
-      var label = document.createElement('label');
-      label.setAttribute('for', 'floatingTextarea2');
-      label.innerText = 'Comments';
-
-      row5Col2.appendChild(formGroupDiv);
-
-      // 모달 요소 구성
-      modalHeaderDiv.appendChild(modalTitleH1);
-      modalHeaderDiv.appendChild(closeButton);
-
-      modalContentDiv.appendChild(modalHeaderDiv);
-      modalContentDiv.appendChild(modalBodyDiv);
-
-      modalDialogDiv.appendChild(modalContentDiv);
-
-      modalDiv.appendChild(modalDialogDiv);
-
-      // 모달을 추가할 요소 찾기 (예시로는 body로 가정)
-      var targetElement = document.body;
-
-      // 모달 추가
-      targetElement.appendChild(modalDiv);
-   }
 
    function formatDate(timestamp) {
 	   const startDate = timestamp;
