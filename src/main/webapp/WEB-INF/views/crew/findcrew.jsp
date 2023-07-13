@@ -146,6 +146,7 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
                 $.ajax({
                     url: "/travel/crew/searchCrew",
                     type: "POST",
+                    contentType: "application/json",
                     data: JSON.stringify({
     	                "searchCrew": searchCrew
     	            }),
@@ -228,7 +229,46 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
 
 							</c:when>
 							<c:when test="${!empty crewDto && !empty applied}">
-
+								<div class="card-body ">
+	                                <div class="row">
+	                                    <div class="col-3">
+	                                        <img src="/uploadFiles/crewFiles/crewthumbnail/${crewDto.crew_thumbnail }" width="100px" height="100px">
+	                                    </div>
+	                                    <div class="col">
+	                                        <div class="row crewname">
+	                                            ${crewDto.crew_name }
+	                                        </div>
+	                                        <div class="row">
+	                                            ${crewDto.crew_desc }
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <hr>
+	                                <div class="row">
+	                                    <div class="col-4 text-secondary">크루마스터</div>
+	                                    <div class="col">${master }</div>
+	                                </div>
+	                                <div class="row">
+	                                    <div class="col-4 text-secondary">인원수</div>
+	                                    <div class="col">${crewamount } / 20</div>
+	                                </div>
+	                                <div class="row">
+	                                    <div class="col-4 text-secondary">가입일자</div>
+	                                    <div class="col">2023.07.13.</div>
+	                                </div>
+	                                <div class="row">
+	                                    <div class="col-4 text-secondary">나의 직위</div>
+	                                    <div class="col">${myGrade }</div>
+	                                </div>
+	                                <div class="row">
+	                                    <div class="col-4 text-secondary">나의 기여포인트</div>
+	                                    <div class="col">${myPoint }</div>
+	                                </div>
+	                                <div class="row mt-3">
+	                                    <input type="hidden" id="crew_domain" value="${crewDto.crew_domain }">
+	                                    <button class="btn form-control" id="opencrewhome">크루 홈 이동</button>
+	                                </div>
+	                            </div>
 							</c:when>
 							<c:otherwise>
                             <div class="card-body ">
@@ -340,6 +380,7 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
 				<h1>전체 크루 리스트</h1>
 			</div>
 			<div class="col text-end">
+			
 				<input type="text" class="form-control searchbar nonboarder" placeholder="크루명으로 검색" id="searchCrew">
 			</div>
 		</div>

@@ -76,8 +76,7 @@ public class CrewController {
     
     @RequestMapping("/searchCrew")
     public @ResponseBody List<Map<String, Object>> searchCrew(@RequestBody Map<String, String> requestBody) {
-    	System.out.println("aaaa");
-    	return crewService.getcrewsearchresult(requestBody.get("searchWord"));
+    	return crewService.getcrewsearchresult(requestBody.get("searchCrew"));
     }
     
 	@RequestMapping("/crewhome/{crew_domain}")

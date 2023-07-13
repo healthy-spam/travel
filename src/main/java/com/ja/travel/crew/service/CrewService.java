@@ -46,8 +46,20 @@ public class CrewService {
 			model.addAttribute("master", crewMapper.getUserNameById(crewDto.getMaster_id()));
 			model.addAttribute("myPoint", crewMapper.getMyPointByCrewMemberId(crewMemberDto.getCrew_member_id())== null ? 0 : crewMapper.getMyPointByCrewMemberId(crewMemberDto.getCrew_member_id()));
 			model.addAttribute("crewThumbnail", crewDto.getCrew_thumbnail());
-		} catch (Exception e) {
-			// TODO: handle exception
+		} catch (Exception e) { 
+			try { //가입신청한 멤버일 경우
+				CrewMemberDto crewMemberDto = crewMapper.getAppliedMemberInfo(userDto.getUser_id());
+				//가입신청한 크루 정보
+				CrewDto crewDto = crewMapper.getCrewDtoByCrewDomain(crewMemberDto.getCrew_domain());
+				model.addAttribute("crewDto", crewDto);
+				model.addAttribute("crewamount", Integer.toString(crewMapper.getCrewMemberListByCrewDomain(crewDto.getCrew_domain()).size()));
+				//나의 가입신청 정보
+				model.addAttribute("crewMemberDto", crewMemberDto);
+				
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+			
 		}
 		
 		model.addAttribute("crewList", getallcrewlist());
@@ -112,7 +124,6 @@ public class CrewService {
 
 
 	
-	//크루 홈 불러오기!!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@!!!!!!!!!!!!!!
 	public String crewhome(String crew_domain, HttpSession session, Model model) {
 		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
 		if(userDto==null) {
@@ -581,7 +592,7 @@ public class CrewService {
 
 	public Boolean checkcrewname(String crew_name) {
 		Integer get = crewMapper.checkcrewname(crew_name);
-		if(get==null) {
+		if(get==0) {
 			return true;
 		}
 			return false;
@@ -590,7 +601,7 @@ public class CrewService {
 
 	public Boolean checkcrewdomain(String crew_domain) {
 		Integer get = crewMapper.checkcrewdomain(crew_domain);
-		if(get==null) {
+		if(get==0) {
 			return true;
 		}
 			return false;
