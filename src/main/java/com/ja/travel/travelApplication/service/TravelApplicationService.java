@@ -14,6 +14,7 @@ import com.ja.travel.dto.PlanDayDto;
 import com.ja.travel.dto.PlanDto;
 import com.ja.travel.dto.PlanPlaceDto;
 import com.ja.travel.dto.PlanningApplicationDto;
+import com.ja.travel.dto.PlanningChatDto;
 import com.ja.travel.dto.PlanningComment;
 import com.ja.travel.dto.PlanningCommentLove;
 import com.ja.travel.dto.PlanningDto;
@@ -49,15 +50,15 @@ public class TravelApplicationService {
 		return userInfo;
 	}
 	
-//	public void planningApplicationParty(HttpSession session, PlanningApplicationDto planningApplicationDto) {
-//		planningApplicationDto.setUser_id(getSessionUserInfo(session).getUser_id());
-//		PlanningApplicationDto applicationStatus = travelApplicationSqlMapper.getApplicationStatus(planningApplicationDto);
-//
-//		if (applicationStatus == null) {
-//			travelApplicationSqlMapper.insertPlanningApplicationParty(planningApplicationDto);
-//		}
-//	}
-
+	public void planningApplicationParty(HttpSession session, PlanningApplicationDto planningApplicationDto) {
+		planningApplicationDto.setUser_id(getSessionUserInfo(session).getUser_id());
+		PlanningApplicationDto applicationStatus = travelApplicationSqlMapper.getApplicationStatus(planningApplicationDto);
+	
+		if (applicationStatus == null) {
+			travelApplicationSqlMapper.insertPlanningApplicationParty(planningApplicationDto);
+		}
+	}
+	
 //	public Map<String, Object> updateApplicationaStatusByUser(PlanningApplicationDto planningApplicationDto,
 //			String value) {
 //		if (value.equals("수락")) {
@@ -65,16 +66,16 @@ public class TravelApplicationService {
 //		} else {
 //			travelApplicationSqlMapper.refusalApplicationaStatusByUser(planningApplicationDto);
 //		}
-//
+//	
 //		PlanningApplicationDto planningStatus = travelApplicationSqlMapper.getApplicationStatus(planningApplicationDto);
 //		PlanningDto planning = travelApplicationSqlMapper.getPlanningByPlanningId(planningStatus.getPlanning_id());
 //		List<PlanningApplicationDto> count = travelApplicationSqlMapper.getPlanningAcceptCountByPlanningId(planning.getPlanning_id());
-//
+//	
 //		Map<String, Object> map = new HashMap<>();
 //		map.put("planningStatus", planningStatus);
 //		map.put("planning", planning);
 //		map.put("planningAcceptCount", count);
-//
+//	
 //		return map;
 //	}
 
@@ -186,6 +187,12 @@ public class TravelApplicationService {
 		
 		return resultMap;
 	}
+	
+	public List<UserDto> getCompanyList(int planning_id) {
+		List<UserDto> planningApplicationList = travelApplicationSqlMapper.getPlanningAcceptCountByPlanningId(planning_id);
+		
+		return planningApplicationList;
+	}
 
 	public List<Map<String, Object>> getCommentList(int planning_id, HttpSession session) {
 		List<PlanningComment> planningCommentList = travelApplicationSqlMapper.getCommentList(planning_id);
@@ -249,5 +256,15 @@ public class TravelApplicationService {
 		} else {
 			travelApplicationSqlMapper.addLike(planningCommentLove);
 		}
+	}
+
+	public void insertMessage(String message) {
+		PlanningChatDto planningChatDto = new PlanningChatDto();
+		planningChatDto.setChat_message(message);
+		planningChatDto.setPlanning_application_id(0);
+//		SELECT * FROM planning_application
+//		INNER JOIN planning_chat on planning_application.planning_application_id = planning_chat.planning_application_id
+//		WHERE planning_id = 6
+//		AND planning_member_status = '수락';
 	}
 }

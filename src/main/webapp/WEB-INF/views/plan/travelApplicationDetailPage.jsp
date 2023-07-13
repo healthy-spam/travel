@@ -175,16 +175,45 @@
 	}
 </script>
 <script type="text/javascript">
+	function getCompanyList() {
+
+		const xhr = new XMLHttpRequest();
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				const response = JSON.parse(xhr.responseText);
+				
+				var sessionUser = '${sessionuser.user_id}';
+				
+				if (response.companyList != null) {
+					for (let i in response.companyList) {
+						if (response.companyList[i].user_id == sessionUser) {
+							var chat = document.querySelector('.chat');
+							chat.style.display = 'block';
+						}
+					}
+				}
+			}
+		}
+		
+		//post
+		xhr.open("post", "./getCompanyList");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send("planning_id="+planning_id);
+	}
+</script>
+<script type="text/javascript">
 	document.addEventListener('DOMContentLoaded', function() {
 		initializeMap();
 		getAddresList();
 		getCommentList();
+		getCompanyList();
 		
 		var isDown = false;
 		var startX;
 		var scrollLeft;
 		var userListContainer = document.querySelector('.user-list-container');
-
+		
 		userListContainer.addEventListener('mousedown', function(e) {
 			isDown = true;
 			startX = e.pageX - userListContainer.offsetLeft;
@@ -251,8 +280,8 @@
 			chatBoxInRow1.className = 'row';
 			
 			var chatBoxInCol1 = document.createElement('div');
-			chatBoxInCol1.className = 'col mt-1 mx-1';
-			chatBoxInCol1.innerText = '모든대화참여자';
+			chatBoxInCol1.className = 'col mt-1 mx-1 d-flex justify-content-center';
+			chatBoxInCol1.innerText = '[동행] ' + '${map.planningDto.planning_title}';
 			
 			var chatBoxInRow2 = document.createElement('div');
 			chatBoxInRow2.className = 'row';
@@ -266,11 +295,11 @@
 			
 			var chatBoxInCol3 = document.createElement('div');
 			chatBoxInCol3.className = 'col mt-1 mx-1';
+			chatBoxInCol3.style.padding = '0 20px 0 20px';
 			
 			// 부모 요소 생성
 			var inputGroup = document.createElement('div');
 			inputGroup.classList.add('input-group');
-			inputGroup.style.margin = '0 10px 0 10px';
 			
 			// 입력 필드 생성
 			var input = document.createElement('input');
@@ -279,6 +308,13 @@
 			input.setAttribute('placeholder', "메세지를 입력해주세요");
 			input.style.borderRight = 'none';
 			inputGroup.appendChild(input);
+			input.addEventListener('keypress', function(e) {
+			    // Enter 키가 눌렸는지 확인
+			    if (e.key === 'Enter') {
+			        // Enter 키를 누르면 버튼 클릭 이벤트를 발생시킴
+			        button.click();
+			    }
+			});
 
 			// 버튼 생성
 			var button = document.createElement('button');
@@ -288,6 +324,21 @@
 			button.style.border = '1px solid lightgrey';
 			button.style.borderRadius = '0 0.375rem 0.375rem 0';
 			button.style.width = '50px';
+			// 버튼 클릭 시 동작 추가
+			button.addEventListener('click', function() {
+			    var message = input.value;
+			    insertMessage(message);
+// 			    // 메시지를 표시할 새로운 div 요소 생성
+// 			    var messageDiv = document.createElement('div');
+// 			    // div에 메시지 내용 추가
+// 			    messageDiv.textContent = message;
+// 			    // 메시지를 chatBox에 추가
+// 			    chatBoxInCol2.appendChild(messageDiv);
+			    // 입력 필드 초기화
+			    
+			    input.value = '';
+			});
+			
 			inputGroup.appendChild(button);
 			chatBoxInCol3.appendChild(inputGroup);
 			
@@ -312,6 +363,39 @@
 			}, 300); // Must match the duration of the transition
 		}
 	};
+</script>
+<script type="text/javascript">
+	function insertMessage(message) {
+	
+		const xhr = new XMLHttpRequest();
+	
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				const response = JSON.parse(xhr.responseText);
+				// js 작업//
+			}
+		}
+		//post
+		xhr.open("post", "./insertMessage");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send("message="+message);
+	}
+
+	function getChatList() {
+
+		const xhr = new XMLHttpRequest();
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				const response = JSON.parse(xhr.responseText);
+				// js 작업//
+			}
+		}
+		//post
+		xhr.open("post", "./getChatList");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send("");
+	}
 </script>
 <script type="text/javascript">
 	function getAddresList() {
@@ -486,6 +570,8 @@
 	justify-content: center;
 	align-items: center;
 	bottom: -1px;
+	right: 20px;
+	display: none;
 }
 
 #chat-container {
@@ -726,7 +812,30 @@
 											<div class="mb-1" style="font-weight: 500;">
 												<i class="bi bi-exclamation-circle-fill" style="color: #DB4465;"></i> 지금 동행을 신청해보세요!
 											</div>
-											<button class="commit">동행 신청하기</button>
+											<button class="commit" type="button" data-bs-toggle="modal" data-bs-target="#modal">동행 신청하기</button>
+											
+											<!-- 모달 창 -->
+											<div class="modal fade" id="modal">
+												<div class="modal-dialog modal-dialog-centered">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h5 class="modal-title">동행 신청하기</h5>
+															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+														</div>
+														<form action="./travelApplicationProcess?planning_id=${map.planningDto.planning_id}" method="post">
+															<div class="modal-body">
+																<div class="form-floating">
+																	<textarea class="form-control" placeholder="#" id="floatingTextarea" style="resize: none; height: 100px;" name="planning_application_content"></textarea>
+																	<label for="floatingTextarea">신청 내용</label>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<button class="btn">신청하기</button>
+															</div>
+														</form>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="row" style="margin-top: 40px;">

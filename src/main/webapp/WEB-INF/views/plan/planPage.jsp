@@ -347,33 +347,38 @@ function init() {
 }
 
 function setDayButtonEvents() {
-	let buttons = document.getElementsByClassName('day-btn');
+    let buttons = document.getElementsByClassName('day-btn');
 
-	for (let i = 0; i < buttons.length; i++) {
+    for (let i = 0; i < buttons.length; i++) {
 
-		buttons[i].addEventListener('click', function() {
-			// 모든 버튼을 원래 색상으로 되돌림
-			for (let j = 0; j < buttons.length; j++) {
-				buttons[j].style.background = '';
-				buttons[j].style.color = '';
-				
-				// Remove icon from all buttons
-				let icon = buttons[j].getElementsByClassName('bi bi-send')[0];
-				if (icon) {
-					buttons[j].removeChild(icon);
-				}
-			}
+        buttons[i].addEventListener('click', function() {
+            // 모든 버튼을 원래 색상으로 되돌림
+            for (let j = 0; j < buttons.length; j++) {
+                buttons[j].style.background = '';
+                buttons[j].style.color = '';
+                
+                // Remove icon from all buttons
+                let icon = buttons[j].getElementsByClassName('bi bi-send')[0];
+                if (icon) {
+                    buttons[j].removeChild(icon);
+                }
+            }
 
-			// 클릭한 버튼의 색상을 변경하고 아이콘을 추가
-			this.style.background = 'linear-gradient(to right, #ff356b, #f41b55, #ff1c59, #ff0044)';
-			this.style.color = 'white';
-			
-			// Add icon to the clicked button
-			let iconHtml = document.createElement('i');
-			iconHtml.className = 'bi bi-send';
-			this.prepend(iconHtml);
-		});
-	}
+            // 클릭한 버튼의 색상을 변경하고 아이콘을 추가
+            this.style.background = 'linear-gradient(to right, #ff356b, #f41b55, #ff1c59, #ff0044)';
+            this.style.color = 'white';
+            
+            // Add icon to the clicked button
+            let iconHtml = document.createElement('i');
+            iconHtml.className = 'bi bi-send';
+            this.prepend(iconHtml);
+        });
+
+        // 페이지 로드 시 첫 번째 버튼을 "클릭된" 상태로 만듭니다.
+        if (i === 0) {
+            buttons[i].click();
+        }
+    }
 }
 
 function setScrollEvents() {
@@ -510,20 +515,8 @@ window.addEventListener("DOMContentLoaded", () => {
 	<div class="container">
 
 		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-	
-		<div class="row mt-1 ">
-			<div class="col-12 p-0">
-				<p class="m-0">Let's Go!</p>
-			</div>
-		</div>
-	
-		<div class="row ">
-			<div class="col-12 p-0">
-				<p class="h2">다른 여행자들의 일정을 참고해 나만의 여행을 계획해보세요!</p>
-			</div>
-		</div>
 	 
-		<div class="row mt-3" style="background-image: url('/travel/resources/img/plan7.PNG'); background-size: 100%; min-height: 400px; width: auto; background-repeat: no-repeat;">
+		<div class="row mt-3" style="background-image: url('/travel/resources/img/plan7.PNG'); background-size: 100%; min-height: 400px; width: auto; background-repeat: no-repeat; border-radius: 13px">
 				
 			
 	
@@ -555,8 +548,14 @@ window.addEventListener("DOMContentLoaded", () => {
 		<div class="row mt-3">
 		    
 		    <div class="col">
-		        <input onchange="planSearch()" type="text" class="form-control" id="plan_search_text_box">
-		    </div>
+			    <div class="input-group border" style="border-radius: 7px;">
+			        <span class="input-group-text" id="basic-addon1" style="background-color: white; border: 0;">
+			            <i class="bi bi-search"></i>
+			        </span>
+			        <input type="text" class="form-control" placeholder="어디로 여행가시나요?" aria-label="Search" aria-describedby="basic-addon1" onchange="planSearch()" id="plan_search_text_box" onfocus="this.placeholder = ''" onblur="this.placeholder = '어디로 여행가시나요?'" style="border: 0;">
+			    </div>
+			</div>
+
 		    
 		    <div class="col-2">
 		        <select onchange="planSearch()" class="form-select" id="plan_search_select_box">
@@ -575,10 +574,10 @@ window.addEventListener("DOMContentLoaded", () => {
 	      
 			<div class="col-3 mt-2 m-0" id="planCardBox">
 	            
-				<div class="card h-100 mt-1 shadow-lg" style="border-radius: 15px; border: none;"  onclick="" >
+				<div class="card h-100 mt-1" style="border-radius: 15px; border: none;"  onclick="" >
 					<div class="text-center">
 						
-						<img src="" class="card-img-top plan-thumbnail img-fluid" style=" width: 380px; height: 250px;">
+						<img src="" class="card-img-top plan-thumbnail img-fluid" style=" width: 400px; height: 250px;">
 						
 					</div>
 					
@@ -602,53 +601,118 @@ window.addEventListener("DOMContentLoaded", () => {
 							<div class="col-12">
 							    <div class="row scrollable-div" style="display: flex; overflow-x: auto; white-space: nowrap;">
 									<div class="col">
-										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">1Day</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">2Day</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">3Day</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">4Day</button>
-										<!-- 추가 버튼들 -->
-										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">5Day</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">6Day</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">7Day</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">8Day</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">9Day</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">10Day</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">11Day</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-weight: bolder;">12Day</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day1</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day2</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day3</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day4</button>										
+										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day5</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day6</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day7</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day8</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day9</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day10</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day11</button>
+										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day12</button>
 									</div>
 								</div>
 							</div>
 						</div>	
 	                  	
-	                  	<div class="row mt-3 scrollable-div-landmark" style="overflow-x: auto; white-space: nowrap;">
-							<div class="col-12">
-								<div class="bolder">
-									<div class="row ">
-																				
-										<div class="col">
-											<div class="row">
-												<div class="col-auto">
-													<img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
+						<div class="row mt-3 scrollable-div-landmark" style="overflow-x: auto; white-space: nowrap;">
+							<div class="d-flex">
+
+								<div class="col d-flex mx-1">
+									<div class="row">
+										<div class="col-auto">
+											<img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
+										</div>
+									</div>
+									<div class="row">										
+										<div class="flex-col mx-2">
+											<div class="row mt-1">
+												<div class="col">
+													<span style="font-weight: bolder; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 롯데타워</span>                                   
 												</div>
-												<div class="col-1 p-0">
-													<div class="row">
-														<div class="col">
-															<span style="font-weight: bolder; font-size: 13px;">롯데타워</span>
-														</div>
-														<div class="col">
-															<span style="font-size: 11px; ">한국에서 제일 높은 빌딩</span>
-														</div>
-													</div>
+											</div>
+											<div class="row mt-2">
+												<div class="col">
+													<span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 서울 송파구 올림픽로 300</span>
 												</div>
 											</div>
 										</div>
-											
 									</div>
 								</div>
+
+								<div class="col d-flex mx-1">
+									<div class="row">
+										<div class="col-auto">
+											<img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
+										</div>
+									</div>
+									<div class="row">										
+										<div class="flex-col mx-2">
+											<div class="row mt-1">
+												<div class="col">
+													<span style="font-weight: bolder; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 롯데타워</span>                                   
+												</div>
+											</div>
+											<div class="row mt-2">
+												<div class="col">
+													<span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 서울 송파구 올림픽로 300</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col d-flex mx-1">
+									<div class="row">
+										<div class="col-auto">
+											<img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
+										</div>
+									</div>
+									<div class="row">										
+										<div class="flex-col mx-2">
+											<div class="row mt-1">
+												<div class="col">
+													<span style="font-weight: bolder; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 롯데타워</span>                                   
+												</div>
+											</div>
+											<div class="row mt-2">
+												<div class="col">
+													<span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 서울 송파구 올림픽로 300</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col d-flex mx-1">
+									<div class="row">
+										<div class="col-auto">
+											<img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
+										</div>
+									</div>
+									<div class="row">										
+										<div class="flex-col mx-2">
+											<div class="row mt-1">
+												<div class="col">
+													<span style="font-weight: bolder; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 롯데타워</span>                                   
+												</div>
+											</div>
+											<div class="row mt-2">
+												<div class="col">
+													<span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 서울 송파구 올림픽로 300</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
 							</div>
 						</div>
 	                  	
-	                  	<div class="row mt-2">
+	                  	<div class="row mt-3">
 							<div class="col-12">
 								<div class="row">
 									<div class="col d-grid">
