@@ -16,10 +16,10 @@
 <script>
 
 function submitModal(){
-	
-	const formData = new FormData();
-	
-	 // 플래너 제목, 설명, 썸네일, 공개 여부 값 가져오기
+   
+   const formData = new FormData();
+   
+    // 플래너 제목, 설명, 썸네일, 공개 여부 값 가져오기
     const planTitle = document.getElementById('plan_title').value;
     const planContent = document.getElementById('plan_content').value;
     const planThumbnail = document.getElementById('plan_thumbnail').files[0];
@@ -36,22 +36,22 @@ function submitModal(){
     
     
     xhr.onreadystatechange = function(){
-		if(xhr.readyState == 4 && xhr.status == 200){
-			const response = JSON.parse(xhr.responseText);
-			
-			const redirectUrl = response.redirectUrl;
-			
-			if(redirectUrl){
-				window.location.href = redirectUrl;
-			}else {
-				console.log('리다이렉트할 URL이 없습니다.');
-			}
-			
-			// js 작업..
-		}else {
-			console.log('에이잭스 요청 실패')
-		}
-	}
+      if(xhr.readyState == 4 && xhr.status == 200){
+         const response = JSON.parse(xhr.responseText);
+         
+         const redirectUrl = response.redirectUrl;
+         
+         if(redirectUrl){
+            window.location.href = redirectUrl;
+         }else {
+            console.log('리다이렉트할 URL이 없습니다.');
+         }
+         
+         // js 작업..
+      }else {
+         console.log('에이잭스 요청 실패')
+      }
+   }
 }
 
 function createModal() {
@@ -116,7 +116,7 @@ function createModal() {
     col1Div.classList.add('col');
     rowDiv.appendChild(col1Div);
 
-	//플랜 제목
+   //플랜 제목
     var row0 = document.createElement('div');
     row0.classList.add('row');
     row0.classList.add('mt');
@@ -200,22 +200,22 @@ function createModal() {
     row2Col1Span.setAttribute('accept', 'image/*');
     row2Col1.appendChild(row2Col1Span);
     
-	//등록 버튼
-	var submitButton = document.createElement('button');
-	submitButton.type = 'submit';
-	submitButton.classList.add('btn');
-	submitButton.classList.add('btn-primary');
-	submitButton.style.position = 'absolute';
-	submitButton.style.bottom = '10px';
-	submitButton.style.right = '10px';
-	submitButton.style.background = 'navy';
-	submitButton.style.color = 'white';
-	submitButton.style.textDecoration = 'none';
-	submitButton.style.border = 'none';
-	submitButton.innerText = '등록';
-	submitButton.setAttribute('onclick', 'submitModal()');
-	col1Div.appendChild(submitButton);
-	
+   //등록 버튼
+   var submitButton = document.createElement('button');
+   submitButton.type = 'submit';
+   submitButton.classList.add('btn');
+   submitButton.classList.add('btn-primary');
+   submitButton.style.position = 'absolute';
+   submitButton.style.bottom = '10px';
+   submitButton.style.right = '10px';
+   submitButton.style.background = 'navy';
+   submitButton.style.color = 'white';
+   submitButton.style.textDecoration = 'none';
+   submitButton.style.border = 'none';
+   submitButton.innerText = '등록';
+   submitButton.setAttribute('onclick', 'submitModal()');
+   col1Div.appendChild(submitButton);
+   
     // 모달 요소 구성
     modalHeaderDiv.appendChild(modalTitleH1);
     modalHeaderDiv.appendChild(closeButton);
@@ -250,7 +250,7 @@ function removeModal() {
 // 내가 작성한 플랜 목록
 function myPlanList() {
     const xhr = new XMLHttpRequest();
-	
+   
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
@@ -262,7 +262,7 @@ function myPlanList() {
                 const planCardBoxOriginal = document.getElementById('planCardBox');
                 
                 planPublicList.innerHTML = "";
-				
+            
                 for(let plan of response.planList) {
 
                     // 플랜이 userId가 같으면 카드를 생성
@@ -313,7 +313,7 @@ function planSearch() {
             while (planPublicList.firstChild) {
                 planPublicList.removeChild(planPublicList.firstChild);
             }
-			
+         
             
             for(let plan of response.planSearchList) {
                 if(plan.planDto.plan_disclosure_status === '공개') {
@@ -323,8 +323,8 @@ function planSearch() {
                     planCardBox.querySelector(".plan-thumbnail").src = "/uploadFiles/" + plan.planDto.plan_thumbnail;
                     planCardBox.querySelector(".plan-title").innerText = plan.planDto.plan_title; 
                     //planCardBox.querySelector(".plan-content").innerText = plan.planDto.plan_content;
-                    //planCardBox.querySelector(".user-name").innerText = plan.userDto.user_nickname;
-                    //planCardBox.querySelector(".user-img").src = "/uploadFiles/profileImage/"+ plan.userDto.user_image;
+                    planCardBox.querySelector(".user-name").innerText = plan.userDto.user_nickname;
+                    planCardBox.querySelector(".user-img").src = "/uploadFiles/profileImage/"+ plan.userDto.user_image;
                     planCardBox.querySelector(".readPlan").href = "./readPlanPage?id="+ plan.planDto.plan_id;
                     
                     planPublicList.appendChild(planCardBox);
@@ -341,9 +341,9 @@ function planSearch() {
 
 //Day버튼 시작
 function init() {
-	setDayButtonEvents();
-	setScrollEvents();
-	setLandmarkScrollEvents();
+   setDayButtonEvents();
+   setScrollEvents();
+   setLandmarkScrollEvents();
 }
 
 function setDayButtonEvents() {
@@ -382,69 +382,69 @@ function setDayButtonEvents() {
 }
 
 function setScrollEvents() {
-	var scrollableDiv = document.querySelector('.scrollable-div');
-	var pos = { left: 0, x: 0 };
+   var scrollableDiv = document.querySelector('.scrollable-div');
+   var pos = { left: 0, x: 0 };
 
-	scrollableDiv.addEventListener('mousedown', function(e) {
-		e.preventDefault();
-		pos = { left: scrollableDiv.scrollLeft, x: e.clientX };
-		scrollableDiv.style.cursor = 'grabbing';
-		scrollableDiv.style.userSelect = 'none';
+   scrollableDiv.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      pos = { left: scrollableDiv.scrollLeft, x: e.clientX };
+      scrollableDiv.style.cursor = 'grabbing';
+      scrollableDiv.style.userSelect = 'none';
 
-		scrollableDiv.addEventListener('mousemove', moveScroll);
-	});
+      scrollableDiv.addEventListener('mousemove', moveScroll);
+   });
 
-	scrollableDiv.addEventListener('mouseup', stopScroll);
-	scrollableDiv.addEventListener('mouseout', stopScroll);
+   scrollableDiv.addEventListener('mouseup', stopScroll);
+   scrollableDiv.addEventListener('mouseout', stopScroll);
 
-	function moveScroll(e) {
-		e.preventDefault();
-		if (pos) {
-			var dx = e.clientX - pos.x;
-			scrollableDiv.scrollLeft = pos.left - dx;
-		}
-	}
+   function moveScroll(e) {
+      e.preventDefault();
+      if (pos) {
+         var dx = e.clientX - pos.x;
+         scrollableDiv.scrollLeft = pos.left - dx;
+      }
+   }
 
-	function stopScroll() {
-		scrollableDiv.style.cursor = 'grab';
-		scrollableDiv.style.removeProperty('user-select');
-		scrollableDiv.removeEventListener('mousemove', moveScroll);
-		pos = null;
-	}
+   function stopScroll() {
+      scrollableDiv.style.cursor = 'grab';
+      scrollableDiv.style.removeProperty('user-select');
+      scrollableDiv.removeEventListener('mousemove', moveScroll);
+      pos = null;
+   }
 }
 //Day버튼 끝
 
 //day별 명소 스크롤 시작
 function setLandmarkScrollEvents() {
-	var scrollableDiv = document.querySelector('.scrollable-div-landmark');
-	var pos = { left: 0, x: 0 };
+   var scrollableDiv = document.querySelector('.scrollable-div-landmark');
+   var pos = { left: 0, x: 0 };
 
-	scrollableDiv.addEventListener('mousedown', function(e) {
-		e.preventDefault();
-		pos = { left: scrollableDiv.scrollLeft, x: e.clientX };
-		scrollableDiv.style.cursor = 'grabbing';
-		scrollableDiv.style.userSelect = 'none';
+   scrollableDiv.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      pos = { left: scrollableDiv.scrollLeft, x: e.clientX };
+      scrollableDiv.style.cursor = 'grabbing';
+      scrollableDiv.style.userSelect = 'none';
 
-		scrollableDiv.addEventListener('mousemove', moveScroll);
-	});
+      scrollableDiv.addEventListener('mousemove', moveScroll);
+   });
 
-	scrollableDiv.addEventListener('mouseup', stopScroll);
-	scrollableDiv.addEventListener('mouseout', stopScroll);
+   scrollableDiv.addEventListener('mouseup', stopScroll);
+   scrollableDiv.addEventListener('mouseout', stopScroll);
 
-	function moveScroll(e) {
-		e.preventDefault();
-		if (pos) {
-			var dx = e.clientX - pos.x;
-			scrollableDiv.scrollLeft = pos.left - dx;
-		}
-	}
+   function moveScroll(e) {
+      e.preventDefault();
+      if (pos) {
+         var dx = e.clientX - pos.x;
+         scrollableDiv.scrollLeft = pos.left - dx;
+      }
+   }
 
-	function stopScroll() {
-		scrollableDiv.style.cursor = 'grab';
-		scrollableDiv.style.removeProperty('user-select');
-		scrollableDiv.removeEventListener('mousemove', moveScroll);
-		pos = null;
-	}
+   function stopScroll() {
+      scrollableDiv.style.cursor = 'grab';
+      scrollableDiv.style.removeProperty('user-select');
+      scrollableDiv.removeEventListener('mousemove', moveScroll);
+      pos = null;
+   }
 }
 
 //day별 명소 스크롤 끝
@@ -458,285 +458,409 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <style type="text/css">
-	
-	.btn-l{
- 	width:200px;
- 	height: 40px;
- 	background: linear-gradient(to right, #f5d3df, #f5d3df, #f5d3df, #f5d3df);
- 	border-radius: 10px;
+   
+/*    .btn-l{
+    width:200px;
+    height: 40px;
+    background: linear-gradient(to right, #f5d3df, #f5d3df, #f5d3df, #f5d3df);
+    border-radius: 10px;
     border: solid hidden;
     color: rgb(255, 255, 255);
     font-weight: bold;
     font-size: 15px;
- 	margin-top : 200px;
- 	/* background-color: #f5d3df */
- 	}
- 	
- 	.reserveButton {
-        width: 200px;
-        height: 45px;
-        background: linear-gradient(to right, #ff335f, #e31c41, #ff1843, #e7104a);
-        border-radius: 15px;
-        border: solid hidden;
-        color: rgb(255, 255, 255);
-        font-weight: bold;
-        font-size: 15px;
-        margin-top : 10px;
+    margin-top : 200px;
+    /* background-color: #f5d3df */
+    } */
+    
+    .planTitle{
+       
+       
     }
     
-    .imgText{
-    	margin-top: 150px;
-    	color: white;
-    }
+    .imgText {
+	   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+	}
     
-    	.scrollable-div {
-    	overflow: hidden; /* 스크롤을 숨깁니다 */
-	}
+    .scrollable-div {
+       overflow: hidden; /* 스크롤을 숨깁니다 */
+   }
 
-	.scrollable-div::-webkit-scrollbar {
-	/* Chrome, Safari, Edge */
-		display: none;
-	}
+   .scrollable-div::-webkit-scrollbar {
+   /* Chrome, Safari, Edge */
+      display: none;
+   }
 
-	.scrollable-div-landmark {
-    	overflow: hidden; /* 스크롤을 숨깁니다 */
-	}
+   .scrollable-div-landmark {
+       overflow: hidden; /* 스크롤을 숨깁니다 */
+   }
 
-	.scrollable-div-landmark::-webkit-scrollbar {
-	/* Chrome, Safari, Edge */
-		display: none;
+   .scrollable-div-landmark::-webkit-scrollbar {
+   /* Chrome, Safari, Edge */
+      display: none;
+   }
+   
+   .my-button {
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 	}
 	
+	
+	
+	.my-button:active {
+	    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+	    transform: translateY(0px);
+	}
 </style>
 
 </head>
 <body >
 
-	<div class="container">
+   <div class="container">
 
-		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-	 
-		<div class="row mt-3" style="background-image: url('/travel/resources/img/plan7.PNG'); background-size: 100%; min-height: 400px; width: auto; background-repeat: no-repeat; border-radius: 13px">
-				
-			
-	
-				<div class="col">
-	
-					<div class="row">
-						<div class="col-1"></div>
-						<div class="col">
-							<p class="h2 imgText">나만의 일정을 만들어서 공유하고 떠나보세요.</p>
-						</div>
-					</div>
-	
-					<div class="row mt-3 ">
-						<div class="col-2">&nbsp;</div>
-						<div class="col">
-	
-							<a class="btn" onclick="showModal();" style="border-radius: 15px; background: linear-gradient(to right, #ff356b, #f41b55, #ff1c59, #ff0044); font-size: 20px; color: white;" >플래너 시작하기</a>
-	
-						</div>
-						<div class="col-5">&nbsp;</div>
-					</div>
-							
-				</div>
-	
-			
-	
-		</div>
-      
-		<div class="row mt-3">
-		    
-		    <div class="col">
-			    <div class="input-group border" style="border-radius: 7px;">
-			        <span class="input-group-text" id="basic-addon1" style="background-color: white; border: 0;">
-			            <i class="bi bi-search"></i>
-			        </span>
-			        <input type="text" class="form-control" placeholder="어디로 여행가시나요?" aria-label="Search" aria-describedby="basic-addon1" onchange="planSearch()" id="plan_search_text_box" onfocus="this.placeholder = ''" onblur="this.placeholder = '어디로 여행가시나요?'" style="border: 0;">
-			    </div>
-			</div>
-
-		    
-		    <div class="col-2">
-		        <select onchange="planSearch()" class="form-select" id="plan_search_select_box">
-		            <option value="">전체</option>
-		            <option value="title">제목</option>
-		            <option value="content">내용</option>
-		            <option value="titleAndContent">제목+내용</option>
-		        </select>
-		    </div>
-		    
-		    <div class="col-2"></div>
-		    
-		</div>
-   
-		<div class="row mt-2" id="planPublicList">
-	      
-			<div class="col-3 mt-2 m-0" id="planCardBox">
-	            
-				<div class="card h-100 mt-1" style="border-radius: 15px; border: none;"  onclick="" >
-					<div class="text-center">
-						
-						<img src="" class="card-img-top plan-thumbnail img-fluid" style=" width: 400px; height: 250px;">
-						
-					</div>
-					
-					<div class="card-body pt-2">
-					
-						<div class="row align-items-center">
-	                  		<div class="col-8">
-								<p class="h5 plan-title m-0" style="font-weight: bold; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
-								${map.planDto.plan_title}
-								</p>          		
-							</div>
-	                  		<div class="col text-end pe-0">
-								<i class="bi bi-bookmark-fill" style="width: 4rem; color: #ff356b;"></i>
-	                  		</div>
-	                  		<div class="col align-items-center">
-								<span style="font-size: 15px; font-weight: bolder;">1125</span>
-							</div>
-	                  	</div>	                  		         
-	                  	
-						<div class="row mt-2">					
-							<div class="col-12">
-							    <div class="row scrollable-div" style="display: flex; overflow-x: auto; white-space: nowrap;">
-									<div class="col">
-										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day1</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day2</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day3</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day4</button>										
-										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day5</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day6</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day7</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day8</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day9</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day10</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day11</button>
-										<button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day12</button>
-									</div>
-								</div>
-							</div>
-						</div>	
-	                  	
-						<div class="row mt-3 scrollable-div-landmark" style="overflow-x: auto; white-space: nowrap;">
-							<div class="d-flex">
-
-								<div class="col d-flex mx-1">
-									<div class="row">
-										<div class="col-auto">
-											<img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
-										</div>
-									</div>
-									<div class="row">										
-										<div class="flex-col mx-2">
-											<div class="row mt-1">
-												<div class="col">
-													<span style="font-weight: bolder; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 롯데타워</span>                                   
-												</div>
-											</div>
-											<div class="row mt-2">
-												<div class="col">
-													<span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 서울 송파구 올림픽로 300</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="col d-flex mx-1">
-									<div class="row">
-										<div class="col-auto">
-											<img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
-										</div>
-									</div>
-									<div class="row">										
-										<div class="flex-col mx-2">
-											<div class="row mt-1">
-												<div class="col">
-													<span style="font-weight: bolder; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 롯데타워</span>                                   
-												</div>
-											</div>
-											<div class="row mt-2">
-												<div class="col">
-													<span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 서울 송파구 올림픽로 300</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="col d-flex mx-1">
-									<div class="row">
-										<div class="col-auto">
-											<img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
-										</div>
-									</div>
-									<div class="row">										
-										<div class="flex-col mx-2">
-											<div class="row mt-1">
-												<div class="col">
-													<span style="font-weight: bolder; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 롯데타워</span>                                   
-												</div>
-											</div>
-											<div class="row mt-2">
-												<div class="col">
-													<span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 서울 송파구 올림픽로 300</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="col d-flex mx-1">
-									<div class="row">
-										<div class="col-auto">
-											<img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
-										</div>
-									</div>
-									<div class="row">										
-										<div class="flex-col mx-2">
-											<div class="row mt-1">
-												<div class="col">
-													<span style="font-weight: bolder; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 롯데타워</span>                                   
-												</div>
-											</div>
-											<div class="row mt-2">
-												<div class="col">
-													<span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"> 서울 송파구 올림픽로 300</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-							</div>
-						</div>
-	                  	
-	                  	<div class="row mt-3">
-							<div class="col-12">
-								<div class="row">
-									<div class="col d-grid">
-										<a class="btn" style="border-radius: 15px; border-color: #ff356b; border-width: 2px; color: #ff356b; font-weight: 600;" href="">
-											<i class="bi bi-bookmark" style="width: 1rem; filter: drop-shadow(0 0 1px #ff356b);"></i>일정담기
-										</a>
-									</div>
-									<div class="col d-grid">
-										<a class="btn readPlan" style="border-radius: 15px; border-color: #ff356b; border-width: 2px; color: #ff356b; font-weight: 600;" href="">
-											<i class="bi bi-list-ul" style="width: 1rem; filter: drop-shadow(0 0 1px #ff356b);"></i> 상세보기
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
-	                  		
-					</div>
-				</div>
+      <jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+    
+    <div class="row">
+    	<div class="col-12">
+    		      
+			<div class="row-auto mt-3" style="background-image: url('/travel/resources/img/plan7re.jpg'); background-size: 100%; min-height: 400px; width: auto; background-repeat: no-repeat; border-radius: 13px">
+            
+            	<div class="col-3">&nbsp;</div>   
+                        
+	            <div class="col">
+	   
+	               <div class="row planTitle">
 	               
+	                  <div class="col-1">&nbsp;</div>
+	                  
+	                  <div class="col">	                    
+	                     
+	                     <div class="row">
+	                        &nbsp;
+	                     </div>
+	                     <div class="row">
+	                        &nbsp;
+	                     </div>
+	                      <div class="row">
+	                        &nbsp;
+	                     </div>
+	                     
+	                     <div class="row">
+	                        <div class="col">
+	                           <h2 class="imgText mb-0" style="font-weight: bolder; font-size: 48px; color: white;">여행의 시작</h2>
+	                        </div>
+	                     </div>
+	                     
+	                     <div class="row mt-0">
+	                     	<div class="col">
+	                     		<h2 class="imgText" style="font-weight: bolder; font-size: 48px; color: white;">TripStation</h2>		
+	                     	</div>
+	                     </div>
+	                     <div class="row mt-3">
+	                        <div class="col">
+	                           <h3 class="m-0" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">다른 여행자들과 공유한 일정을 참조하거나</h3>
+	                        </div>
+	                     </div>
+	                     <div class="row">
+	                        <div class="col">
+	                           <h3 class="" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">당신만의 특별한 여행 계획을 세우세요.</h3>
+	                        </div>
+	                     </div>	                     	                    
+	                     
+	                  </div>
+	                  
+	                  <div class="col">
+	                  	<div class="row">&nbsp;</div>
+	                  	<div class="row">&nbsp;</div>
+	                  	<div class="row">&nbsp;</div>
+	                  	<div class="row">&nbsp;</div>
+	                  	<div class="row">&nbsp;</div>
+	                  	<div class="row">&nbsp;</div>
+	                  	<div class="row">&nbsp;</div>
+	                  	<div class="row">&nbsp;</div>
+	                  	<div class="row">&nbsp;</div>
+	                  	 <div class="row">
+	                        <div class="col-2">&nbsp;</div>
+	                        <div class="col">         
+	                           <a class="btn btn-lg d-grid align-items-center my-button" onclick="showModal();" style="border-radius: 20px; background: linear-gradient(to right, #ff356b, #f41b55, #ff1c59, #ff0044); font-size: 20px; color: white; font-weight: bolder; border: 0px;">플래너 작성하기</a>         
+	                        </div>	                        
+	                        <div class="col-4">&nbsp;</div>
+	                     </div>
+	                     <div class="row">&nbsp;</div>
+	                  </div>
+	                  
+	               </div>                        
+	                     
+	            </div>
+   
+            	<div class="col-6">&nbsp;</div>
+   
 			</div>
-	         
 		</div>
-      
+	</div>
+          
+	<div class="row mt-3">
+          
+          <div class="col-4">
+             <div class="input-group border" style="border-radius: 7px;">
+                 <span class="input-group-text" id="basic-addon1" style="background-color: white; border: 0;">
+                     <i class="bi bi-search"></i>
+                 </span>
+                 <input type="text" class="form-control" placeholder="어디로 여행가시나요?" aria-label="Search" aria-describedby="basic-addon1" onchange="planSearch()" id="plan_search_text_box" onfocus="this.placeholder = ''" onblur="this.placeholder = '어디로 여행가시나요?'" style="border: 0;">
+             </div>
+         </div>
+
+          
+          <div class="col-2">
+              <select onchange="planSearch()" class="form-select" id="plan_search_select_box">
+                  <option value="">전체</option>
+                  <option value="title">제목</option>
+                  <option value="content">내용</option>
+                  <option value="titleAndContent">제목+내용</option>
+              </select>
+          </div>
+          
+          <div class="col-2"></div>
+          
+      </div>
+   
+	<div class="row mt-2" id="planPublicList">
+         
+         <div class="col-3 mt-2 m-0" id="planCardBox">
+               
+            <div class="card h-100 mt-1 shadow-lg" style="border-radius: 15px; border: none; "  onclick="" >
+            
+				<div class="row mt-3" style="border-radius: 10px; position: absolute; ">						              
+						
+						<div class="col-1 m-1">&nbsp;</div>
+
+						<div class="col shadow-sm" style=" background-color: white; border-radius: 15px;">
+							<div class="row  align-items-center">
+								<div class="col-auto pe-0">
+									<img class="user-img border-danger-subtle " src="" style="width: 2rem; height: 2rem; border-radius: 50%;"/>
+								</div>
+								
+								<div class="col-auto">
+									<div class="row mt-0">
+										<div class="col text-center">
+											<span class="user-name" style="font-size: 13px; font-weight: bolder;">기훈</span>                        
+										</div>
+									</div>
+									<div class="row mt-0 pt-0">
+										<div class="col m-1 mt-0 ms-0 me-0" style="line-height: 15px;">
+											<span class="user-age" style="font-size: 12px; color: #e7104a; font-weight: 600; ">20대 남</span>                        
+										</div>
+									</div>
+								</div>
+
+								<div class="col d-flex align-items-center justify-content-center">                              
+								<div class="row">            
+									<div class="col-auto d-grid m-0">
+										<span class="text-center" style="border-left:1px solid #000; height: 15px;"></span>
+									</div>
+								</div>
+								</div>
+								<div class="col-auto align-items-center">
+									<i class="bi bi-calendar"></i>
+								</div>									
+								<div class="col-auto ps-0">
+									<div class="row">
+										<div class="col text-center" style="font-size: 12px;">
+											<span class="" style="font-weight: bolder;">여행기간</span>                        
+											<span class="" style="color: #e7104a; font-weight: bolder;">2일</span>                        
+										</div>																						
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-1 ">&nbsp;</div>
+
+				</div>
+            
+               <div class="text-center">
+                  <div class="row mt-1">
+                  	<div class="col">
+						<img src="" class="card-img-top plan-thumbnail img-fluid" style=" width: 450px; height: 250px;">                  	
+                  	</div>
+                  </div>
+                  
+               </div>
+               
+               <div class="card-body pt-2">
+               
+					<div class="row mt-1 align-items-center">
+						<div class="col-8">
+	                        <p class="h5 plan-title m-0" style="font-weight: bold; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
+	                        
+	                        </p>                
+						</div>
+						<div class="col text-end pe-0">
+							<i class="bi bi-bookmark-fill" style="width: 4rem; color: #ff356b;"></i>
+						</div>
+						<div class="col ps-0 align-items-center">
+							<span style="font-size: 15px; font-weight: bolder;">1125</span>
+						</div>
+					</div>                                    
+                        
+                  <div class="row mt-3">               
+                     <div class="col-12">
+                         <div class="row scrollable-div" style="display: flex; overflow-x: auto; white-space: nowrap;">
+                           <div class="col">
+                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day1</button>
+                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day2</button>
+                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day3</button>
+                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day4</button>                              
+                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day5</button>
+                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day6</button>
+                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day7</button>
+                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day8</button>
+                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day9</button>
+                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day10</button>
+                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day11</button>
+                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day12</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>   
+                        
+                  <div class="row mt-3 scrollable-div-landmark" style="overflow-x: auto; white-space: nowrap;">
+                     <div class="d-flex">
+
+                        <div class="flex-col d-flex mx-1">
+                           <div class="row">
+                              <div class="col">
+                                 <img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
+                              </div>
+                           </div>
+                           <div class="row">                              
+                              <div class="flex-col mx-2">
+                                 <div class="row mt-1">
+                                    <div class="col">
+                                       <span style="font-weight: bolder; font-size: 14px;">롯데타워</span>                                                                      
+                                    </div>
+                                 </div>
+                                 <div class="row mt-2">
+                                    <div class="col">
+                                       <span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">서울 송파구 올림픽로 300</span>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="flex-col d-flex mx-1">
+                           <div class="row">
+                              <div class="col">
+                                 <img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
+                              </div>
+                           </div>
+                           <div class="row">                              
+                              <div class="flex-col mx-2">
+                                 <div class="row mt-1">
+                                    <div class="col">
+                                       <span style="font-weight: bolder; font-size: 14px;">롯데타워</span>                                                                      
+                                    </div>
+                                 </div>
+                                 <div class="row mt-2">
+                                    <div class="col">
+                                       <span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">서울 송파구 올림픽로 300</span>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="flex-col d-flex mx-1">
+                           <div class="row">
+                              <div class="col">
+                                 <img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
+                              </div>
+                           </div>
+                           <div class="row">                              
+                              <div class="flex-col mx-2">
+                                 <div class="row mt-1">
+                                    <div class="col">
+                                       <span style="font-weight: bolder; font-size: 14px;">롯데타워</span>                                                                      
+                                    </div>
+                                 </div>
+                                 <div class="row mt-2">
+                                    <div class="col">
+                                       <span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">서울 송파구 올림픽로 300</span>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="flex-col d-flex mx-1">
+                           <div class="row">
+                              <div class="col">
+                                 <img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
+                              </div>
+                           </div>
+                           <div class="row">                              
+                              <div class="flex-col mx-2">
+                                 <div class="row mt-1">
+                                    <div class="col">
+                                       <span style="font-weight: bolder; font-size: 14px;">롯데타워</span>                                                                      
+                                    </div>
+                                 </div>
+                                 <div class="row mt-2">
+                                    <div class="col">
+                                       <span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">서울 송파구 올림픽로 300</span>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+                     </div>
+                  </div>
+                        
+					<div class="row mt-3">
+                     <div class="col-12">
+                        <div class="row">
+                           <div class="col d-grid">
+                              <a class="btn" style="border-radius: 15px; border-color: #ff356b; border-width: 2px; color: #ff356b; font-weight: 600;" href="">
+                                 <i class="bi bi-bookmark" style="width: 1rem; filter: drop-shadow(0 0 1px #ff356b);"></i>일정담기
+                              </a>
+                           </div>
+                           <div class="col d-grid">
+                              <a class="btn readPlan" style="border-radius: 15px; border-color: #ff356b; border-width: 2px; color: #ff356b; font-weight: 600;" href="">
+                                 <i class="bi bi-list-ul" style="width: 1rem; filter: drop-shadow(0 0 1px #ff356b);"></i> 상세보기
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                           
+               </div>
+            </div>
+                  
+         </div>
+            
+      </div>
+	
+	<div class="row mt-4">
+		<div class="col-12 text-center">
+			<div class="row">
+				<div class="col">
+					<hr>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col text-start">		
+					<span>© 2023 TripStation. All rights reserved.</span>
+				</div>
+				<div class="col text-end">
+					<span></span>
+				</div>
+			</div>
+		</div>
+	</div>      
+	
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
