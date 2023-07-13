@@ -33,6 +33,28 @@
 		
 		let mySessionId = null;
 		
+		function openMessageGetPage(messageTitle, messageNickName, messageSendDateFormatted, messageContent) {
+		
+			console.log(messageTitle);
+			
+			const readMessagegetModal = bootstrap.Modal.getOrCreateInstance("#readMessagegetModal");
+			const messageGetTitle = document.getElementById("messageGetTitle");
+			const messageGetSender = document.getElementById("messageGetSender");
+  			const messageGetTime = document.getElementById("messageGetTime");
+			const messageGetContent = document.getElementById("messageGetContent");
+			
+			
+			messageGetTitle.textContent = messageTitle;
+			messageGetSender.textContent = messageNickName;
+			messageGetTime.textContent = messageSendDateFormatted;
+			messageGetContent.textContent = messageContent;
+			
+			
+			
+			readMessagegetModal.show();
+			
+		}
+		
 		function getSessionId(){
 			const xhr = new XMLHttpRequest();
 			
@@ -93,6 +115,11 @@
 								
 								for(data of response.messageGetList){
 								
+								var messageId = data.messageDto.message_id;
+								var messageNickName = data.userDto.user_nickname;
+								var messageTitle = data.messageDto.message_title;
+								const messageContent = data.messageDto.message_content;
+
 								var messageSendDate = new Date(data.messageDto.message_reg_date);
 								
 								var messageSendDateFormatted = formatDate(messageSendDate, 'yy-MM-dd hh:mm:ss');
@@ -135,12 +162,21 @@
 								
 								const row1col5 = document.createElement("div");
 								row1col5.classList.add("col", "d-flex", "align-self-center");
+								row1col5.innerText = data.messageDto.message_title;
+								row1col5.setAttribute("messageTitle", messageTitle);
+								row1col5.setAttribute("messageNickName", messageNickName);
+								row1col5.setAttribute("messageSendDateFormatted", messageSendDateFormatted);
+								row1col5.setAttribute("messageContent", messageContent);
+								
+								row1col5.setAttribute("onclick", "openMessageGetPage('" + messageTitle +
+					                      "','" + messageNickName + "','" + messageSendDateFormatted + "',\"" +
+					                      messageContent + "\")");
+								row1col5.style = "cursor : pointer"
 								row1.appendChild(row1col5);
 								
-								const a1 = document.createElement("a");
-								a1.href="./readMessageGot?id=" + data.messageDto.message_id;
-								a1.innerText = data.messageDto.message_title;
-								row1col5.appendChild(a1);
+								
+								
+								
 								
 								const row1col6 = document.createElement("div");
 								row1col6.classList.add("col", "align-self-center", "text-center", "ms-2");
@@ -369,8 +405,62 @@
   			
 		</div>		
 
+<div class="modal fade" id="readMessagegetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style = "width:100px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">쪽지</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="padding-top: 0;">
+       	<div class = "row">
+       		<div class = "col p-2" style="background-color: #4770ff;">받은 쪽지 읽기</div>
+       	</div>
+       	<div class = "row mt-3">
+       		<div class = "col-3 me-auto">제목</div>
+       		<div class = "col" id = "messageGetTitle"></div>
+       	</div>
+       	<div class = "row mt-1">
+       		<div class = "col-3">보낸 사람</div>
+       		<div class = "col" id = "messageGetSender"></div>
+       	</div>
+       	<div class = "row mt-1">
+       		<div class = "col-3">보낸 시간</div>
+       		<div class = "col" id = "messageGetTime"></div>
+       	</div>
+       	<div class = "row mt-3">
+       		<div class ="col mx-2 px-0 border border-2" id = "messageGetContent" style="width: 50%; height: 200px;  overflow-y: scroll;">
+       		
+       		</div>
+       	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 		
-		
+
+<div class="modal fade" id="writeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">받은 쪽지</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        내용 들어갈 곳..
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 		
 		
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

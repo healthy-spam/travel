@@ -627,64 +627,64 @@ window.addEventListener("DOMContentLoaded", () => {
          
          <div class="col-3 mt-2 m-0" id="planCardBox">
                
-            <div class="card h-100 mt-1 shadow-lg" style="border-radius: 15px; border: none; "  onclick="" >
+            <div class="card h-100 shadow-lg" style="border-radius: 15px; border: none; "  onclick="" >
             
-				<div class="row mt-3" style="border-radius: 10px; position: absolute; ">						              
+				<div class="flex-row mt-3 border shadow" style="border-radius: 10px; position: absolute; top: 5px; left: 50%; transform: translate(-50%, 0%); width: 90%; background-color: white;">						              
 						
-						<div class="col-1 m-1">&nbsp;</div>
+						
 
-						<div class="col shadow-sm" style=" background-color: white; border-radius: 15px;">
-							<div class="row  align-items-center">
-								<div class="col-auto pe-0">
+						<div class="flex-col m-1" style="  ">
+							<div class="row text-center align-items-center">
+								
+								<!-- <div class="col-1">&nbsp;</div> -->
+								
+								<div class="col-2">
 									<img class="user-img border-danger-subtle " src="" style="width: 2rem; height: 2rem; border-radius: 50%;"/>
 								</div>
 								
-								<div class="col-auto">
-									<div class="row mt-0">
+								<div class="col-4">
+									<div class="row">
 										<div class="col text-center">
-											<span class="user-name" style="font-size: 13px; font-weight: bolder;">기훈</span>                        
+											<span class="user-name text-break" style="font-size: 13px; font-weight: bolder; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">기훈</span>                        
 										</div>
 									</div>
-									<div class="row mt-0 pt-0">
-										<div class="col m-1 mt-0 ms-0 me-0" style="line-height: 15px;">
-											<span class="user-age" style="font-size: 12px; color: #e7104a; font-weight: 600; ">20대 남</span>                        
+									<div class="row">
+										<div class="col text-center" style="line-height: 15px;">
+											<span class="user-age " style="font-size: 12px; color: #e7104a; font-weight: 600; ">20대 남</span>                        
 										</div>
 									</div>
 								</div>
 
-								<div class="col d-flex align-items-center justify-content-center">                              
-								<div class="row">            
-									<div class="col-auto d-grid m-0">
-										<span class="text-center" style="border-left:1px solid #000; height: 15px;"></span>
-									</div>
-								</div>
-								</div>
-								<div class="col-auto align-items-center">
-									<i class="bi bi-calendar"></i>
-								</div>									
-								<div class="col-auto ps-0">
+								<div class="col-1 d-flex align-items-center justify-content-center">ㅣ</div>
+								
+								<div class="col-1 d-flex align-items-center justify-content-center">
+									<i class="bi bi-calendar d-flex align-items-center justify-content-center"></i>
+								</div>																										
+											
+								<div class="col-4 ps-0">
 									<div class="row">
-										<div class="col text-center" style="font-size: 12px;">
+										<div class="col" style="font-size: 12px;">
 											<span class="" style="font-weight: bolder;">여행기간</span>                        
-											<span class="" style="color: #e7104a; font-weight: bolder;">2일</span>                        
+											<span class="" style="/* color: #e7104a;  */font-weight: bolder; ">12일</span>                        
 										</div>																						
 									</div>
 								</div>
+															
 							</div>
 						</div>
 						
-						<div class="col-1 ">&nbsp;</div>
+						
 
 				</div>
             
-               <div class="text-center">
-                  <div class="row mt-1">
+               
+                  <div class="row">
                   	<div class="col">
 						<img src="" class="card-img-top plan-thumbnail img-fluid" style=" width: 450px; height: 250px;">                  	
                   	</div>
                   </div>
                   
-               </div>
+               
                
                <div class="card-body pt-2">
                

@@ -69,6 +69,17 @@ public class CrewController {
         crewService.uploadcrewphoto(photo, session);
     }
 	
+    @RequestMapping("/getallcrewlist")
+    public @ResponseBody List<Map<String, Object>> getallcrewlist() {
+    	return crewService.getallcrewlist();
+    }
+    
+    @RequestMapping("/searchCrew")
+    public @ResponseBody List<Map<String, Object>> searchCrew(@RequestBody Map<String, String> requestBody) {
+    	System.out.println("aaaa");
+    	return crewService.getcrewsearchresult(requestBody.get("searchWord"));
+    }
+    
 	@RequestMapping("/crewhome/{crew_domain}")
 	public String crewhome(@PathVariable("crew_domain") String crew_domain, Model model, HttpSession session) {
 		return crewService.crewhome(crew_domain, session, model);
