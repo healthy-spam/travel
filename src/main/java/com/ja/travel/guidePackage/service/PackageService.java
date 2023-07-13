@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ja.travel.dto.GuideDto;
+import com.ja.travel.dto.GuidePlanPaymentDto;
 import com.ja.travel.dto.GuidePlanningApplicationDto;
 import com.ja.travel.dto.GuidePlanningDto;
 import com.ja.travel.dto.PlanCityDto;
@@ -146,6 +148,7 @@ public class PackageService {
 		UserDto user = packageSqlMapper.getUserByGuidePlanningId(guide_planning_id);
 		List<PlanDayDto> planDayList = packageSqlMapper.getPlanDayByPlanId(plan.getPlan_id());
 		GuidePlanningDto guidePlanningDto = packageSqlMapper.getGuidePlanningByGuidePlanningId(guide_planning_id);
+		GuideDto guide = packageSqlMapper.getGuideInfoByGuidePlanningId(guidePlanningDto.getGuide_id());
 		int planDayListSize = planDayList.size();
 
 		List<Map<String, Object>> list = new ArrayList<>();
@@ -179,8 +182,54 @@ public class PackageService {
 		resultMap.put("list", list);
 		resultMap.put("planDto",plan);
 		resultMap.put("packageMember",packageMember);
+		resultMap.put("guide",guide);
 		return resultMap;
 
+	}
+
+	public Map<String, Object> insertPackageApplication(int guide_planning_id, HttpSession session) {
+		int Pk = packageSqlMapper.createGuideAppPk();
+		
+		UserDto sessionuser = (UserDto) session.getAttribute("sessionuser");
+		
+		GuidePlanningApplicationDto guidePlanningApplicationDto = new GuidePlanningApplicationDto();
+		
+		guidePlanningApplicationDto.setUser_id(sessionuser.getUser_id());
+		guidePlanningApplicationDto.setGuide_planning_application_id(Pk);
+		guidePlanningApplicationDto.setGuide_planning_id(guide_planning_id);
+		
+		packageSqlMapper.insertMyInfoWhenRecruting(guidePlanningApplicationDto);
+		
+		
+		GuidePlanPaymentDto guidePlanPaymentDto = new GuidePlanPaymentDto();
+		
+		GuidePlanningDto guidePlanningDto = new GuidePlanningDto();
+		guidePlanningDto = packageSqlMapper.getPackage(guide_planning_id);
+		
+		int packagePrice = guidePlanningDto.getGuide_planning_price();
+		int packagePayPk = packageSqlMapper.createPackagePayPk();
+		guidePlanPaymentDto.setGuide_plan_payment_id(packagePayPk);
+		guidePlanPaymentDto.setPlanning_application_id(guidePlanningApplicationDto.getGuide_planning_application_id());
+		guidePlanPaymentDto.setUser_name(sessionuser.getUser_nickname());
+		guidePlanPaymentDto.setUser_planning_deposit(packagePrice);
+		
+		
+		packageSqlMapper.insertGuidePay(guidePlanPaymentDto);
+		
+	
+		Map<String,Object> map = new HashMap<>();
+		
+		
+		map.put("partner_order_id", packagePayPk);
+		map.put("userId", sessionuser.getUser_id());
+		map.put("item_name", guidePlanningDto.getguide_planning_title());
+		map.put("total_amount", guidePlanningDto.getGuide_planning_price());
+		
+		System.out.println(guidePlanningDto.getguide_planning_title());
+		
+		
+		return map;
+		
 	}
 
 }

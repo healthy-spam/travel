@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.ja.travel.dto.GuideDto;
+import com.ja.travel.dto.GuidePlanPaymentDto;
 import com.ja.travel.dto.GuidePlanningApplicationDto;
 import com.ja.travel.dto.GuidePlanningDto;
 import com.ja.travel.dto.PlanCityDto;
@@ -56,6 +58,18 @@ public interface PackageSqlMapper {
 	public List<PlanDayDto> getPlanDayByPlanId(int plan_id);
 
 	public PlanCityDto getCityByPlace(int plan_city_id);
+	
+// 결제 관련
+
+	public int createGuideAppPk();
+
+	public GuidePlanningDto getPackage(int guide_planning_id);
+
+	public int createPackagePayPk();
+
+	public void insertGuidePay(GuidePlanPaymentDto guidePlanPaymentDto);
+
+	public GuideDto getGuideInfoByGuidePlanningId(int guide_id);
 
 	
 

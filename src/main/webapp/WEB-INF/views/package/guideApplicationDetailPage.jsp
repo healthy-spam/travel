@@ -32,6 +32,59 @@ var startPoint = '${map.guidePlanningDto.guide_planning_start_point}'; // 최초
 const guidePlanningId = new URLSearchParams(location.search).get("guide_planning_id");
 
 
+function pay(partner_order_id, partner_user_id, item_name, total_amount) {
+ const xhr = new XMLHttpRequest();
+
+ xhr.onreadystatechange = function() {
+     if (xhr.readyState === 4) {
+         if (xhr.status === 200) {
+             const response = JSON.parse(xhr.responseText);
+             var box = response.next_redirect_pc_url;
+             window.open(box);
+         } else {
+             console.error('Request failed:', xhr.status);
+         }
+     }
+ }
+
+ xhr.open("POST", "./packagePayProcess");
+ xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+ xhr.send("partner_order_id=" + encodeURIComponent(partner_order_id) +
+          "&partner_user_id=" + encodeURIComponent(partner_user_id) +
+          "&item_name=" + encodeURIComponent(item_name) +
+          "&total_amount=" + encodeURIComponent(total_amount));
+}
+
+
+function packageIn(guidePlanningId){
+   	
+	   const xhr = new XMLHttpRequest();
+		
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4 && xhr.status == 200){
+				const response = JSON.parse(xhr.responseText);
+				
+				
+				var partner_order_id = response.partner_order_id;
+				var partner_user_id = response.userId;
+				var item_name = response.item_name;
+				var total_amount = response.total_amount;
+				
+				console.log(partner_order_id);
+				
+				pay(partner_order_id,partner_user_id, item_name, total_amount);
+				
+			}
+		}
+		
+	
+		
+		xhr.open("POST", "./packageIn");
+		xhr.setRequestHeader("Content-TYPE","application/x-www-form-urlencoded"); 
+		xhr.send("guide_planning_id=" + guidePlanningId);
+	   
+	   
+}
 
 function map(){
 	var container = document.getElementById('map');
@@ -498,7 +551,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			<div class="col-3 text-center shadow" style="border:solid 3px black; border-radius: 10px; background-color :#fcf0f0; ">
 				<div class="row mt-3">
 					<div class="col">
-						<span style="font-size : 25px; font-weight:bold;">${map.user.user_nickname}</span><span style="font-size : 20px; font-weight:bold;">  가이드 님</span>
+						<span style="font-size : 25px; font-weight:bold;">${map.guide.guide_name}</span><span style="font-size : 20px; font-weight:bold;">  가이드 님</span>
 					</div>
 				</div>
 				<div class="row mt-5">
@@ -508,7 +561,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				</div>
 				<div class="row mt-5">
 					<div class="col" style="font-weight:bold;">
-						가이드 프로필 	가이드 프로필	가이드 프로필	가이드 프로필	가이드 프로필	가이드 프로필	가이드 프로필
+						${map.guide.guide_profile }
 					</div>
 				</div>
 				<div class="row mt-5 mb-5">
@@ -517,8 +570,8 @@ document.addEventListener("DOMContentLoaded", function() {
 					</div>
 				</div>
 				<div class="row mt-5">
-					<div class="col">
-						<a class="btn pay-button d-grid" href="#" role="button" onclick="pay()"
+					<div class="col payButton">
+						<a class="btn pay-button d-grid" role="button" onclick="packageIn(guidePlanningId)"
 	   						 style="font-size: 30px; font-weight: bold; background-color: #BB4465; color: white;">결제</a>
 					</div>
 				</div>
@@ -606,49 +659,53 @@ document.addEventListener("DOMContentLoaded", function() {
 	<div class="container" style="height: 600px;">
 		<div class="row">
 			<div class="col">
-				<div class="row mt-3">
+				<div class="row">
+					<div class="col-4">
+						<div class="row mt-5"  >
+							<div class="col" id="planDetail" style=" overflow-y: scroll; height : 600px" >
+							</div>
+						</div>
+					</div>
+					<div class="col-2">
+					</div>
 					<div class="col">
 						<div class="row "  >
 							<div class="col">
 								<i class="bi-flag-fill"></i>
 								<span>모집 장소 : </span>
 								<span onclick="showStart()" style="font-weight: bold;">${map.guidePlanningDto.guide_planning_start_point}</span>
-								
 							</div>
 						</div>
-						<div class="row mt-5">
+						<div class="row mt-5" >
 							<div class="col">
-								<div class="map shadow" id="map" style="width: 80%; height: 500px;">
-								
+								<div class="map shadow" id="map" style="width: 100%; height: 600px;">
 								</div>						
-						
 							</div>
 						</div>					
-					</div>
-
-					<div class="col-6">
-						<div class="row mt-5">
-							<div class="col" id="planDetail" >
-								
-								
-							</div>
-						</div>
-
 					</div>
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col">
+			       
+			       -footer-                              
+			       
+			</div>
+		</div>
 	</div>
+
+
 	
 	
 	
 <div class="row d-none" id = "templete_planDetail">
-	<div class="col">
-		<div class="row" style=" position: sticky; top: 0;">
-			<div class="col-3 planDetail_Day text-center" style=" font-size : 40px; font-weight:bold; color:white; background:#BB4465;">
+	<div class="col" style="background:#fcf0f0;">
+		<div class="row" style="position: sticky; top: 0px; height:60px;">
+			<div class="col-3 planDetail_Day text-center" style=" font-size : 30px; font-weight:bold; color:white; background:#BB4465;">
 					
 			</div>
-			<div class="col-9 planDetail_Date" style=" font-size : 40px; font-weight:bold; border-bottom:1px solid gray; background:white;">
+			<div class="col-9 planDetail_Date" style=" font-size : 30px; font-weight:bold; border-bottom:1px solid gray; background:white;">
 				
 			</div>
 		</div>

@@ -237,8 +237,45 @@ resultType="int">
 		and plan_city_id = #{cityId}
 	</select>
 
-
 	
+<select id="createGuideAppPk" resultType="int">
+	
+	select guide_planning_application_seq.nextval from dual
+
+</select>
+
+<select id="createPackagePayPk" resultType="int">
+	
+	select guide_plan_payment_seq.nextval from dual
+
+</select>
+
+<select id ="getPackage" resultType="com.ja.travel.dto.GuidePlanningDto">
+	
+	select * from guide_planning WHERE guide_planning_id = #{guide_planning_id}
+
+</select>
+
+<insert id="insertGuidePay">
+	
+	insert into guide_plan_payment values(
+		#{guide_plan_payment_id},
+		#{planning_application_id},
+		SYSDATE,
+		#{user_name},
+		#{user_planning_deposit},
+		''
+	
+	)
+	
+
+</insert>
+
+<select id="getGuideInfoByGuidePlanningId" resultType="com.ja.travel.dto.GuideDto">
+	
+	select * from guide where guide_id=#{guide_id}
+
+</select>
 
 
 
