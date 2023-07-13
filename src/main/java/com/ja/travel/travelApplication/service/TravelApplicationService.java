@@ -258,13 +258,28 @@ public class TravelApplicationService {
 		}
 	}
 
-	public void insertMessage(String message) {
-		PlanningChatDto planningChatDto = new PlanningChatDto();
-		planningChatDto.setChat_message(message);
-		planningChatDto.setPlanning_application_id(0);
-//		SELECT * FROM planning_application
-//		INNER JOIN planning_chat on planning_application.planning_application_id = planning_chat.planning_application_id
-//		WHERE planning_id = 6
-//		AND planning_member_status = '수락';
+	public void insertMessage(PlanningChatDto planningChatDto, HttpSession session) {
+		UserDto userDto = getSessionUserInfo(session);
+		planningChatDto.setUser_id(userDto.getUser_id());
+		
+		travelApplicationSqlMapper.insertMessage(planningChatDto);
+	}
+
+	public List<Map<String, Object>> getChatList(PlanningChatDto planningChatDto) {
+		List<PlanningChatDto> chatList = travelApplicationSqlMapper.getChatList(planningChatDto);
+		
+		List<Map<String, Object>> list = new ArrayList<>();
+		
+		for (PlanningChatDto chatDto : chatList) {
+			Map<String, Object> map = new HashMap<>();
+			UserDto user = loginSqlMapper.selectById(chatDto.getUser_id());
+			
+			map.put("chatDto", chatDto);
+			map.put("user", user);
+			
+			list.add(map);
+		}
+		
+		return list;
 	}
 }

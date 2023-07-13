@@ -239,7 +239,6 @@
 	});
 </script>
 <script type="text/javascript">
-
 	function animateSize(element, duration, toWidth, toHeight) {
 		var start = null;
 		var initialWidth = element.offsetWidth;
@@ -262,8 +261,11 @@
 	
 	function showChatBox() {
 		var chatContainer = document.getElementById('chat-container');
-
+		var chatIcon = document.querySelector('.chatIcon');
+		
 		if (chatBox === null) {
+			chatIcon.className = 'bi bi-chat-dots chatIcon';
+			
 			// Create chat-box dynamically
 			chatBox = document.createElement('div');
 			chatBox.className = 'chat-box';
@@ -280,15 +282,21 @@
 			chatBoxInRow1.className = 'row';
 			
 			var chatBoxInCol1 = document.createElement('div');
-			chatBoxInCol1.className = 'col mt-1 mx-1 d-flex justify-content-center';
+			chatBoxInCol1.className = 'col text-truncate';
+			chatBoxInCol1.style.marginTop = '10px';
+			chatBoxInCol1.style.marginBottom = '50px';
+			chatBoxInCol1.style.marginLeft = '15px';
+			chatBoxInCol1.style.paddingRight = '100px';
+			
 			chatBoxInCol1.innerText = '[동행] ' + '${map.planningDto.planning_title}';
 			
 			var chatBoxInRow2 = document.createElement('div');
-			chatBoxInRow2.className = 'row';
-			chatBoxInRow2.style.height = '80%';
+			chatBoxInRow2.className = 'row chatScroll';
+			chatBoxInRow2.style.height = '70%';
+			chatBoxInRow2.style.overflowY = 'auto'; // 스크롤 추가
 			
 			var chatBoxInCol2 = document.createElement('div');
-			chatBoxInCol2.className = 'col mt-1 mx-1';
+			chatBoxInCol2.className = 'col mt-1 mx-1 chatArea';
 			
 			var chatBoxInRow3 = document.createElement('div');
 			chatBoxInRow3.className = 'row';
@@ -328,13 +336,6 @@
 			button.addEventListener('click', function() {
 			    var message = input.value;
 			    insertMessage(message);
-// 			    // 메시지를 표시할 새로운 div 요소 생성
-// 			    var messageDiv = document.createElement('div');
-// 			    // div에 메시지 내용 추가
-// 			    messageDiv.textContent = message;
-// 			    // 메시지를 chatBox에 추가
-// 			    chatBoxInCol2.appendChild(messageDiv);
-			    // 입력 필드 초기화
 			    
 			    input.value = '';
 			});
@@ -349,10 +350,12 @@
 			chatBox.appendChild(chatBoxInRow1);
 			chatBox.appendChild(chatBoxInRow2);
 			chatBox.appendChild(chatBoxInRow3);
-
+			
 			// Animate chat-box to appear
 			animateSize(chatBox, 300, 100, 500); // Change 100 and 500 to your desired width and height
+			setInterval(() => getChatList(), 300);
 		} else {
+			chatIcon.className = 'bi bi-chat-dots-fill chatIcon';
 			// Animate chat-box to disappear
 			animateSize(chatBox, 300, 0, 0);
 
@@ -368,17 +371,17 @@
 	function insertMessage(message) {
 	
 		const xhr = new XMLHttpRequest();
-	
+		
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4 && xhr.status == 200) {
-				const response = JSON.parse(xhr.responseText);
-				// js 작업//
+				
 			}
 		}
+		
 		//post
 		xhr.open("post", "./insertMessage");
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhr.send("message="+message);
+		xhr.send("chat_message=" + message + "&planning_id=" + planning_id);
 	}
 
 	function getChatList() {
@@ -388,13 +391,62 @@
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4 && xhr.status == 200) {
 				const response = JSON.parse(xhr.responseText);
-				// js 작업//
+				
+				var sessionUser = '${sessionuser.user_id}';
+				
+				if (response.list != null) {
+					var chatArea = document.querySelector('.chatArea');
+					var chatScroll = document.querySelector('.chatScroll');
+					
+					chatArea.innerText = "";
+					
+					for (let i in response.list) {
+						if (response.list[i].chatDto.user_id == sessionUser) {
+			 			    var messageDiv = document.createElement('div');
+			 			    messageDiv.className = 'd-flex justify-content-end';
+							messageDiv.style.padding = '0 10px';
+			 			   
+							var message = document.createElement('span');
+							message.textContent = response.list[i].chatDto.chat_message;
+							message.style.backgroundColor = "rgba(255, 0, 255, 0.2)";
+							message.style.padding = '5px';
+							message.style.marginBottom = '10px';
+							message.style.borderRadius = '0.375rem';
+							
+							messageDiv.appendChild(message);
+							chatArea.appendChild(messageDiv);
+
+						} else {
+			 			    var messageDiv = document.createElement('div');
+			 			   	messageDiv.style.marginBottom = '15px';
+				 			messageDiv.style.padding = '0 10px';
+			 			   
+							var user = document.createElement('div');
+							user.textContent = response.list[i].user.user_nickname;
+							user.style.paddingBottom = '7px';
+							
+			 			   	var message = document.createElement('span');
+							message.textContent = response.list[i].chatDto.chat_message;
+							message.style.backgroundColor = "rgba(0, 0, 255, 0.2)";
+							message.style.padding = '5px';
+							message.style.marginBottom = '10px';
+							message.style.borderRadius = '0.375rem';
+							
+							messageDiv.appendChild(user);
+							messageDiv.appendChild(message);
+							chatArea.appendChild(messageDiv);
+			 			   	
+						}
+					}
+					
+					chatScroll.scrollTop = chatArea.scrollHeight;
+				}
 			}
 		}
 		//post
 		xhr.open("post", "./getChatList");
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhr.send("");
+		xhr.send("planning_id="+planning_id);
 	}
 </script>
 <script type="text/javascript">
@@ -500,6 +552,11 @@
 	}
 </script>
 <style type="text/css">
+
+.chat-box {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
 .img-wrapper {
 	height: 400px;
 	width: 100%;
@@ -569,9 +626,9 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	bottom: -1px;
-	right: 20px;
 	display: none;
+	right: 20px;
+	z-index: 1;
 }
 
 #chat-container {
@@ -858,9 +915,9 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col d-flex justify-content-end align-items-end pb-5" id="chat-container" style="position: relative;">
+							<div class="col d-flex justify-content-end pb-5" id="chat-container" style="position: relative;">
 								<div class="chat" style="position: absolute;" onclick="showChatBox()">
-									<i class="bi bi-chat-dots-fill" style="color: #DB4465"></i>
+									<i class="bi bi-chat-dots-fill chatIcon" style="color: #DB4465"></i>
 								</div>
 							</div>
 						</div>

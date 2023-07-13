@@ -10,6 +10,25 @@
 		AND user_id = #{user_id}
 	</select>
 	
+	<select id="getChatList" resultType="com.ja.travel.dto.PlanningChatDto">
+		SELECT planning_chat.* FROM planning
+		INNER JOIN planning_chat ON planning_chat.planning_id = planning.planning_id
+		WHERE planning.planning_id = #{planning_id}
+	</select>
+	
+	<insert id="insertMessage">
+		INSERT INTO
+		    planning_chat
+		VALUES
+		    (
+		        planning_chat_seq.nextval,
+		        #{user_id},
+		        #{planning_id},
+		        #{chat_message},
+		        SYSDATE
+		    )
+	</insert>
+	
 	<select id="getTotalLike" resultType="int">
 		SELECT COUNT(*) FROM planning_comment_love
 		WHERE planning_comment_id = #{planning_comment_id}

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ja.travel.dto.PlanningApplicationDto;
+import com.ja.travel.dto.PlanningChatDto;
 import com.ja.travel.dto.PlanningComment;
 import com.ja.travel.dto.TravelApplicationRequestDto;
 import com.ja.travel.dto.UserDto;
@@ -107,11 +108,16 @@ public class RestTravelApplicationController {
 	}
 	
 	@RequestMapping("insertMessage")
-	public Map<String, Object> insertMessage(String message) {
+	public void insertMessage(PlanningChatDto planningChatDto, HttpSession session) {
+		travelApplicationService.insertMessage(planningChatDto, session);
+	}
+	
+	@RequestMapping("getChatList")
+	public Map<String, Object> getChatList(PlanningChatDto planningChatDto) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		travelApplicationService.insertMessage(message);
+		List<Map<String, Object>> list = travelApplicationService.getChatList(planningChatDto);
 		
-//		map.put("companyList", companyList);
+		map.put("list", list);
 		
 		return map;
 	}

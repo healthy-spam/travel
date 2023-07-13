@@ -8,6 +8,7 @@ import com.ja.travel.dto.PlanDayDto;
 import com.ja.travel.dto.PlanDto;
 import com.ja.travel.dto.PlanPlaceDto;
 import com.ja.travel.dto.PlanningApplicationDto;
+import com.ja.travel.dto.PlanningChatDto;
 import com.ja.travel.dto.PlanningComment;
 import com.ja.travel.dto.PlanningCommentLove;
 import com.ja.travel.dto.PlanningDto;
@@ -64,4 +65,8 @@ public interface TravelApplicationSqlMapper {
 	public void deleteLike(PlanningCommentLove planningCommentLove);
 	public PlanningCommentLove getLikeByCommentIdAndUserId(PlanningCommentLove planningCommentLove);
 	public int getTotalLike(int planning_comment_id);
+
+	// 플래닝 채팅 처리
+	public List<PlanningChatDto> getChatList(PlanningChatDto planningChatDto);
+	public void insertMessage(PlanningChatDto planningChatDto);
 }
