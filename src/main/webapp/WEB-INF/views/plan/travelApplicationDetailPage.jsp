@@ -63,10 +63,12 @@
 					var boardInfo = document.querySelector('.board-info');
 					var regDate = new Date('${map.planningDto.planning_reg_date}');
 					var boardRegDate = formatDate(regDate);
+					var replyInputCol = null;
 					
 					boardInfo.innerText = boardRegDate + ' · 댓글 ' + response.list.length;
 					
 					for (let i in response.list) {
+						
 						console.log(response.list[i]);
 						commentList = document.querySelector('.comment-list');
 						
@@ -111,10 +113,48 @@
 					    anotherCol12Div.classList.add('col-12', 'd-flex', 'justify-content-between', 'mt-1');
 					    const button = document.createElement('button');
 					    button.classList.add('comment-reply');
-					    button.innerText = '답글 달기';
+					    button.innerText = '답글 3개';
+					    
+					    button.onclick = function() {
+					    	loginCheck();
+					    	
+					    	if (replyInputCol != null) {
+					    		rowDiv.removeChild(replyInputCol);
+					    		replyInputCol = null;
+					    		return;
+					    	}
+					    	
+					    	replyInputCol = document.createElement('div');
+					    	replyInputCol.className = 'col';
+					    	replyInputCol.style.padding = '10px';
+					    	
+					    	const row1 = document.createElement('div');
+					    	row1.className = 'row';
+					    	replyInputCol.appendChild(row3);
+					    	
+					    	const col1 = document.createElement('div');
+					    	col1.className = 'col';
+					    	row1.appendChild(col1);
+					    	
+						    const thumb = document.querySelector('.my-thumb');
+					        const myThumb = thumb.cloneNode(true); // 이미지 복제
+					        myThumb.style.width = '30px';
+					        myThumb.style.height = '30px';
+					        col1.appendChild(myThumb);
+					    	
+				    		const replyInput = document.createElement('input');
+							replyInput.className = 'form-control';
+							replyInput.setAttribute('placeholder', '댓글추가');
+							
+							replyInputCol.appendChild(replyInput);
+							rowDiv.appendChild(replyInputCol);	
+						}
+					    
 					    var heartIcon = document.createElement("i");
 					    heartIcon.className = response.list[i].isLove == 'ok' ? 'bi, bi-heart-fill' : 'bi, bi-heart'; 
 					    heartIcon.onclick = function() {
+					    	loginCheck();
+					    	
 							addLike(response.list[i].planningComment.planning_comment_id);	
 						}
 					    const span = document.createElement('span');
@@ -850,8 +890,7 @@
 								<div class="profile">
 									<div class="row">
 										<div class="col-2 me-1">
-											<img class="user-thumbnail" alt="썸네일"
-												src="/uploadFiles/profileImage/${map.user.user_image}">
+											<img class="user-thumbnail my-thumb" alt="썸네일" src="/uploadFiles/profileImage/${map.user.user_image}">
 										</div>
 										<div class="col">
 											<div class="row">
