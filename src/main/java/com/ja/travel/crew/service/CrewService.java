@@ -35,19 +35,7 @@ public class CrewService {
 
 	public String crewmain(HttpSession session, Model model) {
 
-		List<CrewDto> arrlist = crewMapper.getAllCrewListOrderByPopularity();
-		List<Map<String, Object>> crewList = new ArrayList<>();
 		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
-		
-		//전체crewList 가져오기
-		for(CrewDto crew: arrlist) {
-			int master_id = crew.getMaster_id();
-			String mastername = crewMapper.getUserNameById(master_id);
-			Map<String, Object> map = new HashMap<>();
-			map.put("mastername", mastername);
-			map.put("crew", crew);
-			crewList.add(map);
-		}
 		
 		try { //크루 멤버일경우
 			CrewMemberDto crewMemberDto = crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id()); //자신의 크루 멤버 정보 가져오기
@@ -62,11 +50,41 @@ public class CrewService {
 			// TODO: handle exception
 		}
 		
-		model.addAttribute("crewList", crewList);
+		model.addAttribute("crewList", getallcrewlist());
 	
 		return "crew/findcrew";
 	}
 	
+
+	//전체 크루 리스트 불러오기
+	public List<Map<String, Object>> getallcrewlist() {
+		List<CrewDto> arrlist = crewMapper.getAllCrewListOrderByPopularity();
+		List<Map<String, Object>> crewList = new ArrayList<>();
+		
+		//전체crewList 가져오기
+		for(CrewDto crew: arrlist) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("crewppl", crewMapper.getCrewMemberListByCrewDomain(crew.getCrew_domain()).size());
+			map.put("crew", crew);
+			crewList.add(map);
+		}
+		return crewList;
+	}
+	
+	//특정 크루 리스트 불러오기
+	public List<Map<String, Object>> getcrewsearchresult(String searchWord) {
+		List<CrewDto> arrlist = crewMapper.getcrewlistbysearchword(searchWord);
+		List<Map<String, Object>> crewList = new ArrayList<>();
+		
+		//전체crewList 가져오기
+		for(CrewDto crew: arrlist) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("crewppl", crewMapper.getCrewMemberListByCrewDomain(crew.getCrew_domain()).size());
+			map.put("crew", crew);
+			crewList.add(map);
+		}
+		return crewList;
+	}
 	
 	public void createcrew(Map<String, String> requestBody, HttpSession session) {
 		CrewDto crewDto = new CrewDto();
@@ -614,5 +632,8 @@ public class CrewService {
 			String crew_thumbnail = saveFileName;
 			crewMapper.addCrewThumbnailByCrewDomain(crew_thumbnail, crew_domain);
 		}
+
+
+
 		
 }

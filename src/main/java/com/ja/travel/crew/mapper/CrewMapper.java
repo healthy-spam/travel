@@ -127,5 +127,7 @@ public interface CrewMapper {
 	public Integer checkcrewdomain(String crew_domain);
 
 	public void addCrewThumbnailByCrewDomain(@Param("crew_thumbnail") String crew_thumbnail, @Param("crew_domain") String crew_domain);
+
+	public List<CrewDto> getcrewlistbysearchword(String searchWord);
 	
 }
