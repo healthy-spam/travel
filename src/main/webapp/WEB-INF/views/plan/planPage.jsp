@@ -627,7 +627,7 @@ window.addEventListener("DOMContentLoaded", () => {
          
          <div class="col-3 mt-2 m-0" id="planCardBox">
                
-            <div class="card h-100 mt-1 shadow-lg" style="border-radius: 15px; border: none; "  onclick="" >
+            <div class="card h-100 shadow-lg" style="border-radius: 15px; border: none; "  onclick="" >
             
 				<div class="flex-row mt-3 border shadow" style="border-radius: 10px; position: absolute; top: 5px; left: 50%; transform: translate(-50%, 0%); width: 90%; background-color: white;">						              
 						
@@ -665,7 +665,7 @@ window.addEventListener("DOMContentLoaded", () => {
 									<div class="row">
 										<div class="col" style="font-size: 12px;">
 											<span class="" style="font-weight: bolder;">여행기간</span>                        
-											<span class="" style="color: #e7104a; font-weight: bolder; ">12일</span>                        
+											<span class="" style="/* color: #e7104a;  */font-weight: bolder; ">12일</span>                        
 										</div>																						
 									</div>
 								</div>
@@ -678,7 +678,7 @@ window.addEventListener("DOMContentLoaded", () => {
 				</div>
             
                
-                  <div class="row mt-1">
+                  <div class="row">
                   	<div class="col">
 						<img src="" class="card-img-top plan-thumbnail img-fluid" style=" width: 450px; height: 250px;">                  	
                   	</div>
