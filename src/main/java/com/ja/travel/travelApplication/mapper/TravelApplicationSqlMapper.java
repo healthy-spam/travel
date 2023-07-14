@@ -58,7 +58,7 @@ public interface TravelApplicationSqlMapper {
 	public UserDto getUserByPlanningId(int planning_id);
 
 	// 디테일 페이지 댓글 부분
-	public void createComment(PlanningComment planningComment);
+	public void createInitComment(PlanningComment planningComment);
 	public List<PlanningComment> getCommentList(int planning_id);
 	public UserDto getUserOfCommentByPlanningId(int planning_comment_id);
 	public void addLike(PlanningCommentLove planningCommentLove);

@@ -64,9 +64,9 @@ public class RestTravelApplicationController {
 		return map;
 	}
 	
-	@RequestMapping("createComment")
-	public Map<String, Object> createComment(@ModelAttribute PlanningComment planningComment, HttpSession session) {
-		travelApplicationService.createComment(planningComment, session);
+	@RequestMapping("createInitComment")
+	public Map<String, Object> createInitComment(@ModelAttribute PlanningComment planningComment, HttpSession session) {
+		travelApplicationService.createInitComment(planningComment, session);
 		
 		Map<String, Object> map = new HashMap<>();
 		

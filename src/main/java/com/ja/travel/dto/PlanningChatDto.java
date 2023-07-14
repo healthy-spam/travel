@@ -4,7 +4,8 @@ import java.sql.Date;
 
 public class PlanningChatDto {
 	private int planning_chat_id;
-	private int user_id;
+	private int planning_parent_comment_id;
+	private int user_id;;
 	private int planning_id;
 	private String chat_message;
 	private Date reg_date;
@@ -13,10 +14,11 @@ public class PlanningChatDto {
 		super();
 	}
 
-	public PlanningChatDto(int planning_chat_id, int user_id, int planning_id, String chat_message,
-			Date reg_date) {
+	public PlanningChatDto(int planning_chat_id, int planning_parent_comment_id, int user_id, int planning_id,
+			String chat_message, Date reg_date) {
 		super();
 		this.planning_chat_id = planning_chat_id;
+		this.planning_parent_comment_id = planning_parent_comment_id;
 		this.user_id = user_id;
 		this.planning_id = planning_id;
 		this.chat_message = chat_message;
@@ -29,6 +31,14 @@ public class PlanningChatDto {
 
 	public void setPlanning_chat_id(int planning_chat_id) {
 		this.planning_chat_id = planning_chat_id;
+	}
+
+	public int getPlanning_parent_comment_id() {
+		return planning_parent_comment_id;
+	}
+
+	public void setPlanning_parent_comment_id(int planning_parent_comment_id) {
+		this.planning_parent_comment_id = planning_parent_comment_id;
 	}
 
 	public int getUser_id() {
@@ -65,9 +75,9 @@ public class PlanningChatDto {
 
 	@Override
 	public String toString() {
-		return "PlanningChatDto [planning_chat_id=" + planning_chat_id + ", user_id=" + user_id
-				+ ", planning_id=" + planning_id + ", chat_message=" + chat_message
-				+ ", reg_date=" + reg_date + "]";
+		return "PlanningChatDto [planning_chat_id=" + planning_chat_id + ", planning_parent_comment_id="
+				+ planning_parent_comment_id + ", user_id=" + user_id + ", planning_id=" + planning_id
+				+ ", chat_message=" + chat_message + ", reg_date=" + reg_date + "]";
 	}
 
 }

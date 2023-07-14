@@ -41,7 +41,7 @@
 		}
 
 		//post
-		xhr.open("post", "./createComment");
+		xhr.open("post", "./createInitComment");
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		var params = "planning_id=" + planning_id + "&user_comment=" + encodeURIComponent(comment.value);
 		xhr.send(params);
@@ -110,58 +110,21 @@
 					    
 					    // Another col-12 div
 					    const anotherCol12Div = document.createElement('div');
-					    anotherCol12Div.classList.add('col-12', 'd-flex', 'justify-content-between', 'mt-1');
-					    const button = document.createElement('button');
-					    button.classList.add('comment-reply');
-					    button.innerText = '답글 3개';
+					    anotherCol12Div.classList.add('col-12', 'mt-1');
 					    
-					    button.onclick = function() {
-					    	loginCheck();
-					    	
-					    	if (replyInputCol != null) {
-					    		rowDiv.removeChild(replyInputCol);
-					    		replyInputCol = null;
-					    		return;
-					    	}
-					    	
-					    	replyInputCol = document.createElement('div');
-					    	replyInputCol.className = 'col';
-					    	replyInputCol.style.padding = '10px';
-					    	
-					    	const row1 = document.createElement('div');
-					    	row1.className = 'row';
-					    	replyInputCol.appendChild(row3);
-					    	
-					    	const col1 = document.createElement('div');
-					    	col1.className = 'col';
-					    	row1.appendChild(col1);
-					    	
-						    const thumb = document.querySelector('.my-thumb');
-					        const myThumb = thumb.cloneNode(true); // 이미지 복제
-					        myThumb.style.width = '30px';
-					        myThumb.style.height = '30px';
-					        col1.appendChild(myThumb);
-					    	
-				    		const replyInput = document.createElement('input');
-							replyInput.className = 'form-control';
-							replyInput.setAttribute('placeholder', '댓글추가');
-							
-							replyInputCol.appendChild(replyInput);
-							rowDiv.appendChild(replyInputCol);	
-						}
 					    
 					    var heartIcon = document.createElement("i");
 					    heartIcon.className = response.list[i].isLove == 'ok' ? 'bi, bi-heart-fill' : 'bi, bi-heart'; 
 					    heartIcon.onclick = function() {
-					    	loginCheck();
-					    	
+							loginCheck();
+							
 							addLike(response.list[i].planningComment.planning_comment_id);	
 						}
 					    const span = document.createElement('span');
 					    span.classList.add('comment-love');
 					    span.innerHTML = '좋아요 ' + response.list[i].totalLike + '개 ';
 					    span.appendChild(heartIcon);
-					    anotherCol12Div.appendChild(button);
+					    
 					    anotherCol12Div.appendChild(span);
 
 					    // Append all children to the row div

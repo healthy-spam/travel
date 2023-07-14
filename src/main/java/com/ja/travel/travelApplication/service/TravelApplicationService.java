@@ -234,11 +234,11 @@ public class TravelApplicationService {
 		return list;
 	}
 	
-	public void createComment(PlanningComment planningComment, HttpSession session) {
+	public void createInitComment(PlanningComment planningComment, HttpSession session) {
 		UserDto user = getSessionUserInfo(session);
 		planningComment.setUser_id(user.getUser_id());
 		
-		travelApplicationSqlMapper.createComment(planningComment);
+		travelApplicationSqlMapper.createInitComment(planningComment);
 		
 	}
 
