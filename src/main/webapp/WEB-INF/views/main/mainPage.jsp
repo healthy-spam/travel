@@ -94,12 +94,15 @@
 						var col = document.createElement('div');
 						var cardWrapper = document.createElement('div');
 						var img = document.createElement('img');
-						var iconWrapper = document.createElement('div');
+						var iconWrapper1 = document.createElement('div');
 						var icon = document.createElement('i');
 						var cardBody = document.createElement('div');
 						var title = document.createElement('div');
 						var content = document.createElement('div');
-						var userInfo1 = document.createElement('div');
+						var userInfo = document.createElement('div');
+						var icon2 = document.createElement('i');
+						var icon3 = document.createElement('span');
+						var div = document.createElement('div');
 
 						// 클래스와 속성 설정
 						col.className = 'col-3 mb-5';
@@ -111,17 +114,22 @@
 						img.src = '/uploadFiles/' + response.list[i].plan.plan_thumbnail;
 						img.alt = '썸네일';
 						icon.className = 'bi bi-geo-alt cardIcon';
-						iconWrapper.className = 'iconWrapper';
+						iconWrapper1.className = 'iconWrapper1';
 						cardBody.className = 'card-body';
-						title.className = 'title text-truncate';
+						title.className = 'd-flex justify-content-between';
+						div.className = 'title text-truncate';
 						content.className = 'content mb-1 text-truncate';
-						userInfo1.className = 'user-info';
-
+						userInfo.className = 'user-info';
+						icon2.className = 'bi bi-calendar-check';
+						icon2.style.marginRight = '0.8em';
+						icon3.className = 'titleIcon bi bi-bookmark-fill';
+						icon3.innerText = '3';
+						
 						// 텍스트 내용 설정
-						iconWrapper.textContent = response.list[i].list2[0].placeList[0].plan_place_address.slice(0, 2);
-						title.textContent = response.list[i].planning.planning_title;
+						iconWrapper1.textContent = response.list[i].list2[0].placeList[0].plan_place_address.slice(0, 2);
+						div.textContent = response.list[i].planning.planning_title;
 						content.textContent = response.list[i].planning.planning_content;
-
+						
 						// 여행 시작일 설정
 						var startDate = new Date(response.list[i].planning.planning_start_date);
 
@@ -133,15 +141,18 @@
 						// 여행 종료일 설정
 						var endDate = new Date(startDate.getTime() + planDuration);
 
-						userInfo1.textContent = (startDate.getMonth() + 1) + '/' + startDate.getDate() + ' - ' + (endDate.getMonth() + 1) + '/' + endDate.getDate() + ' · ' + planDay + '일';
+						userInfo.textContent = (startDate.getMonth() + 1) + '/' + startDate.getDate() + ' - ' + (endDate.getMonth() + 1) + '/' + endDate.getDate() + ' · ' + planDay + '일';
 
 						// 요소 구조 생성
+						userInfo.prepend(icon2);
 						cardBody.appendChild(title);
 						cardBody.appendChild(content);
-						cardBody.appendChild(userInfo1);
+						cardBody.appendChild(userInfo);
+						title.appendChild(div);
+						title.appendChild(icon3);
 						cardWrapper.appendChild(img);
-						cardWrapper.appendChild(iconWrapper);
-						iconWrapper.prepend(icon);
+						cardWrapper.appendChild(iconWrapper1);
+						iconWrapper1.prepend(icon);
 						cardWrapper.appendChild(cardBody);
 						col.appendChild(cardWrapper);
 						row.appendChild(col);
@@ -214,6 +225,8 @@ body {
 
 .image-header {
 	background: url("/travel/resources/img/back.png");
+	background-repeat: no-repeat;
+	background-size: 100% 60vh;
 }
 
 .title-container {
@@ -225,8 +238,8 @@ body {
 .search-container {
 	background-color: white;
 	border-radius: 0.4rem;
-	padding: 1em;
-	margin-top: 19em;
+	margin: 19em 0.7em 0 0;
+	padding: 1em 1em 0 1em;
 }
 
 .navbar-brand,
@@ -245,24 +258,29 @@ body {
 	cursor: pointer;
 }
 
-.iconWrapper {
+.iconWrapper1 {
 	background-color: white;
 	position: absolute;
-	left: 10px;
-	top: 10px;
-	padding: 3px;
+	left: 0.8em;
+	top: 0.8em;
+	padding: 0.2em;
 	border-radius: 0.375rem;
-	font-weight: 700;
+	font-weight: 500;
 }
 
 .title {
-	font-size: 1.6em;
-	margin-bottom: 0.3em;
+	font-size: 1.3em;
+	margin-bottom: 0.5em;
 	font-weight: 700;
+	width: 11em;
+}
+
+.titleIcon {
+	font-size: 1.3em;
 }
 
 .card-body {
-	padding: 10px;
+	padding: 0.6em;
 }
 
 .content, .user-info {
@@ -271,7 +289,7 @@ body {
 	font-weight: 500;
 }
 
-.cardWrapper:hover .iconWrapper {
+.cardWrapper:hover .iconWrapper1 {
 	background: #DB4465;
 	color: white;
 }
@@ -280,85 +298,85 @@ body {
 	color: white;
 }
 
-i {
+.cardIcon {
 	color: #DB4465;
+}
+
+.titleIcon:before {
+	color: #DB4465;
+	margin-right: 0.2em;
 }
 </style>
 <title>메인 페이지</title>
 </head>
-<body>
-	<div class="container-fluid p-0 image-header" style="width: 100%; height: 60vh;">
-		<div class="container">
-			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+<body class="image-header">
+	<div class="container">
+		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 
-			<div class="row mt-5">
-				<div class="col">
-					<div class="title-container">
-						<h1>최고의 동행 파트너를 찾아보세요</h1>
-						<span style="font-weight: 400; font-size: 1.4em;">함께하는 여행의 즐거움을 더욱 풍부하게 만들어줄 파트너를 찾아보세요</span>
-					</div>
+		<div class="row mt-5">
+			<div class="col">
+				<div class="title-container">
+					<h1>최고의 동행 파트너를 찾아보세요</h1>
+					<span style="font-weight: 400; font-size: 1.4em;">함께하는 여행의
+						즐거움을 더욱 풍부하게 만들어줄 파트너를 찾아보세요</span>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col">
-					<div class="search-container">
-						<div class="row">
-							<div class="col-10">
-								<div class="row">
-									<div class="col">
-										<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">제목 검색</span> <input class="form-control py-0" id="searchWord" type="text" placeholder="서울 관광" style="border: none; font-size: 1.4em;">
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="search-container shadow-sm">
+					<div class="row">
+						<div class="col-10">
+							<div class="row">
+								<div class="col">
+									<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">제목 검색</span> <input class="form-control py-0" id="searchWord" type="text" placeholder="서울 관광" style="border: none; font-size: 1.4em;">
+								</div>
+							</div>
+							<div class="row mt-4">
+								<div class="col">
+									<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">정렬</span>
+									<div style="margin-left: 10px; margin-top: 5px;">
+										<i class="bi bi-funnel-fill"></i> <select id="searchType" style="border: none;">
+											<option value="latest">최신순</option>
+											<option value="old">오래된순</option>
+											<option value="application">신청순</option>
+										</select>
 									</div>
 								</div>
-								<div class="row mt-4">
-									<div class="col">
-										<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">정렬</span>
-										<div style="margin-left: 10px; margin-top: 5px;">
-											<i class="bi bi-funnel-fill"></i> <select id="searchType"
-												style="border: none;">
-												<option value="latest">최신순</option>
-												<option value="old">오래된순</option>
-												<option value="application">신청순</option>
-											</select>
-										</div>
+								<div class="col">
+									<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">가는 날</span>
+									<div class="d-flex justify-content-center" style="margin-left: 10px; margin-top: 5px;">
+										<i class="bi bi-calendar-check me-1"></i>
+										<input id="startDate" type="text" name="planning_start_date" placeholder="날짜 입력" style="border: none;">
 									</div>
-									<div class="col">
-										<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">가는 날</span>
-										<div class="d-flex justify-content-center" style="margin-left: 10px; margin-top: 5px;">
-											<i class="bi bi-calendar-check me-1"></i>
-											<input id="startDate" type="text" name="planning_start_date" placeholder="날짜 입력" style="border: none;">
-										</div>
+								</div>
+								<div class="col">
+									<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">오는 날</span>
+									<div class="d-flex justify-content-center" style="margin-left: 10px; margin-top: 5px;">
+										<i class="bi bi-calendar-check me-1"></i>
+										<input id="endDate" type="text" name="planning_end_date" placeholder="날짜 입력" style="border: none;">
 									</div>
-									<div class="col">
-										<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">오는 날</span>
-										<div class="d-flex justify-content-center" style="margin-left: 10px; margin-top: 5px;">
-											<i class="bi bi-calendar-check me-1"></i>
-											<input id="endDate" type="text" name="planning_end_date" placeholder="날짜 입력" style="border: none;">
-										</div>
-									</div>
-									<div class="col">
-										<span
-											style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">모집
-											인원</span>
-										<div class="d-flex justify-content-center" style="margin-left: 10px; margin-top: 5px;">
-											<i class="bi bi-people-fill me-1"></i> <input class="count" type="text" placeholder="인원" name="planning_member" style="border: none;">
-										</div>
+								</div>
+								<div class="col">
+									<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">모집 인원</span>
+									<div class="d-flex justify-content-center" style="margin-left: 10px; margin-top: 5px;">
+										<i class="bi bi-people-fill me-1"></i>
+										<input class="count" type="text" placeholder="인원" name="planning_member" style="border: none;">
 									</div>
 								</div>
 							</div>
-							<div class="col d-grid d-flex align-items-end justify-content-center">
-								<button class="btn" style="width: 80%; background-color: #DB4465; color: white; border-radius: 5rem;" onclick="clearListAndSearchTravel(this)">검색</button>
-							</div>
+						</div>
+						<div class="col d-grid d-flex align-items-end justify-content-center">
+							<button class="btn" style="width: 80%; background-color: #DB4465; color: white; border-radius: 5rem;" onclick="clearListAndSearchTravel(this)">검색</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="container mt-5" id="mainContainer"></div>
-		
-		<jsp:include page="../common/bottomNavi.jsp"></jsp:include>
 	</div>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-		crossorigin="anonymous"></script>
+	<div class="container mt-5" id="mainContainer"></div>
+
+	<jsp:include page="../common/bottomNavi.jsp"></jsp:include>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>
