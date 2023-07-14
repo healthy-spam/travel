@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@300;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@700&family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -102,7 +102,7 @@
 						var userInfo1 = document.createElement('div');
 
 						// 클래스와 속성 설정
-						col.className = 'col-3 mb-5';
+						col.className = 'col-3 mb-3';
 						cardWrapper.className = 'cardWrapper shadow';
 						cardWrapper.onclick = function() {
 							redirectDetailPage(response.list[i].planning.planning_id);
@@ -207,44 +207,7 @@
 		inputElement.value = newValue;
 	}
 </script>
-<style type="text/css">
-body {
-	font-family: 'Noto Sans KR', sans-serif;	
-}
-
-.image-header {
-	background: url("/travel/resources/img/back.png");
-}
-
-.title-container {
-	color: white;
-	font-weight: 700;
-	padding: 0 1em;
-}
-
-.search-container {
-	background-color: white;
-	border-radius: 0.4rem;
-	padding: 1em;
-	margin-top: 19em;
-}
-
-.navbar-brand,
-.nav-link {
-	color: white;
-}
-
-.cardImg {
-	height: 15em;
-	border-radius: 0.375rem;
-}
-
-.cardWrapper {
-	position: relative;
-	width: 18rem;
-	cursor: pointer;
-}
-
+<style>
 .iconWrapper {
 	background-color: white;
 	position: absolute;
@@ -252,23 +215,33 @@ body {
 	top: 10px;
 	padding: 3px;
 	border-radius: 0.375rem;
-	font-weight: 700;
-}
-
-.title {
-	font-size: 1.6em;
-	margin-bottom: 0.3em;
-	font-weight: 700;
 }
 
 .card-body {
 	padding: 10px;
 }
 
+.cardImg {
+	height: 220px;
+	border-radius: 0.375rem;
+}
+
+.title {
+	font-size: 1.6em;
+	margin-bottom: 0.3em;
+}
+
 .content, .user-info {
 	font-size: 0.9em;
 	color: #363535;
-	font-weight: 500;
+}
+
+.cardWrapper {
+	position: relative;
+	width: 18rem;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: 700;
+	cursor: pointer;
 }
 
 .cardWrapper:hover .iconWrapper {
@@ -280,83 +253,155 @@ body {
 	color: white;
 }
 
+.mainRow {
+	padding-left: 20px;
+}
+
+.image-container {
+	position: relative;
+	width: 100%;
+	height: 70%; /* 이미지의 높이를 원하는 값으로 조정 */
+}
+
+.image-container img {
+	width: 100%;
+	height: 100%; /* 이미지의 세로 비율을 유지하면서 가로에 맞춤 */
+	object-fit: cover; /* 이미지가 전부 보이도록 조정 */
+}
+
+.title-container {
+	position: absolute;
+	z-index: 1;
+	top: 150px;
+	color: white;
+}
+
+.search-container {
+	font-family: 'Noto Sans KR', sans-serif;
+	position: absolute;
+	z-index: 1;
+	background-color: white;
+	width: 100%;
+	height: 10em;
+	top: 620px;
+	border-radius: 0.4rem;
+	padding: 10px;
+}
+
+h1 {
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 4em;
+}
+
+.container.header .navbar-nav .nav-link, .container.header .navbar-brand
+	{
+	color: white;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+select {
+	appearance: none /* 화살표 없애기 */
+}
+
 i {
 	color: #DB4465;
+}
+
+button {
+	font-family: 'Noto Sans KR', sans-serif;
 }
 </style>
 <title>메인 페이지</title>
 </head>
 <body>
-	<div class="container-fluid p-0 image-header" style="width: 100%; height: 60vh;">
+	<div class="container-fluid p-0">
 		<div class="container">
-			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-
-			<div class="row mt-5">
-				<div class="col">
-					<div class="title-container">
-						<h1>최고의 동행 파트너를 찾아보세요</h1>
-						<span style="font-weight: 400; font-size: 1.4em;">함께하는 여행의 즐거움을 더욱 풍부하게 만들어줄 파트너를 찾아보세요</span>
+			<div class="container header" style="position: absolute; z-index: 1;">
+				<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+				
+				<div class="row">
+					<div class="col">
+						<div class="title-container">
+							<h1>최고의 동행 파트너를 찾아보세요</h1>
+							<span style="font-weight: 400; font-size: 1.4em;">함께하는 여행의 즐거움을 더욱 풍부하게 만들어줄 파트너를 찾아보세요</span>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col">
-					<div class="search-container">
-						<div class="row">
-							<div class="col-10">
-								<div class="row">
-									<div class="col">
-										<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">제목 검색</span> <input class="form-control py-0" id="searchWord" type="text" placeholder="서울 관광" style="border: none; font-size: 1.4em;">
+				<div class="row">
+					<div class="col">
+						<div class="search-container">
+							<div class="row">
+								<div class="col-10">
+									<div class="row">
+										<div class="col">
+											<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">제목 검색</span> <input class="form-control py-0" id="searchWord" type="text" placeholder="서울 관광" style="border: none; font-size: 1.4em;">
+										</div>
+									</div>
+									<div class="row mt-4">
+										<div class="col">
+											<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">정렬</span>
+											<div style="margin-left: 10px; margin-top: 5px;">
+												<i class="bi bi-funnel-fill"></i>
+												<select id="searchType" style="border: none;">
+													<option value="latest">최신순</option>
+													<option value="old">오래된순</option>
+													<option value="application">신청순</option>
+												</select>
+											</div>
+										</div>
+										<div class="col">
+											<span
+												style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">가는
+												날</span>
+											<div class="d-flex justify-content-center"
+												style="margin-left: 10px; margin-top: 5px;">
+												<i class="bi bi-calendar-check me-1"></i> <input
+													id="startDate" type="text" name="planning_start_date"
+													placeholder="날짜 입력" style="border: none;">
+											</div>
+										</div>
+										<div class="col">
+											<span
+												style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">오는
+												날</span>
+											<div class="d-flex justify-content-center"
+												style="margin-left: 10px; margin-top: 5px;">
+												<i class="bi bi-calendar-check me-1"></i> <input
+													id="endDate" type="text" name="planning_end_date"
+													placeholder="날짜 입력" style="border: none;">
+											</div>
+										</div>
+										<div class="col">
+											<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">모집 인원</span>
+											<div class="d-flex justify-content-center" style="margin-left: 10px; margin-top: 5px;">
+												<i class="bi bi-people-fill me-1"></i> <input class="count" type="text" placeholder="인원" name="planning_member" style="border: none;">
+											</div>
+										</div>
 									</div>
 								</div>
-								<div class="row mt-4">
-									<div class="col">
-										<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">정렬</span>
-										<div style="margin-left: 10px; margin-top: 5px;">
-											<i class="bi bi-funnel-fill"></i> <select id="searchType"
-												style="border: none;">
-												<option value="latest">최신순</option>
-												<option value="old">오래된순</option>
-												<option value="application">신청순</option>
-											</select>
-										</div>
-									</div>
-									<div class="col">
-										<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">가는 날</span>
-										<div class="d-flex justify-content-center" style="margin-left: 10px; margin-top: 5px;">
-											<i class="bi bi-calendar-check me-1"></i>
-											<input id="startDate" type="text" name="planning_start_date" placeholder="날짜 입력" style="border: none;">
-										</div>
-									</div>
-									<div class="col">
-										<span style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">오는 날</span>
-										<div class="d-flex justify-content-center" style="margin-left: 10px; margin-top: 5px;">
-											<i class="bi bi-calendar-check me-1"></i>
-											<input id="endDate" type="text" name="planning_end_date" placeholder="날짜 입력" style="border: none;">
-										</div>
-									</div>
-									<div class="col">
-										<span
-											style="color: #CCCCCC; font-size: 0.8em; margin-left: 10px;">모집
-											인원</span>
-										<div class="d-flex justify-content-center" style="margin-left: 10px; margin-top: 5px;">
-											<i class="bi bi-people-fill me-1"></i> <input class="count" type="text" placeholder="인원" name="planning_member" style="border: none;">
+								<div class="col" style="margin-top: 60px;">
+									<div class="row">
+										<div class="col d-grid px-5">
+											<button class="btn" style="background-color: #DB4465; color: white; border-radius: 5rem;" onclick="clearListAndSearchTravel(this)">검색</button>
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="col d-grid d-flex align-items-end justify-content-center">
-								<button class="btn" style="width: 80%; background-color: #DB4465; color: white; border-radius: 5rem;" onclick="clearListAndSearchTravel(this)">검색</button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="container mt-5" id="mainContainer"></div>
-		
-		<jsp:include page="../common/bottomNavi.jsp"></jsp:include>
+		<div class="row">
+			<div class="col p-0">
+				<div class="image-container">
+					<img alt="back" src="/travel/resources/img/back.png">
+				</div>
+			</div>
+		</div>
+		<div class="container" id="mainContainer"></div>
 	</div>
+	<jsp:include page="../common/bottomNavi.jsp"></jsp:include>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
 		crossorigin="anonymous"></script>
