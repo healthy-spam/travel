@@ -28,30 +28,26 @@ public class LoginService {
 	private AdminSqlMapper adminSqlMapper;
 
 	 public void register(UserDto userDto, MultipartFile profileImage) {
+			loginSqlMapper.register(userDto);
+			int user_id = loginSqlMapper.getUserDtoByIdandPw(userDto.getUser_email(), userDto.getUser_pw()).getUser_id();
 		   
 		   if (profileImage != null) {
 
 				String rootFolder = "C:/uploadFiles/profileImage/";
 
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-
-				String today = sdf.format(new Date());
-
-				File targetFolder = new File(rootFolder + today);
+				File targetFolder = new File(rootFolder);
 
 				if (!targetFolder.exists()) {
 					targetFolder.mkdirs();
 				}
 
-				String fileName = UUID.randomUUID().toString();
-
-				fileName += "_" + System.currentTimeMillis();
+				String fileName = Integer.toString(user_id);
 
 				String originalFileName = profileImage.getOriginalFilename();
 
 				String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
 
-				String saveFileName = today + "/" + fileName + ext;
+				String saveFileName = fileName + ext;
 
 				try {
 					profileImage.transferTo(new File(rootFolder + saveFileName));
@@ -60,10 +56,10 @@ public class LoginService {
 				}
 				
 				userDto.setUser_image(saveFileName);
+				loginSqlMapper.updateProfilePicByUserId(saveFileName, user_id);
 				
 		   }
 		   
-		   loginSqlMapper.register(userDto);
 	   }
 
 	public String login(String user_email, String user_pw, HttpSession session, Model model) {

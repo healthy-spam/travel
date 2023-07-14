@@ -211,7 +211,7 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
 	</div>
 	
 	
-	<div class="container py-5 px-5">
+	<div class="container py-4 px-5">
 		<div class="row mb-3">
 			<div class="col">
 				<h1>나의 크루</h1>
@@ -325,7 +325,7 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
                                         <th class="text-end">자세히보기</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="ps-5">
                                     <tr>
                                         <td class="pe-0"><img src="/uploadFiles/crewFiles/crewthumbnail/bowwow.png" width="35px" height="35px" class="rounded-circle"></td>
                                         <td class="ps-0 pt-3">멍테일 님이 회원님의 게시글에 댓글을 남겼습니다.</td>
@@ -375,7 +375,7 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
 			</div>
 		</div>
 		
-		<div class="row mt-5 mb-3 ">
+		<div class="row my-3 ">
 			<div class="col-9">
 				<h1>전체 크루 리스트</h1>
 			</div>

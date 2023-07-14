@@ -160,7 +160,8 @@ strong#Createnewpost {
 }
 
 .postwriter {
-	font-size: 19px;
+	font-size: 17px;
+	
 }
 
 .postregdate {
@@ -252,6 +253,25 @@ strong#Createnewpost {
   border-radius: 50%;
   cursor: pointer;
 }
+
+
+          /* Scrollbar 커스터마이징 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
 </style>
 
 
@@ -267,9 +287,9 @@ strong#Createnewpost {
 				style="width: 18vw; height: 100vh;">
 				<a href="#"
 					class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-					<svg class="bi pe-none me-2" width="40" height="32">
-						<use xlink:href="#bootstrap"></use>
-					</svg> <span class="fs-4">${crewDto.crew_name }</span>
+					<img src="/uploadFiles/crewFiles/crewthumbnail/${crewDto.crew_thumbnail }" class="bi pe-none me-2" width="40" height="40">
+						<use xlink:href="/travel/crew/crewhome/${crewDto.crew_domain }"></use>
+					<span class="fs-4">${crewDto.crew_name }</span>
 				</a>
 				<hr>
 				<ul class="nav nav-pills flex-column mb-auto">
@@ -311,7 +331,7 @@ strong#Createnewpost {
 					<a href="#"
 						class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
 						data-bs-toggle="dropdown" aria-expanded="false"> <img
-						src="https://github.com/mdo.png" alt="" width="32" height="32"
+						src="/uploadFiles/profileImage/${userDto.user_image }" alt="" width="32" height="32"
 						class="rounded-circle me-2"> <strong>${userDto.user_nickname }</strong>
 					</a>
 					<ul class="dropdown-menu dropdown-menu-dark text-small shadow">
@@ -377,7 +397,7 @@ strong#Createnewpost {
 							<div class="row mx-2 ">
 								<div
 									class="col-auto d-flex justify-content-center align-items-center">
-									<img src="https://github.com/mdo.png" alt="" width="45"
+									<img src="/uploadFiles/${userDto.user_image }" alt="" width="45"
 										height="45" class="rounded-circle">
 								</div>
 								<div class="col-auto">
