@@ -10,6 +10,15 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 	<title>메인 페이지</title>
+	<style>
+		#row1col5:hover{
+  			font-weight : bold;
+		}
+
+		#deleteButton:hover{
+			font-weight : bold;
+		}
+	</style>
 	<script type="text/javascript">
 		var changeBackColor = true;
 		
@@ -31,23 +40,102 @@
 			  return format;
 			}
 		
+			function ajaxTemplete(){
+						
+						const xhr = new XMLHttpRequest();
+						
+						xhr.onreadystatechange = function(){
+							if(xhr.readyState == 4 && xhr.status == 200){
+								const response = JSON.parse(xhr.responseText);
+								// js 작업..
+							}
+						}
+						
+						//get
+						xhr.open("get", "요청 url?파라메터=값");
+						xhr.send();
+						
+						//post
+						xhr.open("post", "요청 url");
+						xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded"); 
+						xhr.send("파라메터=값");
+					}
+			
+			function deleteMessage(messageId) {
+				const xhr = new XMLHttpRequest();
+				
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200){
+						const response = JSON.parse(xhr.responseText);
+						// js 작업..
+						if(confirm("삭제하시겠습니까?")){
+							//get
+							xhr.open("get", "./deleteMessage?messageId=" + messageId);
+							xhr.send();
+						}
+					}
+				}
+				
+			} 
+			
+			function refreshMessageRead(messageId){
+				
+				const xhr = new XMLHttpRequest();
+				console.log(messageId);
+				
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200){
+						const response = JSON.parse(xhr.responseText);
+						// js 작업..
+						
+					}
+				}
+				
+				//get
+				xhr.open("get", "./refreshMessageRead?messageId=" + messageId);
+				xhr.send();
+				
+			}
+			
+			
 		let mySessionId = null;
 		
-		function openMessageGetPage(messageTitle, messageNickName, messageSendDateFormatted, messageContent) {
+		function openMessageGetPage(messageId, messageTitle, messageNickName, messageSendDateFormatted, messageContent) {
 		
-			console.log(messageTitle);
 			
 			const readMessagegetModal = bootstrap.Modal.getOrCreateInstance("#readMessagegetModal");
 			const messageGetTitle = document.getElementById("messageGetTitle");
 			const messageGetSender = document.getElementById("messageGetSender");
   			const messageGetTime = document.getElementById("messageGetTime");
 			const messageGetContent = document.getElementById("messageGetContent");
-			
+			console.log(messageId);
 			
 			messageGetTitle.textContent = messageTitle;
 			messageGetSender.textContent = messageNickName;
 			messageGetTime.textContent = messageSendDateFormatted;
 			messageGetContent.textContent = messageContent;
+			
+			
+			refreshMessageRead(messageId);
+			readMessagegetModal.show();
+			
+		}
+		
+		function openMessageSendPage(messageTitle, messageReceiver, messageSendDateFormatted, messageContent) {
+			
+			console.log(messageTitle);
+			
+			const readMessagegetModal = bootstrap.Modal.getOrCreateInstance("#readMessageSendModal");
+			const messageSendTitle = document.getElementById("messageSendTitle");
+			const messageSendReceiver = document.getElementById("messageSendReceiver");
+  			const messageSendTime = document.getElementById("messageSendTime");
+			const messageSendContent = document.getElementById("messageSendContent");
+			
+			
+			messageSendTitle.textContent = messageTitle;
+			messageSendReceiver.textContent = messageReceiver;
+			messageSendTime.textContent = messageSendDateFormatted;
+			messageSendContent.textContent = messageContent;
 			
 			
 			
@@ -106,6 +194,10 @@
 								const response = JSON.parse(xhr.responseText);
 								// js 작업..
 								const targetCol = document.getElementById("targetCol");
+												
+								const messageType = document.getElementById("messageType");
+								
+								messageType.innerText = "받은 쪽지함";
 								
 								// 기존의 쪽지 목록을 찾아 제거
 							      const existingRows = targetCol.querySelectorAll(".row.border-top.border-1.p-3");
@@ -152,8 +244,14 @@
 								row1.appendChild(row1col3);
 								
 								const i2 = document.createElement("i");
-								i2.classList.add("bi", "bi-envelope");
+								if(data.messageDto.message_read_date == null){
+									i2.classList.add("bi", "bi-envelope");
+								}else {
+									i2.classList.add("bi", "bi-envelope-open");
+								}
 								row1col3.appendChild(i2);
+								
+								
 								
 								const row1col4 = document.createElement("div");
 								row1col4.classList.add("col", "align-self-center","text-center");
@@ -162,13 +260,15 @@
 								
 								const row1col5 = document.createElement("div");
 								row1col5.classList.add("col", "d-flex", "align-self-center");
+								row1col5.setAttribute("id", "row1col5");
 								row1col5.innerText = data.messageDto.message_title;
 								row1col5.setAttribute("messageTitle", messageTitle);
 								row1col5.setAttribute("messageNickName", messageNickName);
 								row1col5.setAttribute("messageSendDateFormatted", messageSendDateFormatted);
 								row1col5.setAttribute("messageContent", messageContent);
+								row1col5.setAttribute("messageId", messageId);
 								
-								row1col5.setAttribute("onclick", "openMessageGetPage('" + messageTitle +
+								row1col5.setAttribute("onclick", "openMessageGetPage('" + messageId + "','" + messageTitle +
 					                      "','" + messageNickName + "','" + messageSendDateFormatted + "',\"" +
 					                      messageContent + "\")");
 								row1col5.style = "cursor : pointer"
@@ -192,15 +292,14 @@
 								const deleteButton = document.createElement("button");
 								deleteButton.classList.add("btn", "btn-sm", "border", "border-dark");
 								deleteButton.type = "button";
-								deleteButton.onclick = function() {
-									location.href = "./deleteMessageProcess?id=" + data.messageDto.message_id;
-								};
+								deleteButton.setAttribute("onclick", "deleteMessage(" + messageId + ")");
 								deleteButton.innerText = "삭제";
+								deleteButton.setAttribute("id", "deleteButton");
 								row1col7.appendChild(deleteButton);
 								
 								targetCol.appendChild(row1);
 								}
-								
+							
 							   
 							}
 						}
@@ -223,6 +322,10 @@
 								// js 작업..
 								const targetCol = document.getElementById("targetCol");
 								
+								const messageType = document.getElementById("messageType")
+								messageType.innerText = "보낸 쪽지함";
+								
+								
 								// 기존의 쪽지 목록을 찾아 제거
 							      const existingRows = targetCol.querySelectorAll(".row.border-top.border-1.p-3");
 							      existingRows.forEach(function(row) {
@@ -231,6 +334,10 @@
 								
 								for(data of response.messageSendList){
 								
+								var messageTitle = data.message_title;
+								var messageReceiver = data.user_nickname;
+								var messageContent = data.message_content;
+								console.log(messageReceiver);
 								var messageSendDate = new Date(data.message_reg_date);
 								
 								var messageSendDateFormatted = formatDate(messageSendDate, 'yy-MM-dd hh:mm:ss');
@@ -258,12 +365,15 @@
 								row1col2.appendChild(i1);
 								
 								const row1col3 = document.createElement("div");
-								row1col3.classList.add("col-auto", "d-flex", "align-self-center");
+								row1col3.classList.add("col-2", "align-self-center", "text-center");																
 								row1.appendChild(row1col3);
 								
-								const i2 = document.createElement("i");
-								i2.classList.add("bi", "bi-envelope");
-								row1col3.appendChild(i2);
+								if(data.message_read_date == null) {
+									row1col3.innerText = "읽지않음";
+								} else {
+									row1col3.innerText = "읽음";
+								}
+								
 								
 								const row1col4 = document.createElement("div");
 								row1col4.classList.add("col", "align-self-center","text-center");
@@ -272,12 +382,17 @@
 								
 								const row1col5 = document.createElement("div");
 								row1col5.classList.add("col", "d-flex", "align-self-center");
+								row1col5.innerText = data.message_title;
+								row1col5.setAttribute("messageTitle", messageTitle);
+								row1col5.setAttribute("messageReceiver", messageReceiver);
+								row1col5.setAttribute("messageContent", messageContent);
+								row1col5.setAttribute("messageSendDateFormatted", messageSendDateFormatted);
+								row1col5.setAttribute("onclick", "openMessageSendPage('" + messageTitle +
+					                      "','" + messageReceiver + "','" + messageSendDateFormatted + "',\"" +
+					                      messageContent + "\")");
+								row1col5.style = "cursor : pointer"
 								row1.appendChild(row1col5);
 								
-								const a1 = document.createElement("a");
-								a1.href="./readMessageWrote?id=" + data.message_id;
-								a1.innerText = data.message_title;
-								row1col5.appendChild(a1);
 								
 								const row1col6 = document.createElement("div");
 								row1col6.classList.add("col", "align-self-center", "text-center", "ms-2");
@@ -329,7 +444,7 @@
 					<div class="row mt-5 mb-3">
 					 <div class="col-2 rounded ms-4" style = "background-color : #e8e8e8; height : 100vh;">
 					 	<div class = "row">
-					 		<div class = "col p-3 bg-secondary text-white text-center rounded-top">
+					 		<div class = "col p-3 text-white text-center rounded-top" style = "background-color : #BB264A;">
 					 			쪽지함
 					 		</div>
 					 	</div>
@@ -386,7 +501,8 @@
 						  		</div>
 
 						  		<div class = "col-auto">
-								 	<button class="btn btn-sm btn-default border border-dark" type="button" onclick ="location.href='./deleteMessageProcess'">삭제
+								 	<button class="btn btn-sm btn-default border border-dark" type="button" onclick ="location.href='./deleteMessageProcess'">
+								 	삭제
 								 	</button>						  			
 						  		</div>
 					  		</div>				  
@@ -436,7 +552,7 @@
         		<button type="button" class="btn" style="background-color : #BB264A; color:white;">답장</button>
         	</div>
         	<div class = "col-2">
-        		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        		<button type="button" class="btn btn-secondary" onclick="reloadMessageGet()" data-bs-dismiss="modal">닫기</button>
         	</div>
       </div>
     </div>
@@ -444,19 +560,36 @@
 </div>
 		
 
-<div class="modal fade" id="writeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="readMessageSendModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">받은 쪽지</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header" style="background-color : #BB264A; color:white;">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">보낸 쪽지</h1>
+        <button type="button" class="btn-close btn-light" data-bs-dismiss="modal" aria-label="Close" style="color:white;"></button>
       </div>
-      <div class="modal-body">
-        내용 들어갈 곳..
+      <div class="modal-body" style="padding-top: 0;">
+       	<div class = "row mt-3">
+       		<div class = "col-3">제목</div>
+       		<div class = "col" id = "messageSendTitle"></div>
+       	</div>
+       	<div class = "row mt-1">
+       		<div class = "col-3">받는 사람</div>
+       		<div class = "col" id = "messageSendReceiver"></div>
+       	</div>
+       	<div class = "row mt-1">
+       		<div class = "col-3">보낸 시간</div>
+       		<div class = "col" id = "messageSendTime"></div>
+       	</div>
+       	<div class = "row mt-3">
+       		<div class ="col mx-2 px-0 border border-2" id = "messageSendContent" style="width: 50%; height: 200px;  overflow-y: scroll;">
+       		
+       		</div>
+       	</div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+      <div class="modal-footer justify-content-center">
+        	<div class = "col-2">
+        		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        	</div>
       </div>
     </div>
   </div>

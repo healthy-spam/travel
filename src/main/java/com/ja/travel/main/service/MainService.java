@@ -209,7 +209,19 @@ public class MainService {
 
 		return messageSendList;
 	}
+	
+	// 받은 메시지 읽으면 읽은날자 필드 업데이트
+	public void changeMessageReadStatus(int messageId) {
+		MessageDto messageDto = mainSqlMapper.getMessageDtoByMessageId(messageId);
+		if(messageDto.getMessage_read_date() == null) {
+		mainSqlMapper.updateReadDate(messageId);
+		} else return;
+	}
 
+	public void moveMessageToTrashCan() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }
