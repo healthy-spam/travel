@@ -406,18 +406,15 @@
 		</div>		
 
 <div class="modal fade" id="readMessagegetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style = "width:100px;">
+  <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">쪽지</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header" style="background-color : #BB264A; color:white;">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">받은 쪽지</h1>
+        <button type="button" class="btn-close btn-light" data-bs-dismiss="modal" aria-label="Close" style="color:white;"></button>
       </div>
       <div class="modal-body" style="padding-top: 0;">
-       	<div class = "row">
-       		<div class = "col p-2" style="background-color: #4770ff;">받은 쪽지 읽기</div>
-       	</div>
        	<div class = "row mt-3">
-       		<div class = "col-3 me-auto">제목</div>
+       		<div class = "col-3">제목</div>
        		<div class = "col" id = "messageGetTitle"></div>
        	</div>
        	<div class = "row mt-1">
@@ -434,9 +431,13 @@
        		</div>
        	</div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+      <div class="modal-footer justify-content-center">
+            <div class = "col-2 text-end">
+        		<button type="button" class="btn" style="background-color : #BB264A; color:white;">답장</button>
+        	</div>
+        	<div class = "col-2">
+        		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        	</div>
       </div>
     </div>
   </div>
