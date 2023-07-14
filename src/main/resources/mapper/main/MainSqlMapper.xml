@@ -97,6 +97,7 @@
 		#{message_title},
 		#{message_content},
 		SYSDATE,
+		NULL,
 		NULL
 	)
 </insert>
@@ -120,7 +121,7 @@
 	UPDATE message
 	SET
 		message_read_date = SYSDATE
-	WHERE message_id = #{message_id}
+	WHERE message_id = #{messageId}
 </update>
 
 <select id="getMessageDtoByMessageId" resultType="com.ja.travel.dto.MessageDto">

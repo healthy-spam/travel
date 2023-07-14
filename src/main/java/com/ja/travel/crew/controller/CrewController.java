@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -161,23 +162,8 @@ public class CrewController {
 	}
 	
 	@RequestMapping("/crewboard/uploadfiles")
-	public @ResponseBody void uploadFiles(@RequestParam("additionalData") String additionalDataJson, @RequestParam("photos") MultipartFile[] photos) {
-	    // JSON 데이터 파싱
-	    // JSON 데이터에는 intValue와 같은 추가 데이터가 포함되어 있습니다.
-	    int crew_board_id = 0;
-	    try {
-	        JSONObject additionalData = new JSONObject(additionalDataJson);
-	        crew_board_id = additionalData.getInt("intValue");
-	    } catch (JSONException e) {
-	        e.printStackTrace();
-	        System.out.println("error!");
-	    }
-
-	    // 파일 처리 로직
-	    for (MultipartFile p : photos) {
-	        System.out.println(p.getOriginalFilename());
-	    }
-	    crewService.addboard(crew_board_id, photos);
+	public @ResponseBody void uploadFiles(@RequestPart("myFiles") MultipartFile[] files) {
+//	    crewService.addboard(files);
 	}
 
 }

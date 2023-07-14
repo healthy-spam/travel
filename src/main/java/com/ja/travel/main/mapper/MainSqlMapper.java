@@ -3,6 +3,7 @@ package com.ja.travel.main.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ja.travel.dto.CouponDto;
 import com.ja.travel.dto.GuideDto;
@@ -57,9 +58,9 @@ public interface MainSqlMapper {
 
 	public UserDto getUserDtoByUserId(int userId);
 
-	public void updateReadDate(int id);
+	public void updateReadDate(int messageId);
 
-	public MessageDto getMessageDtoByMessageId(int id);
+	public MessageDto getMessageDtoByMessageId(@RequestParam("couponId") Integer couponId);
 
 	public List<MessageDto> selectAllMessageWroteByUserId(int userId);
 

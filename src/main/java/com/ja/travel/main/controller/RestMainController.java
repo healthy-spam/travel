@@ -107,4 +107,24 @@ public class RestMainController {
 		map.put("messageSendList", messageSendList);
 		return map;
 	}
+	
+	@RequestMapping("/refreshMessageRead")
+	public Map<String, Object> refreshMessageRead(@RequestParam("messageId") Integer messageId){
+		Map<String, Object> map = new HashMap<>();
+		System.out.println(messageId);
+		mainService.changeMessageReadStatus(messageId);
+		map.put("result", "success");
+		return map;		
+	}
+	
+	@RequestMapping("/deleteMessage")
+	public Map<String, Object> deleteMessage(@RequestParam("messageId") Integer messageId) {
+		Map<String, Object> map = new HashMap<>();
+		
+		mainService.moveMessageToTrashCan();
+		
+		map.put("result", "success");
+		return map;
+	}
+	
 }

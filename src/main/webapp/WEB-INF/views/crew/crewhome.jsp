@@ -64,16 +64,12 @@
 function uploadPhotos(res) {
 	console.log(res);
 	  var formData = new FormData();
-	  console.log(imageFiles.length);
-	  for (var i = 0; i < imageFiles.length; i++) {
-	    formData.append('photos' + i, imageFiles[i]);
-	  }
-	  
-	  // 추가 데이터를 JSON 형식으로 전송
-	  var additionalData = {
-	    intValue: res // int 값을 추가하고자 할 경우
-	  };
-	  formData.append('additionalData', JSON.stringify(additionalData));
+	  var files = $('#crew_thumbnail')[0].files;
+
+	    // 선택된 각 파일을 FormData에 추가
+	    for (var i = 0; i < files.length; i++) {
+	      formData.append('myFiles[]', files[i]);
+	    }
 
 	  $.ajax({
 	    url: "/travel/crew/crewboard/uploadfiles",
@@ -120,6 +116,23 @@ function uploadPhotos(res) {
 					})
 </script>
 
+
+<script>
+function getcommentlist() {
+	  var commentlist = $('.commentlist');
+
+	  // 현재 display 속성값 확인
+	  var currentDisplay = commentlist.css('display');
+
+	  // display 속성 toggle
+	  if (currentDisplay === 'block') {
+	    commentlist.css('display', 'none');
+	  } else if (currentDisplay === 'none') {
+	    commentlist.css('display', 'block');
+	  }
+}
+
+</script>
 <style>
 body {
 	background-color: #f2f2f2;
@@ -182,7 +195,8 @@ strong#Createnewpost {
 }
 
 .postwritearea {
-	background-color: #f5f5f5
+	background-color: #f5f5f5;
+	font-size: 14px;
 }
 
 .nav-pills .nav-link.active {
@@ -271,6 +285,14 @@ strong#Createnewpost {
         
         ::-webkit-scrollbar-thumb:hover {
             background-color: #555;
+        }
+        
+        .commentlist{
+        	display:none;
+        }
+        
+        .nocomment {
+        	font-size: 15px;
         }
 </style>
 
@@ -393,17 +415,17 @@ strong#Createnewpost {
 				<div class="row">
 					<!--여기서부터 jsp c:foreach 반복-->
 					<c:forEach var="list" items="${list}" varStatus="status">
-						<div class="card boardlist mt-3 p-2 pb-3">
+						<div class="card boardlist mt-3 p-2 pb-3" onclick="detail('${list.c.crew_board_id}')">
 							<div class="row mx-2 ">
 								<div
 									class="col-auto d-flex justify-content-center align-items-center">
-									<img src="/uploadFiles/${userDto.user_image }" alt="" width="45"
+									<img src="/uploadFiles/profileImage/${list.userDto.user_image }" alt="" width="45"
 										height="45" class="rounded-circle">
 								</div>
 								<div class="col-auto">
 									<div class="row mt-3">
 										<div class="col-auto">
-											<Strong class="postwriter">${list.user_nickname }</Strong>
+											<Strong class="postwriter">${list.userDto.user_nickname }</Strong>
 										</div>
 									</div>
 									<div class="row">
@@ -424,113 +446,88 @@ strong#Createnewpost {
 								<h5>${list.c.crew_board_title }</h5>
 								<p class="postcontent">${list.c.crew_board_content }</p>
 							</div>
+							
 							<!--  <div class="row mx-2 mb-3">
 								<img src="https://github.com/mdo.png" height="500px">
 							</div>-->
+							
 							<div class="row mx-2">
 								<div class="col-auto">
 									<i class="bi bi-suit-heart"> ${list.boardlikecount }</i>
 								</div>
 								<div class="col-auto">
-									<i class="bi bi-chat-left-text"> ${list.boardcommentcount }</i>
+									<i class="bi bi-chat-left-text" onclick="getcommentlist('${list.c.crew_board_content}')"> ${list.boardcommentcount }</i>
 								</div>
 								<div class="col text-end">
 									<i class="bi bi-bookmark-plus"></i>
 								</div>
 							</div>
 						</div>
+						<div class="commentlist card p-2" style="display: block;">
+							<div class="row p-2">
+								<div class="col pe-0">
+									<input placeholder="댓글 내용을 입력하세요." class="postwritearea nonboarder form-control" name="board_comment_content" id="comment">
+								</div>
+								<div class="col-auto px-3 pt-1">
+									<i class="bi bi-send"></i>
+								</div>
+							</div>
+							<c:choose>
+								<c:when test="${!empty list.commentlist }">
+										<c:forEach var="comment" items="${commentlist}">
+										<div class="row ">
+										<div class="col commentWriter">
+											<Strong>${comment.commentWriter.user_nickname }</Strong>
+										</div>
+										<div class="col text-end">
+											<c:choose>
+												<c:when test="${comment.commentWriter.user_id == sessionuser.user_id }">
+													<div class="row justify-content-end">
+										            	<div class="col-auto">
+															<i class="bi bi-pencil icon-button" onclick="modifyboard('${comment.crewBoardCommentDto.board_comment_id}')" title="modify"></i>
+														</div>
+										            	<div class="col-auto">
+															<i class="bi bi-trash3 icon-button" title="remove" onclick="deletecomment('${comment.crewBoardCommentDto.board_comment_id}')"></i>
+														</div>
+										        	</div>
+												</c:when>
+												<c:otherwise>
+												</c:otherwise>
+											</c:choose>
+						
+										</div>
+									</div>
+									<div class="row mt-3">
+										<div class="comment">${comment.crewBoardCommentDto.crew_comment }</div>
+									</div>
+									<div class="row mt-3">
+										<div class="col">
+											<Strong>
+												<fmt:formatDate value="${comment.crewBoardCommentDto.crew_comment_date }" pattern="yyyy-MM-dd HH:mm" var="formattedDate" />
+												${formattedDate }
+											</Strong>
+										</div>
+										<div class="col text-end">
+											
+										</div>
+									</div>
+									<div class="row mt-3">
+										<hr>
+									</div>
+									
+								</c:forEach>
+								</c:when>
+								<c:otherwise>
+								<div class="row py-5">
+									<div class="col text-center nocomment">
+										등록된 댓글이 없습니다.
+									</div>
+								</div>
+								</c:otherwise>
+							</c:choose>
+						</div>
 					</c:forEach>
 					<!--반복 끝-->
-
-					<div class="card boardlist mt-3 p-2 pb-3">
-						<div class="row mx-2 ">
-							<div
-								class="col-auto d-flex justify-content-center align-items-center">
-								<img src="https://github.com/mdo.png" alt="" width="45"
-									height="45" class="rounded-circle">
-							</div>
-							<div class="col-auto">
-								<div class="row mt-3">
-									<div class="col-auto">
-										<Strong class="postwriter">글쓴이</Strong>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-auto">
-										<p class="postregdate">2023-07-05 17:03</p>
-									</div>
-								</div>
-							</div>
-							<div class="col text-end mt-3">
-								<i class="bi bi-three-dots"></i>
-							</div>
-						</div>
-						<div class="row mx-2">
-							<p class="postcontent">Lorem ipsum dolor sit amet consectetur
-								adipisicing elit. Sapiente aspernatur, nisi eos dolorem libero
-								iure commodi impedit temporibus iusto maiores sit repellendus
-								inventore ducimus aliquam sint totam similique perferendis
-								accusamus? Lorem ipsum dolor sit amet consectetur adipisicing
-								elit. Inventore, eaque? Non maiores sed, illo perspiciatis sint
-								dolores quisquam hic laborum obcaecati pariatur aliquid iure
-								ducimus officiis eos laudantium modi possimus.</p>
-						</div>
-						<div class="row mx-2">
-							<div class="col-auto">
-								<i class="bi bi-suit-heart"> 23</i>
-							</div>
-							<div class="col-auto">
-								<i class="bi bi-chat-left-text"> 15</i>
-							</div>
-						</div>
-					</div>
-
-					<div class="card boardlist mt-3 p-2 pb-3">
-						<div class="row mx-2 ">
-							<div
-								class="col-auto d-flex justify-content-center align-items-center">
-								<img src="https://github.com/mdo.png" alt="" width="45"
-									height="45" class="rounded-circle">
-							</div>
-							<div class="col-auto">
-								<div class="row mt-3">
-									<div class="col-auto">
-										<Strong class="postwriter">글쓴이</Strong>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-auto">
-										<p class="postregdate">2023-07-05 17:03</p>
-									</div>
-								</div>
-							</div>
-							<div class="col text-end mt-3">
-								<i class="bi bi-three-dots"></i>
-							</div>
-						</div>
-						<div class="row mx-2">
-							<p class="postcontent">Lorem ipsum dolor sit amet consectetur
-								adipisicing elit. Sapiente aspernatur, nisi eos dolorem libero
-								iure commodi impedit temporibus iusto maiores sit repellendus
-								inventore ducimus aliquam sint totam similique perferendis
-								accusamus? Lorem ipsum dolor sit amet consectetur adipisicing
-								elit. Inventore, eaque? Non maiores sed, illo perspiciatis sint
-								dolores quisquam hic laborum obcaecati pariatur aliquid iure
-								ducimus officiis eos laudantium modi possimus.</p>
-						</div>
-						<div class="row mx-2">
-							<div class="col-auto">
-								<i class="bi bi-suit-heart"> 23</i>
-							</div>
-							<div class="col-auto">
-								<i class="bi bi-chat-left-text"> 15</i>
-							</div>
-						</div>
-					</div>
-
-
-
-
 
 				</div>
 			</div>
@@ -559,7 +556,7 @@ strong#Createnewpost {
 					<div class="row profile">
 						<div
 							class="col-auto d-flex justify-content-center align-items-center">
-							<img src="https://github.com/mdo.png" alt="" width="45"
+							<img src="/uploadFiles/profileImage/${userDto.user_image }" alt="" width="45"
 								height="45" class="rounded-circle">
 						</div>
 						<div class="col-auto">
@@ -611,102 +608,140 @@ strong#Createnewpost {
 	</div>
 	</div>
 	<!-- modal end -->
+	
+	
+	
+		<!--Modify Detail Modal -->
+
+	<div class="modal fade" id="boardDetailModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div
+			class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body mx-5">
+
+		<div class="row  mt-5 pt-5 title" id="boardDetailTitle">
+			<strong>제목입니당</strong>
+		</div>
+		<div class="row  mt-5">
+			<div class="col" id="boardDetailWriter">
+			작성자
+			<strong>
+			작성자입니당
+			</strong>
+			</div>
+			<div class="col text-end">
+				작성일자
+				<strong>
+					날짜입니당
+				</strong>
+			</div>
+		</div>
+		<div class="row text-end">
+			<c:choose>
+				<c:when test="${userDto.user_id == sessionuser.user_id }">
+				    <div class="col">
+				        <div class="row justify-content-end">
+				            <div class="col-auto">
+				                <i class="bi bi-pencil icon-button" onclick="modifyboard()" title="modify"></i>
+				            </div>
+				            <div class="col-auto">
+				                <i class="bi bi-trash3 icon-button" onclick="deleteboard('${crewBoardDto.crew_board_id}')" title="remove"></i>
+				            </div>
+				        </div>
+				    </div>
+				</c:when>
+				<c:otherwise>
+				</c:otherwise>
+			</c:choose>
+		</div>
+		<div class="row mb-3">
+			<div class="card my-3 py-3">
+				<div class="content m-4">
+					${crewBoardDto.crew_board_content }
+				</div>
+			</div>
+		</div>
+		<div class="row title2">
+			<strong>댓글</strong>
+		</div>
+		<div class="row  mt-3">
+			<div class="card mb-5">
+				<div class="row m-2 mt-3">
+					<textarea placeholder="댓글 내용을 입력하세요." class="textarea_input input_txt form-control" style="height: 100px;" name="board_comment_content" id="comment"></textarea>
+				</div>
+				<div class="row m-2">
+					<div class="col text-end">
+						<button id="writecomment" class="btn btn-success writecomment">작성하기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="commentlist">
+		<c:forEach var="comment" items="${commentlist}">
+		
+			<div class="row ">
+				<div class="col commentWriter">
+					<Strong>${comment.commentWriter.user_nickname }</Strong>
+				</div>
+				<div class="col text-end">
+					<c:choose>
+						<c:when test="${comment.commentWriter.user_id == sessionuser.user_id }">
+							<div class="row justify-content-end">
+				            	<div class="col-auto">
+									<i class="bi bi-pencil icon-button" onclick="modifyboard('${comment.crewBoardCommentDto.board_comment_id}')" title="modify"></i>
+								</div>
+				            	<div class="col-auto">
+									<i class="bi bi-trash3 icon-button" title="remove" onclick="deletecomment('${comment.crewBoardCommentDto.board_comment_id}')"></i>
+								</div>
+				        	</div>
+						</c:when>
+						<c:otherwise>
+						</c:otherwise>
+					</c:choose>
+
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="comment">${comment.crewBoardCommentDto.crew_comment }</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col">
+					<Strong>
+						<fmt:formatDate value="${comment.crewBoardCommentDto.crew_comment_date }" pattern="yyyy-MM-dd HH:mm" var="formattedDate" />
+						${formattedDate }
+					</Strong>
+				</div>
+				<div class="col text-end">
+					
+				</div>
+			</div>
+			<div class="row mt-3">
+				<hr>
+			</div>
+			
+		</c:forEach>
+		</div>
+		
+		
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- modal end -->
+	
+	
+	
+	
+	
+	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.13.0/Sortable.min.js"></script>
-<script>
-//Declare the remainingImages array in the outer scope
-const remainingImages = [];
-//Function to handle the file selection
-function handleFileSelect(event) {
-  const files = event.target.files; // Get selected files
 
-  // Clear the preview container
-  const previewContainer = document.getElementById('preview-container');
-  previewContainer.innerHTML = '';
-
-
-  // Loop through each selected file
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const reader = new FileReader();
-
-    // Closure to capture the file information
-    reader.onload = (function(file) {
-      return function(e) {
-        // Create a preview container for each image
-        const previewItem = document.createElement('div');
-        previewItem.className = 'preview-item';
-
-        // Create a preview image element
-        const img = document.createElement('img');
-        img.className = 'preview-image';
-        img.src = e.target.result;
-
-        // Create the delete button
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'delete-button';
-        deleteBtn.innerText = 'X';
-
-        // Add click event listener to delete the image
-        deleteBtn.addEventListener('click', function() {
-          previewItem.remove();
-          
-          // Remove the corresponding file from the remainingImages array
-          const index = remainingImages.indexOf(file);
-          if (index > -1) {
-            remainingImages.splice(index, 1);
-          }
-        });
-
-        // Append the image and delete button to the preview container
-        previewItem.appendChild(img);
-        previewItem.appendChild(deleteBtn);
-        previewContainer.appendChild(previewItem);
-
-        // Add the remaining image to the array
-        remainingImages.push(file);
-      };
-    })(file);
-
-    // Read the image file as a data URL
-    reader.readAsDataURL(file);
-  }
-}
-
-// Add event listener for file selection
-const inputElement = document.getElementById('image-upload');
-inputElement.addEventListener('change', handleFileSelect, false);
-
-// Initialize the sortable container
-const sortableContainer = document.getElementById('preview-container');
-Sortable.create(sortableContainer, {
-  animation: 150,
-});
-
-// Handle submit button click
-const submitBtn = document.getElementById('submit-btn');
-submitBtn.addEventListener('click', function() {
-  // Send remaining images and order using AJAX
-  const formData = new FormData();
-  const previewItems = document.getElementsByClassName('preview-item');
-  const order = [];
-  for (let i = 0; i < previewItems.length; i++) {
-    const imgSrc = previewItems[i].querySelector('.preview-image').src;
-    const fileName = imgSrc.substring(imgSrc.lastIndexOf('/') + 1);
-    console.log(fileName);
-    order.push(fileName);
-  }
-  for (let i = 0; i < remainingImages.length; i++) {
-    formData.append('images[]', remainingImages[i]);
-  }
-  formData.append('order', JSON.stringify(order));
-
-  // Send the formData using AJAX
-  const xhr = new XMLHttpRequest();
-  xhr.open('POST', 'your-server-url');
-  xhr.send(formData);
-});
-
-</script>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
