@@ -167,7 +167,7 @@ public class CrewService {
 		List<Map<String, Object>> list = new ArrayList<>();
 		for(CrewBoardDto post : allpostlist) { //게시글 하나 당
 			Map< String, Object> map = new HashMap<String, Object>();
-			String post_writer_nickname = crewMapper.getUserDtoByCrewMemberId(post.getCrew_member_id()).getUser_nickname(); //게시글 작성자 닉네임
+			UserDto userDto2 = crewMapper.getUserDtoByCrewMemberId(post.getCrew_member_id()); //게시글 작성자 닉네임
 			List<Integer> boardlikelist = crewMapper.getBoardLikeListByCrewBoardId(post.getCrew_board_id()); //해당 게시글에 좋아요 누른 crew_member_id 리스트
 
 			int count = 0;
@@ -184,8 +184,12 @@ public class CrewService {
 			}
 			map.put("crewMemberDto", mycrewMemberDto);
 			map.put("boardlikecount", count);
-			map.put("user_nickname", post_writer_nickname);
+			map.put("userDto", userDto2);
 			map.put("c", post);
+			
+			List<Map<String, Object>> commentlist;
+			List<CrewBoardCommentDto> list3 = crewMapper.getAllCommentByCrewBoardId(post.getCrew_board_id());
+			map.put("", list);
 			
 			Integer a = crewMapper.getAllCommentByCrewBoardId(post.getCrew_board_id()).size(); //댓글 개수
 
@@ -303,51 +307,7 @@ public class CrewService {
 	}
 	
 	
-	
-	//게시글 작성!!!!!!
-	/**사진 추가 ajax로 바꿔야됨!!!!!!!!!!!!!!!**/
-	public void addboard(int k, MultipartFile [] crew_board_attached) {
-		// 파일 저장 로직
-		int i=0;
-		for(MultipartFile multipartFile : crew_board_attached) {
-			i++;
-			if(multipartFile.isEmpty()) {
-				continue;
-			}
-			System.out.println("파일명: " + multipartFile.getOriginalFilename());
-			
-			String rootFolder = "C://CrewFiles/";
-			
-			File targetFolder = new File(rootFolder + Integer.toString(k)); // C:/uploadFolder/crew_board_id
-			
-			if(!targetFolder.exists()) {
-				targetFolder.mkdirs();
-			}
-			
-			// 저장 파일명 만들기. 핵심은 파일명 충돌 방지 = 랜덤 + 시간
-			String fileName = Integer.toString(i);
-//			fileName += "_" + System.currentTimeMillis();
-			
-			// 확장자 추출
-			String originalFileName = multipartFile.getOriginalFilename();
-			
-			String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
-			
-			String saveFileName = "/" +  fileName + ext;
-			
-			try {
-				multipartFile.transferTo(new File(rootFolder + "/" + Integer.toString(k)+saveFileName));
-			}catch(Exception e) {
-				System.out.println(e);
-				e.printStackTrace();
-			}
-			CrewBoardAttachedDto crewBoardAttachedDto = new CrewBoardAttachedDto();
-			crewBoardAttachedDto.setCrew_board_original_attached(originalFileName);
-			crewBoardAttachedDto.setCrew_board_attached(saveFileName);
-			crewBoardAttachedDto.setCrew_board_id(k);
-			crewMapper.addCrewBoardAttached(crewBoardAttachedDto);
-		}
-	}
+
 	
 	//게시글 세부 페이지!!!!!!
 
