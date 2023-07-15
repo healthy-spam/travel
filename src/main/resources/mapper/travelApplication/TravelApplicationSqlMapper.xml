@@ -10,6 +10,19 @@
 		AND user_id = #{user_id}
 	</select>
 	
+	<select id="getRecursiveList" resultType="com.ja.travel.dto.PlanDto">
+		WITH recursive_plan (plan_id, user_id, plan_title, referenced_plan_id, plan_content, plan_thumbnail, plan_disclosure_status, plan_statuse) AS
+		(
+			SELECT plan_id, user_id, plan_title, referenced_plan_id, plan_content, plan_thumbnail, plan_disclosure_status, plan_statuse
+			FROM plan
+			WHERE plan_id = #{plan_id}
+			UNION ALL
+			SELECT p.plan_id, p.user_id, p.plan_title, p.referenced_plan_id, p.plan_content, p.plan_thumbnail, p.plan_disclosure_status, p.plan_statuse
+			FROM plan p
+			INNER JOIN recursive_plan rp ON p.referenced_plan_id = rp.plan_id
+		)
+		SELECT * FROM recursive_plan
+	</select>
 	<select id="getChatList" resultType="com.ja.travel.dto.PlanningChatDto">
 		SELECT planning_chat.* FROM planning
 		INNER JOIN planning_chat ON planning_chat.planning_id = planning.planning_id

@@ -45,16 +45,12 @@ public interface TravelApplicationSqlMapper {
 
 	// 페이징 처리
 	public List<PlanningDto> getPlanningList(TravelApplicationRequestDto travelApplicationRequestDto);
-
 	public int getPlanningCount(@Param("searchWord") String searchWord);
 
 	// 플랜별 일차에 대한 명소
 	public PlanDto getPlanByPlanningId(int planning_id);
-
 	public List<PlanDayDto> getPlanDayByPlanId(int plan_id);
-
 	public List<PlanPlaceDto> getPlaceByPlanId(PlanDayDto planDay);
-
 	public UserDto getUserByPlanningId(int planning_id);
 
 	// 디테일 페이지 댓글 부분
@@ -69,4 +65,6 @@ public interface TravelApplicationSqlMapper {
 	// 플래닝 채팅 처리
 	public List<PlanningChatDto> getChatList(PlanningChatDto planningChatDto);
 	public void insertMessage(PlanningChatDto planningChatDto);
+	
+	public List<PlanDto> getRecursiveList(PlanningDto planningDto);
 }

@@ -80,8 +80,6 @@
 				const response = JSON.parse(xhr.responseText);
 
 				if (response.list != null) {
-					
-					console.log(response.list);
 					totalCount = response.totalCount;
 
 					var row = document.createElement('div');
@@ -99,18 +97,21 @@
 						var cardBody = document.createElement('div');
 						var title = document.createElement('div');
 						var content = document.createElement('div');
-						var userInfo = document.createElement('div');
+						var userInfo = document.createElement('span');
 						var icon2 = document.createElement('i');
 						var icon3 = document.createElement('span');
 						var div = document.createElement('div');
-
+						var div2 = document.createElement('div');
+						var img2 = document.createElement('img');
+						var span = document.createElement('span');
+						
 						// 클래스와 속성 설정
 						col.className = 'col-3 mb-5';
 						cardWrapper.className = 'cardWrapper shadow';
 						cardWrapper.onclick = function() {
 							redirectDetailPage(response.list[i].planning.planning_id);
 						};
-						img.className = 'img-fluid cardImg';
+						img.className = 'cardImg';
 						img.src = '/uploadFiles/' + response.list[i].plan.plan_thumbnail;
 						img.alt = '썸네일';
 						icon.className = 'bi bi-geo-alt cardIcon';
@@ -118,12 +119,21 @@
 						cardBody.className = 'card-body';
 						title.className = 'd-flex justify-content-between';
 						div.className = 'title text-truncate';
-						content.className = 'content mb-1 text-truncate';
+						content.className = 'content mb-3 text-truncate';
+						div2.className = 'd-flex align-items-start';
+						div2.style.fontWeight = '700';
 						userInfo.className = 'user-info';
 						icon2.className = 'bi bi-calendar-check';
-						icon2.style.marginRight = '0.8em';
-						icon3.className = 'titleIcon bi bi-bookmark-fill';
-						icon3.innerText = '3';
+						icon2.style.marginRight = '0.5em';
+						icon3.className = 'titleIcon bi bi-diagram-3';
+						icon3.innerText = response.list[i].recursiveList;
+						img2.setAttribute('src', '/uploadFiles/profileImage/'+response.list[i].user.user_image);
+						img2.style.width = '1.8em';
+						img2.style.height = '1.8em';
+						img2.style.marginRight = '0.5em';
+						img2.style.borderRadius = '50%';
+						span.innerText = response.list[i].user.user_nickname;
+						span.className = 'nickname';
 						
 						// 텍스트 내용 설정
 						iconWrapper1.textContent = response.list[i].list2[0].placeList[0].plan_place_address.slice(0, 2);
@@ -141,13 +151,16 @@
 						// 여행 종료일 설정
 						var endDate = new Date(startDate.getTime() + planDuration);
 
-						userInfo.textContent = (startDate.getMonth() + 1) + '/' + startDate.getDate() + ' - ' + (endDate.getMonth() + 1) + '/' + endDate.getDate() + ' · ' + planDay + '일';
+						userInfo.textContent = (startDate.getMonth() + 1) + '/' + startDate.getDate() + ' - ' + (endDate.getMonth() + 1) + '/' + endDate.getDate();
 
 						// 요소 구조 생성
-						userInfo.prepend(icon2);
+						div2.appendChild(img2);
+						div2.appendChild(span);
+						div2.appendChild(icon2);
+						div2.appendChild(userInfo);
 						cardBody.appendChild(title);
 						cardBody.appendChild(content);
-						cardBody.appendChild(userInfo);
+						cardBody.appendChild(div2);
 						title.appendChild(div);
 						title.appendChild(icon3);
 						cardWrapper.appendChild(img);
@@ -219,6 +232,13 @@
 	}
 </script>
 <style type="text/css">
+.nickname::after {
+	content: 'ㅣ';
+	color: black;
+	margin-right: 0.5em;
+	margin-left: 0.5em;
+}
+
 body {
 	font-family: 'Noto Sans KR', sans-serif;	
 }
@@ -249,6 +269,7 @@ body {
 
 .cardImg {
 	height: 15em;
+	width: 100%;
 	border-radius: 0.375rem;
 }
 
@@ -269,14 +290,13 @@ body {
 }
 
 .title {
-	font-size: 1.3em;
-	margin-bottom: 0.5em;
+	font-size: 1.1em;
 	font-weight: 700;
 	width: 11em;
 }
 
 .titleIcon {
-	font-size: 1.3em;
+	font-size: 1em;
 }
 
 .card-body {
@@ -284,9 +304,9 @@ body {
 }
 
 .content, .user-info {
-	font-size: 0.9em;
-	color: #363535;
-	font-weight: 500;
+	font-size: 0.8em;
+	color: #5C5C5C;
+	font-weight: 700;
 }
 
 .cardWrapper:hover .iconWrapper1 {
@@ -303,7 +323,6 @@ body {
 }
 
 .titleIcon:before {
-	color: #DB4465;
 	margin-right: 0.2em;
 }
 </style>

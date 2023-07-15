@@ -90,7 +90,8 @@ public class TravelApplicationService {
 			UserDto userOfPlanning = loginSqlMapper.selectById(planning.getUser_id());
 			PlanDto plan = planSqlMapper.selectById(planning.getPlan_id());
 			List<PlanDayDto> planDayList = travelApplicationSqlMapper.getPlanDayByPlanId(plan.getPlan_id());
-
+			List<PlanDto> recursiveList = travelApplicationSqlMapper.getRecursiveList(planning);
+			
 			List<Map<String, Object>> list2 = new ArrayList<>();
 			
 			for (PlanDayDto planDay : planDayList) {
@@ -102,6 +103,7 @@ public class TravelApplicationService {
 	        	list2.add(map2);
 			}
 			
+			map.put("recursiveList", recursiveList.size());
 			map.put("list2", list2);
 			map.put("user", userOfPlanning);
 			map.put("plan", plan);
