@@ -187,13 +187,25 @@ public class CrewService {
 			map.put("userDto", userDto2);
 			map.put("c", post);
 			
-			List<Map<String, Object>> commentlist;
-			List<CrewBoardCommentDto> list3 = crewMapper.getAllCommentByCrewBoardId(post.getCrew_board_id());
-			map.put("", list);
 			
-			Integer a = crewMapper.getAllCommentByCrewBoardId(post.getCrew_board_id()).size(); //댓글 개수
+			List<CrewBoardCommentDto> commentlist = crewMapper.getAllCommentByCrewBoardId(post.getCrew_board_id());
+			List<Map<String, Object>> arr = new ArrayList<>();
+			
+			try {
+				for(CrewBoardCommentDto c : commentlist) {
+					UserDto commentWriter = crewMapper.getUserDtoByCrewMemberId(c.getCrew_member_id());
+					Map<String, Object> commentdetails = new HashMap<String, Object>();
+					commentdetails.put("crewBoardCommentDto", c);
+					commentdetails.put("commentWriter", commentWriter);
+					arr.add(commentdetails);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			map.put("commentlist", arr);
+		
 
-			map.put("boardcommentcount", a);
+			map.put("boardcommentcount", commentlist.size());
 			list.add(map);
 		}
 
