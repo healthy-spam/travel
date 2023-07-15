@@ -116,7 +116,28 @@ function uploadPhotos(res) {
 					})
 </script>
 
-
+<script>
+function likeboard(crew_member_id, crew_board_id, board_writer_id) {
+	console.log(crew_member_id)
+	console.log(crew_board_id)
+	console.log(board_writer_id)
+	$.ajax({
+		url : "/travel/crew/likeboard",
+		type : "POST",
+		contentType : "application/json",
+		data : JSON.stringify({
+			"crew_member_id" : crew_member_id,
+			"crew_board_id" : crew_board_id
+		}),
+		success : function(res) {
+			getpostlist(res);
+		},
+		error : function(err) {
+			console.error("삭제 실패", err);
+		}
+	});
+}
+</script>
 <script>
 function getcommentlist() {
 	  var commentlist = $('.commentlist');
@@ -268,6 +289,10 @@ strong#Createnewpost {
   cursor: pointer;
 }
 
+.commentwriter {
+	font-size: 14px;
+}
+
 
           /* Scrollbar 커스터마이징 */
         ::-webkit-scrollbar {
@@ -415,7 +440,7 @@ strong#Createnewpost {
 				<div class="row">
 					<!--여기서부터 jsp c:foreach 반복-->
 					<c:forEach var="list" items="${list}" varStatus="status">
-						<div class="card boardlist mt-3 p-2 pb-3" onclick="detail('${list.c.crew_board_id}')">
+						<div class="card boardlist mt-3 p-2 pb-3">
 							<div class="row mx-2 ">
 								<div
 									class="col-auto d-flex justify-content-center align-items-center">
@@ -453,7 +478,17 @@ strong#Createnewpost {
 							
 							<div class="row mx-2">
 								<div class="col-auto">
-									<i class="bi bi-suit-heart"> ${list.boardlikecount }</i>
+									<c:choose>
+										<c:when test="${empty list.liked }">
+											<i class="bi bi-suit-heart"
+												onclick="likeboard('${crewMemberDto.crew_member_id}', '${list.c.crew_board_id }', '${list.c.crew_member_id }')"> ${list.boardlikecount }</i>
+										</c:when>
+										<c:otherwise>
+											<i class="bi bi-suit-heart-fill"
+												onclick="dislikeboard('${crewMemberDto.crew_member_id}', '${list.c.crew_board_id }',  '${list.c.crew_member_id }')"> ${list.boardlikecount }</i>
+										</c:otherwise>
+									</c:choose>
+
 								</div>
 								<div class="col-auto">
 									<i class="bi bi-chat-left-text" onclick="getcommentlist('${list.c.crew_board_content}')"> ${list.boardcommentcount }</i>
@@ -473,27 +508,16 @@ strong#Createnewpost {
 								</div>
 							</div>
 							<c:choose>
-								<c:when test="${!empty list.commentlist }">
-										<c:forEach var="comment" items="${commentlist}">
-										<div class="row ">
-										<div class="col commentWriter">
-											<Strong>${comment.commentWriter.user_nickname }</Strong>
-										</div>
+								<c:when test="${list.boardcommentcount != 0 }">
+									<c:forEach var="comment" items="${list.commentlist}">
+										<div class="row m-2">
+											<div class="col-auto px-0">
+												<img src="https://github.com/mdo.png" width="30" height="30" class="rounded-circle ">
+											</div>
+											<div class="col commentWriter">
+												${comment.commentWriter.user_nickname }
+											</div>
 										<div class="col text-end">
-											<c:choose>
-												<c:when test="${comment.commentWriter.user_id == sessionuser.user_id }">
-													<div class="row justify-content-end">
-										            	<div class="col-auto">
-															<i class="bi bi-pencil icon-button" onclick="modifyboard('${comment.crewBoardCommentDto.board_comment_id}')" title="modify"></i>
-														</div>
-										            	<div class="col-auto">
-															<i class="bi bi-trash3 icon-button" title="remove" onclick="deletecomment('${comment.crewBoardCommentDto.board_comment_id}')"></i>
-														</div>
-										        	</div>
-												</c:when>
-												<c:otherwise>
-												</c:otherwise>
-											</c:choose>
 						
 										</div>
 									</div>
@@ -601,12 +625,12 @@ strong#Createnewpost {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-primary" id="submit-btn">작성</button>
+					<button type="submit" class="btn btn-primary" onclick="boardwrite()">작성</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	</div>
+
 	<!-- modal end -->
 	
 	
