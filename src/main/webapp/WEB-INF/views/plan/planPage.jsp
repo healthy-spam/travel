@@ -270,6 +270,8 @@ function myPlanList() {
                         const planCardBox = planCardBoxOriginal.cloneNode(true);
                         planCardBox.removeAttribute('id'); 
                         
+                        console.log(plan.planDto.plan_id);
+                        
                         planCardBox.querySelector(".plan-thumbnail").src = "/uploadFiles/" + plan.planDto.plan_thumbnail;
                         planCardBox.querySelector(".plan-title").innerText = plan.planDto.plan_title; 
                         planCardBox.querySelector(".plan-content").innerText = plan.planDto.plan_content;
@@ -522,7 +524,7 @@ window.addEventListener("DOMContentLoaded", () => {
     <div class="row">
     	<div class="col-12">
     		      
-			<div class="row-auto mt-3" style="background-image: url('/travel/resources/img/plan7re.jpg'); background-size: 100%; min-height: 400px; width: auto; background-repeat: no-repeat; border-radius: 13px">
+			<div class="row-auto mt-3" style="background-image: url('/travel/resources/img/plan7rere.jpeg'); background-size: 100%; min-height: 400px; width: auto; background-repeat: no-repeat; border-radius: 13px">
             
             	<div class="col-3">&nbsp;</div>   
                         
