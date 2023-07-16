@@ -1,25 +1,31 @@
-	<%@ page language="java" contentType="text/html; charset=UTF-8"
-	    pageEncoding="UTF-8"%>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
-	<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-	<!DOCTYPE html>
-	<html>
-	<head>
-	<meta charset="UTF-8">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-	<title>메인 페이지</title>
-	<style>
-		#row1col5:hover{
-  			font-weight : bold;
-		}
 
-		#deleteButton:hover{
-			font-weight : bold;
-		}
-	</style>
-	<script type="text/javascript">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<title>메인 페이지</title>
+<style>
+#row1col5:hover {
+	font-weight: bold;
+}
+
+#deleteButton:hover {
+	font-weight: bold;
+}
+</style>
+<script type="text/javascript">
 		var changeBackColor = true;
 		
 		function formatDate(date, format) {
@@ -62,20 +68,24 @@
 					}
 			
 			function deleteMessage(messageId) {
+				
+				if(confirm("삭제하시겠습니까?")){
 				const xhr = new XMLHttpRequest();
+				
+				console.log(messageId);
 				
 				xhr.onreadystatechange = function(){
 					if(xhr.readyState == 4 && xhr.status == 200){
 						const response = JSON.parse(xhr.responseText);
 						// js 작업..
-						if(confirm("삭제하시겠습니까?")){
-							//get
-							xhr.open("get", "./deleteMessage?messageId=" + messageId);
-							xhr.send();
+						
+						
 						}
 					}
+				//get
+				xhr.open("get", "./deleteMessage?messageId=" + messageId);
+				xhr.send();
 				}
-				
 			} 
 			
 			function refreshMessageRead(messageId){
@@ -100,32 +110,31 @@
 			
 		let mySessionId = null;
 		
+		
 		function openMessageGetPage(messageId, messageTitle, messageNickName, messageSendDateFormatted, messageContent) {
 		
 			
-			const readMessagegetModal = bootstrap.Modal.getOrCreateInstance("#readMessagegetModal");
+			const readMessageGetModal = bootstrap.Modal.getOrCreateInstance("#readMessageGetModal");
 			const messageGetTitle = document.getElementById("messageGetTitle");
 			const messageGetSender = document.getElementById("messageGetSender");
   			const messageGetTime = document.getElementById("messageGetTime");
 			const messageGetContent = document.getElementById("messageGetContent");
-			console.log(messageId);
 			
 			messageGetTitle.textContent = messageTitle;
 			messageGetSender.textContent = messageNickName;
 			messageGetTime.textContent = messageSendDateFormatted;
-			messageGetContent.textContent = messageContent;
+			messageGetContent.innerHTML = messageContent.replace(/(\r\n|\n)/g, "<br>");
 			
 			
 			refreshMessageRead(messageId);
-			readMessagegetModal.show();
+			readMessageGetModal.show();
 			
 		}
 		
 		function openMessageSendPage(messageTitle, messageReceiver, messageSendDateFormatted, messageContent) {
 			
-			console.log(messageTitle);
 			
-			const readMessagegetModal = bootstrap.Modal.getOrCreateInstance("#readMessageSendModal");
+			const readMessageSendModal = bootstrap.Modal.getOrCreateInstance("#readMessageSendModal");
 			const messageSendTitle = document.getElementById("messageSendTitle");
 			const messageSendReceiver = document.getElementById("messageSendReceiver");
   			const messageSendTime = document.getElementById("messageSendTime");
@@ -135,11 +144,12 @@
 			messageSendTitle.textContent = messageTitle;
 			messageSendReceiver.textContent = messageReceiver;
 			messageSendTime.textContent = messageSendDateFormatted;
-			messageSendContent.textContent = messageContent;
+			messageSendContent.innerHTML = messageContent.replace(/(\r\n|\n)/g, "<br>");
 			
 			
 			
-			readMessagegetModal.show();
+			
+			readMessageSendModal.show();
 			
 		}
 		
@@ -186,7 +196,6 @@
 		}
 		
 		function reloadMessageGet(){
-		
 			const xhr = new XMLHttpRequest();
 						
 						xhr.onreadystatechange = function(){
@@ -206,7 +215,7 @@
 							      });
 								
 								for(data of response.messageGetList){
-								
+								if (data.messageDto.message_status !== '삭제') {
 								var messageId = data.messageDto.message_id;
 								var messageNickName = data.userDto.user_nickname;
 								var messageTitle = data.messageDto.message_title;
@@ -269,8 +278,8 @@
 								row1col5.setAttribute("messageId", messageId);
 								
 								row1col5.setAttribute("onclick", "openMessageGetPage('" + messageId + "','" + messageTitle +
-					                      "','" + messageNickName + "','" + messageSendDateFormatted + "',\"" +
-					                      messageContent + "\")");
+					                      "','" + messageNickName + "','" + messageSendDateFormatted + "'," +
+					                      JSON.stringify(messageContent).replace(/(\r\n|\n)/g, "<br>") + ")");
 								row1col5.style = "cursor : pointer"
 								row1.appendChild(row1col5);
 								
@@ -298,8 +307,11 @@
 								row1col7.appendChild(deleteButton);
 								
 								targetCol.appendChild(row1);
+								
+										
 								}
-							
+								}
+								
 							   
 							}
 						}
@@ -337,7 +349,6 @@
 								var messageTitle = data.message_title;
 								var messageReceiver = data.user_nickname;
 								var messageContent = data.message_content;
-								console.log(messageReceiver);
 								var messageSendDate = new Date(data.message_reg_date);
 								
 								var messageSendDateFormatted = formatDate(messageSendDate, 'yy-MM-dd hh:mm:ss');
@@ -388,8 +399,8 @@
 								row1col5.setAttribute("messageContent", messageContent);
 								row1col5.setAttribute("messageSendDateFormatted", messageSendDateFormatted);
 								row1col5.setAttribute("onclick", "openMessageSendPage('" + messageTitle +
-					                      "','" + messageReceiver + "','" + messageSendDateFormatted + "',\"" +
-					                      messageContent + "\")");
+					                      "','" + messageReceiver + "','" + messageSendDateFormatted + "'," +
+					                      JSON.stringify(messageContent).replace(/(\r\n|\n)/g, "<br>") + ")");
 								row1col5.style = "cursor : pointer"
 								row1.appendChild(row1col5);
 								
@@ -435,168 +446,189 @@
 							
 	</script>
 
-	</head>
-	<body>
+</head>
+<body>
+	<div class="container-fluid">
+		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 		<div class="container-fluid">
-			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-			<div class="container-fluid">
 
-					<div class="row mt-5 mb-3">
-					 <div class="col-2 rounded ms-4" style = "background-color : #e8e8e8; height : 100vh;">
-					 	<div class = "row">
-					 		<div class = "col p-3 text-white text-center rounded-top" style = "background-color : #BB264A;">
-					 			쪽지함
-					 		</div>
-					 	</div>
-					 	<div class = "row">
-					 		<div class = "col text-center p-3 border-secondary border-2 border-bottom" style="--bs-border-opacity: .5;">
-					 			<button class="btn btn-defualt btn-lg border border-dark" type="button" onclick ="location.href='./writeMessage'">쪽지쓰기</button>
-					 		</div>
-					 	</div>
-					 	<div class = "row border-bottom">
-					 		<div class="col-1 p-3 border-secondary border-2 border-bottom" style="--bs-border-opacity: .5;">
-					 			<i class="bi bi-envelope"></i>
-					 		</div>
-					 		<div class="col-2 p-3 border-secondary border-2 border-bottom" style="--bs-border-opacity: .5;">
-					 			<i class="bi bi-arrow-left" style="margin-left: -8px;"></i>
-					 		</div>
-					 		<div class="col p-3 border-secondary border-2 border-bottom" onclick="reloadMessageGet()" style="--bs-border-opacity: .5; cursor : pointer;">
-					 			받은쪽지
-					 		</div>
-					 	</div>
-					 	<div class = "row">
-					 		<div class="col-1 p-3 border-secondary border-2 border-bottom" style="--bs-border-opacity: .5;">
-					 			<i class="bi bi-envelope"></i>
-					 		</div>
-					 		<div class="col-2 p-3 border-secondary border-2 border-bottom" style="--bs-border-opacity: .5;">
-					 			<i class="bi bi-arrow-right" style="margin-left: -8px;"></i>					 			
-					 		</div>
-					 		<div class="col p-3 border-secondary border-2 border-bottom" onclick="reloadMessageSend()" style="--bs-border-opacity: .5; cursor : pointer;">
-					 			보낸쪽지
-					 		</div>
-					 	</div>
-					 	<div class = "row">
-					 		<div class="col p-3 text-center border-secondary border-2 border-bottom" style="--bs-border-opacity: .5;">
-					 			<a class="dropdown-item" href="./messageWrote">쪽지보관함</a>
-					 		</div>
-					 	</div>
-					 	<div class = "row">
-					 		<div class="col p-3 text-center border-secondary border-2 border-bottom" style="--bs-border-opacity: .5;">
-					 			<a class="dropdown-item" href="./messageWrote">스팸쪽지함</a>
-					 		</div>
-					 	</div>
-					 </div>
-
-					 <div class = "col-9 mx-4">
-					  <div class = "row">
-					  	<div class = "col" id="targetCol">
-					  		<div class = "row mb-3 h2">
-					  			<div class = "col" id="messageType">
-					  				받은 쪽지함
-					  			</div>
-					  		</div>
-					  		<div class = "row mb-3">
-						  		<div class = "col-auto mx-3 align-self-center me-0">
-						  			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-						  		</div>
-
-						  		<div class = "col-auto">
-								 	<button class="btn btn-sm btn-default border border-dark" type="button" onclick ="location.href='./deleteMessageProcess'">
-								 	삭제
-								 	</button>						  			
-						  		</div>
-					  		</div>				  
-						</div>
-					  </div>
+			<div class="row mt-5 mb-3">
+				<div class="col-2 rounded ms-4"
+					style="background-color: #e8e8e8; height: 100vh;">
+					<div class="row">
+						<div class="col p-3 text-white text-center rounded-top"
+							style="background-color: #BB264A;">쪽지함</div>
 					</div>
-				 </div>
+					<div class="row">
+						<div
+							class="col text-center p-3 border-secondary border-2 border-bottom"
+							style="-bs-border-opacity: .5;">
+							<button class="btn btn-defualt btn-lg border border-dark"
+								type="button" onclick="location.href='./writeMessage'">쪽지쓰기</button>
+						</div>
+					</div>
+					<div class="row border-bottom">
+						<div class="col-1 p-3 border-secondary border-2 border-bottom"
+							style="-bs-border-opacity: .5;">
+							<i class="bi bi-envelope"></i>
+						</div>
+						<div class="col-2 p-3 border-secondary border-2 border-bottom"
+							style="-bs-border-opacity: .5;">
+							<i class="bi bi-arrow-left" style="margin-left: -8px;"></i>
+						</div>
+						<div class="col p-3 border-secondary border-2 border-bottom"
+							onclick="reloadMessageGet()"
+							style="-bs-border-opacity: .5; cursor: pointer;">받은쪽지</div>
+					</div>
+					<div class="row">
+						<div class="col-1 p-3 border-secondary border-2 border-bottom"
+							style="-bs-border-opacity: .5;">
+							<i class="bi bi-envelope"></i>
+						</div>
+						<div class="col-2 p-3 border-secondary border-2 border-bottom"
+							style="-bs-border-opacity: .5;">
+							<i class="bi bi-arrow-right" style="margin-left: -8px;"></i>
+						</div>
+						<div class="col p-3 border-secondary border-2 border-bottom"
+							onclick="reloadMessageSend()"
+							style="-bs-border-opacity: .5; cursor: pointer;">보낸쪽지</div>
+					</div>
+					<div class="row">
+						<div
+							class="col p-3 text-center border-secondary border-2 border-bottom"
+							style="-bs-border-opacity: .5;">
+							<a class="dropdown-item" href="./messageWrote">쪽지보관함</a>
+						</div>
+					</div>
+					<div class="row">
+						<div
+							class="col p-3 text-center border-secondary border-2 border-bottom"
+							style="-bs-border-opacity: .5;">
+							<a class="dropdown-item" href="./messageWrote">스팸쪽지함</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-9 mx-4">
+					<div class="row">
+						<div class="col" id="targetCol">
+							<div class="row mb-3 h2">
+								<div class="col" id="messageType">받은 쪽지함</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-auto mx-3 align-self-center me-0">
+									<input class="form-check-input" type="checkbox" value=""
+										id="flexCheckDefault">
+								</div>
+
+								<div class="col-auto">
+									<button class="btn btn-sm btn-default border border-dark"
+										type="button" onclick="location.href='./deleteMessageProcess'">
+										삭제</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		
-		<div class="fixed-bottom" role="alert">
-			<div class="row">
-				<div class="ms-auto col-3 alert alert-success">읽지 않은 쪽지가 3개 있습니다.</div>
-				<div class="col-1"></div>
+	</div>
+
+	<div class="fixed-bottom" role="alert">
+		<div class="row">
+			<div class="ms-auto col-3 alert alert-success">읽지 않은 쪽지가 3개
+				있습니다.</div>
+			<div class="col-1"></div>
+		</div>
+
+	</div>
+
+	<div class="modal fade" id="readMessageGetModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header"
+					style="background-color: #BB264A; color: white;">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">받은 쪽지</h1>
+					<button type="button" class="btn-close btn-light"
+						data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
+				</div>
+				<div class="modal-body" style="padding-top: 0;">
+					<div class="row mt-3">
+						<div class="col-3">제목</div>
+						<div class="col" id="messageGetTitle"></div>
+					</div>
+					<div class="row mt-1">
+						<div class="col-3">보낸 사람</div>
+						<div class="col" id="messageGetSender"></div>
+					</div>
+					<div class="row mt-1">
+						<div class="col-3">보낸 시간</div>
+						<div class="col" id="messageGetTime"></div>
+					</div>
+					<div class="row mt-3">
+						<div class="col mx-2 px-0 border border-2" id="messageGetContent"
+							style="width: 50%; height: 200px; overflow-y: scroll;"></div>
+					</div>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<div class="col-2 text-end">
+						<button type="button" class="btn"
+							style="background-color: #BB264A; color: white;">답장</button>
+					</div>
+					<div class="col-2">
+						<button type="button" class="btn btn-secondary"
+							onclick="reloadMessageGet()" data-bs-dismiss="modal">닫기</button>
+					</div>
+				</div>
 			</div>
-  			
-		</div>		
+		</div>
+	</div>
 
-<div class="modal fade" id="readMessagegetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color : #BB264A; color:white;">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">받은 쪽지</h1>
-        <button type="button" class="btn-close btn-light" data-bs-dismiss="modal" aria-label="Close" style="color:white;"></button>
-      </div>
-      <div class="modal-body" style="padding-top: 0;">
-       	<div class = "row mt-3">
-       		<div class = "col-3">제목</div>
-       		<div class = "col" id = "messageGetTitle"></div>
-       	</div>
-       	<div class = "row mt-1">
-       		<div class = "col-3">보낸 사람</div>
-       		<div class = "col" id = "messageGetSender"></div>
-       	</div>
-       	<div class = "row mt-1">
-       		<div class = "col-3">보낸 시간</div>
-       		<div class = "col" id = "messageGetTime"></div>
-       	</div>
-       	<div class = "row mt-3">
-       		<div class ="col mx-2 px-0 border border-2" id = "messageGetContent" style="width: 50%; height: 200px;  overflow-y: scroll;">
-       		
-       		</div>
-       	</div>
-      </div>
-      <div class="modal-footer justify-content-center">
-            <div class = "col-2 text-end">
-        		<button type="button" class="btn" style="background-color : #BB264A; color:white;">답장</button>
-        	</div>
-        	<div class = "col-2">
-        		<button type="button" class="btn btn-secondary" onclick="reloadMessageGet()" data-bs-dismiss="modal">닫기</button>
-        	</div>
-      </div>
-    </div>
-  </div>
-</div>
-		
 
-<div class="modal fade" id="readMessageSendModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color : #BB264A; color:white;">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">보낸 쪽지</h1>
-        <button type="button" class="btn-close btn-light" data-bs-dismiss="modal" aria-label="Close" style="color:white;"></button>
-      </div>
-      <div class="modal-body" style="padding-top: 0;">
-       	<div class = "row mt-3">
-       		<div class = "col-3">제목</div>
-       		<div class = "col" id = "messageSendTitle"></div>
-       	</div>
-       	<div class = "row mt-1">
-       		<div class = "col-3">받는 사람</div>
-       		<div class = "col" id = "messageSendReceiver"></div>
-       	</div>
-       	<div class = "row mt-1">
-       		<div class = "col-3">보낸 시간</div>
-       		<div class = "col" id = "messageSendTime"></div>
-       	</div>
-       	<div class = "row mt-3">
-       		<div class ="col mx-2 px-0 border border-2" id = "messageSendContent" style="width: 50%; height: 200px;  overflow-y: scroll;">
-       		
-       		</div>
-       	</div>
-      </div>
-      <div class="modal-footer justify-content-center">
-        	<div class = "col-2">
-        		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-        	</div>
-      </div>
-    </div>
-  </div>
-</div>
+	<div class="modal fade" id="readMessageSendModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header"
+					style="background-color: #BB264A; color: white;">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">보낸 쪽지</h1>
+					<button type="button" class="btn-close btn-light"
+						data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
+				</div>
+				<div class="modal-body" style="padding-top: 0;">
+					<div class="row mt-3">
+						<div class="col-3">제목</div>
+						<div class="col" id="messageSendTitle"></div>
+					</div>
+					<div class="row mt-1">
+						<div class="col-3">받는 사람</div>
+						<div class="col" id="messageSendReceiver"></div>
+					</div>
+					<div class="row mt-1">
+						<div class="col-3">보낸 시간</div>
+						<div class="col" id="messageSendTime"></div>
+					</div>
+					<div class="row mt-3">
+						<div class="col mx-2 px-0 border border-2" id="messageSendContent"
+							style="width: 50%; height: 200px; overflow-y: scroll;"></div>
+					</div>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<div class="col-2">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-		
-		
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-	</body>
-	</html>
+
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+		crossorigin="anonymous"></script>
+</body>
+</html>

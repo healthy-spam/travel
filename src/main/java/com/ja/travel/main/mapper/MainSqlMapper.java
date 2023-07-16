@@ -74,4 +74,6 @@ public interface MainSqlMapper {
 
 	public List<MessageDto> getMessageList(int userId);
 
+	public void changeMessageStatusDelete(@RequestParam("messageId") Integer messageId);
+
 }

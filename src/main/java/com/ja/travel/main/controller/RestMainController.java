@@ -120,8 +120,8 @@ public class RestMainController {
 	@RequestMapping("/deleteMessage")
 	public Map<String, Object> deleteMessage(@RequestParam("messageId") Integer messageId) {
 		Map<String, Object> map = new HashMap<>();
-		
-		mainService.moveMessageToTrashCan();
+		System.out.println(messageId);
+		mainService.moveMessageToTrashCan(messageId);
 		
 		map.put("result", "success");
 		return map;

@@ -132,6 +132,7 @@
 <select id="selectAllMessageWroteByUserId" resultType="com.ja.travel.dto.MessageDto">
 	SELECT * FROM message
 	WHERE user_id = #{user_id}
+	ORDER
 </select>
 
 <insert id="insertUserCoupon2">
@@ -159,4 +160,10 @@
 	WHERE coupon_id = #{couponId}
 	AND coupon_amount = 0
 </select>
+
+<update id="changeMessageStatusDelete">
+	UPDATE message
+	SET message_status = '삭제'
+	WHERE message_id = #{messageId}
+</update>
 </mapper>

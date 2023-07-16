@@ -218,9 +218,9 @@ public class MainService {
 		} else return;
 	}
 
-	public void moveMessageToTrashCan() {
+	public void moveMessageToTrashCan(int messageId) {
 		// TODO Auto-generated method stub
-		
+		mainSqlMapper.changeMessageStatusDelete(messageId);
 	}
 	
 
