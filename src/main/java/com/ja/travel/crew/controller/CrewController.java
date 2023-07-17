@@ -176,4 +176,9 @@ public class CrewController {
 	public @ResponseBody List<Map<String, Object>> getallcrewmembers(@RequestParam("crew_domain") String crew_domain) {
 		return crewService.getAllMembersajax(crew_domain);
 	}
+	
+	@RequestMapping("/getallpostofmember")
+	public @ResponseBody Map<String, Object> getallpostofmember(@RequestParam("user_id") int user_id) {
+		return crewService.getallpostofmember(user_id);
+	}
 }

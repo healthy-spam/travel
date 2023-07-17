@@ -310,4 +310,8 @@
 	<select id="getcrewlistbysearchword" resultType="com.ja.travel.dto.CrewDto">
 		select * from crew where crew_name like '%' || #{searchWord} || '%' or crew_domain like '%' || #{searchWord} || '%' or master_id = (select user_id from member where user_nickname like '%' || #{searchWord} || '%')
 	</select>
+	
+	<select id="getAllPostByCrewMemberId" resultType="com.ja.travel.dto.CrewBoardDto">
+		select * from crew_board where crew_member_id = #{crew_member_id}
+	</select>
 </mapper>

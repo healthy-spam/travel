@@ -636,6 +636,12 @@ public class CrewService {
 	}
 
 
-
+	public Map<String, Object> getallpostofmember(int user_id) {
+		List<CrewBoardDto> postlist = crewMapper.getAllPostByCrewMemberId(crewMapper.getCrewMemberDtoByUserId(user_id).getCrew_member_id());
+		Map<String, Object> kkk = new HashMap<String, Object>();
+		kkk.put("user_nickname", crewMapper.getUserDtoByUserId(user_id));
+		kkk.put("crewBoardDto", postlist);
+		return kkk;
+	}
 		
 }

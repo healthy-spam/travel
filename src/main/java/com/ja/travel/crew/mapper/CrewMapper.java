@@ -129,5 +129,7 @@ public interface CrewMapper {
 	public void addCrewThumbnailByCrewDomain(@Param("crew_thumbnail") String crew_thumbnail, @Param("crew_domain") String crew_domain);
 
 	public List<CrewDto> getcrewlistbysearchword(String searchWord);
+
+	public List<CrewBoardDto> getAllPostByCrewMemberId(int crew_member_id);
 	
 }
