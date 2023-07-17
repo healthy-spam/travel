@@ -149,8 +149,9 @@ public class CrewService {
 			List<CrewBoardDto> publicpostlist = crewMapper.getAllPublicPostByCrewDomain(crew_domain);
 			List<CrewBoardDto> publicnoticelist = crewMapper.getAllPublicNoticeByCrewDomain(crew_domain);
 			
-			model.addAttribute("publicpostlist", publicpostlist);
-			model.addAttribute("publicnoticelist", publicnoticelist);
+			model.addAttribute("list", publicpostlist);
+			model.addAttribute("list", publicnoticelist);
+			model.addAttribute("list", getBoardList(crew_domain, userDto));
 		}
 		CrewMemberDto crewappliedDto = crewMapper.getAppliedMemberInfo(userDto.getUser_id());
 		model.addAttribute("applied", crewappliedDto);
@@ -615,6 +616,24 @@ public class CrewService {
 			String crew_thumbnail = saveFileName;
 			crewMapper.addCrewThumbnailByCrewDomain(crew_thumbnail, crew_domain);
 		}
+
+
+	public String crewmember(String crew_domain, Model model, HttpSession session) {
+		model.addAttribute("crewDto", crewMapper.getCrewDtoByCrewDomain(crew_domain));
+		UserDto userDto =  (UserDto) session.getAttribute("sessionuser");
+		model.addAttribute("userDto", userDto);
+		model.addAttribute("crewMemberDto", crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id()));
+
+		List<Map<String, Object>> aa = getAllMembers(crewMapper.getCrewMemberListByCrewDomain(crew_domain));
+		model.addAttribute("memberList", aa);
+		model.addAttribute("membersize", aa.size());
+		return "crew/crewhome_member";
+	}
+
+
+	public List<Map<String, Object>> getAllMembersajax(String crew_domain) {
+		return getAllMembers(crewMapper.getCrewMemberListByCrewDomain(crew_domain));
+	}
 
 
 

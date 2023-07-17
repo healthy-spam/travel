@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -165,5 +166,14 @@ public class CrewController {
 	public @ResponseBody void uploadFiles(@RequestPart("myFiles") MultipartFile[] files) {
 //	    crewService.addboard(files);
 	}
+	
+	@RequestMapping("/crewhome/{crew_domain}/crewmember")
+	public String crewmember(@PathVariable("crew_domain") String crew_domain, Model model, HttpSession session) {
+		return crewService.crewmember(crew_domain, model, session);
+	}
 
+	@RequestMapping("/getallcrewmembers")
+	public @ResponseBody List<Map<String, Object>> getallcrewmembers(@RequestParam("crew_domain") String crew_domain) {
+		return crewService.getAllMembersajax(crew_domain);
+	}
 }
