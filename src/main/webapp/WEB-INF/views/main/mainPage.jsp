@@ -120,13 +120,13 @@
 						title.className = 'd-flex justify-content-between';
 						div.className = 'title text-truncate';
 						content.className = 'content mb-3 text-truncate';
-						div2.className = 'd-flex align-items-start';
+						div2.className = 'd-flex align-items-center';
 						div2.style.fontWeight = '700';
 						userInfo.className = 'user-info';
 						icon2.className = 'bi bi-calendar-check';
 						icon2.style.marginRight = '0.5em';
 						icon3.className = 'titleIcon bi bi-diagram-3';
-						icon3.innerText = response.list[i].recursiveList;
+						icon3.innerText = response.list[i].recursiveList == null ? 0 : response.list[i].recursiveList;
 						img2.setAttribute('src', '/uploadFiles/profileImage/'+response.list[i].user.user_image);
 						img2.style.width = '1.8em';
 						img2.style.height = '1.8em';

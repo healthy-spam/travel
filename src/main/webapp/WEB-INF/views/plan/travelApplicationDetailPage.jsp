@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=93ae12d4c0f00044228cbd5b5f2f588b&libraries=services,clusterer,drawing"></script>
@@ -275,7 +275,7 @@
 			chatBox.style.width = '0px'; // Initially the width is 0
 			chatBox.style.height = '0px'; // Initially the height is 0
 			chatBox.style.border = 'none';
-			chatBox.style.margin = '5px 35px 10px 35px';
+			chatBox.style.margin = '5px 0 10px 60px';
 			chatBox.style.borderRadius = '0.375rem';
 			chatBox.style.boxShadow = '5px 5px 10px rgba(0, 0, 0, 0.2)'; // Add semi-transparent shadow to all directions
 			chatBox.style.overflow = 'hidden';
@@ -287,7 +287,7 @@
 			var chatBoxInCol1 = document.createElement('div');
 			chatBoxInCol1.className = 'col text-truncate';
 			chatBoxInCol1.style.marginTop = '10px';
-			chatBoxInCol1.style.marginBottom = '50px';
+			chatBoxInCol1.style.marginBottom = '30px';
 			chatBoxInCol1.style.marginLeft = '15px';
 			chatBoxInCol1.style.paddingRight = '100px';
 			
@@ -556,10 +556,6 @@
 </script>
 <style type="text/css">
 
-.chat-box {
-	font-family: 'Noto Sans KR', sans-serif;
-}
-
 .img-wrapper {
 	height: 400px;
 	width: 100%;
@@ -573,18 +569,12 @@
 	border-radius: 0 0 0.4rem 0.4rem;
 }
 
-.content-wrapper {
-	margin-top: 5em;
-}
-
 .planning-title {
-	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 2em;
 	font-weight: 700;
 }
 
 .card {
-	font-family: 'Noto Sans KR', sans-serif;
 	padding: 22px 22px 22px 22px;
 	margin: 30px 10px 0 10px;
 	font-size: 1.1em;
@@ -598,7 +588,6 @@
 }
 
 .planning-content {
-	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 1.2em;
 	margin-bottom: 1em;
 }
@@ -614,24 +603,18 @@
 }
 
 .profile {
-	font-family: 'Noto Sans KR', sans-serif;
 	padding: 20px 20px 0 20px;
 	border: 1px solid lightgrey;
 	border-radius: 0.4rem;
-	margin: 5px 35px 10px 35px;
+	margin: 5px 0 10px 60px;
 }
 
 .chat {
-	width: 1.8em;
-	height: 1.8em;
 	border-radius: 50%;
 	font-size: 2.5em;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	display: none;
-	right: 20px;
-	z-index: 1;
+	right: 0.4em;
+	position: absolute;
 }
 
 #chat-container {
@@ -716,19 +699,16 @@
 }
 
 .comment::placeholder {
-	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 0.8em;
 	color: lightgrey;
 }
 
 .comment-info {
-	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 0.8em;
 	color: #9C9A9A;
 }
 
 .comment-button {
-	font-family: 'Noto Sans KR', sans-serif;
 	position: absolute;
 	top: 8px;
 	right: 20px;
@@ -753,6 +733,9 @@
 	font-size: 0.9em;
 }
 
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+}
 </style>
 <title>모집 디테일 페이지</title>
 </head>
@@ -767,7 +750,26 @@
 						<img class="banner" alt="배너" src="/uploadFiles/${map.plan.plan_thumbnail}">
 					</div>
 				</div>
-				<div class="row content-wrapper">
+				<div class="row mt-5">
+					<c:forEach items="${map.list}" var="data">
+						<c:forEach items="${data.placeList}" var="item">
+							<div class="col-3 card-schedule">
+								<img alt="썸네일" src="/uploadFiles/mainImage/${item.plan_place_photo}" style="width: 100%; height: 12em; border-radius: 0.375rem;">
+								<span style="font-size: 1.3em; font-weight: 600;">${data.planDay.plan_day}일차 - ${item.plan_place_name}</span>
+								<div style="font-weight: 400;">
+									<i class="bi bi-geo-alt"></i>
+									<span>${item.plan_place_address}</span>
+								</div>
+							</div>
+						</c:forEach>
+					</c:forEach>
+				</div>
+				<div class="row my-4">
+					<div class="col">
+						<hr>
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-8" style="padding-right: 40px;">
 						<div class="row">
 							<div class="col main-col">
@@ -918,7 +920,7 @@
 						</div>
 						<div class="row">
 							<div class="col d-flex justify-content-end pb-5" id="chat-container" style="position: relative;">
-								<div class="chat" style="position: absolute;" onclick="showChatBox()">
+								<div class="chat" onclick="showChatBox()">
 									<i class="bi bi-chat-dots-fill chatIcon" style="color: #DB4465"></i>
 								</div>
 							</div>
