@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ja.travel.dto.HotelDto;
-import com.ja.travel.dto.HotelReservationDto;
-import com.ja.travel.dto.UserDto;
 import com.ja.travel.hotel.service.HotelService;
 
 @RestController

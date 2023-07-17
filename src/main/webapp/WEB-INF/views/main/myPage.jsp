@@ -65,6 +65,16 @@ body {
 						<p>마이플랜
 					</div>
 				</div>
+				<div class="row">
+					<div class="col mb-1" style="font-size: 1.5em; font-weight: 300;">
+						<p>등록숙소
+					</div>
+				</div>
+				<div class="row">
+					<div class="col mb-1" style="font-size: 1.5em; font-weight: 300;">
+						<p>마이패키지
+					</div>
+				</div>
 			</div>
 			<div class="col-8 px-4">
 				<div class="row my-4">
@@ -77,7 +87,7 @@ body {
 										<i class="bi bi-person me-2"></i>
 										${sessionuser.user_nickname}
 									</span>
-									<button style="border: none;">실명수정</button>
+									<button style="border: none;">수정</button>
 								</div>
 								<div class="d-flex justify-content-between my-3">
 									<span style="font-size: 1.1em;"> 
@@ -96,46 +106,25 @@ body {
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row my-4">
 					<div class="col">
 						<div class="card-wrapper">
 							<div class="card-title">동행모집</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
-								<div>
-									<a class="d-flex justify-content-between my-3" href="#" style="text-decoration: none;">
-										<span style="color: black;">[모집중] 7월 부산 여행 가실분 구합니다~</span>
-										<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">2023/07/20 종료</span>
-									</a>
-								</div>
-								<div>
-									<a class="d-flex justify-content-between my-3" href="#" style="text-decoration: none;">
-										<span style="color: black;">[모집종료] 6월 서울 가실분 구합니다~</span>
-										<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">2023/06/12 종료</span>
-									</a>
-								</div>
-								<div>
-									<a class="d-flex justify-content-between my-3" href="#" style="text-decoration: none;">
-										<span style="color: black;">[모집종료] 일본 여행 가실분 구합니다~</span>
-										<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">2023/05/20 종료</span>
-									</a>
-								</div>
-								<div>
-									<a class="d-flex justify-content-between my-3" href="#" style="text-decoration: none;">
-										<span style="color: black;">[모집종료] 부산 여행 가실분 구합니다~</span>
-										<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">2023/04/10 종료</span>
-									</a>
-								</div>
-								<div>
-									<a class="d-flex justify-content-between my-3" href="#" style="text-decoration: none;">
-										<span style="color: black;">[모집종료] 대구 여행 가실분 구합니다~</span>
-										<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">2023/04/01 종료</span>
-									</a>
-								</div>
+								<c:forEach items="${list}" var="data">
+									<div>
+										<a class="d-flex justify-content-between my-3" href="#" style="text-decoration: none;">
+											<span style="color: black;">[${data.planningStatus}] ${data.myPlanning.planning_title}</span>
+											<fmt:parseDate var="parsedDate" value="${data.myPlanning.planning_end_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
+											<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;"><fmt:formatDate value="${parsedDate}" pattern="yyyy/MM/dd"/> 종료</span>
+										</a>
+									</div>
+								</c:forEach>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row my-4">
 					<div class="col">
 						<div class="card-wrapper">
 							<div class="card-title">마이플랜</div>
@@ -158,6 +147,49 @@ body {
 										<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">7 days</span>
 									</a>
 								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row my-4">
+					<div class="col">
+						<div class="card-wrapper">
+							<div class="card-title">등록숙소</div>
+							<div class="row mt-3 px-4">
+								<div class="col-4">
+									<div class="card">
+										<img src=" https://via.placeholder.com/150x150" class="img-fluid" alt="썸네일">
+										<div class="card-body">
+										 	<h5>신호영 숙소1</h5>
+										 </div>
+									</div>
+								</div>
+								<div class="col-4">
+									<div class="card">
+										<img src=" https://via.placeholder.com/150x150" class="img-fluid" alt="썸네일">
+										<div class="card-body">
+										 	<h5>신호영 숙소2</h5>
+										 </div>
+									</div>
+								</div>
+								<div class="col-4">
+									<div class="card">
+										<img src=" https://via.placeholder.com/150x150" class="img-fluid" alt="썸네일">
+										 <div class="card-body">
+										 	<h5>신호영 숙소3</h5>
+										 </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row my-4 pb-4">
+					<div class="col">
+						<div class="card-wrapper">
+							<div class="card-title">마이패키지</div>
+							<div class="d-flex justify-content-center mt-3">
+								등록된 패키지가 없습니다.
 							</div>
 						</div>
 					</div>
