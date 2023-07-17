@@ -30,50 +30,6 @@ public interface MainSqlMapper {
 
 	public PlanDto getPlanDtoByPlanId(int planId);
 
-	public List<CouponDto> getCouponList();
-
-	public void decreaseCoupon(int couponId);
-
-	public int createUserCouponPk();
-
-	public void insertUserCoupon(UserCouponDto userCouponDto);
-
-	public List<UserCouponDto> getUserCouponByUserId(int userId);
-
-	public UserCouponDto getUserCoupon(UserCouponDto userCouponDto);
-
-	public void updateStateSoldOut(UserCouponDto userCouponDto);
-
-	public void updateStateSoldOut(int couponId);
-
-	public void updateStateDateOver(int couponId);
-
-	public int createMessagePk();
-
-	public void insertMessage(MessageDto params);
-
-	public UserDto getUserByUserNickName(String user_nickname);
-
-	public List<MessageDto> selectAllMessageGotByNickName(String user_nickname);
-
-	public UserDto getUserDtoByUserId(int userId);
-
-	public void updateReadDate(int messageId);
-
-	public MessageDto getMessageDtoByMessageId(@RequestParam("couponId") Integer couponId);
-
-	public List<MessageDto> selectAllMessageWroteByUserId(int userId);
-
-	public void insertUserCoupon2(UserCouponDto userCouponDto);
-
-	public int countCoupon(UserCouponDto userCouponDto);
-
-	public int checkExpired(int couponId);
-
-	public int checkExhausted(int couponId);
-
-	public List<MessageDto> getMessageList(int userId);
-
-	public void changeMessageStatusDelete(@RequestParam("messageId") Integer messageId);
+	
 
 }

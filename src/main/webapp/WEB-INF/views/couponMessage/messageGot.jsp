@@ -67,7 +67,8 @@
 						xhr.send("파라메터=값");
 					}
 			
-			function deleteMessage(messageId) {
+			// 받은 메시지 삭제
+			function deleteMessageGet(messageId) {
 				
 				if(confirm("삭제하시겠습니까?")){
 				const xhr = new XMLHttpRequest();
@@ -78,15 +79,37 @@
 					if(xhr.readyState == 4 && xhr.status == 200){
 						const response = JSON.parse(xhr.responseText);
 						// js 작업..
-						
+						reloadMessageGet();
 						
 						}
 					}
 				//get
-				xhr.open("get", "./deleteMessage?messageId=" + messageId);
+				xhr.open("get", "./deleteMessageGet?messageId=" + messageId);
 				xhr.send();
 				}
-			} 
+			}
+			
+			//보낸 메시지 삭제
+			function deleteMessageSend(messageId) {
+				
+				if(confirm("삭제하시겠습니까?")){
+				const xhr = new XMLHttpRequest();
+				
+				console.log(messageId);
+				
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200){
+						const response = JSON.parse(xhr.responseText);
+						// js 작업..
+						reloadMessageSend();
+						
+						}
+					}
+				//get
+				xhr.open("get", "./deleteMessageSend?messageId=" + messageId);
+				xhr.send();
+				}
+			}
 			
 			function refreshMessageRead(messageId){
 				
@@ -194,7 +217,7 @@
 			
 			
 		}
-		
+		// 받은 메시지 리스트
 		function reloadMessageGet(){
 			const xhr = new XMLHttpRequest();
 						
@@ -215,7 +238,13 @@
 							      });
 								
 								for(data of response.messageGetList){
-								if (data.messageDto.message_status !== '삭제') {
+									
+								if (data.messageDto.message_status && data.messageDto.message_status.indexOf("받은쪽지삭제") >= 0) {
+									console.log(data.messageDto.message_status);
+								}else{
+									console.log(data.messageDto.message_status);
+								
+									
 								var messageId = data.messageDto.message_id;
 								var messageNickName = data.userDto.user_nickname;
 								var messageTitle = data.messageDto.message_title;
@@ -301,7 +330,7 @@
 								const deleteButton = document.createElement("button");
 								deleteButton.classList.add("btn", "btn-sm", "border", "border-dark");
 								deleteButton.type = "button";
-								deleteButton.setAttribute("onclick", "deleteMessage(" + messageId + ")");
+								deleteButton.setAttribute("onclick", "deleteMessageGet(" + messageId + ")");
 								deleteButton.innerText = "삭제";
 								deleteButton.setAttribute("id", "deleteButton");
 								row1col7.appendChild(deleteButton);
@@ -323,7 +352,7 @@
 
 		}
 		
-		
+		// 보낸 메시지 리스트
 		function reloadMessageSend(){
 			
 			const xhr = new XMLHttpRequest();
@@ -345,7 +374,11 @@
 							      });
 								
 								for(data of response.messageSendList){
-								
+								if (data.message_status && data.message_status.indexOf("보낸쪽지삭제") >= 0) {
+									
+								}
+								else{
+								var messageId = data.message_id;
 								var messageTitle = data.message_title;
 								var messageReceiver = data.user_nickname;
 								var messageContent = data.message_content;
@@ -419,16 +452,16 @@
 								const deleteButton = document.createElement("button");
 								deleteButton.classList.add("btn", "btn-sm", "border", "border-dark");
 								deleteButton.type = "button";
-								deleteButton.onclick = function() {
-									location.href = "./deleteMessageProcess?id=" + data.message_id;
-								};
+								deleteButton.setAttribute("onclick", "deleteMessageSend(" + messageId + ")");
 								deleteButton.innerText = "삭제";
+								deleteButton.setAttribute("id", "deleteButton");
 								row1col7.appendChild(deleteButton);
 								
 								targetCol.appendChild(row1);
-								}
+									}
 								
 
+								}
 							}
 						}
 						
@@ -437,7 +470,46 @@
 						xhr.send();
 						
 
+				
 		}
+		
+		
+				function reloadTrash() {
+					const xhr = new XMLHttpRequest();
+					
+					xhr.onreadystatechange = function(){
+						if(xhr.readyState == 4 && xhr.status == 200){
+							const response = JSON.parse(xhr.responseText);
+							// js 작업..
+							const messageType = document.getElementById("messageType")
+							messageType.innerText = "휴지통";
+							
+							
+							// 기존의 쪽지 목록을 찾아 제거
+						      const existingRows = targetCol.querySelectorAll(".row.border-top.border-1.p-3");
+						      existingRows.forEach(function(row) {
+						        targetCol.removeChild(row);
+						      });
+							
+							for(data of response.messageGetList){
+							if(data.messageDto.message_status.includes("받은쪽지삭제")){
+							var messageTitle = data.messageDto.message_title;
+							var messageReceiver = data.userDto.user_nickname;
+							var messageContent = data.messageDto.message_content;
+							var messageSendDate = new Date(data.messageDto.message_reg_date);
+							
+							var messageSendDateFormatted = formatDate(messageSendDate, 'yy-MM-dd hh:mm:ss');
+								}
+							}
+						}
+					}
+					
+					//get
+					xhr.open("get", "요청 url?파라메터=값");
+					xhr.send();
+
+		}
+			
 		
 		window.addEventListener("DOMContentLoaded", function(){
 			//사실상 시작 시점...
@@ -454,55 +526,62 @@
 
 			<div class="row mt-5 mb-3">
 				<div class="col-2 rounded ms-4"
-					style="background-color: #e8e8e8; height: 100vh;">
+					style="background-color: #e8e8e8; height: 100vh; width : 15%;">
 					<div class="row">
 						<div class="col p-3 text-white text-center rounded-top"
 							style="background-color: #BB264A;">쪽지함</div>
 					</div>
+					
 					<div class="row">
-						<div
-							class="col text-center p-3 border-secondary border-2 border-bottom"
+						<div class="col text-center p-3 border-secondary border-2 border-bottom"
 							style="-bs-border-opacity: .5;">
 							<button class="btn btn-defualt btn-lg border border-dark"
 								type="button" onclick="location.href='./writeMessage'">쪽지쓰기</button>
 						</div>
 					</div>
-					<div class="row border-bottom">
-						<div class="col-1 p-3 border-secondary border-2 border-bottom"
-							style="-bs-border-opacity: .5;">
+					
+					<div class="row border-secondary border-2 border-bottom" onclick="reloadMessageGet()" style = "cursor: pointer;">
+						<div class="col-4 p-3 text-end"
+							style="-bs-border-opacity: .5; margin-left:16px;">
 							<i class="bi bi-envelope"></i>
 						</div>
-						<div class="col-2 p-3 border-secondary border-2 border-bottom"
-							style="-bs-border-opacity: .5;">
-							<i class="bi bi-arrow-left" style="margin-left: -8px;"></i>
+						<div class="col-2 p-3 text-center"
+							style="-bs-border-opacity: .5; margin-left:-28px;">
+							<i class="bi bi-arrow-left"></i>
 						</div>
-						<div class="col p-3 border-secondary border-2 border-bottom"
-							onclick="reloadMessageGet()"
-							style="-bs-border-opacity: .5; cursor: pointer;">받은쪽지</div>
+						<div class="col-6 text-start p-3" style="-bs-border-opacity: .5; margin-left:-12px;">
+							받은쪽지
+						</div>
 					</div>
-					<div class="row">
-						<div class="col-1 p-3 border-secondary border-2 border-bottom"
-							style="-bs-border-opacity: .5;">
+					
+					<div class="row border-secondary border-2 border-bottom" onclick="reloadMessageSend()" style = "cursor: pointer;">
+						<div class="col-4 p-3 text-end"
+							style="-bs-border-opacity: .5; margin-left:16px;">
 							<i class="bi bi-envelope"></i>
 						</div>
-						<div class="col-2 p-3 border-secondary border-2 border-bottom"
-							style="-bs-border-opacity: .5;">
-							<i class="bi bi-arrow-right" style="margin-left: -8px;"></i>
+						<div class="col-2 p-3 text-center"
+							style="-bs-border-opacity: .5; margin-left:-28px;">
+							<i class="bi bi-arrow-right"></i>
 						</div>
-						<div class="col p-3 border-secondary border-2 border-bottom"
-							onclick="reloadMessageSend()"
-							style="-bs-border-opacity: .5; cursor: pointer;">보낸쪽지</div>
-					</div>
-					<div class="row">
-						<div
-							class="col p-3 text-center border-secondary border-2 border-bottom"
-							style="-bs-border-opacity: .5;">
-							<a class="dropdown-item" href="./messageWrote">쪽지보관함</a>
+						<div class="col-6 p-3 text-start"	style="-bs-border-opacity: .5; margin-left:-12px;">
+							보낸쪽지
 						</div>
 					</div>
-					<div class="row">
+					
+					<div class="row border-secondary border-2 border-bottom" onclick="reloadTrash()" style = "cursor: pointer;">
+						<div class="col-4 p-3 text-end"
+							style="-bs-border-opacity: .5; margin-left:30px;">
+							<i class="bi bi-trash"></i>
+						</div>
+						<div class="col-6 text-center p-3"
+							
+							style="-bs-border-opacity: .5; margin-left: -36px">휴지통
+						</div>
+					</div>
+					
+					<div class="row text-center border-secondary border-2 border-bottom">
 						<div
-							class="col p-3 text-center border-secondary border-2 border-bottom"
+							class="col p-3"
 							style="-bs-border-opacity: .5;">
 							<a class="dropdown-item" href="./messageWrote">스팸쪽지함</a>
 						</div>
@@ -523,16 +602,35 @@
 
 								<div class="col-auto">
 									<button class="btn btn-sm btn-default border border-dark"
-										type="button" onclick="location.href='./deleteMessageProcess'">
+										type="button" onclick="location.href='./deleteMessageAllProcess'">
 										삭제</button>
 								</div>
+							</div>
+							<div class = "row border-top border-1 p-3">
+								<div class="col-auto d-flex align-self-center">
+									<input type="checkbox" class="form-check-input" value="" id ="flexCheckDefualt">
+								</div>
+								<div class="col align-self-center text-center">
+									
+								</div>
+								<div class="col d-flex align-self-center" onclick="openMessageSendPage()" style='cursor : pointer;'>
+								
+								</div>
+								<div class="col align-self-center text-center ms-2">
+									
+								</div>
+								<div class="col align-selfcenter text-center ms-auto">
+									<button class="btn btn-sm border border-dark" type="button" onclick = "deleteMessageGetPerman()">
+									영구삭제
+									</button>
+								</div>
+
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
 	<div class="fixed-bottom" role="alert">
 		<div class="row">
@@ -584,7 +682,7 @@
 			</div>
 		</div>
 	</div>
-
+</div>
 
 	<div class="modal fade" id="readMessageSendModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -623,7 +721,6 @@
 			</div>
 		</div>
 	</div>
-
 
 
 	<script

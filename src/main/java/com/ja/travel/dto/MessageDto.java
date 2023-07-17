@@ -15,11 +15,12 @@ public class MessageDto {
 	private Date message_reg_date;
 	@DateTimeFormat(pattern="yy-MM-dd hh:mm:ss")
 	private Date message_read_date;
+	private String message_status;
 	public MessageDto() {
 		super();
 	}
 	public MessageDto(int message_id, int user_id, String user_nickname, String message_title, String message_content,
-			Date message_reg_date, Date message_read_date) {
+			Date message_reg_date, Date message_read_date, String message_status) {
 		super();
 		this.message_id = message_id;
 		this.user_id = user_id;
@@ -28,6 +29,7 @@ public class MessageDto {
 		this.message_content = message_content;
 		this.message_reg_date = message_reg_date;
 		this.message_read_date = message_read_date;
+		this.message_status = message_status;
 	}
 	public int getMessage_id() {
 		return message_id;
@@ -71,11 +73,19 @@ public class MessageDto {
 	public void setMessage_read_date(Date message_read_date) {
 		this.message_read_date = message_read_date;
 	}
+	public String getMessage_status() {
+		return message_status;
+	}
+	public void setMessage_status(String message_status) {
+		this.message_status = message_status;
+	}
 	@Override
 	public String toString() {
 		return "MessageDto [message_id=" + message_id + ", user_id=" + user_id + ", user_nickname=" + user_nickname
 				+ ", message_title=" + message_title + ", message_content=" + message_content + ", message_reg_date="
-				+ message_reg_date + ", message_read_date=" + message_read_date + "]";
+				+ message_reg_date + ", message_read_date=" + message_read_date + ", message_status=" + message_status
+				+ "]";
 	}
+	
 	
 }
