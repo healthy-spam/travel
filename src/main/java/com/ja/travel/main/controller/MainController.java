@@ -34,14 +34,6 @@ public class MainController {
 	@RequestMapping("/myPage")
 	public String myPage(Model model, HttpSession session) {
 		
-//		UserDto sessionuser = (UserDto) session.getAttribute("sessionuser");
-//		
-//		model.addAttribute("sessionuser", sessionuser);
-//		
-//		List<Map<String, Object>> list = planService.getPlanList();
-//		
-//		model.addAttribute("list", list);
-		
 		return "main/myPage";
 	}
 	
