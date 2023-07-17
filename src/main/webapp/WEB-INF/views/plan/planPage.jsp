@@ -247,52 +247,6 @@ function removeModal() {
     modal.remove();
 }
 
-// 내가 작성한 플랜 목록
-function myPlanList() {
-    const xhr = new XMLHttpRequest();
-   
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText);
-
-                console.log(response.planList);
-                
-                const planPublicList = document.getElementById("planPublicList");
-                const planCardBoxOriginal = document.getElementById('planCardBox');
-                
-                planPublicList.innerHTML = "";
-            
-                for(let plan of response.planList) {
-
-                    // 플랜이 userId가 같으면 카드를 생성
-                    if(plan.planDto.plan_disclosure_status === '공개') {
-                        const planCardBox = planCardBoxOriginal.cloneNode(true);
-                        planCardBox.removeAttribute('id'); 
-                        
-                        console.log(plan.planDto.plan_id);
-                        
-                        planCardBox.querySelector(".plan-thumbnail").src = "/uploadFiles/" + plan.planDto.plan_thumbnail;
-                        planCardBox.querySelector(".plan-title").innerText = plan.planDto.plan_title; 
-                        planCardBox.querySelector(".plan-content").innerText = plan.planDto.plan_content;
-                        //planCardBox.querySelector(".user-name").innerText = plan.userDto.user_nickname;
-                        //planCardBox.querySelector(".user-img").src = "/uploadFiles/profileImage/"+ plan.userDto.user_image;
-                        planCardBox.querySelector(".readPlan").href = "./readPlanPage?id="+ plan.planDto.plan_id;
-                        
-                        planPublicList.appendChild(planCardBox);
-                        
-                        
-                    }
-                }
-                
-            }
-        }
-    }
-
-    xhr.open("get", "./getPlanList2");
-    xhr.send();
-}
-
 let planCardBoxOriginal = null;
 
 function planSearch() {
@@ -328,10 +282,22 @@ function planSearch() {
                     planCardBox.querySelector(".user-name").innerText = plan.userDto.user_nickname;
                     planCardBox.querySelector(".user-img").src = "/uploadFiles/profileImage/"+ plan.userDto.user_image;
                     planCardBox.querySelector(".readPlan").href = "./readPlanPage?id="+ plan.planDto.plan_id;
+                    planCardBox.querySelector(".copyPlan").href = "./copyPlanProcess?plan_id="+ plan.planDto.plan_id;
+                    
+                    const route_col = planCardBox.querySelector(".route_col");
+                    const templateNode = planCardBox.querySelector("#templete_my_place").cloneNode(true);
+                    
+                    const buttonsContainer = planCardBox.querySelector(".btnCol");                                   
+                    let scrollableDiv = planCardBox.querySelector('.scrollable-div');
+                    
+                    setScrollEvents(scrollableDiv);                    
                     
                     planPublicList.appendChild(planCardBox);
                     
-                    init(); // day버튼
+                 	// 각 플랜 카드에 버튼 컨테이너 추가                                                            
+                     loadDay(plan.planDto.plan_id, buttonsContainer, route_col, templateNode).then(() => {
+                        setDayButtonEvents(buttonsContainer);
+                    });
                 }
             }
         }
@@ -341,15 +307,85 @@ function planSearch() {
     xhr.send();
 }
 
-//Day버튼 시작
-function init() {
-   setDayButtonEvents();
-   setScrollEvents();
-   setLandmarkScrollEvents();
+function loadDay(planId, buttonsContainer, route_col, templateNode) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);      
+
+                // Remove all existing buttons
+                while (buttonsContainer.firstChild) {
+                    buttonsContainer.firstChild.remove();
+                }
+
+                // Create a new button for each item in the data
+                for(let dayDto of response.data){
+                    const newButton = document.createElement('button');
+                    
+                    newButton.className = 'btn day-btn';
+                    newButton.style.borderRadius = '20px';
+                    newButton.style.fontSize = '14px';
+                    newButton.style.fontWeight = 'bolder';
+                    newButton.textContent = 'Day' + dayDto.plan_day;
+
+                    newButton.addEventListener('click', function() {
+                    	loadMyList(dayDto.plan_day_id, route_col, templateNode);
+                    });
+
+                    buttonsContainer.appendChild(newButton);
+                }
+
+                // Now we call the function to set events for all buttons
+                resolve();
+            }
+        }
+
+        xhr.open("get", "./getPlanDayList2?planId=" + planId);
+        xhr.send();
+    });
 }
 
-function setDayButtonEvents() {
-    let buttons = document.getElementsByClassName('day-btn');
+function loadMyList(plan_day_id, route_col, templateNode) {
+    const xhr = new XMLHttpRequest();
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                
+                // clear route_col
+                while (route_col.firstChild) {
+                    route_col.removeChild(route_col.firstChild);
+                }
+
+                for(x of response.myList){
+                    for(y of x.listInner){
+                        const newElementInner = templateNode.cloneNode(true);
+                       
+                        newElementInner.querySelector(".placeName").innerText = y.planPlaceDto.plan_place_name;
+                        newElementInner.querySelector(".placeImage").src = "/uploadFiles/mainImage/"+y.planPlaceDto.plan_place_photo;                        
+                        newElementInner.querySelector(".placeAddress").innerText = y.planPlaceDto.plan_place_address;            
+                        
+                        newElementInner.removeAttribute("id");
+                        route_col.appendChild(newElementInner);
+                        
+                        setLandmarkScrollEvents();
+                    }                  
+                }                                                   
+            }
+        }
+    }
+
+    xhr.open("get", "./getMyList?dayId=" + plan_day_id);
+    xhr.send();
+}
+
+
+//Day버튼 시작
+function setDayButtonEvents(buttonsContainer) {
+    let buttons = buttonsContainer.getElementsByClassName('day-btn');
 
     for (let i = 0; i < buttons.length; i++) {
 
@@ -383,71 +419,76 @@ function setDayButtonEvents() {
     }
 }
 
-function setScrollEvents() {
-   var scrollableDiv = document.querySelector('.scrollable-div');
-   var pos = { left: 0, x: 0 };
 
-   scrollableDiv.addEventListener('mousedown', function(e) {
-      e.preventDefault();
-      pos = { left: scrollableDiv.scrollLeft, x: e.clientX };
-      scrollableDiv.style.cursor = 'grabbing';
-      scrollableDiv.style.userSelect = 'none';
+function setScrollEvents(scrollableDiv) {
+	   var pos = { left: 0, x: 0 };
 
-      scrollableDiv.addEventListener('mousemove', moveScroll);
-   });
+	   scrollableDiv.addEventListener('mousedown', function(e) {
+	      e.preventDefault();
+	      pos = { left: scrollableDiv.scrollLeft, x: e.clientX };
+	      scrollableDiv.style.cursor = 'grabbing';
+	      scrollableDiv.style.userSelect = 'none';
 
-   scrollableDiv.addEventListener('mouseup', stopScroll);
-   scrollableDiv.addEventListener('mouseout', stopScroll);
+	      scrollableDiv.addEventListener('mousemove', moveScroll);
+	   });
 
-   function moveScroll(e) {
-      e.preventDefault();
-      if (pos) {
-         var dx = e.clientX - pos.x;
-         scrollableDiv.scrollLeft = pos.left - dx;
-      }
-   }
+	   scrollableDiv.addEventListener('mouseup', stopScroll);
+	   scrollableDiv.addEventListener('mouseout', stopScroll);
 
-   function stopScroll() {
-      scrollableDiv.style.cursor = 'grab';
-      scrollableDiv.style.removeProperty('user-select');
-      scrollableDiv.removeEventListener('mousemove', moveScroll);
-      pos = null;
-   }
-}
+	   function moveScroll(e) {
+	      e.preventDefault();
+	      if (pos) {
+	         var dx = e.clientX - pos.x;
+	         scrollableDiv.scrollLeft = pos.left - dx;
+	      }
+	   }
+
+	   function stopScroll() {
+	      scrollableDiv.style.cursor = 'grab';
+	      scrollableDiv.style.removeProperty('user-select');
+	      scrollableDiv.removeEventListener('mousemove', moveScroll);
+	      pos = null;
+	   }
+	}
+
 //Day버튼 끝
 
 //day별 명소 스크롤 시작
 function setLandmarkScrollEvents() {
-   var scrollableDiv = document.querySelector('.scrollable-div-landmark');
-   var pos = { left: 0, x: 0 };
+   var scrollableDivs = document.querySelectorAll('.scrollable-div-landmark');
+   
+   scrollableDivs.forEach(function(scrollableDiv) {
+     var pos = { left: 0, x: 0 };
 
-   scrollableDiv.addEventListener('mousedown', function(e) {
-      e.preventDefault();
-      pos = { left: scrollableDiv.scrollLeft, x: e.clientX };
-      scrollableDiv.style.cursor = 'grabbing';
-      scrollableDiv.style.userSelect = 'none';
+     scrollableDiv.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        pos = { left: scrollableDiv.scrollLeft, x: e.clientX };
+        scrollableDiv.style.cursor = 'grabbing';
+        scrollableDiv.style.userSelect = 'none';
 
-      scrollableDiv.addEventListener('mousemove', moveScroll);
+        scrollableDiv.addEventListener('mousemove', moveScroll);
+     });
+
+     scrollableDiv.addEventListener('mouseup', stopScroll);
+     scrollableDiv.addEventListener('mouseout', stopScroll);
+
+     function moveScroll(e) {
+        e.preventDefault();
+        if (pos) {
+           var dx = e.clientX - pos.x;
+           scrollableDiv.scrollLeft = pos.left - dx;
+        }
+     }
+
+     function stopScroll() {
+        scrollableDiv.style.cursor = 'grab';
+        scrollableDiv.style.removeProperty('user-select');
+        scrollableDiv.removeEventListener('mousemove', moveScroll);
+        pos = null;
+     }
    });
-
-   scrollableDiv.addEventListener('mouseup', stopScroll);
-   scrollableDiv.addEventListener('mouseout', stopScroll);
-
-   function moveScroll(e) {
-      e.preventDefault();
-      if (pos) {
-         var dx = e.clientX - pos.x;
-         scrollableDiv.scrollLeft = pos.left - dx;
-      }
-   }
-
-   function stopScroll() {
-      scrollableDiv.style.cursor = 'grab';
-      scrollableDiv.style.removeProperty('user-select');
-      scrollableDiv.removeEventListener('mousemove', moveScroll);
-      pos = null;
-   }
 }
+
 
 //day별 명소 스크롤 끝
 
@@ -632,9 +673,7 @@ window.addEventListener("DOMContentLoaded", () => {
             <div class="card h-100 shadow-lg" style="border-radius: 15px; border: none; "  onclick="" >
             
 				<div class="flex-row mt-3 border shadow" style="border-radius: 10px; position: absolute; top: 5px; left: 50%; transform: translate(-50%, 0%); width: 90%; background-color: white;">						              
-						
-						
-
+												
 						<div class="flex-col m-1" style="  ">
 							<div class="row text-center align-items-center">
 								
@@ -673,20 +712,15 @@ window.addEventListener("DOMContentLoaded", () => {
 								</div>
 															
 							</div>
-						</div>
-						
-						
+						</div>												
 
 				</div>
-            
-               
+                           
                   <div class="row">
                   	<div class="col">
 						<img src="" class="card-img-top plan-thumbnail img-fluid" style=" width: 450px; height: 250px;">                  	
                   	</div>
-                  </div>
-                  
-               
+                  </div>                                
                
                <div class="card-body pt-2">
                
@@ -707,114 +741,37 @@ window.addEventListener("DOMContentLoaded", () => {
                   <div class="row mt-3">               
                      <div class="col-12">
                          <div class="row scrollable-div" style="display: flex; overflow-x: auto; white-space: nowrap;">
-                           <div class="col">
-                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day1</button>
-                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day2</button>
-                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day3</button>
-                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day4</button>                              
-                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day5</button>
-                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day6</button>
-                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day7</button>
-                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day8</button>
-                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day9</button>
-                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day10</button>
-                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day11</button>
-                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day12</button>
+                           <div class="col btnCol">
+                              <button class="btn day-btn" style="border-radius: 20px; font-size: 14px; font-weight: bolder;"> Day1</button>                              
                            </div>
                         </div>
                      </div>
                   </div>   
                         
                   <div class="row mt-3 scrollable-div-landmark" style="overflow-x: auto; white-space: nowrap;">
-                     <div class="d-flex">
+                     <div class="d-flex route_col">
 
-                        <div class="flex-col d-flex mx-1">
+                        <div class="flex-col d-flex mx-1" id="templete_my_place">
                            <div class="row">
                               <div class="col">
-                                 <img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
+                                 <img class="placeImage" src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
                               </div>
                            </div>
                            <div class="row">                              
                               <div class="flex-col mx-2">
                                  <div class="row mt-1">
                                     <div class="col">
-                                       <span style="font-weight: bolder; font-size: 14px;">롯데타워</span>                                                                      
+                                       <span class="placeName" style="font-weight: bolder; font-size: 14px;">롯데타워</span>                                                                      
                                     </div>
                                  </div>
                                  <div class="row mt-2">
                                     <div class="col">
-                                       <span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">서울 송파구 올림픽로 300</span>
+                                       <span class="placeAddress" style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">서울 송파구 올림픽로 300</span>
                                     </div>
                                  </div>
                               </div>
                            </div>
-                        </div>
-
-                        <div class="flex-col d-flex mx-1">
-                           <div class="row">
-                              <div class="col">
-                                 <img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
-                              </div>
-                           </div>
-                           <div class="row">                              
-                              <div class="flex-col mx-2">
-                                 <div class="row mt-1">
-                                    <div class="col">
-                                       <span style="font-weight: bolder; font-size: 14px;">롯데타워</span>                                                                      
-                                    </div>
-                                 </div>
-                                 <div class="row mt-2">
-                                    <div class="col">
-                                       <span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">서울 송파구 올림픽로 300</span>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-
-                        <div class="flex-col d-flex mx-1">
-                           <div class="row">
-                              <div class="col">
-                                 <img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
-                              </div>
-                           </div>
-                           <div class="row">                              
-                              <div class="flex-col mx-2">
-                                 <div class="row mt-1">
-                                    <div class="col">
-                                       <span style="font-weight: bolder; font-size: 14px;">롯데타워</span>                                                                      
-                                    </div>
-                                 </div>
-                                 <div class="row mt-2">
-                                    <div class="col">
-                                       <span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">서울 송파구 올림픽로 300</span>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-
-                        <div class="flex-col d-flex mx-1">
-                           <div class="row">
-                              <div class="col">
-                                 <img src="/travel/resources/img/롯데타워.png" style="width: 5rem; height: 5rem; border-radius: 10px;" alt="">
-                              </div>
-                           </div>
-                           <div class="row">                              
-                              <div class="flex-col mx-2">
-                                 <div class="row mt-1">
-                                    <div class="col">
-                                       <span style="font-weight: bolder; font-size: 14px;">롯데타워</span>                                                                      
-                                    </div>
-                                 </div>
-                                 <div class="row mt-2">
-                                    <div class="col">
-                                       <span style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">서울 송파구 올림픽로 300</span>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
+                        </div>                                              
 
                      </div>
                   </div>
@@ -823,7 +780,7 @@ window.addEventListener("DOMContentLoaded", () => {
                      <div class="col-12">
                         <div class="row">
                            <div class="col d-grid">
-                              <a class="btn" style="border-radius: 15px; border-color: #ff356b; border-width: 2px; color: #ff356b; font-weight: 600;" href="">
+                              <a class="btn copyPlan" style="border-radius: 15px; border-color: #ff356b; border-width: 2px; color: #ff356b; font-weight: 600;" href="">
                                  <i class="bi bi-bookmark" style="width: 1rem; filter: drop-shadow(0 0 1px #ff356b);"></i>일정담기
                               </a>
                            </div>

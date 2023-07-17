@@ -109,7 +109,7 @@ pageEncoding="UTF-8"%>
 
                             // placeName, plan_place_photo, plan_place_content, and plan_place_address from the response
                             newElementInner.querySelector(".placeName").innerText = y.planPlaceDto.plan_place_name;
-                            newElementInner.querySelector(".placeImage").src = "uploadFiles/mainImage/"+y.planPlaceDto.plan_place_photo;
+                            newElementInner.querySelector(".placeImage").src = "/uploadFiles/mainImage/"+y.planPlaceDto.plan_place_photo;
                             newElementInner.querySelector(".placeContent").innerText = y.planPlaceDto.plan_place_content;
                             newElementInner.querySelector(".placeAddress").innerText = y.planPlaceDto.plan_place_address;
                             newElementInner.querySelector(".place_number").innerText = ++placeCounter; // Counter를 증가시키고 place_number에 할당합니다.
@@ -120,6 +120,8 @@ pageEncoding="UTF-8"%>
                             route_col.appendChild(newElementInner);
                             
                             myDayPlaceList.push(y.planPlaceDto.plan_place_address);
+                            
+                            console.log(y.planPlaceDto.plan_place_photo);
                             
                             if (myDayPlaceList.length >= 2) {
                                 drawPin(myDayPlaceList[myDayPlaceList.length - 2], myDayPlaceList[myDayPlaceList.length - 1], polyline);  // polyline 객체를 인수로 전달
@@ -329,12 +331,12 @@ pageEncoding="UTF-8"%>
 		    </div>
 		    
 		    <div class="row mt-2">
-		    	<div class="col-1">
+		    	<!-- <div class="col-1">
 		    		&nbsp;
-		    	</div>
-		    	<div class="col-10">
+		    	</div> -->
+		    	<div class="col-12">
 					<div class="dropdown-center d-grid" >
-						<button class="btn dropdown-toggle" style=" color: white; font-weight: bolder; background-color: #ff356b; border-radius: 18px; font-size: 25px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<button class="btn dropdown-toggle" style=" color: white; font-weight: bolder; background-color: #ff356b; border-radius: 12px; font-size: 20px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<i class="bi bi-calendar-check"></i> 일정별 루트 목록						 
 						</button>
 						<ul class="dropdown-menu" id="templete_day" style="font-size: 25px;">
@@ -343,13 +345,14 @@ pageEncoding="UTF-8"%>
 						</ul>
 					</div>
 				</div>
-				<div class="col-1">
+				<!-- <div class="col-1">
 		    		&nbsp;
-		    	</div>
+		    	</div> -->
 		    </div>
 		    
 		    <div class="row mt-4">
 		    	<div class="col" id="route_col">
+		    	
 		    		<div class="row mt-2 align-items-center border p-2 m-1 d-none" id="templete_my_place">
 					    <div class="col-1 text-center">
 					        <span class="place_number" style="font-weight: bolder; font-size: 25px;"></span>
@@ -370,7 +373,7 @@ pageEncoding="UTF-8"%>
 					        </div>
 					        <div class="row mt-1">
 					            <div class="col">
-					                <span class="placeAddress"></span>
+					                <span class="placeAddress" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"></span>
 					            </div>
 					        </div>
 					    </div>                      
@@ -386,7 +389,21 @@ pageEncoding="UTF-8"%>
 		</div>
 		
 	</div>
-
+	
+	<div class="row mt-1">
+		<div class="col-12">
+			<hr>
+		</div>
+	</div>
+	<div class="row mt-2">
+		<div class="col text-start">		
+			<span>© 2023 TripStation. All rights reserved.</span>
+		</div>
+		<div class="col text-end">
+			<span></span>
+		</div>
+	</div>
+	
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
