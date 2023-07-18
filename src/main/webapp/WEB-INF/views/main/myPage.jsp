@@ -15,24 +15,58 @@
 <script>
 	document.addEventListener("DOMContentLoaded", function() {
 		var fileInput = document.getElementById("fileInput");
-		var icon = document.getElementById("icon");
+		var imageContainer = document.querySelector(".image-container");
+		var selectedFile = null; // 선택한 파일 저장 변수
+		var modal = new bootstrap.Modal(
+				document.getElementById("exampleModal"), {
+					keyboard : false
+				});
+		var confirmButton = document.getElementById("confirmButton");
 
 		fileInput.addEventListener("change", function() {
-			var file = fileInput.files[0];
+			selectedFile = fileInput.files[0];
+
+			if (!selectedFile) {
+				return; // 파일을 선택하지 않은 경우, 함수 종료
+			}
+
+			modal.show();
+		});
+
+		confirmButton.addEventListener("click", function() {
+			modal.hide(); // 모달 창 닫기
+
+			if (!selectedFile) {
+				return; // 선택한 파일이 없는 경우, 함수 종료
+			}
+
 			var reader = new FileReader();
 
 			reader.onload = function(e) {
 				var dataURL = e.target.result;
-				icon.style.display = "none";
-				var imageContainer = document.getElementById("imageContainer");
+
 				if (imageContainer) {
-					imageContainer.style.display = "block";
-					imageContainer.style.backgroundImage = "url(" + dataURL
-							+ ")";
+					imageContainer.src = dataURL;
 				}
+
+				var formData = new FormData();
+
+				formData.append("file", selectedFile);
+
+				const xhr = new XMLHttpRequest();
+
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState == 4 && xhr.status == 200) {
+
+					}
+				}
+
+				//post
+				xhr.open("post", "./insertImage");
+				xhr.send(formData);
 			};
 
-			reader.readAsDataURL(file);
+			reader.readAsDataURL(selectedFile);
 		});
 	});
 </script>
@@ -47,7 +81,7 @@ body {
 	padding-left: 0.5em;
 	height: 2.2em;
 	color: white;
-	background: linear-gradient(98deg,#03c75a,#49c6dd);
+	background: linear-gradient(98deg, #03c75a, #49c6dd);
 	display: flex;
 	align-items: center;
 }
@@ -57,6 +91,26 @@ body {
 	border-bottom: none;
 	border-radius: 0.5rem 0.5rem 0 0;
 }
+
+.icon-wrapper {
+	border: 2px solid white;
+	width: 2em;
+	height: 2em;
+	border-radius: 50%;
+	background-color: #03c75a;
+	position: absolute;
+	bottom: 0.3em;
+	right: 7.8em;
+	display: flex;
+	justify-content: center;
+}
+
+.image-container {
+	width: 8.2em;
+	height: 8.2em;
+	border-radius: 50%;
+}
+
 </style>
 </head>
 <body>
@@ -67,14 +121,27 @@ body {
 			<div class="col-4" style="padding: 0 0 0 5em;">
 				<div class="row">
 					<div class="col">
-						<div class="d-flex justify-content-center align-items-center" style="height: 11em; position: relative;">
-							<label for="fileInput">
-								<i id="icon" class="bi bi-person-circle" style="font-size: 8em; color: lightgrey;"></i>
-								<div id="imageContainer" class="image-container" style="width: 8em; height: 8em; background-color: lightgrey; background-size: cover; background-position: center; display: none; border-radius: 50%;"></div>
-							</label>
-							<input type="file" id="fileInput" style="display: none;">
-							<div style="width: 2em; height: 2em; background-color: black; position: absolute; bottom: 1.4em; right: 8.2em;">
-								<i class="bi bi-pencil-fill" style="color: #03c75a;"></i>
+						<div class="d-flex justify-content-center align-items-center" style="height: 9em; position: relative;">
+							<img class="image-container" src="/uploadFiles/profileImage/${sessionuser.user_image}">
+							<div class="icon-wrapper">
+								<label for="fileInput">
+									<i class="bi bi-pencil-fill" style="color: white; font-size: 0.7em;"></i>
+								</label>
+								<input type="file" id="fileInput" style="display: none;">
+
+								<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-body">
+												<p>해당 이미지로 수정하시겠습니까?</p>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+												<button type="button" class="btn" id="confirmButton" style="background-color: #03c75a; color: white;">확인</button>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="d-flex justify-content-center" style="font-size: 1.5em; font-weight: 700; ">${sessionuser.user_nickname}</div>
