@@ -420,10 +420,9 @@ strong#Createnewpost {
         	background-color:gainsboro;
         }
         
-        #crewmain {
+        #crewnotice {
         	background-color: #BB2649;
         }
-        
 </style>
 
 

@@ -119,7 +119,7 @@
 	</select>
 	
 	<select id="getAllPostByCrewDomain" resultType="com.ja.travel.dto.CrewBoardDto">
-		select * from crew_board where crew_domain=#{crew_domain} and crew_board_status != 'deleted' order by crew_board_id desc
+		select * from crew_board where crew_domain=#{crew_domain} and crew_board_status != 'deleted' and crew_board_notice = 'N' order by crew_board_id desc
 	</select>
 	
 	<select id="getCrewOnlyPostByCrewDomain" resultType="com.ja.travel.dto.CrewBoardDto">
@@ -313,5 +313,9 @@
 	
 	<select id="getAllPostByCrewMemberId" resultType="com.ja.travel.dto.CrewBoardDto">
 		select * from crew_board where crew_member_id = #{crew_member_id}
+	</select>
+	
+	<select id="getUserDtoBySearchWord" resultType="com.ja.travel.dto.UserDto">
+		select * from member where user_nickname like '%' || #{searchword} || '%' and user_id = (select user_id from crew_member where crew_domain = #{crew_domain} and crew_join_status = 'member')
 	</select>
 </mapper>

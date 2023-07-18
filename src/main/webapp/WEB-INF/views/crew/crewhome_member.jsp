@@ -45,215 +45,42 @@ function getProfile(user_image, user_nickname,crew_member_log_date) {
 	document.getElementById("modalprofileimage").innerHTML = `<img src="/uploadFiles/profileImage/\${user_image }" width="180" height="180" class="rounded-circle" >`
 	document.getElementById("modalprofilename").innerHTML = `<span>\${user_nickname}</span>`;
 	document.getElementById("modalprofilejoindate").innerHTML = `<span>since \${year}.\${month}.\${day}.`;
-	profilemodal.show();
 	
+	var user_id = document.getElementById("user_id").value;
 	
-	var getallpostofmember = document.getElementById("getallpostofmember");
-	getallpostofmember.addEventListener("click", function() {
-		var user_id = user_image.split('.')[0];
-		$.ajax({
-            url: "/travel/crew/getallpostofmember",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                "user_id": user_id
-            }),
-            success: function(response) {
-            	getpostlist(response);
-            },
-            error: function(err) {
-                console.error("이름 확인 실패", err);
-            }
-        });
-	})
-}
-
-function getpostlist(response) {
-	document.getElementById("memberpost").innerHTML = "";
-	
-	var user_nickname = response.user_nickname;
-	var crewBoardList = response.crewBoardDto;
-	for(var i = 0; i < crewBoardList.length; i++) {
-		var board_title = crewBoardList[i].crew_board_title;
-		var board_content = crewBoardList[i].crew_board_content;
-		var board_regdate = crewBoardList[i].crew_board_reg_date;
-		
-		
-		
-		document.getElementById("memberpost").innerHTML += `
-			<div class="container main p-4">
-			<div class="row">
-				<div class="col-7">
-					<Strong>Hello Jon</Strong>
-					<p>Hurry up and do the course now!</p>
-				</div>
-				<div class="col">
-					<input type="text" class="form-control searchbar nonboarder"
-						placeholder="Search">
-				</div>
-			</div>
-			<div class="row">
-				<div class="card boardwrite" id="openBoardWrite">
-					<div class="row mx-2 mt-3">
-						<div class="col-auto">
-							<Strong id="Createnewpost">Create New Post</Strong>
-						</div>
-						<div class="col text-end">
-							<i class="bi bi-three-dots"></i>
-						</div>
+	if(user_id != user_image.split(".")[0]) {
+		document.getElementById("postlistanddm").innerHTML = `
+		<a href="\${user_id}">
+	  		<div class="col text-end pe-0 ps-5" id="getallpostofmember">
+				<div class="row text-center">
+					<div class="col">
+						<i class="bi bi-file-earmark-text modalsettingicons"></i>
 					</div>
-					<div class="row m-3" id="postwriteform">
-						<textarea class="form-control postwritearea nonboarder"
-							placeholder="Type a text" id="boardcontent"
-							style="height: 100px"></textarea>
-					</div>
-					<div class="row mx-3 mb-3">
-						<div class="col-auto">
-							<i class="bi bi-images"></i>
-						</div>
-						<div class="col-auto">
-							<i class="bi bi-folder-plus"></i>
-						</div>
-						<div class="col text-end">
-							<button class="btn btn-success btn-sm">Publish</button>
-						</div>
+				</div>
+				<div class="row text-center">
+					<div class="col settingimpls">
+						작성한 글 보기
 					</div>
 				</div>
 			</div>
-
-
-			<div class="row">
-				<!--여기서부터 jsp c:foreach 반복-->
-						<div class="row mx-2 ">
-							<div
-								class="col-auto d-flex justify-content-center align-items-center">
-								<img src="/uploadFiles/profileImage/${list.userDto.user_image }" alt="" width="45"
-									height="45" class="rounded-circle">
-							</div>
-							<div class="col-auto">
-								<div class="row mt-3">
-									<div class="col-auto">
-										<Strong class="postwriter">${list.userDto.user_nickname }</Strong>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-auto">
-										<p class="postregdate">
-											<fmt:formatDate value="${list.c.crew_board_reg_date }"
-												pattern="yyyy-MM-dd HH:mm" var="regdate" />
-											${regdate }
-										</p>
-									</div>
-								</div>
-							</div>
-							<div class="col text-end mt-3">
-								<i class="bi bi-three-dots"  data-bs-toggle="dropdown"></i>
-								<ul class="dropdown-menu">
-									<li class="dropdown-item" id="commentmodify">수정2</li>
-									<li class="dropdown-item" onclick="deleteboard('${list.c.crew_board_id}')">삭제</li>
-								</ul>
-							</div>
-						</div>
-						<div class="row m-2" id="getboarddetails">
-							<h5>${list.c.crew_board_title }</h5>
-							<p class="postcontent">${list.c.crew_board_content }</p>
-						</div>
-						
-						<!--  <div class="row mx-2 mb-3">
-							<img src="https://github.com/mdo.png" height="500px">
-						</div>-->
-						
-						<div class="row mx-2">
-							<div class="col-auto">
-								<c:choose>
-									<c:when test="${empty list.liked }">
-										<i class="bi bi-suit-heart"
-											onclick="likeboard('${crewMemberDto.crew_member_id}', '${list.c.crew_board_id }', '${list.c.crew_member_id }')"> ${list.boardlikecount }</i>
-									</c:when>
-									<c:otherwise>
-										<i class="bi bi-suit-heart-fill"
-											onclick="dislikeboard('${crewMemberDto.crew_member_id}', '${list.c.crew_board_id }', '${list.c.crew_member_id }')"> ${list.boardlikecount }</i>
-									</c:otherwise>
-								</c:choose>
-
-							</div>
-							<div class="col-auto">
-								<i class="bi bi-chat-left-text" onclick="getcommentlist('${list.c.crew_board_content}')"> ${list.boardcommentcount }</i>
-							</div>
-							<div class="col text-end">
-								<i class="bi bi-bookmark-plus"></i>
-							</div>
-						</div>
+			</a>
+			<div class="col-6 pe-5 ps-0">
+				<div class="row text-center ">
+					<div class="col">
+						<i class="bi bi-envelope-plus modalsettingicons"></i>
 					</div>
-					<div class="commentlist card p-2" style="display: block;">
-						<div class="row p-2">
-							<div class="col pe-0">
-								<input placeholder="댓글 내용을 입력하세요." class="postwritearea nonboarder form-control" name="board_comment_content"  id="comment-${status.index}">
-							</div>
-							<div class="col-auto px-3 pt-1">
-								<i class="bi bi-send " onclick="writecomment('${list.c.crew_board_id}', '${status.index}')"></i>
-							</div>
-						</div>
-						<c:choose>
-							<c:when test="${list.boardcommentcount != 0 }">
-								<c:forEach var="comment" items="${list.commentlist}">
-									<div class="row m-2">
-										<div class="col-auto px-0">
-											<img
-												src="/uploadFiles/profileImage/${comment.commentWriter.user_image }"
-												width="35" height="35" class="rounded-circle ">
-										</div>
-										<div class="col me-4">
-											<div class="card commentcard  p-2 ">
-												<div class="row ">
-													<div class="col commentwriter">
-														${comment.commentWriter.user_nickname }</div>
-												</div>
-												<div class="row ">
-													<div class="col commentcontent">
-														${comment.crewBoardCommentDto.crew_comment }</div>
-												</div>
-												
-											</div>
-											<div class="row">
-													<div class="col commentwritedate mt-1">
-														<fmt:formatDate
-															value="${comment.crewBoardCommentDto.crew_comment_date }"
-															pattern="yyyy-MM-dd HH:mm" var="formattedDate" />
-														${formattedDate }
-													</div>
-													<div class="col text-end">
-														<c:if test="${comment.crewBoardCommentDto.crew_member_id == crewMemberDto.crew_member_id }">
-														<i class="bi bi-three-dots" data-bs-toggle="dropdown"></i>
-														  <ul class="dropdown-menu">
-														    <li class="dropdown-item" id="commentmodify">수정</li>
-														    <li class="dropdown-item" onclick="commentdelete('${comment.crewBoardCommentDto.board_comment_id}')">삭제</li>
-														  </ul>
-														</c:if>
-													</div>
-											</div>
-										</div>
-									</div>
-
-								</c:forEach>
-							</c:when>
-							<c:otherwise>
-							<div class="row py-5">
-								<div class="col text-center nocomment">
-									등록된 댓글이 없습니다.
-								</div>
-							</div>
-							</c:otherwise>
-						</c:choose>
+				</div>
+				<div class="row text-center">
+					<div class="col settingimpls">
+						쪽지 보내기
 					</div>
-
+				</div>
 
 			</div>
-		</div>
 		`;
-		
 	}
-
+	
+	profilemodal.show();
 	
 }
 </script>
@@ -266,20 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var searchMember = searchMemberInput.value;
         
         if(searchMember === '') {
-            $.ajax({
-                url: "/travel/crew/getallcrewmembers",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({
-	                "crew_domain": crew_domain
-	            }),
-                success: function(response) {
-                	getallcrewlist(response);
-                },
-                error: function(err) {
-                    console.error("이름 확인 실패", err);
-                }
-            });
+        	location.reload();
         } else {
         	console.log(searchMember);
             $.ajax({
@@ -291,7 +105,33 @@ document.addEventListener("DOMContentLoaded", function() {
 	                "crew_domain": crew_domain
 	            }),
                 success: function(response) {
-                	getallcrewlist(response);
+                	var crewDto = response.crewDto;
+                	var memberlist = response.memberlist;
+                	
+                	document.getElementById("searchmemberlist").innerHTML= '';
+                	for(var i = 0; i<memberlist.length; i++) {
+                		document.getElementById("searchmemberlist").innerHTML += `
+                    		<div class="row">
+    						<div class="col-auto">
+    							<span>
+    								<img src="/uploadFiles/profileImage/\${memberList.user_image }" width="45" height="45" class="rounded-circle">
+    							</span>
+    						</div>
+    						<div class="col-auto member3 ps-1 pt-2">
+    							<span>\${memberList.user_nickname }</span>
+    						</div>
+    						<div class="col text-end">
+    							<i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+    							<ul class="dropdown-menu">
+    								<li class="dropdown-item">프로필 보기</li>
+    								<li class="dropdown-item">쪽지 보내기</li>
+    							</ul>
+    						</div>
+    					</div>
+    					<hr>
+                    	`;
+                	}
+                	
                 },
                 error: function(err) {
                     console.error("이름 확인 실패", err);
@@ -321,7 +161,7 @@ body {
 	left: 0;
 	width: 18vw;
 	height: 100vh;
-	background-color: #fff2f8b4;
+	background-color: white;
 	color: white;
 	padding: 20px;
 }
@@ -410,6 +250,7 @@ font-size: 30px
 		<jsp:include page="../common/crewHomeNavi.jsp"></jsp:include>
 
 		</div>
+		<input type="hidden" id="user_id" value="${userDto.user_id }">
 		<div class="col-6 margin-left-col">
 			<div class="card mt-5" id="memberpost">
 				<div class="container p-4 pb-3">
@@ -420,7 +261,7 @@ font-size: 30px
 					</div>
 					<div class="row mt-3">
 						<div class="col">
-							<input type="search" class="form-control" placeholder="멤버 검색">
+							<input type="search" class="form-control" placeholder="멤버 검색" id="searchMember">
 						</div>
 					</div>
 				</div>
@@ -431,6 +272,7 @@ font-size: 30px
 						<span>멤버</span>
 					</div>
 				</div>
+				<div class="searchmemberlist">
 				<c:forEach var="memberList" items="${memberList}" varStatus="status">
 					<div class="row">
 						<div class="col-auto">
@@ -454,6 +296,7 @@ font-size: 30px
 					</div>
 					<hr>
 				</c:forEach>
+				</div>
 			</div>
 				</div>
 				
@@ -493,7 +336,7 @@ font-size: 30px
         	</div>
         </div>
       </div>
-		<div class="row m-4">
+		<div class="row m-4 postlistanddm">
       		<div class="col text-end pe-0 ps-5" id="getallpostofmember">
       			<div class="row text-center">
       				<div class="col">
@@ -506,6 +349,7 @@ font-size: 30px
       				</div>
       			</div>
       		</div>
+      		
       		<div class="col-6 pe-5 ps-0">
       			<div class="row text-center ">
       				<div class="col">
