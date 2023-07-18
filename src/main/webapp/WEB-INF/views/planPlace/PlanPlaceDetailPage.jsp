@@ -229,9 +229,13 @@
 				commentListBox.innerHTML = "";
 				
 				for(data of response.commentList) {
+					const rowDiv0 = document.createElement("div");
+					rowDiv0.setAttribute("class", 'row');
+					
 					
 					const colDiv = document.createElement("div");
-					colDiv.setAttribute("class", "col mb-2")
+					colDiv.setAttribute("class", "col mb-2");
+					rowDiv0.appendChild(colDiv);
 					
 					
 					const rowDiv1 = document.createElement("div");
@@ -471,7 +475,8 @@
                     </div>
                     
                 </div>
-                <div id="commentListBox" class="row row-cols-2">
+                <div class="row">
+                <div id="commentListBox" class="col">
                    <%--  <c:forEach items="${commentList}" var="list">
                         <div class="col mb-2">
                             <div class="row">
@@ -496,6 +501,7 @@
                             </div>
                         </div>
                     </c:forEach> --%>
+                </div>
                 </div>
                 <div class="row my-4 d-flex justify-content-end">
                     <div class="col">

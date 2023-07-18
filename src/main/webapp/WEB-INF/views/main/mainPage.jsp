@@ -115,11 +115,11 @@
 						img.src = '/uploadFiles/' + response.list[i].plan.plan_thumbnail;
 						img.alt = '썸네일';
 						icon.className = 'bi bi-geo-alt cardIcon';
-						iconWrapper1.className = 'iconWrapper1';
+						iconWrapper1.className = 'iconWrapper1 pe-2';
 						cardBody.className = 'card-body';
 						title.className = 'd-flex justify-content-between';
 						div.className = 'title text-truncate';
-						content.className = 'content mb-3 text-truncate';
+						content.className = 'content mb-3 text-truncate text-secondary';
 						div2.className = 'd-flex align-items-center';
 						div2.style.fontWeight = '700';
 						userInfo.className = 'user-info';
@@ -134,6 +134,7 @@
 						img2.style.borderRadius = '50%';
 						span.innerText = response.list[i].user.user_nickname;
 						span.className = 'nickname';
+						span.style.color = "#03c75a";
 						
 						// 텍스트 내용 설정
 						iconWrapper1.textContent = response.list[i].list2[0].placeList[0].plan_place_address.slice(0, 2);
@@ -306,11 +307,10 @@ body {
 .content, .user-info {
 	font-size: 0.8em;
 	color: #5C5C5C;
-	font-weight: 700;
 }
 
 .cardWrapper:hover .iconWrapper1 {
-	background: #DB4465;
+	background: #03c75a;
 	color: white;
 }
 
@@ -319,7 +319,7 @@ body {
 }
 
 .cardIcon {
-	color: #DB4465;
+	color: #03c75a;
 }
 
 .titleIcon:before {
@@ -386,7 +386,7 @@ body {
 							</div>
 						</div>
 						<div class="col d-grid d-flex align-items-end justify-content-center">
-							<button class="btn" style="width: 80%; background-color: #DB4465; color: white; border-radius: 5rem;" onclick="clearListAndSearchTravel(this)">검색</button>
+							<button class="btn" style="width: 80%; background-color: #03c75a; color: white; border-radius: 5rem;" onclick="clearListAndSearchTravel(this)">검색</button>
 						</div>
 					</div>
 				</div>

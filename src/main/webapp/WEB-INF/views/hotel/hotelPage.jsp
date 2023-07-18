@@ -13,9 +13,58 @@
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript">
+
+</script>
 
 <style type="text/css">
 		.btn-gradient {background: linear-gradient(to right, #db2566, #f2075a, #f5228c);}
+		
+		.registerButton {
+			border-radius: 25px; 
+			color: white; 
+			position: fixed; 
+			z-index: 9999; 
+			bottom: 5%; 
+			left: 50%; 
+			transform: translate(-50%, -50%);
+			width: auto;
+			height: auto;
+			padding: 12px 20px;
+			background: linear-gradient(to right, #ff0d55, #ff195b, #ff244c, #f20039);
+			font-size: 14px;
+			font-weight: 600;
+		}
+		
+		a {
+			text-decoration: none;
+		}
+		
+		a:hover {
+			text-decoration: none;
+			color: white;
+		}
+		
+		   .carousel-control-prev,
+    .carousel-control-next {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 5%;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    }
 </style>
 
 </head>
@@ -27,108 +76,58 @@
 		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 	</div>
 	
-		<div class="row mx-5">
-	    	<div class="col">
-		        <ul style="list-style: none; display: flex; margin: 0; padding: 0; ">
-		          <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: rgb(90, 90, 90); margin-top: 5px;">상징적 도시</span>
-		          </li>
-		          <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">상징적 도시</span>
-		          </li>
-		          <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">상징적 도시</span>
-		          </li>
-		          <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">상징적 도시</span>
-		          </li>
-		          <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">상징적 도시</span>
-		          </li>
-		          <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">상징적 도시</span>
-		          </li>
-		          <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">상징적 도시</span>
-		          </li>
-		          <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">시골</span>
-		          </li>
-		          <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">상징적 도시</span>
-		          </li>
-		          <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">도시도시</span>
-		          </li>
-		          <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">도시도시</span>
-		          </li>
-		          <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">도시도시</span>
-		          </li>
-		          <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">도시도시</span>
-		          </li>
-		           <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">도시도시</span>
-		          </li>
-		           <li style="display: flex; flex-direction: column; align-items: center; padding: 10px 35px 10px 0px">
-		            <span>
-		              <i style="font-size: 20px;" class="bi bi-shop-window"></i>
-		            </span> 
-		            <span style="font-size: 13px; font-weight: 600; color: gray; margin-top: 5px;">도시도시</span>
-		          </li>
-		        </ul>
-	      	</div>
-   		</div>
+		<div id="carouselExample" class="carousel slide" data-bs-ride="false">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <div class="row">
+        <div class="col-auto">
+          <i class="bi bi-house"></i>
+        </div>
+        <div class="col-auto">
+          <i class="bi bi-building"></i>
+        </div>
+        <div class="col-auto">
+          <i class="bi bi-heart"></i>
+        </div>
+        <!-- 추가 카테고리 -->
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="row">
+        <div class="col">
+          <i class="bi bi-globe"></i>
+        </div>
+        <div class="col">
+          <i class="bi bi-camera"></i>
+        </div>
+        <div class="col">
+          <i class="bi bi-star"></i>
+        </div>
+        <!-- 추가 카테고리 -->
+      </div>
+    </div>
+    <!-- 추가 슬라이드 -->
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
 		<div class="row mx-5">
 			<div class="col">
 				<div class="row">
 					<div class="col text-center">
         					<c:if test="${!empty sessionuser}">
-								<a style="border-radius: 20px; color: white; position: fixed; z-index: 9999; bottom: 5%; left: 50%; transform: translate(-50%, -50%);" class="btn btn-gradient" href="./hotelRegisterPage1"><span>나만의 숙소 등록하기</span></a>
+								<a class="registerButton" href="./hotelRegisterPage1">
+									<span>나만의 숙소 등록하기</span>
+									<i style="font-size: 15px;" class="bi bi-pencil-square"></i>
+								</a>
 							</c:if>
         				</div>
 				</div>
@@ -139,7 +138,7 @@
 								<div class="row">
 									<div class="col">
 										<a href="./hotelDetailPage?hotel_id=${hotelList.hotelDto.hotel_id}">
-											<img alt="" src="/uploadFiles/mainImage/${hotelList.hotelDto.hotel_main_image}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+											<img alt="" src="/uploadFiles/hotelMainImage/${hotelList.hotelDto.hotel_main_image}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
 										</a>
 									</div>
 								</div>
@@ -160,7 +159,7 @@
 												<c:otherwise>
 													<div class="col text-end">
 														<i class="bi bi-star-fill" style="color: #b8b8b8; font-size: 14px;"></i>
-														<span style="font-size: 14px;" class="p-0 fw-bold">0</span>
+														<span style="font-size: 14px;" class="p-0 fw-bold">0.0</span>
 													</div>
 												</c:otherwise>
 											</c:choose>

@@ -52,13 +52,14 @@
 <style>
 .btn22 {
 	color: white;
-	background: linear-gradient(to right, #ff356b, #f41b55, #ff1c59, #ff0044);
+	background: #17b75e;
 	border: none;
 	height: 45px;
 	font-family: 'Noto Sans KR', sans-serif;
 	font-weight: 500;
 	letter-spacing: 2px;
 	font-size: 1.3em;
+	border-radius: 0.375rem;
 }
 
 .btn-kakao {
@@ -102,16 +103,16 @@ i {
 }
 
 h1 {
-	background: linear-gradient(to right, #ff356b, #f41b55, #ff1c59, #ff0044);
+	background: #17b75e;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	font-weight: bold;
-	font-size: 4em;
+	font-size: 3em;
 	letter-spacing: -2px;
 }
 
 .inputWrapper {
-	margin-top: 10px;
+	margin-top: 25px;
 }
 
 .form-control::placeholder {

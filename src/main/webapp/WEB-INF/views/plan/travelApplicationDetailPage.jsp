@@ -520,7 +520,7 @@
 																result[0].x);
 
 														var content = '<div style="background-color: white; border-radius: 15px; padding: 5px; width: 100%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); position: relative; font-weight: 700;">'
-																+ '<span style="background-color: #DB4465; border-radius: 50%; width: 30px; height: 30px; padding: 5px; display: inline-flex; align-items: center; justify-content: center;"><i class="bi bi-geo-alt-fill" style="font-size: 20px; color: white;"></i></span>'
+																+ '<span style="background-color: #03c75a; border-radius: 50%; width: 30px; height: 30px; padding: 5px; display: inline-flex; align-items: center; justify-content: center;"><i class="bi bi-geo-alt-fill" style="font-size: 20px; color: white;"></i></span>'
 																+ ' '
 																+ placeDto.plan_place_name
 																+ '<div style="position: absolute; bottom: -8px; left: 10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>'
@@ -593,7 +593,7 @@
 }
 
 .commit {
-	background-color: #DB4465;
+	background-color: #03c75a;
 	font-size: 1.2em;
 	font-weight: 400;
 	border-radius: 0.375rem;
@@ -624,7 +624,7 @@
 
 .user-thumbnail {
 	border-radius: 50%;
-	border: 2px solid #DB4465;
+	border: 2px solid #03c75a;
 	margin-right: 10px;
 	width: 50px;
 	height: 50px;
@@ -713,7 +713,7 @@
 	top: 8px;
 	right: 20px;
 	border: none;
-	color: #DB4465;
+	color: #03c75a;
 }
 
 .comment-reply {
@@ -871,7 +871,7 @@ body {
 									<div class="row mt-5">
 										<div class="col d-grid">
 											<div class="mb-1" style="font-weight: 500;">
-												<i class="bi bi-exclamation-circle-fill" style="color: #DB4465;"></i> 지금 동행을 신청해보세요!
+												<i class="bi bi-exclamation-circle-fill" style="color: #03c75a;"></i> 지금 동행을 신청해보세요!
 											</div>
 											<button class="commit" type="button" data-bs-toggle="modal" data-bs-target="#modal">동행 신청하기</button>
 											
@@ -921,7 +921,7 @@ body {
 						<div class="row">
 							<div class="col d-flex justify-content-end pb-5" id="chat-container" style="position: relative;">
 								<div class="chat" onclick="showChatBox()">
-									<i class="bi bi-chat-dots-fill chatIcon" style="color: #DB4465"></i>
+									<i class="bi bi-chat-dots-fill chatIcon" style="color: #03c75a"></i>
 								</div>
 							</div>
 						</div>

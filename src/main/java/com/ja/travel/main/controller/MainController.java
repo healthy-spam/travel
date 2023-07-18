@@ -1,6 +1,5 @@
 package com.ja.travel.main.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -27,9 +26,9 @@ public class MainController {
 	@RequestMapping("/myPage")
 	public String myPage(Model model, HttpSession session) {
 		
-		List<Map<String, Object>> list = mainService.getMyList(session);
+		Map<String, Object> map = mainService.getMyList(session);
 		
-		model.addAttribute("list", list);
+		model.addAttribute("map", map);
 		
 		return "main/myPage";
 	}

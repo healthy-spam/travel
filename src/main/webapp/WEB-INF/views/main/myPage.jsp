@@ -23,7 +23,7 @@ body {
 	padding-left: 0.5em;
 	height: 2.2em;
 	color: white;
-	background: linear-gradient(98deg, #FF356B, #FA4673);
+	background: linear-gradient(98deg,#03c75a,#49c6dd);
 	display: flex;
 	align-items: center;
 }
@@ -46,7 +46,7 @@ body {
 						<div class="d-flex justify-content-center" style="height: 11em;">
 							<i class="bi bi-person-circle" style="font-size: 8em; color: lightgrey;"></i>
 						</div>
-						<div class="d-flex justify-content-center" style="font-size: 1.5em; font-weight: 700;">${sessionuser.user_nickname}</div>
+						<div class="d-flex justify-content-center" style="font-size: 1.5em; font-weight: 700; ">${sessionuser.user_nickname}</div>
 						<div class="d-flex justify-content-center text-secondary">${sessionuser.user_email}</div>
 					</div>
 				</div>
@@ -111,9 +111,9 @@ body {
 						<div class="card-wrapper">
 							<div class="card-title">동행모집</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
-								<c:forEach items="${list}" var="data">
+								<c:forEach items="${map.list}" var="data">
 									<div>
-										<a class="d-flex justify-content-between my-3" href="#" style="text-decoration: none;">
+										<a class="d-flex justify-content-between my-3" href="./plan/travelApplicationDetailPage?planning_id=${data.myPlanning.planning_id}" style="text-decoration: none;">
 											<span style="color: black;">[${data.planningStatus}] ${data.myPlanning.planning_title}</span>
 											<fmt:parseDate var="parsedDate" value="${data.myPlanning.planning_end_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
 											<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;"><fmt:formatDate value="${parsedDate}" pattern="yyyy/MM/dd"/> 종료</span>
@@ -129,24 +129,14 @@ body {
 						<div class="card-wrapper">
 							<div class="card-title">마이플랜</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
-								<div>
-									<a class="d-flex justify-content-between my-3" href="#" style="text-decoration: none;">
-										<span style="color: black;">서울 여행 일정</span>
-										<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">4 days</span>
-									</a>
-								</div>
-								<div>
-									<a class="d-flex justify-content-between my-3" href="#" style="text-decoration: none;">
-										<span style="color: black;">부산 여행 일정</span>
-										<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">7 days</span>
-									</a>
-								</div>
-								<div>
-									<a class="d-flex justify-content-between my-3" href="#" style="text-decoration: none;">
-										<span style="color: black;">일본 여행 일정</span>
-										<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">7 days</span>
-									</a>
-								</div>
+								<c:forEach items="${map.list}" var="data">
+									<div>
+										<a class="d-flex justify-content-between my-3" href="./plan/readPlanPage?id=${data.plan.plan_id}" style="text-decoration: none;">
+											<span style="color: black;">${data.plan.plan_title}</span>
+											<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">${data.day} days</span>
+										</a>
+									</div>
+								</c:forEach>
 							</div>
 						</div>
 					</div>
@@ -156,30 +146,16 @@ body {
 						<div class="card-wrapper">
 							<div class="card-title">등록숙소</div>
 							<div class="row mt-3 px-4">
-								<div class="col-4">
-									<div class="card">
-										<img src=" https://via.placeholder.com/150x150" class="img-fluid" alt="썸네일">
-										<div class="card-body">
-										 	<h5>신호영 숙소1</h5>
-										 </div>
+								<c:forEach items="${map.list2}" var="data">
+									<div class="col-4">
+										<div class="card">
+											<img src="/uploadFiles/hotelMainImage/${data.hotel.hotel_main_image}" class="img-fluid" alt="썸네일" style="height: 10em;">
+											<div class="card-body">
+												<h5>${data.hotel.hotel_title}</h5>
+											</div>
+										</div>
 									</div>
-								</div>
-								<div class="col-4">
-									<div class="card">
-										<img src=" https://via.placeholder.com/150x150" class="img-fluid" alt="썸네일">
-										<div class="card-body">
-										 	<h5>신호영 숙소2</h5>
-										 </div>
-									</div>
-								</div>
-								<div class="col-4">
-									<div class="card">
-										<img src=" https://via.placeholder.com/150x150" class="img-fluid" alt="썸네일">
-										 <div class="card-body">
-										 	<h5>신호영 숙소3</h5>
-										 </div>
-									</div>
-								</div>
+								</c:forEach>
 							</div>
 						</div>
 					</div>
