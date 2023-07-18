@@ -97,6 +97,7 @@
 						var cardBody = document.createElement('div');
 						var title = document.createElement('div');
 						var content = document.createElement('div');
+						var partyMember = document.createElement('div');
 						var userInfo = document.createElement('span');
 						var icon2 = document.createElement('i');
 						var icon3 = document.createElement('span');
@@ -120,6 +121,7 @@
 						title.className = 'd-flex justify-content-between';
 						div.className = 'title text-truncate';
 						content.className = 'content mb-3 text-truncate';
+						partyMember.innerText = '모집중 3 / 5';
 						div2.className = 'd-flex align-items-center';
 						div2.style.fontWeight = '700';
 						userInfo.className = 'user-info';
@@ -162,6 +164,7 @@
 						div2.appendChild(userInfo);
 						cardBody.appendChild(title);
 						cardBody.appendChild(content);
+						cardBody.appendChild(partyMember);
 						cardBody.appendChild(div2);
 						title.appendChild(div);
 						title.appendChild(icon3);
