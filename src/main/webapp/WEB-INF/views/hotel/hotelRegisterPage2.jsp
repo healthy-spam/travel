@@ -160,7 +160,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-building-77486.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-building-77486.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -176,7 +176,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-apartment-4056455.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-apartment-4056455.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -191,7 +191,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-log-cabin-10726360.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-log-cabin-10726360.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -206,7 +206,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-camper-3322510.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-camper-3322510.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -221,7 +221,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-hotel-1668915.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-hotel-1668915.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -236,7 +236,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-farm-house-4185805.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-farm-house-4185805.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -251,7 +251,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-camping-tent-3017102.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-camping-tent-3017102.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -266,7 +266,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-school-3976510.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-school-3976510.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -281,7 +281,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-castle-5082433.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-castle-5082433.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -296,7 +296,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-boat-8221451.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-boat-8221451.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -311,7 +311,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-tree-house-4170073.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-tree-house-4170073.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -326,7 +326,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-houses-4955904.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-houses-4955904.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -341,7 +341,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-windmill-2163437.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-windmill-2163437.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -356,7 +356,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-cave-3430253.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-cave-3430253.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
@@ -371,7 +371,7 @@
                                 <div class="box">
                                     <div class="row pt-1">
                                         <div class="col">
-                                        <img src="/uploadFiles/categoryIcon/free-icon-container-860105.png" alt="" style="width: 30px;">
+                                        <img src="/travel/resources/img/free-icon-container-860105.png" alt="" style="width: 30px;">
                                         </div>
                                     </div>
                                     <div class="row pt-1">
