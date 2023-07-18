@@ -24,6 +24,15 @@
 	#deleteButton:hover {
 		font-weight: bold;
 	}
+	
+	#messageInTrashTitle:hover {
+		font-weight: bold;
+	}
+	
+	#deleteButton:hover {
+		font-weight: bold;
+	}
+	
 	</style>
 	<script type="text/javascript">
 			var changeBackColor = true;
@@ -71,10 +80,9 @@
 				// 받은 메시지 삭제
 				function deleteMessageGet(messageId) {
 					
-					if(confirm("삭제하시겠습니까?")){
+					if(confirm("휴지통으로 이동시키겠습니까?")){
 					const xhr = new XMLHttpRequest();
 					
-					console.log(messageId);
 					
 					xhr.onreadystatechange = function(){
 						if(xhr.readyState == 4 && xhr.status == 200){
@@ -96,7 +104,6 @@
 					if(confirm("삭제하시겠습니까?")){
 					const xhr = new XMLHttpRequest();
 					
-					console.log(messageId);
 					
 					xhr.onreadystatechange = function(){
 						if(xhr.readyState == 4 && xhr.status == 200){
@@ -115,7 +122,6 @@
 				function refreshMessageRead(messageId){
 					
 					const xhr = new XMLHttpRequest();
-					console.log(messageId);
 					
 					xhr.onreadystatechange = function(){
 						if(xhr.readyState == 4 && xhr.status == 200){
@@ -154,7 +160,7 @@
 				readMessageGetModal.show();
 				
 			}
-			//보낸쪽지 내용 읽기(모달)
+			// 보낸쪽지 내용 읽기(모달)
 			function openMessageSendPage(messageTitle, messageReceiver, messageSendDateFormatted, messageContent) {
 				
 				
@@ -177,6 +183,43 @@
 				
 			}
 			
+			// 휴지통에 있는 보낸메시지 모달 읽기
+			function openMessageSendInTrashPage(messageInTrashTitle, messageSendInTrashReceiver, messageSendDateFormatted, messageInTrashContent) {
+				
+				const readMessageSendInTrashModal = bootstrap.Modal.getOrCreateInstance("#readMessageSendInTrashModal");
+				const messageSendInTrashTitle = document.getElementById("messageSendInTrashTitle");
+				const messageSendInTrashReceiverModal = document.getElementById("messageSendInTrashReceiverModal");
+	  			const messageSendInTrashSendTime = document.getElementById("messageSendInTrashSendTime");
+				const messageSendInTrashContent = document.getElementById("messageSendInTrashContent");
+				
+				
+				messageSendInTrashTitle.textContent = messageInTrashTitle;
+				messageSendInTrashReceiverModal.textContent = messageSendInTrashReceiver;
+				messageSendInTrashSendTime.textContent = messageSendDateFormatted;
+				messageSendInTrashContent.innerHTML = messageInTrashContent.replace(/(\r\n|\n)/g, "<br>");
+				
+				readMessageSendInTrashModal.show();
+				
+			}
+			
+			// 휴지통에 있는 받은메시지 모달 읽기
+			function openMessageGetInTrashPage(messageInTrashTitle, messageGetInTrashSender, messageSendDateFormatted, messageInTrashContent) {
+				
+				const readMessageGetInTrashModal = bootstrap.Modal.getOrCreateInstance("#readMessageGetInTrashModal");
+				const messageGetInTrashTitle = document.getElementById("messageGetInTrashTitle");
+				const messageGetInTrashSenderModal = document.getElementById("messageGetInTrashSenderModal");
+	  			const messageGetInTrashSendTime = document.getElementById("messageGetInTrashSendTime");
+				const messageGetInTrashContent = document.getElementById("messageGetInTrashContent");
+				
+				
+				messageGetInTrashTitle.textContent = messageInTrashTitle;
+				messageGetInTrashSenderModal.textContent = messageGetInTrashSender;
+				messageGetInTrashSendTime.textContent = messageSendDateFormatted;
+				messageGetInTrashContent.innerHTML = messageInTrashContent.replace(/(\r\n|\n)/g, "<br>");
+				
+				readMessageGetInTrashModal.show();
+				
+			}
 			function getSessionId(){
 				const xhr = new XMLHttpRequest();
 				
@@ -234,10 +277,8 @@
 									
 									// 기존의 쪽지 목록을 찾아 제거
 									
-								      const trashList = targetCol.querySelector("#trashList");
-								      trashList.classList.add("d-none");
 									
-								      const existingRows = targetCol.querySelectorAll(".row.border-top.border-1.p-3:not(#trashList)");
+								      const existingRows = targetCol.querySelectorAll(".row.border-top.border-1.p-3");
 								      existingRows.forEach(function(row) {
 								        targetCol.removeChild(row);
 								      });
@@ -248,10 +289,8 @@
 									for(data of response.messageGetList){
 										
 									if (data.messageDto.message_status && data.messageDto.message_status.indexOf("받은쪽지삭제") >= 0) {
-										console.log(data.messageDto.message_status);
-									}else{
-										console.log(data.messageDto.message_status);
-									
+										
+									}else{									
 										
 									var messageId = data.messageDto.message_id;
 									var messageNickName = data.userDto.user_nickname;
@@ -285,6 +324,7 @@
 									
 									const i1 = document.createElement("i");
 									i1.classList.add("bi", "bi-star");
+									i1.setAttribute("onclick", "toggleStar(" + messageId + ")");
 									row1col2.appendChild(i1);
 									
 									const row1col3 = document.createElement("div");
@@ -376,11 +416,9 @@
 									const messageType = document.getElementById("messageType")
 									messageType.innerText = "보낸 쪽지함";
 									
-									const trashList = targetCol.querySelector("#trashList");
-								    trashList.classList.add("d-none");
 									
 									// 기존의 쪽지 목록을 찾아 제거
-								      const existingRows = targetCol.querySelectorAll(".row.border-top.border-1.p-3:not(#trashList)");
+								      const existingRows = targetCol.querySelectorAll(".row.border-top.border-1.p-3");
 								      existingRows.forEach(function(row) {
 								        targetCol.removeChild(row);
 								      });
@@ -425,10 +463,20 @@
 									row1.appendChild(row1col3);
 									
 									if(data.message_read_date == null) {
-										row1col3.innerText = "읽지않음";
+									const notReadMark = document.createElement("span");
+									notReadMark.classList.add("badge", "text-wrap", "bg-secondary");
+									notReadMark.innerText = "읽지않음";	
+									row1col3.appendChild(notReadMark);
 									} else {
-										row1col3.innerText = "읽음";
+									const readMark = document.createElement("span");
+									readMark.classList.add("badge", "text-wrap", "bg-primary");
+									readMark.innerText = "읽음";
+									row1col3.appendChild(readMark);
 									}
+									
+									/*const messageSendMark = document.createElement("span");
+									messageSendMark.classList.add("badge", "text-wrap", "bg-secondary");
+									messageSendMark.innerText = "보낸쪽지";*/
 									
 									
 									const row1col4 = document.createElement("div");
@@ -439,6 +487,7 @@
 									const row1col5 = document.createElement("div");
 									row1col5.classList.add("col", "d-flex", "align-self-center");
 									row1col5.innerText = data.message_title;
+									row1col5.setAttribute("id", "row1col5");
 									row1col5.setAttribute("messageTitle", messageTitle);
 									row1col5.setAttribute("messageReceiver", messageReceiver);
 									row1col5.setAttribute("messageContent", messageContent);
@@ -499,43 +548,125 @@
 								
 								const targetCol = document.getElementById("targetCol");
 								
-								const trashList = document.querySelector("#trashList");
-								trashList.classList.remove("d-none");
+
 								
 
 								
 								// 기존의 쪽지 목록을 찾아 제거
-							      const existingRows = targetCol.querySelectorAll(".row.border-top.border-1.p-3:not(#trashList)");
+							      const existingRows = targetCol.querySelectorAll(".row.border-top.border-1.p-3");
 							      existingRows.forEach(function(row) {
 							        targetCol.removeChild(row);
 							      });
 								
-								const messageInTrashNickName = document.getElementById("messageInTrashNickName");
 							      
 								
 								
 								for(data of response.list){
+								//휴지통에 있는 받은 메시지를 보낸사람
+								var messageGetInTrashSender = data.userDto.user_nickname;
+								//휴지통에 있는 보낸 메시지의 받는사람 
+								var messageSendInTrashReceiver = data.messageDto.user_nickname;
+								var messageInTrashTitle = data.messageDto.message_title;
+								var messageInTrashSendDate = new Date(data.messageDto.message_reg_date);
+								var messageSendDateFormatted = formatDate(messageInTrashSendDate, 'yy-MM-dd hh:mm:ss');							
+								var messageInTrashContent = data.messageDto.message_content;
+								var messageId = data.messageDto.message_id;
+								
+								
+								const containerDiv = document.createElement('div');
+								containerDiv.classList.add('row', 'border-top', 'border-1', 'p-3');
+								containerDiv.id = 'trashList';
 
-								var messageGetSender = data.userDto.user_nickname;
-								var messageContent = data.messageDto.message_content;
-								var messageSendDate = new Date(data.messageDto.message_reg_date);
+								// 체크박스 div 생성
+								const checkboxDiv = document.createElement('div');
+								checkboxDiv.classList.add('col-auto', 'd-flex', 'align-self-center');
+								containerDiv.appendChild(checkboxDiv);
+
+								// 체크박스 input 생성
+								const checkboxInput = document.createElement('input');
+								checkboxInput.type = 'checkbox';
+								checkboxInput.classList.add('form-check-input');
+								checkboxInput.value = '';
+								checkboxInput.id = 'flexCheckDefault';
+								checkboxDiv.appendChild(checkboxInput);
+
+								// 닉네임 div 생성
+								const nicknameDiv = document.createElement('div');
+								nicknameDiv.classList.add('col', 'align-self-center', 'text-center');
+								nicknameDiv.id = 'messageInTrashNickName';
+
+								// 보낸쪽지일 경우
+								if(parseInt(data.messageDto.user_id) === parseInt(userId)){
+									
+									
+									
+									const messageSendMark = document.createElement("span");
+									messageSendMark.classList.add("badge", "text-wrap", "bg-secondary");
+									messageSendMark.innerText = "보낸쪽지";
+									
+									nicknameDiv.appendChild(messageSendMark);
+									
+									const receiverNickname = document.createElement("span");
+									receiverNickname.classList.add("text", "ms-2");
+									receiverNickname.innerText = data.messageDto.user_nickname;
+									
+									nicknameDiv.appendChild(receiverNickname);
+									
+									
+									
+								}else{ //받는 쪽지일 경우
+									nicknameDiv.innerText = data.userDto.user_nickname;						
+								}								
 								
-								var messageSendDateFormatted = formatDate(messageSendDate, 'yy-MM-dd hh:mm:ss');							
+								containerDiv.appendChild(nicknameDiv);
 								
-								 
 								
+								
+								// 제목 div 생성
+								const titleDiv = document.createElement('div');
+								titleDiv.classList.add('col', 'd-flex', 'align-self-center');
+								//보낸 메시지일 경우
+								if(parseInt(data.messageDto.user_id) === parseInt(userId)){
 								console.log(data.messageDto.user_id);
 								console.log(userId);
-								if(data.messageDto.user_id == userId){
-									messageInTrashNickName.innerText = data.messageDto.user_nickname;
-									console.log(data.messageDto.user_nickname);
-								}else{
-									messageInTrashNickName.innerText = data.userDto.user_nickname;
-									console.log(data.userDto.user_nickname);
+								titleDiv.setAttribute("onclick", "openMessageSendInTrashPage('" + messageInTrashTitle +
+					                      "','" + messageSendInTrashReceiver + "','" + messageSendDateFormatted + "'," +
+					                      JSON.stringify(messageInTrashContent).replace(/(\r\n|\n)/g, "<br>") + ")");
+								}else{ //받은 메시지일 경우
+									titleDiv.setAttribute("onclick", "openMessageGetInTrashPage('" + messageInTrashTitle +
+						                      "','" + messageGetInTrashSender + "','" + messageSendDateFormatted + "'," +
+						                      JSON.stringify(messageInTrashContent).replace(/(\r\n|\n)/g, "<br>") + ")");	
 								}
+								titleDiv.style.cursor = 'pointer';
+								titleDiv.id = 'messageInTrashTitle';
+								titleDiv.innerText = messageInTrashTitle;
+								containerDiv.appendChild(titleDiv);
+
+								// 전송일 div 생성
+								const sendDateDiv = document.createElement('div');
+								sendDateDiv.classList.add('col', 'align-self-center', 'text-center', 'ms-2');
+								sendDateDiv.id = 'messageInTrashSendDate';
+								sendDateDiv.innerText = messageSendDateFormatted;
+								containerDiv.appendChild(sendDateDiv);
+
+								// 영구삭제 버튼 div 생성
+								const deleteButtonDiv = document.createElement('div');
+								deleteButtonDiv.classList.add('col', 'align-self-center', 'text-center', 'ms-auto');
+								
+								containerDiv.appendChild(deleteButtonDiv);
+
+								// 영구삭제 버튼 생성
+								const deleteButton = document.createElement('button');
+								deleteButton.classList.add('btn', 'btn-sm', 'border', 'border-dark');
+								deleteButton.id = 'deleteButton';
+								deleteButton.type = 'button';
+								deleteButton.setAttribute("onclick", "deleteMessageInTrash(" + messageId +")");
+								deleteButton.textContent = '영구삭제';
+								deleteButtonDiv.appendChild(deleteButton);
 								
 								
 								
+								targetCol.appendChild(containerDiv);
 								
 									
 								}
@@ -547,7 +678,186 @@
 						xhr.send();
 	
 			}
+			
+					
+			function deleteMessageInTrash(messageId) {
+				const xhr = new XMLHttpRequest();
+				if(confirm("영구 삭제하시겠습니까?")){
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200){
+						const response = JSON.parse(xhr.responseText);
+						// js 작업..
+						reloadTrash();
+					}
+				}
 				
+				//get
+				xhr.open("get", "./deleteMessageInTrash?messageId=" + messageId);
+				xhr.send();
+				}
+			}
+			
+			function reloadStorage() {
+				const xhr = new XMLHttpRequest();
+				
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200){
+						const response = JSON.parse(xhr.responseText);
+						// js 작업..
+						
+						const messageType = document.getElementById("messageType")
+						messageType.innerText = "보관함";
+						const userId = response.userId;
+						
+						const targetCol = document.getElementById("targetCol");
+						
+
+						
+
+						
+						// 기존의 쪽지 목록을 찾아 제거
+					      const existingRows = targetCol.querySelectorAll(".row.border-top.border-1.p-3");
+					      existingRows.forEach(function(row) {
+					        targetCol.removeChild(row);
+					      });
+						
+					      
+						
+						
+						for(data of response.list){
+						//휴지통에 있는 받은 메시지를 보낸사람
+						var messageGetInStorageSender = data.userDto.user_nickname;
+						//휴지통에 있는 보낸 메시지의 받는사람 
+						var messageSendInStorageReceiver = data.messageDto.user_nickname;
+						var messageInStorageTitle = data.messageDto.message_title;
+						var messageInStorageSendDate = new Date(data.messageDto.message_reg_date);
+						var messageSendDateFormatted = formatDate(messageInTrashSendDate, 'yy-MM-dd hh:mm:ss');							
+						var messageInStorageContent = data.messageDto.message_content;
+						var messageId = data.messageDto.message_id;
+						
+						
+						const containerDiv = document.createElement('div');
+						containerDiv.classList.add('row', 'border-top', 'border-1', 'p-3');
+						containerDiv.id = 'trashList';
+
+						// 체크박스 div 생성
+						const checkboxDiv = document.createElement('div');
+						checkboxDiv.classList.add('col-auto', 'd-flex', 'align-self-center');
+						containerDiv.appendChild(checkboxDiv);
+
+						// 체크박스 input 생성
+						const checkboxInput = document.createElement('input');
+						checkboxInput.type = 'checkbox';
+						checkboxInput.classList.add('form-check-input');
+						checkboxInput.value = '';
+						checkboxInput.id = 'flexCheckDefault';
+						checkboxDiv.appendChild(checkboxInput);
+
+						// 닉네임 div 생성
+						const nicknameDiv = document.createElement('div');
+						nicknameDiv.classList.add('col', 'align-self-center', 'text-center');
+						nicknameDiv.id = 'messageInTrashNickName';
+
+						// 보낸쪽지일 경우
+						if(parseInt(data.messageDto.user_id) === parseInt(userId)){
+							
+							
+							
+							const messageSendMark = document.createElement("span");
+							messageSendMark.classList.add("badge", "text-wrap", "bg-secondary");
+							messageSendMark.innerText = "보낸쪽지";
+							
+							nicknameDiv.appendChild(messageSendMark);
+							
+							const receiverNickname = document.createElement("span");
+							receiverNickname.classList.add("text", "ms-2");
+							receiverNickname.innerText = data.messageDto.user_nickname;
+							
+							nicknameDiv.appendChild(receiverNickname);
+							
+							
+							
+						}else{ //받는 쪽지일 경우
+							nicknameDiv.innerText = data.userDto.user_nickname;						
+						}								
+						
+						containerDiv.appendChild(nicknameDiv);
+						
+						
+						
+						// 제목 div 생성
+						const titleDiv = document.createElement('div');
+						titleDiv.classList.add('col', 'd-flex', 'align-self-center');
+						//보낸 메시지일 경우
+						if(parseInt(data.messageDto.user_id) === parseInt(userId)){
+						console.log(data.messageDto.user_id);
+						console.log(userId);
+						titleDiv.setAttribute("onclick", "openMessageSendInTrashPage('" + messageInTrashTitle +
+			                      "','" + messageSendInTrashReceiver + "','" + messageSendDateFormatted + "'," +
+			                      JSON.stringify(messageInTrashContent).replace(/(\r\n|\n)/g, "<br>") + ")");
+						}else{ //받은 메시지일 경우
+							titleDiv.setAttribute("onclick", "openMessageGetInTrashPage('" + messageInTrashTitle +
+				                      "','" + messageGetInTrashSender + "','" + messageSendDateFormatted + "'," +
+				                      JSON.stringify(messageInTrashContent).replace(/(\r\n|\n)/g, "<br>") + ")");	
+						}
+						titleDiv.style.cursor = 'pointer';
+						titleDiv.id = 'messageInTrashTitle';
+						titleDiv.innerText = messageInTrashTitle;
+						containerDiv.appendChild(titleDiv);
+
+						// 전송일 div 생성
+						const sendDateDiv = document.createElement('div');
+						sendDateDiv.classList.add('col', 'align-self-center', 'text-center', 'ms-2');
+						sendDateDiv.id = 'messageInTrashSendDate';
+						sendDateDiv.innerText = messageSendDateFormatted;
+						containerDiv.appendChild(sendDateDiv);
+
+						// 영구삭제 버튼 div 생성
+						const deleteButtonDiv = document.createElement('div');
+						deleteButtonDiv.classList.add('col', 'align-self-center', 'text-center', 'ms-auto');
+						
+						containerDiv.appendChild(deleteButtonDiv);
+
+						// 영구삭제 버튼 생성
+						const deleteButton = document.createElement('button');
+						deleteButton.classList.add('btn', 'btn-sm', 'border', 'border-dark');
+						deleteButton.id = 'deleteButton';
+						deleteButton.type = 'button';
+						deleteButton.setAttribute("onclick", "deleteMessageInTrash(" + messageId +")");
+						deleteButton.textContent = '영구삭제';
+						deleteButtonDiv.appendChild(deleteButton);
+						
+						
+						
+						targetCol.appendChild(containerDiv);
+						}
+					}
+				}
+				
+				//get
+				xhr.open("get", "./reloadStorage");
+				xhr.send();
+				
+				
+			
+		}
+			
+			function toggleStar(messageId) {
+				const xhr = new XMLHttpRequest();
+				
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200){
+						const response = JSON.parse(xhr.responseText);
+						// js 작업..
+					}
+				}
+				
+				//get
+				xhr.open("get", "./toggleStar?messageId=" + messageId);
+				xhr.send();
+				
+
+			}
 			
 			window.addEventListener("DOMContentLoaded", function(){
 				//사실상 시작 시점...
@@ -617,11 +927,14 @@
 							</div>
 						</div>
 						
-						<div class="row text-center border-secondary border-2 border-bottom">
-							<div
-								class="col p-3"
-								style="-bs-border-opacity: .5;">
-								<a class="dropdown-item" href="./messageWrote">스팸쪽지함</a>
+						<div class="row text-center border-secondary border-2 border-bottom" id="storageButton" onclick="reloadStorage()" style = "cursor: pointer;">
+							<div class="col-4 p-3 text-end"
+								style="-bs-border-opacity: .5; margin-left:30px;">
+								<i class="bi bi-star-fill"></i>
+							</div>
+							<div class="col-6 text-center p-3"
+								
+								style="-bs-border-opacity: .5; margin-left: -36px">보관함
 							</div>
 						</div>
 					</div>
@@ -643,26 +956,6 @@
 											type="button" onclick="location.href='./deleteMessageAllProcess'">
 											삭제</button>
 									</div>
-								</div>
-								<div class = "row border-top border-1 p-3" id="trashList">
-									<div class="col-auto d-flex align-self-center">
-										<input type="checkbox" class="form-check-input" value="" id ="flexCheckDefualt">
-									</div>
-									<div class="col align-self-center text-center" id="messageInTrashNickName">
-										
-									</div>
-									<div class="col d-flex align-self-center" onclick="openMessageTrashPage()" style='cursor : pointer;' id="messageInTrashTitle">
-									
-									</div>
-									<div class="col align-self-center text-center ms-2" id="messageInTrashSendDate">
-										
-									</div>
-									<div class="col align-selfcenter text-center ms-auto">
-										<button class="btn btn-sm border border-dark" type="button" onclick = "deleteMessageGetPerman()">
-										영구삭제
-										</button>
-									</div>
-	
 								</div>
 							</div>
 						</div>
@@ -760,7 +1053,81 @@
 			</div>
 		</div>
 	
-	
+		<div class="modal fade" id="readMessageSendInTrashModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header"
+						style="background-color: #BB264A; color: white;">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">삭제된 쪽지</h1>
+						<button type="button" class="btn-close btn-light"
+							data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
+					</div>
+					<div class="modal-body" style="padding-top: 0;">
+						<div class="row mt-3">
+							<div class="col-3">제목</div>
+							<div class="col" id="messageSendInTrashTitle"></div>
+						</div>
+						<div class="row mt-1">
+							<div class="col-3">받는 사람</div>
+							<div class="col" id="messageSendInTrashReceiverModal"></div>
+						</div>
+						<div class="row mt-1">
+							<div class="col-3">보낸 시간</div>
+							<div class="col" id="messageSendInTrashSendTime"></div>
+						</div>
+						<div class="row mt-3">
+							<div class="col mx-2 px-0 border border-2" id="messageSendInTrashContent"
+								style="width: 50%; height: 200px; overflow-y: scroll;"></div>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-center">
+						<div class="col-2">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="readMessageGetInTrashModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header"
+						style="background-color: #BB264A; color: white;">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">삭제된 쪽지</h1>
+						<button type="button" class="btn-close btn-light"
+							data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
+					</div>
+					<div class="modal-body" style="padding-top: 0;">
+						<div class="row mt-3">
+							<div class="col-3">제목</div>
+							<div class="col" id="messageGetInTrashTitle"></div>
+						</div>
+						<div class="row mt-1">
+							<div class="col-3">보낸 사람</div>
+							<div class="col" id="messageGetInTrashSenderModal"></div>
+						</div>
+						<div class="row mt-1">
+							<div class="col-3">보낸 시간</div>
+							<div class="col" id="messageGetInTrashSendTime"></div>
+						</div>
+						<div class="row mt-3">
+							<div class="col mx-2 px-0 border border-2" id="messageGetInTrashContent"
+								style="width: 50%; height: 200px; overflow-y: scroll;"></div>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-center">
+						<div class="col-2">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 			integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"

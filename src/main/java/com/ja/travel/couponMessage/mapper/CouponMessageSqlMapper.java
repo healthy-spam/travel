@@ -81,4 +81,8 @@ public interface CouponMessageSqlMapper {
 
 	public List<MessageDto> getMessageInTrashList(@Param("userId") int userId, @Param("userNickName") String userNickName);
 
+	public void deleteMessagePerman(int messageId);
+
+	public List<MessageDto> getMessageInStorageList(@Param("userId") int userId, @Param("userNickName") String userNickName);
+
 }
