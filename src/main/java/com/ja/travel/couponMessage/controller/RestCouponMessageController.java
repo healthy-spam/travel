@@ -116,6 +116,7 @@ public class RestCouponMessageController {
 		return map;
 	}
 	
+	//받은 메시지 휴지통으로 이동
 	@RequestMapping("/deleteMessageSend")
 	public Map<String, Object> deleteMessageSend(@RequestParam("messageId") Integer messageId) {
 		Map<String, Object> map = new HashMap<>();
@@ -126,5 +127,19 @@ public class RestCouponMessageController {
 		return map;
 	}
 	
-	
+	@RequestMapping("/reloadTrash")
+	public Map<String, Object> reloadTrash(HttpSession session) {
+		Map<String, Object> map = new HashMap<>();
+		
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		int userId = sessionUser.getUser_id();
+		
+		List<Map<String, Object>> list = couponMessageService.getMessageInTrash(userId);
+		
+		
+		map.put("result", "success");
+		map.put("list", list);
+		map.put("userId", userId);
+		return map;
+	}
 }

@@ -173,4 +173,9 @@
 	SET message_status = CONCAT('보낸쪽지삭제', message_status)
 	WHERE message_id = #{messageId}
 </update>
+
+<select id="getMessageInTrashList" resultType="com.ja.travel.dto.MessageDto">
+	select * from message
+	where (user_id = #{userId} and message_status like '%보낸쪽지삭제%') or (user_nickname = #{userNickName} and message_status like '%받은쪽지삭제%')
+</select>
 </mapper>
