@@ -176,4 +176,20 @@ public class CrewController {
 	public @ResponseBody List<Map<String, Object>> getallcrewmembers(@RequestParam("crew_domain") String crew_domain) {
 		return crewService.getAllMembersajax(crew_domain);
 	}
+	
+	@RequestMapping("/getallpostofmember")
+	public @ResponseBody Map<String, Object> getallpostofmember(@RequestBody Map<String, String> requestBody) {
+		System.out.println(requestBody.get("user_id"));
+		return crewService.getallpostofmember(Integer.parseInt(requestBody.get("user_id")));
+	}
+	
+	@RequestMapping("/searchMember")
+	public @ResponseBody Map<String, Object> searchMember(@RequestBody Map<String, String> requestBody) {
+		return crewService.searchMember(requestBody.get("crew_domain").toString(), requestBody.get("searchMember").toString());
+	}
+	
+	@RequestMapping("/crewhome/{crew_domain}/notice")
+	public String notice(@PathVariable("crew_domain") String crew_domain, Model model, HttpSession session) {
+		return crewService.notice(crew_domain, model, session);
+	}
 }

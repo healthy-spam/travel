@@ -1,7 +1,6 @@
 package com.ja.travel.hotel.mapper;
 
 import java.util.List;
-import java.util.Map;
 
 import com.ja.travel.dto.HotelCategoryDto;
 import com.ja.travel.dto.HotelDto;

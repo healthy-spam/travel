@@ -636,6 +636,40 @@ public class CrewService {
 	}
 
 
+	public Map<String, Object> getallpostofmember(int user_id) {
+		List<CrewBoardDto> postlist = crewMapper.getAllPostByCrewMemberId(crewMapper.getCrewMemberDtoByUserId(user_id).getCrew_member_id());
+		Map<String, Object> kkk = new HashMap<String, Object>();
+		kkk.put("user_nickname", crewMapper.getUserDtoByUserId(user_id));
+		kkk.put("crewBoardDto", postlist);
+		return kkk;
+	}
 
+
+	public Map<String, Object> searchMember(String crew_domain, String searchword) {
+		Map<String, Object> memberlist = new HashMap<String, Object>();
+		List<UserDto> aa = crewMapper.getUserDtoBySearchWord(searchword, crew_domain);
+		memberlist.put("memberlist", aa);
+		memberlist.put("crewDto", crewMapper.getCrewDtoByCrewDomain(crew_domain));
+		return memberlist;
+	}
+
+
+	public String notice(String crew_domain, Model model, HttpSession session) {
+		List<Map<String, Object>> nnn = postmethod( crewMapper.getAllNoticeByCrewDomain(crew_domain));
+		model.addAttribute("noticepost", nnn);
+		model.addAttribute("userDto", (UserDto) session.getAttribute("sessionuser"));
+		model.addAttribute("crewDto", crewMapper.getCrewDtoByCrewDomain(crew_domain));
+		return "crew/crewhome_notice";
+	}
+	public List<Map<String, Object>> postmethod(List<CrewBoardDto> list) {
+		List<Map<String, Object>> aa = new ArrayList<Map<String,Object>>();
+		for(CrewBoardDto b : list) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("crewBoardDto", list);
+			map.put("userDto", crewMapper.getUserDtoByCrewMemberId(b.getCrew_member_id()));
+			aa.add(map);
+		}
+		return aa;
+	}
 		
 }

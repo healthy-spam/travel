@@ -25,6 +25,8 @@ function getProfile(user_image, user_nickname,crew_member_log_date) {
 	console.log(crew_member_log_date)
 	
 	var crew_member_log_date= crew_member_log_date;
+	var user_image = user_image;
+	
 	crew_member_log_date = crew_member_log_date.replace("KST", "");
 	var date = new Date(crew_member_log_date);
 	
@@ -43,7 +45,43 @@ function getProfile(user_image, user_nickname,crew_member_log_date) {
 	document.getElementById("modalprofileimage").innerHTML = `<img src="/uploadFiles/profileImage/\${user_image }" width="180" height="180" class="rounded-circle" >`
 	document.getElementById("modalprofilename").innerHTML = `<span>\${user_nickname}</span>`;
 	document.getElementById("modalprofilejoindate").innerHTML = `<span>since \${year}.\${month}.\${day}.`;
+	
+	var user_id = document.getElementById("user_id").value;
+	
+	if(user_id != user_image.split(".")[0]) {
+		document.getElementById("postlistanddm").innerHTML = `
+		<a href="\${user_id}">
+	  		<div class="col text-end pe-0 ps-5" id="getallpostofmember">
+				<div class="row text-center">
+					<div class="col">
+						<i class="bi bi-file-earmark-text modalsettingicons"></i>
+					</div>
+				</div>
+				<div class="row text-center">
+					<div class="col settingimpls">
+						작성한 글 보기
+					</div>
+				</div>
+			</div>
+			</a>
+			<div class="col-6 pe-5 ps-0">
+				<div class="row text-center ">
+					<div class="col">
+						<i class="bi bi-envelope-plus modalsettingicons"></i>
+					</div>
+				</div>
+				<div class="row text-center">
+					<div class="col settingimpls">
+						쪽지 보내기
+					</div>
+				</div>
+
+			</div>
+		`;
+	}
+	
 	profilemodal.show();
+	
 }
 </script>
 
@@ -55,20 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var searchMember = searchMemberInput.value;
         
         if(searchMember === '') {
-            $.ajax({
-                url: "/travel/crew/getallcrewmembers",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({
-	                "crew_domain": crew_domain
-	            }),
-                success: function(response) {
-                	getallcrewlist(response);
-                },
-                error: function(err) {
-                    console.error("이름 확인 실패", err);
-                }
-            });
+        	location.reload();
         } else {
         	console.log(searchMember);
             $.ajax({
@@ -80,7 +105,33 @@ document.addEventListener("DOMContentLoaded", function() {
 	                "crew_domain": crew_domain
 	            }),
                 success: function(response) {
-                	getallcrewlist(response);
+                	var crewDto = response.crewDto;
+                	var memberlist = response.memberlist;
+                	
+                	document.getElementById("searchmemberlist").innerHTML= '';
+                	for(var i = 0; i<memberlist.length; i++) {
+                		document.getElementById("searchmemberlist").innerHTML += `
+                    		<div class="row">
+    						<div class="col-auto">
+    							<span>
+    								<img src="/uploadFiles/profileImage/\${memberList.user_image }" width="45" height="45" class="rounded-circle">
+    							</span>
+    						</div>
+    						<div class="col-auto member3 ps-1 pt-2">
+    							<span>\${memberList.user_nickname }</span>
+    						</div>
+    						<div class="col text-end">
+    							<i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+    							<ul class="dropdown-menu">
+    								<li class="dropdown-item">프로필 보기</li>
+    								<li class="dropdown-item">쪽지 보내기</li>
+    							</ul>
+    						</div>
+    					</div>
+    					<hr>
+                    	`;
+                	}
+                	
                 },
                 error: function(err) {
                     console.error("이름 확인 실패", err);
@@ -110,7 +161,7 @@ body {
 	left: 0;
 	width: 18vw;
 	height: 100vh;
-	background-color: #fff2f8b4;
+	background-color: white;
 	color: white;
 	padding: 20px;
 }
@@ -199,8 +250,9 @@ font-size: 30px
 		<jsp:include page="../common/crewHomeNavi.jsp"></jsp:include>
 
 		</div>
+		<input type="hidden" id="user_id" value="${userDto.user_id }">
 		<div class="col-6 margin-left-col">
-			<div class="card mt-5">
+			<div class="card mt-5" id="memberpost">
 				<div class="container p-4 pb-3">
 					<div class="row">
 						<div class="col member1">
@@ -209,7 +261,7 @@ font-size: 30px
 					</div>
 					<div class="row mt-3">
 						<div class="col">
-							<input type="search" class="form-control" placeholder="멤버 검색">
+							<input type="search" class="form-control" placeholder="멤버 검색" id="searchMember">
 						</div>
 					</div>
 				</div>
@@ -220,6 +272,7 @@ font-size: 30px
 						<span>멤버</span>
 					</div>
 				</div>
+				<div class="searchmemberlist">
 				<c:forEach var="memberList" items="${memberList}" varStatus="status">
 					<div class="row">
 						<div class="col-auto">
@@ -243,6 +296,7 @@ font-size: 30px
 					</div>
 					<hr>
 				</c:forEach>
+				</div>
 			</div>
 				</div>
 				
@@ -282,8 +336,8 @@ font-size: 30px
         	</div>
         </div>
       </div>
-		<div class="row m-4">
-      		<div class="col text-end pe-0 ps-5">
+		<div class="row m-4 postlistanddm">
+      		<div class="col text-end pe-0 ps-5" id="getallpostofmember">
       			<div class="row text-center">
       				<div class="col">
       					<i class="bi bi-file-earmark-text modalsettingicons"></i>
@@ -295,6 +349,7 @@ font-size: 30px
       				</div>
       			</div>
       		</div>
+      		
       		<div class="col-6 pe-5 ps-0">
       			<div class="row text-center ">
       				<div class="col">
