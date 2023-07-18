@@ -17,10 +17,12 @@ import com.ja.travel.dto.GuideDto;
 import com.ja.travel.dto.GuidePlanningDto;
 import com.ja.travel.dto.GuideReportDto;
 import com.ja.travel.dto.GuideRestrictDto;
+import com.ja.travel.dto.HotelDto;
 import com.ja.travel.dto.PlanDayDto;
 import com.ja.travel.dto.PlanDto;
 import com.ja.travel.dto.PlanningDto;
 import com.ja.travel.dto.UserDto;
+import com.ja.travel.hotel.mapper.HotelSqlMapper;
 import com.ja.travel.main.mapper.MainSqlMapper;
 import com.ja.travel.travelApplication.mapper.TravelApplicationSqlMapper;
 
@@ -32,6 +34,9 @@ public class MainService {
 
 	@Autowired
 	private TravelApplicationSqlMapper travelApplicationSqlMapper;
+	
+	@Autowired
+	private HotelSqlMapper hotelSqlMapper;
 	
 	public Map<String, List<PlanDto>> getPlanList(UserDto userDto) {
 
@@ -86,7 +91,7 @@ public class MainService {
 		return planLists;
 	}
 
-	public List<Map<String, Object>> getMyList(HttpSession session) {
+	public Map<String, Object> getMyList(HttpSession session) {
 		UserDto user = (UserDto) session.getAttribute("sessionuser");
 		int user_id = 0;
 		
@@ -96,15 +101,28 @@ public class MainService {
 		
 		List<PlanningDto> myPlanningList = mainSqlMapper.getMyPlanningList(user_id);
 		
+		List<HotelDto> hotelList = hotelSqlMapper.selectHotelByUser(user_id);
+		
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> list2 = new ArrayList<Map<String,Object>>();
+		Map<String, Object> mapList = new HashMap<>();
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		
+		for (HotelDto hotel : hotelList) {
+			Map<String, Object> map = new HashMap<>();
+
+			map.put("hotel", hotel);
+			
+			list2.add(map);
+		}
+
 		for (PlanningDto planningDto : myPlanningList) {
 			Map<String, Object> map = new HashMap<>();
 			
 			PlanDto plan = travelApplicationSqlMapper.getPlanByPlanningId(planningDto.getPlanning_id());
 			List<PlanDayDto> planDay = travelApplicationSqlMapper.getPlanDayByPlanId(plan.getPlan_id());
-			
+
 			map.put("myPlanning", planningDto);
 			map.put("plan", plan);
 			map.put("day", planDay.size());
@@ -124,6 +142,9 @@ public class MainService {
 			list.add(map);
 		}
 		
-		return list;
+		mapList.put("list", list);
+		mapList.put("list2", list2);
+		
+		return mapList;
 	}
 }

@@ -111,7 +111,7 @@ body {
 						<div class="card-wrapper">
 							<div class="card-title">동행모집</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
-								<c:forEach items="${list}" var="data">
+								<c:forEach items="${map.list}" var="data">
 									<div>
 										<a class="d-flex justify-content-between my-3" href="./plan/travelApplicationDetailPage?planning_id=${data.myPlanning.planning_id}" style="text-decoration: none;">
 											<span style="color: black;">[${data.planningStatus}] ${data.myPlanning.planning_title}</span>
@@ -129,7 +129,7 @@ body {
 						<div class="card-wrapper">
 							<div class="card-title">마이플랜</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
-								<c:forEach items="${list}" var="data">
+								<c:forEach items="${map.list}" var="data">
 									<div>
 										<a class="d-flex justify-content-between my-3" href="./plan/readPlanPage?id=${data.plan.plan_id}" style="text-decoration: none;">
 											<span style="color: black;">${data.plan.plan_title}</span>
@@ -146,30 +146,16 @@ body {
 						<div class="card-wrapper">
 							<div class="card-title">등록숙소</div>
 							<div class="row mt-3 px-4">
-								<div class="col-4">
-									<div class="card">
-										<img src=" https://via.placeholder.com/150x150" class="img-fluid" alt="썸네일">
-										<div class="card-body">
-										 	<h5>신호영 숙소1</h5>
-										 </div>
+								<c:forEach items="${map.list2}" var="data">
+									<div class="col-4">
+										<div class="card">
+											<img src="/uploadFiles/hotelMainImage/${data.hotel.hotel_main_image}" class="img-fluid" alt="썸네일" style="height: 10em;">
+											<div class="card-body">
+												<h5>${data.hotel.hotel_title}</h5>
+											</div>
+										</div>
 									</div>
-								</div>
-								<div class="col-4">
-									<div class="card">
-										<img src=" https://via.placeholder.com/150x150" class="img-fluid" alt="썸네일">
-										<div class="card-body">
-										 	<h5>신호영 숙소2</h5>
-										 </div>
-									</div>
-								</div>
-								<div class="col-4">
-									<div class="card">
-										<img src=" https://via.placeholder.com/150x150" class="img-fluid" alt="썸네일">
-										 <div class="card-body">
-										 	<h5>신호영 숙소3</h5>
-										 </div>
-									</div>
-								</div>
+								</c:forEach>
 							</div>
 						</div>
 					</div>
