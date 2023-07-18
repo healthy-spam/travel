@@ -69,67 +69,63 @@
 
 </head>
 <body>
-	
 	<div class="container-fluid">
-	
-	<div class="container">
-		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-	</div>
-	
+		<div class="container">
+			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		</div>
 		<div id="carouselExample" class="carousel slide" data-bs-ride="false">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <div class="row">
-        <div class="col-auto">
-          <i class="bi bi-house"></i>
-        </div>
-        <div class="col-auto">
-          <i class="bi bi-building"></i>
-        </div>
-        <div class="col-auto">
-          <i class="bi bi-heart"></i>
-        </div>
-        <!-- 추가 카테고리 -->
-      </div>
-    </div>
-    <div class="carousel-item">
-      <div class="row">
-        <div class="col">
-          <i class="bi bi-globe"></i>
-        </div>
-        <div class="col">
-          <i class="bi bi-camera"></i>
-        </div>
-        <div class="col">
-          <i class="bi bi-star"></i>
-        </div>
-        <!-- 추가 카테고리 -->
-      </div>
-    </div>
-    <!-- 추가 슬라이드 -->
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-
-
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<div class="row">
+						<div class="col-auto">
+							<i class="bi bi-house"></i>
+						</div>
+						<div class="col-auto">
+							<i class="bi bi-building"></i>
+						</div>
+						<div class="col-auto">
+							<i class="bi bi-heart"></i>
+						</div>
+						<!-- 추가 카테고리 -->
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="row">
+						<div class="col">
+							<i class="bi bi-globe"></i>
+						</div>
+						<div class="col">
+							<i class="bi bi-camera"></i>
+						</div>
+						<div class="col">
+							<i class="bi bi-star"></i>
+						</div>
+						<!-- 추가 카테고리 -->
+					</div>
+				</div>
+				<!-- 추가 슬라이드 -->
+			</div>
+			<button class="carousel-control-prev" type="button"
+				data-bs-target="#carouselExample" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button"
+				data-bs-target="#carouselExample" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</button>
+		</div>
 		<div class="row mx-5">
 			<div class="col">
 				<div class="row">
 					<div class="col text-center">
-        					<c:if test="${!empty sessionuser}">
-								<a class="registerButton" href="./hotelRegisterPage1">
-									<span>나만의 숙소 등록하기</span>
-									<i style="font-size: 15px;" class="bi bi-pencil-square"></i>
-								</a>
-							</c:if>
-        				</div>
+						<c:if test="${!empty sessionuser}">
+							<a class="registerButton" href="./hotelRegisterPage1"> <span>나만의
+									숙소 등록하기</span> <i style="font-size: 15px;" class="bi bi-pencil-square"></i>
+							</a>
+						</c:if>
+					</div>
 				</div>
 				<div class="row mt-2 mb-5">
 					<c:forEach items="${hotelList}" var="hotelList" varStatus="status">
@@ -153,7 +149,8 @@
 													<div class="col text-end">
 														<i class="bi bi-star-fill" style="color: #fcc203; font-size: 14px;"></i>
 														<span class="p-0 fw-bold" style="font-size: 14px;">${hotelList.hotelReviewPointCount}</span>
-														<span style="font-size: 14px;">(</span><span style="font-size: 14px;">${hotelList.hotelReviewCount}</span><span>)</span>
+														<span style="font-size: 14px;">(</span>
+														<span style="font-size: 14px;">${hotelList.hotelReviewCount}</span><span>)</span>
 													</div>
 												</c:when>
 												<c:otherwise>
@@ -174,16 +171,17 @@
 										<div class="row">
 											<div class="col-auto pe-0">
 												<span style="color: gray; font-size: 14px;"><fmt:formatDate value="${hotelList.hotelDto.hotel_reserve_start_date}" pattern="MM월 dd일" /></span>
-											</div> 
+											</div>
 											<div class="col-auto px-0">
 												<span style="color: gray; font-size: 14px;">~</span>
 											</div>
 											<div class="col-auto ps-0">
-												<span style="color: gray; font-size: 14px;"><fmt:formatDate value="${hotelList.hotelDto.hotel_reserve_end_date}" pattern="MM월 dd일" /></span> 
+												<span style="color: gray; font-size: 14px;">
+												<fmt:formatDate value="${hotelList.hotelDto.hotel_reserve_end_date}" pattern="MM월 dd일" /></span>
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-auto pe-0" >
+											<div class="col-auto pe-0">
 												<span style="font-size: 14px; font-weight: bold;">\</span>
 											</div>
 											<div class="col-auto px-0">
