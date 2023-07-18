@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -625,6 +626,18 @@ public class CrewService {
 		model.addAttribute("crewMemberDto", crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id()));
 
 		List<Map<String, Object>> aa = getAllMembers(crewMapper.getCrewMemberListByCrewDomain(crew_domain));
+		
+		Iterator<Map<String, Object>> itr = aa.iterator();
+		Map<String, Object> ddd = new HashMap<String, Object>();
+		while (itr.hasNext()) {
+			Map<String, Object> p = itr.next();
+			UserDto abc = (UserDto) p.get("userDto");
+			if(abc.getUser_id() ==  userDto.getUser_id()) {
+				ddd = p;
+				itr.remove();
+			}
+		}
+		aa.add(0, ddd);
 		model.addAttribute("memberList", aa);
 		model.addAttribute("membersize", aa.size());
 		return "crew/crewhome_member";
@@ -655,9 +668,33 @@ public class CrewService {
 
 
 	public String notice(String crew_domain, Model model, HttpSession session) {
-		List<Map<String, Object>> nnn = postmethod( crewMapper.getAllNoticeByCrewDomain(crew_domain));
+		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
+
+		List<Map<String, Object>> nnn = postmethod(crewMapper.getAllNoticeByCrewDomain(crew_domain));
+		for(Map<String, Object> nn : nnn) {
+			CrewBoardDto b = (CrewBoardDto) nn.get("crewBoardDto");
+			
+			List<Integer> boardlikelist = crewMapper.getBoardLikeListByCrewBoardId(b.getCrew_board_id()); //해당 게시글에 좋아요 누른 crew_member_id 리스트
+			Map<String, Object> map = new HashMap<>();
+			for(int L:boardlikelist) {
+				if(L == b.getCrew_member_id()) { // 좋아요 crew_member_id list에 본인 id가 있을 시
+					map.put("liked", "dd"); //c태그에서 empty값 확인용
+					break;
+				}
+			}
+			
+			if(boardlikelist.size() == 0) {
+				map.put("boardlikecount", "0");
+			} else {
+				map.put("boardlikecount", Integer.toString(boardlikelist.size()));
+			}
+			
+		}
+		
 		model.addAttribute("noticepost", nnn);
-		model.addAttribute("userDto", (UserDto) session.getAttribute("sessionuser"));
+		model.addAttribute("userDto", userDto);
+		model.addAttribute("crewMemberDto", crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id()));
+		model.addAttribute("myGrade", crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id()).getCrew_member_grade_default_id());
 		model.addAttribute("crewDto", crewMapper.getCrewDtoByCrewDomain(crew_domain));
 		return "crew/crewhome_notice";
 	}
@@ -665,8 +702,9 @@ public class CrewService {
 		List<Map<String, Object>> aa = new ArrayList<Map<String,Object>>();
 		for(CrewBoardDto b : list) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("crewBoardDto", list);
+			map.put("crewBoardDto", b);
 			map.put("userDto", crewMapper.getUserDtoByCrewMemberId(b.getCrew_member_id()));
+			
 			aa.add(map);
 		}
 		return aa;

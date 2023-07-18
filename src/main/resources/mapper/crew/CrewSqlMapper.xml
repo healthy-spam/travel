@@ -127,11 +127,11 @@
 	</select>
 	
 	<select id="getAllNoticeByCrewDomain" resultType="com.ja.travel.dto.CrewBoardDto">
-		select * from crew_board where crew_domain=#{crew_domain} and crew_board_notice = 'Y' order by crew_board_id desc
+		select * from crew_board where crew_domain=#{crew_domain} and crew_board_notice = 'Y' and crew_board_status != 'deleted' order by crew_board_id desc
 	</select>
 	
 	<select id="getAllPublicPostByCrewDomain" resultType="com.ja.travel.dto.CrewBoardDto">
-		select * from crew_board where crew_domain=#{crew_domain} and crew_board_visibility = 'public' order by crew_board_id desc
+		select * from crew_board where crew_domain=#{crew_domain} and crew_board_visibility = 'public' and crew_board_status != 'deleted'  order by crew_board_id desc
 	</select>
 	
 	<select id="getAllPublicNoticeByCrewDomain" resultType="com.ja.travel.dto.CrewBoardDto">
@@ -159,7 +159,7 @@
 	</select>
 	
 	<select id="getCrewMemberListByCrewDomain" resultType="com.ja.travel.dto.CrewMemberDto">
-		select * from crew_member where crew_domain = #{crew_domain} and crew_join_status = 'member' order by crew_member_grade_default_id desc
+		select * from crew_member where crew_domain = #{crew_domain} and crew_join_status = 'member' order by crew_member_grade_default_id
 	</select>
 	
 	<update id="requestaccept" parameterType="java.util.List">
