@@ -10,7 +10,7 @@
 <script type="text/javascript">
 
 	
-	let spanText = null;
+	/* let spanText = null;
 
 	function clickProcess() {
 		
@@ -74,7 +74,7 @@
 		
 	});
 	 
-
+ */
  
 </script>
  
@@ -107,7 +107,7 @@
     	padding: 16px 14px;
     }
     
-    .selectedBox {
+   /*  .selectedBox {
         width: auto;
         height: auto;
         border: solid black 2px;
@@ -115,7 +115,7 @@
         padding: 16px 14px;
         background-color: #f5f5f5;
 
-    }
+    } */
     
     .box1MouseOver {
         width: auto;
@@ -142,7 +142,7 @@
                 </div>
             </div>
         </div>
-
+		<form action="./hotelRegisterPage2Process" method="post">
         <div class="row" style="padding-top: 80px;">
             <div class="col"></div>
             <div class="col">
@@ -165,6 +165,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="주택">
                                             <span style="font-size: 14px; font-weight: 600;" id="1">주택</span>
                                         </div>
                                     </div>
@@ -180,6 +181,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="아파트">
                                             <span style="font-size: 14px; font-weight: 600;" id="2">아파트</span>
                                         </div>
                                     </div>
@@ -194,6 +196,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="통나무집">
                                             <span style="font-size: 14px; font-weight: 600;" id="3">통나무집</span>
                                         </div>
                                     </div>
@@ -208,6 +211,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="캠핑카">
                                             <span style="font-size: 14px; font-weight: 600;" id="4">캠핑카</span>
                                         </div>
                                     </div>
@@ -222,6 +226,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="호텔">
                                             <span style="font-size: 14px; font-weight: 600;" id="5">호텔</span>
                                         </div>
                                     </div>
@@ -236,6 +241,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="농장">
                                             <span style="font-size: 14px; font-weight: 600;" id="6">농장</span>
                                         </div>
                                     </div>
@@ -250,6 +256,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="텐트">
                                             <span style="font-size: 14px; font-weight: 600;" id="7">텐트</span>
                                         </div>
                                     </div>
@@ -264,6 +271,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="게스트용 별채">
                                             <span style="font-size: 14px; font-weight: 600;" id="8">게스트용 별채</span>
                                         </div>
                                     </div>
@@ -278,6 +286,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="캐슬">
                                             <span style="font-size: 14px; font-weight: 600;" id="9">캐슬</span>
                                         </div>
                                     </div>
@@ -292,6 +301,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="보트">
                                             <span style="font-size: 14px; font-weight: 600;" id="10">보트</span>
                                         </div>
                                     </div>
@@ -306,6 +316,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="트리하우스">
                                             <span style="font-size: 14px; font-weight: 600;" id="11">트리하우스</span>
                                         </div>
                                     </div>
@@ -320,6 +331,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="초소형 주택">
                                             <span style="font-size: 14px; font-weight: 600;" id="12">초소형 주택</span>
                                         </div>
                                     </div>
@@ -334,6 +346,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="풍차">
                                             <span style="font-size: 14px; font-weight: 600;" id="13">풍차</span>
                                         </div>
                                     </div>
@@ -348,6 +361,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="동굴">
                                             <span style="font-size: 14px; font-weight: 600;" id="14">동굴</span>
                                         </div>
                                     </div>
@@ -362,6 +376,7 @@
                                     </div>
                                     <div class="row pt-1">
                                         <div class="col">
+                                        	<input type="radio" name="hotel_category" value="컨테이너하우스">
                                             <span style="font-size: 14px; font-weight: 600;" id="15">컨테이너하우스</span>
                                         </div>
                                     </div>
@@ -380,11 +395,12 @@
             </div>
             <div class="col"></div>
             <div class="col-auto px-5">
-                <div class="reserveButton" onclick="sendCategory()">
+                <button class="reserveButton" >
                     <span>다음</span>
-                </div>
+                </button>
             </div>
         </div>
+        </form>
     </div>
 
             

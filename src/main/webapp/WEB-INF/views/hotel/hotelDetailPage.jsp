@@ -15,19 +15,46 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=818488f03bbc3c53eaa216d3aaf39e13&libraries=services"></script>
 <script type="text/javascript">
-
-	var map;
 	
-	function map(){
-	    // 지도 api
-	    var container = document.getElementById('map');
-	    var options = {
-	    center: new kakao.maps.LatLng(37.5665, 126.9780),
-	    level: 3
-	    };
+	
+	window.onload = function() {
+	    var mapContainer = document.getElementById('map');
 	    
-	    map = new kakao.maps.Map(container, options);
+	    var addressElement = document.getElementById("hotel_address");
+	    var hotelAddress = addressElement.innerText;
+	
+	    geocodeAddress(hotelAddress, function(lng, lat) {
+	        if (lng && lat) {
+	            var mapOption = {
+	                center: new kakao.maps.LatLng(lat, lng), // 초기 중심 좌표
+	                level: 3 // 지도의 확대 레벨
+	            };
+	            
+	            var map = new kakao.maps.Map(mapContainer, mapOption);
+	
+	            var markerPosition = new kakao.maps.LatLng(lat, lng);
+	            var marker = new kakao.maps.Marker({
+	                position: markerPosition
+	            });
+	            marker.setMap(map);
+	        } else {
+	            console.log('주소 변환 실패');
+	        }
+	    });
 	}
+	
+	function geocodeAddress(hotelAddress, callback) {
+	    var geocoder = new kakao.maps.services.Geocoder();
+	    geocoder.addressSearch(hotelAddress, function(result, status) {
+	        if (status === kakao.maps.services.Status.OK) {
+	            callback(result[0].x, result[0].y);
+	        } else {
+	            console.log('Geocoding failed: ' + status);
+	            callback(null, null);
+	        }
+	    });
+	}
+
 	
 	
 	let sessionUserId = null;
@@ -200,8 +227,6 @@
 		
 		getUserId()
 		
-		map();
-		
 		const checkInDateId = document.getElementById("checkInDate");
 		const checkOutDateId = document.getElementById("checkOutDate");
 		const numberOfPeople = document.getElementById("numberOfPeople");
@@ -213,7 +238,6 @@
 		
 		getReservationFeePerDay();
 		displayReservationTotal();
-		
 		
 	});
 
@@ -236,10 +260,11 @@
     }
     .reserveButton {
         width: 100%;
-        height: 2.6rem;
-        background: linear-gradient(to right, #ff335f, #e31c41, #ff1843, #e7104a);
+        height: 100%;
+        background-image: linear-gradient(98deg,#03c75a,#49c6dd);
         border-radius: 10px;
         border: none;
+        padding: 10px 20px;
         color: rgb(255, 255, 255);
         font-weight: 600;
         font-size: 14px;
@@ -270,6 +295,17 @@
         padding: 20px 20px;
     }
     
+    .imageButton {
+     	width: auto;
+        height: auto;
+        border-radius: 10px;
+        border: solid black 1px;
+        font-weight: bold;
+        font-size: 14px;
+        background-color: rgb(255, 255, 255);
+        padding: 10px 20px;
+    }
+    
 </style>
 </head>
 
@@ -282,6 +318,7 @@
     <div class="row main">
         <div class="col"></div>
         <div class="col-7">
+<!--숙소 제목 및 정보들입니다.-->        
             <div class="row mt-4">
                 <div class="col">
                     <span style="font-size: 25px; font-weight: 600;">${hotelMap.hotelDto.hotel_title }</span>
@@ -292,14 +329,30 @@
                     <i class ="bi bi-star-fill" style="font-size: 14px;"></i>
                 </div>
                 <div class="col-auto px-0">
-                    <span style="font-size: 14px; font-weight: bold;">4.90</span>
+                	<c:choose>
+	                	<c:when test="${!empty hotelAvgReviewPoint}">
+	                		<span style="font-size: 14px; font-weight: bold;">
+	                			 ${hotelAvgReviewPoint}
+	                		</span>
+	                	</c:when>
+	                	<c:otherwise>
+	                		<span style="font-size: 14px; font-weight: bold;">0.0</span>
+	                	</c:otherwise>
+                	</c:choose>
                 </div>
                 <div class="col-auto px-1">
                     <span style="font-size: 14px; font-weight: bold;">∙후기</span>
-                    <span style="font-size: 14px; font-weight: bold;">177개</span>
+                    <c:choose>
+                    	<c:when test="${!empty hotelReviewPoint}">
+                    		<span style="font-size: 14px; font-weight: bold;">${hotelReviewPoint}</span>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<span style="font-size: 14px; font-weight: bold;">아직없음</span>
+                    	</c:otherwise>
+                    </c:choose>
                 </div>
                 <div class="col-auto">
-                    <span style="font-size: 14px;">Gahoe-dong.Jongno-gu.서울</span>
+                    <span id="hotel_address" style="font-size: 14px;">${hotelMap.hotelDto.hotel_address}</span>
                 </div>
                 <div class="col px-0 d-flex justify-content-end">
                     <span style="font-size: 12px; font-weight: bold;">공유하기</span>
@@ -308,20 +361,22 @@
                     <span style="font-size: 12px; font-weight: bold;">저장</span>
                 </div>
             </div>
-            <div class="row mb-5">
+<!--이미지를 불러옵니다.-->            
+            <div class="row mb-5 ">
                 <div class="col">
-                    <img src="/uploadFiles/mainImage/${hotelMap.hotelDto.hotel_main_image }" alt="" style="width: 100%;">
+                    <img src="/uploadFiles/hotelMainImage/${hotelMap.hotelDto.hotel_main_image }" alt="" style="width: 100%;">
                 </div>
                 <div class="col">
                     <div class="row row-cols-2">
-                    	<c:forEach items="${hotelImageDetailsDtoList}" var="list">
+                    	<c:forEach items="${hotelImageDetailsDtoList}" var="list" begin="0" end="3">
 	                        <div class="col ps-0">
-	                            <img src="/uploadFiles/${list.hotelImageDetailsDto.hotel_image_details_link }" alt="" style="width: 100%;">
+	                            <img src="/uploadFiles/hotelDetailImages/${list.hotelImageDetailsDto.hotel_image_details_link }" alt="" style="width: 100%;">
 	                        </div>
                     	</c:forEach>             
                     </div>
                 </div>
             </div>
+<!--숙소 호스팅 관련 옵션 소개란입니다.-->            
             <div class="row">
                 <div class="col-7">
                     <div class="row">
@@ -363,6 +418,7 @@
                         </div>
                     </div>
                     <hr class="my-4">
+<!--숙소 소개입니다.-->                    
                     <div class="row mb-4">
                         <div class="col-auto">
                             <i class="bi bi-door-closed" style="font-size: 25px;"></i>
@@ -418,90 +474,44 @@
                         </div>
                     </div>
                     <hr class="my-4">
+<!--숙소 정보입니다.-->                    
                     <div class="row my-5">
                         <div class="col">
                             <span style="font-size: 14px;">
-                                지친 일상에서 떠나 머무시는 동안 편안한 휴식이 되길 기원합니다.
-                                서울 시내 북촌 한옥마을 오북역에 위치하고 있습니다. 게스트는 한국의 전통 가옥인 한복의 고요함을 완벽하게 경험할 수 있습니다.
-                                무료 무선 인터넷과 야외 파티오에서 휴식을 취할 수 있습니다.
-                                주변에 관광객 핫플레이스와 레스토랑이 많습니다.
+                                ${hotelMap.hotelDto.hotel_content}
                             </span>
                         </div>
                     </div>
                     <hr class="my-4">
+<!--숙소 편의시설입니다.-->                    
                     <div class="row mb-3">
                         <div class="col">
                             <span style="font-size: 20px; font-weight: bold;">숙소 편의시설</span>
                         </div>
                     </div>
                     <div class="row row-cols-2">
-                        <div class="col">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <i class="bi bi-wifi" style="font-size: 25px;"></i>
-                                </div>
-                                <div class="col ps-0">
-                                    <span style="font-size: 14px;">주방</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <i class="bi bi-wifi" style="font-size: 25px;"></i>
-                                </div>
-                                <div class="col ps-0">
-                                    <span style="font-size: 14px;">무선 인터넷</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <i class="bi bi-wifi" style="font-size: 25px;"></i>
-                                </div>
-                                <div class="col ps-0">
-                                    <span style="font-size: 14px;">TV + 일반 케이블 TV</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <i class="bi bi-wifi" style="font-size: 25px;"></i>
-                                </div>
-                                <div class="col ps-0">
-                                    <span style="font-size: 14px;">세탁기 무료 사용-숙소 내</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <i class="bi bi-wifi" style="font-size: 25px;"></i>
-                                </div>
-                                <div class="col ps-0">
-                                    <span style="font-size: 14px;">에어컨</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <i class="bi bi-wifi" style="font-size: 25px;"></i>
-                                </div>
-                                <div class="col ps-0">
-                                    <span style="font-size: 14px;">전자레인지</span>
-                                </div>
-                            </div>
-                        </div>
+                       	<c:forEach items="${hotelFacilityList}" var="hotelFacilityList" begin="0" end="5">
+	                        <div class="col py-2">
+	                            <div class="row align-items-center">
+	                                <div class="col-auto">
+	                                	<img alt="" src="/uploadFiles/hotelFacilityIcon/${hotelFacilityList.hotelFacilityDto.hotel_facility_image}" style="width: 23px;">
+	                                </div>
+	                                <div class="col ps-0">
+	                                    <span style="font-size: 14px;">${hotelFacilityList.hotelFacilityDto.hotel_facility_name}</span>
+	                                </div>
+	                            </div>
+	                        </div>
+                        </c:forEach>
                     </div>
                     <div class="row mt-4">
                         <div class="col">
-                            <button class="commentButton">편의시설 10개 모두 보기</button>
+                        	<c:if test="${hotelFacilityCount > 6}">
+                            <button class="commentButton">편의시설 ${hotelFacilityCount}개 모두 보기</button>
+                            </c:if>
                         </div>
                     </div>
                 </div>
+<!--예약 기능이 들어있는 카드입니다.-->                
                 <div class="col d-flex justify-content-end">
                     <div class="row">
                         <div class="col">
@@ -513,7 +523,9 @@
                                                 <span style="font-size: 20px; font-weight: bold;">\</span>
                                             </div>
                                             <div class="col px-0">
-                                                <span style="font-size: 20px; font-weight: bold;">${hotelMap.hotelDto.hotel_price }</span>
+                                                <span style="font-size: 20px; font-weight: bold;">
+                                                	<fmt:formatNumber pattern="#,###" value="${hotelMap.hotelDto.hotel_price }" var="price"/>${price }
+                                                </span>
                                                 <span style="font-size: 14px;">/박</span>
                                             </div>
                                         </div>
@@ -524,7 +536,18 @@
                                                 <i class ="bi bi-star-fill" style="font-size: 13px;"></i>
                                             </div>
                                             <div class="col-auto px-0">
-                                                <span style="font-size: 13px; font-weight: bold;">4.90</span>
+                                            	<c:choose>
+                                            		<c:when test="${!empty hotelAvgReviewPoint}">
+                                            			<span style="font-size: 13px; font-weight: bold;">
+                                                			${hotelAvgReviewPoint}
+                                                		</span>
+                                            		</c:when>
+                                            		<c:otherwise>
+                                            			<span style="font-size: 13px; font-weight: bold;">
+                                                			0.0
+                                                		</span>
+                                            		</c:otherwise>
+                                            	</c:choose>
                                             </div>
                                             <div class="col-auto px-0">
                                                 <span>∙</span>
@@ -533,7 +556,18 @@
                                                 <span style="font-size: 13px; color: gray;">∙후기</span>
                                             </div>
                                             <div class="col-auto ps-0">
-                                                <span style="font-size: 13px; color: gray;">177개</span>
+                                            	<c:choose>
+                                            		<c:when test="${!empty hotelReviewPoint}">
+                                            			<span style="font-size: 13px; color: gray;">
+                                                			${hotelReviewPoint}
+                                                		</span>
+                                            		</c:when>
+                                            		<c:otherwise>
+                                            			<span style="font-size: 13px; color: gray;">
+                                                			없음
+                                                		</span>
+                                            		</c:otherwise>
+                                            	</c:choose>
                                             </div>
                                         </div>
                                     </div>
@@ -599,7 +633,9 @@
                                         <span >\</span>
                                     </div>
                                     <div class="col-auto px-0">
-                                        <span>${hotelMap.hotelDto.hotel_price }</span>
+                                        <span>
+                                        	<fmt:formatNumber pattern="#,###" value="${hotelMap.hotelDto.hotel_price }" var="price"/>${price }
+                                        </span>
                                     </div>
                                     <div class="col-auto px-1">
                                         <span>x</span>
@@ -616,7 +652,9 @@
                                                 <span >\</span>
                                             </div>
                                             <div class="col-auto ps-0">
-                                                <span>${hotelMap.hotelDto.hotel_price }</span>
+                                                <span>
+                                                	<fmt:formatNumber pattern="#,###" value="${hotelMap.hotelDto.hotel_price }" var="price"/>${price }
+                                               	</span>
                                             </div>
                                         </div>
                                     </div>
@@ -630,7 +668,7 @@
                                     </div>
                                 </div>
                                 <hr class="my-3">
-                                <div class="row" style="font-size: 15px; font-weight: bold;">
+                                <div class="row" style="font-size: 16px; font-weight: bold;">
                                     <div class="col text-start">
                                         <span>총 합계</span>
                                     </div>
@@ -646,23 +684,37 @@
                     </div>
                 </div>
             </div>
-            <!-- 확인 필요! -->
+<!--별점 및 후기-->
             <hr class="my-5">
             <div class="row align-items-center">
                 <div class="col-auto pe-1">
                     <i class ="bi bi-star-fill" style="font-size: 16px;"></i>
                 </div>
                 <div class="col-auto px-0">
-                    <span style="font-size: 20px; font-weight: bold;">4.90</span>
+                	<c:choose>
+                		<c:when test="${!empty hotelAvgReviewPoint}">
+                			 <span style="font-size: 20px; font-weight: bold;">${hotelAvgReviewPoint}</span>
+                		</c:when>
+	                	<c:otherwise>
+	                		 <span style="font-size: 20px; font-weight: bold;">0.0</span>
+	                	</c:otherwise>
+                	</c:choose>
                 </div>
                 <div class="col-auto px-1">
                     <span style="font-size: 20px; font-weight: bold;">∙후기</span>
-                    <span style="font-size: 20px; font-weight: bold;">177개</span>
+                    <c:choose>
+                    	<c:when test="${!empty hotelReviewPoint}">
+                    		<span style="font-size: 20px; font-weight: bold;">${hotelReviewPoint}</span>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<span style="font-size: 20px; font-weight: bold;">아직없음</span>
+                    	</c:otherwise>
+                    </c:choose>
                 </div>
             </div>
             <div class="row row-cols-2 my-4">
             	<c:forEach items="${hotelReviewDtoList}" var="list">
-	                <div class="col mb-5">
+	                <div class="col mb-4">
 	                    <div class="row align-items-center">
 	                        <div class="col-auto">
 	                            <img src="/uploadFiles/profileImage/${list.userDto.user_image }" alt="" class="commentProfileImage">
@@ -680,13 +732,9 @@
 	                            </div>
 	                        </div>
 	                    </div>
-	                    <div class="row mt-3">
+	                    <div class="row mt-2">
 	                        <div class="col">
-	                            <span>가족모임에 오랜만에 여행기분 내고싶어 한옥숙소 예약했는데, 어른들이 너무 좋아하셨습니다
-	                                독채라 프라이빗한 느낌이 들면서도 계동 번화가에 위치해 안전하고 이동이 편했어요
-	                                방도 많고, 특히 화장실이 방마다 딸려 있어서 준비시간 긴 여자들이 아주 편하게 이용했어요
-	                                기회가 되면 또 방문하고 싶습니다
-	                                Ilyoung</span>
+	                            <span>${list.hotelReviewDto.hotel_review_content}</span>
 	                        </div>
 	                    </div>
 	                </div>
@@ -694,26 +742,30 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <button class="commentButton">후기<span>177</span>개 모두 보기</button>
+               		<c:if test="${hotelReviewPoint > 6}">
+               			<button class="commentButton"><span>${hotelReviewPoint}개 모두보기</span></button>
+               		</c:if>
                 </div>
             </div>
             <hr class="my-5">
+<!--호스팅 지역-->            
             <div class="row mb-4">
                 <div class="col">
                     <span style="font-size: 20px; font-weight: bold;">호스팅 지역</span>
                 </div>
             </div>
-            <!-- <div class="row my-3">
-                <div class="col">
-                    <span>Gahoe-dong, Jongno-gu, 서울, 한국</span>
-                </div>
-            </div> -->
             <div class="row pb-2">
                 <div class="col">
                     <div id="map" style="width:100%; height:500px;"></div>
                 </div>
             </div>
+            <div class="row mt-2">
+            	<div class="col">
+            		<span style="font-size: 14px; font-weight: 600;">${hotelMap.hotelDto.hotel_address}</span>
+            	</div>
+            </div>
             <hr class="my-5">
+<!--호스트 정보-->            
             <div class="row align-items-center">
                 <div class="col-auto">
                     <img src="/uploadFiles/profileImage/${hotelMap.userDto.user_image }" alt="" class="hostImage2">
@@ -744,12 +796,21 @@
                 <div class="col-auto ps-0 pe-1">
                     <span style="font-size: 14px;">후기</span>
                 </div>
-                <div class="col-auto px-0">
-                    <span style="font-size: 14px;">8</span>
-                </div>
-                <div class="col-auto ps-0">
-                    <span style="font-size: 14px;">개</span>
-                </div>
+               	<c:choose>
+                	<c:when test="${!empty hotelReviewPoint}">
+               			<div class="col-auto px-0">
+		                    <span style="font-size: 14px;">${hotelReviewPoint}</span> 
+                		</div>
+		                <div class="col-auto px-0">
+		                    <span style="font-size: 14px;">개</span>
+		                </div>
+	                </c:when>
+	                	<c:otherwise>
+	                		<div class="col-auto px-0">
+		                		<span style="font-size: 14px;">아직 없음</span>	                		
+	                		</div>
+	                	</c:otherwise>
+                	</c:choose>
                 <div class="col-auto">
                     <i class="bi bi-shield-fill-check" style="font-size: 14px;"></i>
                 </div>
@@ -777,6 +838,7 @@
                 </div>
             </div>
             <hr class="my-5">
+<!--알아두어야 할 사항-->
             <div class="row mb-3">
                 <div class="col">
                     <span style="font-size: 20px; font-weight: bold;">알아두어야 할 사항</span>
@@ -839,7 +901,8 @@
                     </div>
                     <div class="row my-2">
                         <div class="col">
-                            <span style="font-size: 14px;">7월 30일 오후 12:00</span>
+                        	<span id="checkInDay" style="font-size: 14px;"></span>
+                            <span style="font-size: 14px;">오후 12:00</span>
                             <span style="font-size: 14px;">전에 취소하면 부분 환불을 받으실수 있습니다.</span>
                         </div>
                     </div>
@@ -865,7 +928,7 @@
                             <span style="font-size: 14px; font-weight: bold;">호스팅</span>
                         </div>
                         <div class="col">
-                            <span style="font-size: 14px; font-weight: bold;">에어비앤비</span>
+                            <span style="font-size: 14px; font-weight: bold;">트립스테이션</span>
                         </div>
                     </div>
                 </div>

@@ -17,7 +17,7 @@
 								<use xlink:href="#home"></use>
 							</svg> 게시글
 					</a></li>
-					<li><a href="#" class="nav-link text-white"  id="crewnotice"> <svg
+					<li><a href="/travel/crew/crewhome/${crewDto.crew_domain }/notice" class="nav-link text-white"  id="crewnotice"> <svg
 								class="bi pe-none me-2" width="16" height="16">
 								<use xlink:href="#speedometer2"></use>
 							</svg> <i class="bi bi-bookmark-star"></i> 공지</i>

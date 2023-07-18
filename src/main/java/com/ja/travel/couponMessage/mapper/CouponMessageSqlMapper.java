@@ -3,6 +3,7 @@ package com.ja.travel.couponMessage.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ja.travel.dto.CouponDto;
@@ -77,5 +78,7 @@ public interface CouponMessageSqlMapper {
 	public void messageReceiverDelete(@RequestParam("messageId") Integer messageId);
 
 	public void messageSendDelete(@RequestParam("messageId") Integer messageId);
+
+	public List<MessageDto> getMessageInTrashList(@Param("userId") int userId, @Param("userNickName") String userNickName);
 
 }

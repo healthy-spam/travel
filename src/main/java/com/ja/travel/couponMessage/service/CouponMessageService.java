@@ -223,10 +223,32 @@ public class CouponMessageService {
 		// TODO Auto-generated method stub
 		couponMessageSqlMapper.messageReceiverDelete(messageId);
 	}
-
+	
+	//보낸 쪽지함 삭제시 휴지통 이동
 	public void moveMessageSendToTrashCan(int messageId) {
 		// TODO Auto-generated method stub
 		couponMessageSqlMapper.messageSendDelete(messageId);
+	}
+	
+	//휴지통 리스트 띄우기
+	public List<Map<String, Object>> getMessageInTrash(int userId) {
+		
+		List<Map<String,Object>> list = new ArrayList<>();
+		UserDto userDto = couponMessageSqlMapper.getUserDtoByUserId(userId);
+		String userNickName = userDto.getUser_nickname();
+		
+		List<MessageDto> messageTrashList = couponMessageSqlMapper.getMessageInTrashList(userId, userNickName);
+		for(MessageDto messageDto : messageTrashList) {
+			
+			Map<String, Object> map = new HashMap<>();
+			userId = messageDto.getUser_id();
+			userDto = couponMessageSqlMapper.getUserDtoByUserId(userId);
+
+			map.put("messageDto", messageDto);
+			map.put("userDto", userDto);
+			list.add(map);
+		}
+		return list;
 	}
 	
 
