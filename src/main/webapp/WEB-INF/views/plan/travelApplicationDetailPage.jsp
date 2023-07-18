@@ -98,6 +98,8 @@
 					    const p2 = document.createElement('p');
 					    p2.classList.add('mb-2');
 					    p2.innerText = formattedDate;
+					    p2.style.fontSize = '0.7em';
+					    p2.style.color = '#999999';
 					    colDiv.appendChild(p1);
 					    colDiv.appendChild(p2);
 
@@ -114,7 +116,7 @@
 					    
 					    
 					    var heartIcon = document.createElement("i");
-					    heartIcon.className = response.list[i].isLove == 'ok' ? 'bi, bi-heart-fill' : 'bi, bi-heart'; 
+					    heartIcon.className = response.list[i].isLove == 'ok' ? 'bi, bi-heart-fill text-danger' : 'bi, bi-heart'; 
 					    heartIcon.onclick = function() {
 							loginCheck();
 							
@@ -122,7 +124,7 @@
 						}
 					    const span = document.createElement('span');
 					    span.classList.add('comment-love');
-					    span.innerHTML = '좋아요 ' + response.list[i].totalLike + '개 ';
+					    span.innerHTML = '좋아요 ' + response.list[i].totalLike + '개';
 					    span.appendChild(heartIcon);
 					    
 					    anotherCol12Div.appendChild(span);
@@ -216,6 +218,7 @@
 		var startX;
 		var scrollLeft;
 		var userListContainer = document.querySelector('.user-list-container');
+		var scheduleList = document.querySelector('.schedule-list');
 		
 		userListContainer.addEventListener('mousedown', function(e) {
 			isDown = true;
@@ -239,6 +242,30 @@
 			var walk = (x - startX) * 3; // 스크롤 속도 조절
 			userListContainer.scrollLeft = scrollLeft - walk;
 		});
+		
+		scheduleList.addEventListener('mousedown', function(e) {
+			isDown = true;
+			startX = e.pageX - scheduleList.offsetLeft;
+			scrollLeft = scheduleList.scrollLeft;
+		});
+
+		scheduleList.addEventListener('mouseleave', function() {
+			isDown = false;
+		});
+
+		scheduleList.addEventListener('mouseup', function() {
+			isDown = false;
+		});
+
+		scheduleList.addEventListener('mousemove', function(e) {
+			if (!isDown)
+				return;
+			e.preventDefault();
+			var x = e.pageX - scheduleList.offsetLeft;
+			var walk = (x - startX) * 3; // 스크롤 속도 조절
+			scheduleList.scrollLeft = scrollLeft - walk;
+		});
+		
 	});
 </script>
 <script type="text/javascript">
@@ -411,7 +438,7 @@
 			 			   
 							var message = document.createElement('span');
 							message.textContent = response.list[i].chatDto.chat_message;
-							message.style.backgroundColor = "rgba(255, 0, 255, 0.2)";
+							message.style.backgroundColor = "rgba(3, 199, 90, 0.2)";
 							message.style.padding = '5px';
 							message.style.marginBottom = '10px';
 							message.style.borderRadius = '0.375rem';
@@ -520,7 +547,7 @@
 																result[0].x);
 
 														var content = '<div style="background-color: white; border-radius: 15px; padding: 5px; width: 100%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); position: relative; font-weight: 700;">'
-																+ '<span style="background-color: #DB4465; border-radius: 50%; width: 30px; height: 30px; padding: 5px; display: inline-flex; align-items: center; justify-content: center;"><i class="bi bi-geo-alt-fill" style="font-size: 20px; color: white;"></i></span>'
+																+ '<span style="background-color: #03c75a; border-radius: 50%; width: 30px; height: 30px; padding: 5px; display: inline-flex; align-items: center; justify-content: center;"><i class="bi bi-geo-alt-fill" style="font-size: 20px; color: white;"></i></span>'
 																+ ' '
 																+ placeDto.plan_place_name
 																+ '<div style="position: absolute; bottom: -8px; left: 10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>'
@@ -555,7 +582,6 @@
 	}
 </script>
 <style type="text/css">
-
 .img-wrapper {
 	height: 400px;
 	width: 100%;
@@ -572,6 +598,7 @@
 .planning-title {
 	font-size: 2em;
 	font-weight: 700;
+	color: #333333;
 }
 
 .card {
@@ -590,10 +617,11 @@
 .planning-content {
 	font-size: 1.2em;
 	margin-bottom: 1em;
+	color: #7d7d7d;
 }
 
 .commit {
-	background-color: #DB4465;
+	background-color: #03c75a;
 	font-size: 1.2em;
 	font-weight: 400;
 	border-radius: 0.375rem;
@@ -618,13 +646,13 @@
 }
 
 #chat-container {
-    min-height: 600px;
-    overflow: hidden;
+	min-height: 600px;
+	overflow: hidden;
 }
 
 .user-thumbnail {
 	border-radius: 50%;
-	border: 2px solid #DB4465;
+	border: 2px solid #03c75a;
 	margin-right: 10px;
 	width: 50px;
 	height: 50px;
@@ -705,7 +733,7 @@
 
 .comment-info {
 	font-size: 0.8em;
-	color: #9C9A9A;
+	color: #999999;
 }
 
 .comment-button {
@@ -713,7 +741,7 @@
 	top: 8px;
 	right: 20px;
 	border: none;
-	color: #DB4465;
+	color: #03c75a;
 }
 
 .comment-reply {
@@ -728,14 +756,37 @@
 	color: #999999;
 }
 
-.bi-heart {
-	margin-left: 5px;
+.bi-heart,
+.bi-heart-fill {
+	margin-left: 0.5em;
 	font-size: 0.9em;
 }
 
 body {
 	font-family: 'Noto Sans KR', sans-serif;
 }
+
+.schedule-list {
+	overflow-x: hidden;
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	margin: 0;
+	padding: 0;
+}
+
+.schedule-list img {
+	width: 18em;
+	height: 12em;
+	margin-right: 5em;
+	margin-bottom: 0.3em;
+	border-radius: 0.375rem;
+}
+
+.schedule-list li:last-child img {
+	margin-right: 0;
+}
+
 </style>
 <title>모집 디테일 페이지</title>
 </head>
@@ -751,20 +802,24 @@ body {
 					</div>
 				</div>
 				<div class="row mt-5">
-					<c:forEach items="${map.list}" var="data">
-						<c:forEach items="${data.placeList}" var="item">
-							<div class="col-3 card-schedule">
-								<img alt="썸네일" src="/uploadFiles/mainImage/${item.plan_place_photo}" style="width: 100%; height: 12em; border-radius: 0.375rem;">
-								<span style="font-size: 1.3em; font-weight: 600;">${data.planDay.plan_day}일차 - ${item.plan_place_name}</span>
-								<div style="font-weight: 400;">
-									<i class="bi bi-geo-alt"></i>
-									<span>${item.plan_place_address}</span>
-								</div>
-							</div>
-						</c:forEach>
-					</c:forEach>
+					<div class="col">
+						<ul class="schedule-list">
+							<c:forEach items="${map.list}" var="data">
+								<c:forEach items="${data.placeList}" var="item">
+										<li>
+											<img alt="썸네일" src="/uploadFiles/mainImage/${item.plan_place_photo}">
+											<div style="font-size: 1.1em; font-weight: 600; color: #333333;">${data.planDay.plan_day}일차 - ${item.plan_place_name}</div>
+											<div style="font-weight: 400; margin-top: 0.2em; color: #7d7d7d;">
+												<i class="bi bi-geo-alt"></i>
+												<span style="font-size: 0.9em;">${item.plan_place_address}</span>
+											</div>
+										</li>
+								</c:forEach>
+							</c:forEach>
+						</ul>
+					</div>
 				</div>
-				<div class="row my-4">
+				<div class="row my-3">
 					<div class="col">
 						<hr>
 					</div>
@@ -835,8 +890,9 @@ body {
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-12 mb-3 comment-info">
+									<div class="col-12 mb-3 comment-info d-flex justify-content-between">
 										<span class="board-info"></span>
+										<a href="../main" style="color: #999999; text-decoration: none;">목록</a>
 									</div>
 									<div class="col mb-3 comment-wrapper" onclick="loginCheck()">
 										<input class="form-control comment p-2" type="text" placeholder="댓글을 입력해주세요.">
@@ -871,7 +927,7 @@ body {
 									<div class="row mt-5">
 										<div class="col d-grid">
 											<div class="mb-1" style="font-weight: 500;">
-												<i class="bi bi-exclamation-circle-fill" style="color: #DB4465;"></i> 지금 동행을 신청해보세요!
+												<i class="bi bi-exclamation-circle-fill" style="color: #03c75a;"></i> 지금 동행을 신청해보세요!
 											</div>
 											<button class="commit" type="button" data-bs-toggle="modal" data-bs-target="#modal">동행 신청하기</button>
 											
@@ -921,7 +977,7 @@ body {
 						<div class="row">
 							<div class="col d-flex justify-content-end pb-5" id="chat-container" style="position: relative;">
 								<div class="chat" onclick="showChatBox()">
-									<i class="bi bi-chat-dots-fill chatIcon" style="color: #DB4465"></i>
+									<i class="bi bi-chat-dots-fill chatIcon" style="color: #03c75a"></i>
 								</div>
 							</div>
 						</div>

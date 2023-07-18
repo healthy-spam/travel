@@ -4,6 +4,26 @@
 
 <mapper namespace="com.ja.travel.hotel.mapper.HotelSqlMapper">
 
+	<select id="countFacility" resultType="Integer">
+		SELECT COUNT(*) FROM hotel_facility_line WHERE hotel_id = #{hotel_id}
+	</select>
+
+	<select id="searchHotelFacilityByHotelFacilityId" resultType="com.ja.travel.dto.HotelFacilityDto">
+		SELECT * FROM hotel_facility WHERE hotel_facility_id = #{hotel_facility_id}
+	</select>
+
+	<select id="searchHotelFacilityLineByHotelId" resultType="com.ja.travel.dto.HotelFacilityLineDto">
+		SELECT * FROM hotel_facility_line WHERE hotel_id = #{hotel_id}
+	</select>
+
+	<insert id="insertHotelFacilityLine">
+		INSERT INTO hotel_facility_line VALUES(
+			hotel_facility_line_seq.nextval,
+			#{hotel_id},
+			#{hotel_facility_id}
+		)
+	</insert>
+	
 	<insert id="insertHotelFacility">
 		INSERT INTO hotel_facility VALUES(
 			hotel_facility_seq.nextval,
@@ -28,8 +48,8 @@
 			GROUP BY hr.hotel_id
 	</select>
 
-	<select id="searchCountReviewPoint" resultType="Integer">
-		SELECT AVG(hrev.hotel_review_point) AS average_review_point
+	<select id="searchCountReviewPoint" resultType="double">
+		SELECT ROUND(AVG(hrev.hotel_review_point),2) AS average_review_point
 			FROM hotel_reservation hr
 			JOIN hotel_review hrev ON hr.hotel_reservation_id = hrev.hotel_reservation_id
 			WHERE hotel_id = #{hotel_id}
@@ -93,17 +113,17 @@
 		)
 	</insert>
 
-	<select id="selectMaxHotelId" resultType="int">
+	<!-- <select id="selectMaxHotelId" resultType="int">
 		SELECT
 		MAX(hotel_id)
 		FROM hotel
-	</select>
+	</select> -->
 
-	<insert id="insertHotelByUser">
+	<insert id="insertHotel">
 		INSERT INTO hotel VALUES(
-		hotel_seq.nextval,
+		#{hotel_id},
 		#{user_id},
-		#{hotel_category_id},
+		#{hotel_category},
 		#{hotel_title},
 		#{hotel_main_image},
 		#{hotel_content},
@@ -125,4 +145,17 @@
 		resultType="com.ja.travel.dto.HotelCategoryDto">
 		SELECT * FROM hotel_category ORDER BY hotel_category_id DESC
 	</select>
+	
+	<select id="createPk" resultType="int">
+		SELECT hotel_seq.nextval 
+		FROM DUAL
+	</select>
+	
+	<insert id="insertHotelImages">
+		INSERT INTO hotel_image_details VALUES(
+			#{hotel_image_details_id},
+			#{hotel_id},
+			#{hotel_image_details_link}
+		)
+	</insert>
 </mapper>

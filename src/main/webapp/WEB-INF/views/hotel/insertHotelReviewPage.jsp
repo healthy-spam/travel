@@ -31,30 +31,30 @@
 							<div class="col">
 								<div class="row">
 									<div class="col-auto">
-										 <input name="hotel_review_point" class="form-check-input" type="checkbox" value="1">
+										 <input name="hotel_review_point" class="form-check-input" type="checkbox" value="1.00">
 										 <i style="color: #ebc634;"class="bi bi-star-fill"></i>
 									</div>
 									<div class="col-auto">
-										 <input name="hotel_review_point" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="2">
+										 <input name="hotel_review_point" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="2.00">
 										 <label class="form-check-label" for="inlineCheckbox2"></label>
 										 <i style="color: #ebc634;"class="bi bi-star-fill"></i>
 										 <i style="color: #ebc634;"class="bi bi-star-fill"></i>
 									</div>
 									<div class="col-auto">
-										 <input name="hotel_review_point" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="3">
+										 <input name="hotel_review_point" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="3.00">
 										 <i style="color: #ebc634;"class="bi bi-star-fill"></i>
 										 <i style="color: #ebc634;"class="bi bi-star-fill"></i>
 										 <i style="color: #ebc634;"class="bi bi-star-fill"></i>
 									</div>
 									<div class="col-auto">
-										 <input name="hotel_review_point" class="form-check-input" type="checkbox" id="inlineCheckbox4" value="4">
+										 <input name="hotel_review_point" class="form-check-input" type="checkbox" id="inlineCheckbox4" value="4.00">
 										 <i style="color: #ebc634;"class="bi bi-star-fill"></i>
 										 <i style="color: #ebc634;"class="bi bi-star-fill"></i>
 										 <i style="color: #ebc634;"class="bi bi-star-fill"></i>
 										 <i style="color: #ebc634;"class="bi bi-star-fill"></i>
 										</div>
 									<div class="col-auto">
-										<input name="hotel_review_point" class="form-check-input" type="checkbox" id="inlineCheckbox5" value="5">
+										<input name="hotel_review_point" class="form-check-input" type="checkbox" id="inlineCheckbox5" value="5.00">
 										<i style="color: #ebc634;"class="bi bi-star-fill"></i>
 										 <i style="color: #ebc634;"class="bi bi-star-fill"></i>
 										 <i style="color: #ebc634;"class="bi bi-star-fill"></i>

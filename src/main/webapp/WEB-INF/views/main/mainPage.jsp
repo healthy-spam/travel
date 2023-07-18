@@ -115,7 +115,7 @@
 						img.src = '/uploadFiles/' + response.list[i].plan.plan_thumbnail;
 						img.alt = '썸네일';
 						icon.className = 'bi bi-geo-alt cardIcon';
-						iconWrapper1.className = 'iconWrapper1';
+						iconWrapper1.className = 'iconWrapper1 pe-2';
 						cardBody.className = 'card-body';
 						title.className = 'd-flex justify-content-between';
 						div.className = 'title text-truncate';
@@ -125,6 +125,7 @@
 						userInfo.className = 'user-info';
 						icon2.className = 'bi bi-calendar-check';
 						icon2.style.marginRight = '0.5em';
+						icon2.style.color = '#999999';
 						icon3.className = 'titleIcon bi bi-diagram-3';
 						icon3.innerText = response.list[i].recursiveList == null ? 0 : response.list[i].recursiveList;
 						img2.setAttribute('src', '/uploadFiles/profileImage/'+response.list[i].user.user_image);
@@ -134,6 +135,7 @@
 						img2.style.borderRadius = '50%';
 						span.innerText = response.list[i].user.user_nickname;
 						span.className = 'nickname';
+						span.style.color = "#03c75a";
 						
 						// 텍스트 내용 설정
 						iconWrapper1.textContent = response.list[i].list2[0].placeList[0].plan_place_address.slice(0, 2);
@@ -297,6 +299,7 @@ body {
 
 .titleIcon {
 	font-size: 1em;
+	color: #999999;
 }
 
 .card-body {
@@ -305,12 +308,11 @@ body {
 
 .content, .user-info {
 	font-size: 0.8em;
-	color: #5C5C5C;
-	font-weight: 700;
+	color: #999999;
 }
 
 .cardWrapper:hover .iconWrapper1 {
-	background: #DB4465;
+	background: #03c75a;
 	color: white;
 }
 
@@ -319,7 +321,7 @@ body {
 }
 
 .cardIcon {
-	color: #DB4465;
+	color: #03c75a;
 }
 
 .titleIcon:before {
@@ -386,7 +388,7 @@ body {
 							</div>
 						</div>
 						<div class="col d-grid d-flex align-items-end justify-content-center">
-							<button class="btn" style="width: 80%; background-color: #DB4465; color: white; border-radius: 5rem;" onclick="clearListAndSearchTravel(this)">검색</button>
+							<button class="btn" style="width: 80%; background-color: #03c75a; color: white; border-radius: 5rem;" onclick="clearListAndSearchTravel(this)">검색</button>
 						</div>
 					</div>
 				</div>
