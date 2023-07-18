@@ -17,10 +17,12 @@ import com.ja.travel.dto.GuideDto;
 import com.ja.travel.dto.GuidePlanningDto;
 import com.ja.travel.dto.GuideReportDto;
 import com.ja.travel.dto.GuideRestrictDto;
+import com.ja.travel.dto.PlanDayDto;
 import com.ja.travel.dto.PlanDto;
 import com.ja.travel.dto.PlanningDto;
 import com.ja.travel.dto.UserDto;
 import com.ja.travel.main.mapper.MainSqlMapper;
+import com.ja.travel.travelApplication.mapper.TravelApplicationSqlMapper;
 
 @Service
 public class MainService {
@@ -28,6 +30,9 @@ public class MainService {
 	@Autowired
 	private MainSqlMapper mainSqlMapper;
 
+	@Autowired
+	private TravelApplicationSqlMapper travelApplicationSqlMapper;
+	
 	public Map<String, List<PlanDto>> getPlanList(UserDto userDto) {
 
 		int userId = userDto.getUser_id();
@@ -97,7 +102,12 @@ public class MainService {
 		for (PlanningDto planningDto : myPlanningList) {
 			Map<String, Object> map = new HashMap<>();
 			
+			PlanDto plan = travelApplicationSqlMapper.getPlanByPlanningId(planningDto.getPlanning_id());
+			List<PlanDayDto> planDay = travelApplicationSqlMapper.getPlanDayByPlanId(plan.getPlan_id());
+			
 			map.put("myPlanning", planningDto);
+			map.put("plan", plan);
+			map.put("day", planDay.size());
 			
 			// 종료 시간을 LocalDateTime으로 변환합니다.
 			LocalDateTime endDate = LocalDateTime.parse(planningDto.getPlanning_end_date(), formatter);

@@ -310,7 +310,7 @@ body {
 }
 
 .cardWrapper:hover .iconWrapper1 {
-	background: #DB4465;
+	background: #03c75a;
 	color: white;
 }
 
@@ -319,7 +319,7 @@ body {
 }
 
 .cardIcon {
-	color: #DB4465;
+	color: #03c75a;
 }
 
 .titleIcon:before {
@@ -386,7 +386,7 @@ body {
 							</div>
 						</div>
 						<div class="col d-grid d-flex align-items-end justify-content-center">
-							<button class="btn" style="width: 80%; background-color: #DB4465; color: white; border-radius: 5rem;" onclick="clearListAndSearchTravel(this)">검색</button>
+							<button class="btn" style="width: 80%; background-color: #03c75a; color: white; border-radius: 5rem;" onclick="clearListAndSearchTravel(this)">검색</button>
 						</div>
 					</div>
 				</div>
