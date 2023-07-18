@@ -6,7 +6,74 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+window.onload = function(){
+    document.getElementById("hostAddress").addEventListener("click", function(){ //주소입력칸을 클릭하면
+        //카카오 지도 발생
+        new daum.Postcode({
+            oncomplete: function(data) { //선택시 입력값 세팅
+                document.getElementById("hostAddress").value = data.address; // 주소 넣기
+                document.querySelector("input[name=addressDetail]").focus(); //상세입력 포커싱
+            }
+        }).open();
+    });
+}
+</script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=818488f03bbc3c53eaa216d3aaf39e13&libraries=services"></script>
 <script type="text/javascript">
+
+function getMap() {
+	const addr1 = document.getElementById("hostAddress").value;
+	const addr2 = document.getElementById("addressDetail").value;
+	console.log(addr1);
+	
+	openMap(addr1 + " " + addr2, "내 숙소");
+}
+
+
+function openMap(compAddress,compName) {
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	mapOption = {
+	    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+	    level: 3 // 지도의 확대 레벨
+	};  
+	
+	//지도를 생성합니다    
+	var map = new kakao.maps.Map(mapContainer, mapOption); 
+	
+	//주소-좌표 변환 객체를 생성합니다
+	var geocoder = new kakao.maps.services.Geocoder();
+	
+	//주소로 좌표를 검색합니다
+	geocoder.addressSearch(compAddress, function(result, status) {
+	
+	// 정상적으로 검색이 완료됐으면 
+	 if (status === kakao.maps.services.Status.OK) {
+	
+	    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+	
+	    // 결과값으로 받은 위치를 마커로 표시합니다
+	    var marker = new kakao.maps.Marker({
+	        map: map,
+	        position: coords
+	    });
+	
+	    // 인포윈도우로 장소에 대한 설명을 표시합니다
+	    var infowindow = new kakao.maps.InfoWindow({
+	    		
+	        content: '<div style="width:150px;text-align:center;padding:6px 0;">'+compName+'</div>'
+	    });
+	    infowindow.open(map, marker);
+	
+	    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+	    map.setCenter(coords);
+	} 
+	
+	}); 
+	
+}
+
 
 function clickDashButton1() {
 	
@@ -126,6 +193,9 @@ function sendHotelBasics() {
 	const checkInTime = parseInt(checkInTimeElement);
 	const checkOutTime = parseInt(checkOutTimeElement);
 	
+	const addr1 = document.getElementById("hostAddress").value;
+	const addr2 = document.getElementById("addressDetail").value;
+	
 	
 	const xhr = new XMLHttpRequest();
 	
@@ -141,12 +211,12 @@ function sendHotelBasics() {
 	
 	xhr.open("post", "./inserthotelInfo2");
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhr.send("hotel_limit_number=" + guestNum + "&hotel_bedRoom=" + bedRoomNum + "&hotel_bed=" + bedNum + "&hotel_bathRoom=" + bathRoomNum + "&hotel_check_in_time=" + checkInTime + "&hotel_check_out_time=" + checkOutTime);
+	xhr.send("hotel_limit_number=" + guestNum + "&hotel_bedRoom=" + bedRoomNum + "&hotel_bed=" + bedNum + "&hotel_bathRoom=" + bathRoomNum + "&hotel_check_in_time=" + checkInTime + "&hotel_check_out_time=" + checkOutTime + "&hotel_address=" + addr1 + " " + addr2);
 	
 	window.location.href = "/travel/hotel/hotelRegisterPage4";
 }
 
-window.addEventListener("DOMContentLoaded", function() {
+/* window.addEventListener("DOMContentLoaded", function() {
 	
 	let numberOfGuest = document.getElementById("numberOfGuest");
 	
@@ -160,6 +230,8 @@ window.addEventListener("DOMContentLoaded", function() {
  	numberOfBedRoom.innerText = 0;
  	numberOfBathRoom.innerText = 0;
  	numberOfBed.innerText = 0;
+ 	 */
+ 	
 	
 });
 
@@ -194,7 +266,7 @@ window.addEventListener("DOMContentLoaded", function() {
 <body>
 
 <div class="container-fluid">
-        <div class="row align-items-center py-4" style="position: fixed; top: 0; width: 100%; background-color: white; z-index: 1;">
+        <div class="row align-items-center py-4" style="position: fixed; top: 0; width: 100%; z-index: 1;">
             <div class="col px-5">
                 <span style="color: #e7104a; font-size: 25px; font-weight: 600;">LOGO</span>
             </div>
@@ -205,8 +277,9 @@ window.addEventListener("DOMContentLoaded", function() {
                 </div>
             </div>
         </div>
-
-        <div class="row" style="padding-top: 100px;">
+		
+		<form action="./hotelRegisterPage3Process" method="post">
+        <div class="row" style="padding-top: 100px; padding-bottom: 100px;">
             <div class="col"></div>
             <div class="col">
                 <div class="row my-3">
@@ -221,68 +294,84 @@ window.addEventListener("DOMContentLoaded", function() {
                                 <div style="font-size: 18px; font-weight: 600;">숙박 가능한 인원은 몇 명인가요?</div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row align-items-center">
                             <div class="col">
                                 <div style="font-size: 16px; font-weight: 500;">게스트</div>
                             </div>
-                            <div class="col-auto">
-                                <div style="font-size: 16px; font-weight: 500;" onclick="clickDashButton1()">
-                                	<span>-</span>
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <div style="font-size: 16px; font-weight: 500;" id="numberOfGuest"></div>
-                            </div>
-                            <div class="col-auto">
-                                <div style="font-size: 16px; font-weight: 500;" onclick="clickPlusButton1()">
-                                	<span>+</span>
-                                </div>
-                            </div>
+	                       	<div class="col-auto">
+	                            <select name="hotel_limit_number" class="form-control">
+	                             	<option value="1">1</option>
+	                            	<option value="2">2</option>
+	                             	<option value="3">3</option>
+	                             	<option value="4">4</option>
+	                             	<option value="5">5</option>
+	                             	<option value="6">6</option>
+	                             	<option value="7">7</option>
+	                             	<option value="8">8</option>
+	                             	<option value="9">9</option>
+	                             	<option value="10">10</option>
+	                            </select>
+	                        </div>
                         </div>
                         <hr class="my-3">
-                        <div class="row">
+                        <div class="row align-items-center">
                             <div class="col">
                                 <div style="font-size: 16px; font-weight: 500;">침실</div>
                             </div>
                             <div class="col-auto">
-                                <div style="font-size: 16px; font-weight: 500;" onclick="clickDashButton2()">-</div>
-                            </div>
-                            <div class="col-auto">
-                                <div style="font-size: 16px; font-weight: 500;" id="numberOfBedRoom">4</div>
-                            </div>
-                            <div class="col-auto">
-                                <div style="font-size: 16px; font-weight: 500;" onclick="clickPlusButton2()">+</div>
+                                <select name="hotel_bedRoom" class="form-control">
+                                	<option value="1">1</option>
+                                	<option value="2">2</option>
+                                	<option value="3">3</option>
+                                	<option value="4">4</option>
+                                	<option value="5">5</option>
+                                	<option value="6">6</option>
+                                	<option value="7">7</option>
+                                	<option value="8">8</option>
+                                	<option value="9">9</option>
+                                	<option value="10">10</option>
+                                </select>
                             </div>
                         </div>
                         <hr class="my-3">
-                        <div class="row">
+                        <div class="row align-items-center">
                             <div class="col">
                                 <div style="font-size: 16px; font-weight: 500;">욕실</div>
                             </div>
-                            <div class="col-auto">
-                                <div style="font-size: 16px; font-weight: 500;" onclick="clickDashButton3()">-</div>
-                            </div>
-                            <div class="col-auto">
-                                <div style="font-size: 16px; font-weight: 500;" id="numberOfBathRoom">4</div>
-                            </div>
-                            <div class="col-auto">
-                                <div style="font-size: 16px; font-weight: 500;" onclick="clickPlusButton3()">+</div>
-                            </div>
+                           	<div class="col-auto">
+	                            <select name="hotel_bathRoom" class="form-control">
+	                             	<option value="1">1</option>
+	                            	<option value="2">2</option>
+	                             	<option value="3">3</option>
+	                             	<option value="4">4</option>
+	                             	<option value="5">5</option>
+	                             	<option value="6">6</option>
+	                             	<option value="7">7</option>
+	                             	<option value="8">8</option>
+	                             	<option value="9">9</option>
+	                             	<option value="10">10</option>
+	                            </select>
+	                        </div>
                         </div>
                         <hr class="my-3">
-                        <div class="row">
+                        <div class="row align-items-center">
                             <div class="col">
                                 <div style="font-size: 16px; font-weight: 500;">침대</div>
                             </div>
                             <div class="col-auto">
-                                <div style="font-size: 16px; font-weight: 500;" onclick="clickDashButton4()">-</div>
-                            </div>
-                            <div class="col-auto">
-                                <div style="font-size: 16px; font-weight: 500;" id="numberOfBed">4</div>
-                            </div>
-                            <div class="col-auto">
-                                <div style="font-size: 16px; font-weight: 500;" onclick="clickPlusButton4()">+</div>
-                            </div>
+	                            <select name="hotel_bed" class="form-control">
+	                             	<option value="1">1</option>
+	                            	<option value="2">2</option>
+	                             	<option value="3">3</option>
+	                             	<option value="4">4</option>
+	                             	<option value="5">5</option>
+	                             	<option value="6">6</option>
+	                             	<option value="7">7</option>
+	                             	<option value="8">8</option>
+	                             	<option value="9">9</option>
+	                             	<option value="10">10</option>
+	                            </select>
+	                        </div>
                         </div>
                         <div class="row mt-5 mb-3">
                             <div class="col">
@@ -295,7 +384,7 @@ window.addEventListener("DOMContentLoaded", function() {
                             </div>
                             <div class="col-auto">
                                 <div style="font-size: 16px; font-weight: 500;">
-                                    <select id= "checkInTime" class="form-control">
+                                    <select id= "checkInTime" class="form-control" name="hotel_check_in_time">
                                         <option value="00">00:00</option>
                                         <option value="01">01:00</option>
                                         <option value="02">02:00</option>
@@ -329,7 +418,7 @@ window.addEventListener("DOMContentLoaded", function() {
                             </div>
                             <div class="col-auto">
                                 <div style="font-size: 16px; font-weight: 500;">
-                                    <select id= "checkOutTime" class="form-control">
+                                    <select id= "checkOutTime" class="form-control" name="hotel_check_out_time">
                                         <option value="00">00:00</option>
                                         <option value="01">01:00</option>
                                         <option value="02">02:00</option>
@@ -364,6 +453,26 @@ window.addEventListener("DOMContentLoaded", function() {
                                 <div style="font-size: 18px; font-weight: 600;">숙소 위치를 알려주세요</div>
                             </div>
                         </div>
+                        <div class="row">
+                        	<div class="col">
+                        		<input class="form-control" type="text" id="hostAddress" placeholder="주소를 입력해주세요" name="hotel_address">
+                        	</div>
+                        </div>
+                        <div class="row mt-2">
+                        	<div class="col">
+                        		<input class="form-control" type="text" id="addressDetail" name="addressDetail" placeholder="상세주소를 입력해주세요">
+                        	</div>
+                        </div>
+                        <div class="row my-2">
+                        	<div class="col d-flex justify-content-end">
+                        		<div class="reserveButton" onclick="getMap()">확인</div>
+                        	</div>
+                        </div>
+                        <div class="row my-5">
+                        	<div class="col">
+                        		<div id="map" style="width: 100%; height: 500px;"></div>
+                        	</div>
+                        </div>
                     </div> 
                 </div>
             </div>
@@ -377,11 +486,12 @@ window.addEventListener("DOMContentLoaded", function() {
             </div>
             <div class="col"></div>
             <div class="col-auto px-5">
-                <div class="reserveButton" onclick="sendHotelBasics()">
+                <button class="reserveButton">
                     <span>다음</span>
-                </div>
+                </button>
             </div>
         </div>
+        </form>
     </div>
 
             

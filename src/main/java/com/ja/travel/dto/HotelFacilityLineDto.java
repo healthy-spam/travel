@@ -10,6 +10,7 @@ public class HotelFacilityLineDto {
 		super();
 	}
 
+	
 	public HotelFacilityLineDto(int hotel_facility_line_id, int hotel_id, int hotel_facility_id) {
 		super();
 		this.hotel_facility_line_id = hotel_facility_line_id;

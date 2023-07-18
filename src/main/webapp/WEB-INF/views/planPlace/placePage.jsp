@@ -13,34 +13,293 @@
 	crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
+<script type="text/javascript">
+
+//플레이스 목록을 보여줍니다.
+function showPlaceList() {
+	
+	const xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			
+			const response = JSON.parse(xhr.responseText);
+			
+			//반복문을 실행할 row를 가져오고 안의 html요소들을 초기화 합니다.
+			const listStartRow = document.getElementById("listStartRow");
+			
+			listStartRow.innerHTML = "";
+			
+			//반복문을 시작합니다.
+			for(data of response.list) {
+				
+				const divCol = document.createElement("div");
+				divCol.className = "col-3 mb-4";
+				listStartRow.appendChild(divCol);
+				
+				const divCard = document.createElement("div");
+				divCard.className = "card";
+				divCard.style.border = "none";
+				divCol.appendChild(divCard);
+				
+				const divRow1 = document.createElement("div");
+				divRow1.className = "row";
+				divCard.appendChild(divRow1);
+				
+				const divCol2 = document.createElement("div");
+				divCol2.className = "col";
+				divRow1.appendChild(divCol2);
+				
+				const anchor = document.createElement("a");
+				anchor.href="./PlanPlaceDetailPage?plan_place_id=" + data.planPlaceDto.plan_place_id;
+				divCol2.appendChild(anchor);
+				
+				const image = document.createElement("img");
+				image.src = "/uploadFiles/mainImage/" + data.planPlaceDto.plan_place_photo;
+				image.style.width = "100%";
+				image.style.height = "100%";
+				image.style.objectFit = "cover";
+				image.style.width = "100%";
+				image.style.borderRadius = "10px";
+				anchor.appendChild(image);
+				
+				const divRow2 = document.createElement("div");
+				divRow2.className = "row align-items-center my-2";
+				divCard.appendChild(divRow2);
+				
+				const divCol3 = document.createElement("div");
+				divCol3.className = "col-auto";
+				divRow2.appendChild(divCol3);
+				
+				const span1 = document.createElement("span");
+				span1.style.fontSize = "14px";
+				span1.style.fontWeight = "bold";
+				span1.style.display = "-webkit-box";
+				span1.style.webkitLineClamp = "1";
+				span1.style.webkitBoxOrient = "vertical";
+				span1.style.overflow = "hidden";
+				span1.style.textOverflow = "ellipsis";
+				span1.textContent = data.planPlaceDto.plan_place_name;
+				divCol3.appendChild(span1);
+				
+				const divCol4 = document.createElement("div");
+				divCol4.className = "col text-end pe-1";
+				divRow2.appendChild(divCol4);
+				
+				const span2 = document.createElement("span");
+				span2.className = "bi bi-heart-fill";
+				span2.style.color = "#ff4f78";
+				span2.style.fontSize = "12px";
+				divCol4.appendChild(span2);
+				
+				const divCol5 = document.createElement("div");
+				divCol5.className = "col-auto p-0";
+				divRow2.appendChild(divCol5);
+				
+				const span3 = document.createElement("span");
+				span3.style.fontSize = "14px";
+				span3.style.fontWeight = "bold";
+				span3.textContent = data.loveCount;
+				divCol5.appendChild(span3);
+				
+				const divCol6 = document.createElement("div");
+				divCol6.className = "col-auto pe-1";
+				divRow2.appendChild(divCol6);
+				
+				const icon = document.createElement("i");
+				icon.style.fontSize = "14px";
+				icon.className = "bi bi-chat";
+				divCol6.appendChild(icon);
+				
+				const divCol7 = document.createElement("div");
+				divCol7.className = "col-auto ps-0";
+				divRow2.appendChild(divCol7);
+				
+				const span5 = document.createElement("span");
+				span5.style.fontSize = "14px";
+				span5.style.fontWeight = "bold";
+				span5.textContent = data.commentCount;
+				divCol7.appendChild(span5);
+				
+				const divRow3 = document.createElement("div");
+				divRow3.className = "row";
+				divCard.appendChild(divRow3);
+				
+				const divCol8 = document.createElement("div");
+				divCol8.className = "col";
+				divRow3.appendChild(divCol8);
+				
+				const span6 = document.createElement("span");
+				span6.style.fontSize = "14px"
+				span6.style.color = "gray"
+				span6.style.display = "-webkit-box"
+				span6.style.webkitLineClamp = "3"
+				span6.style.webkitBoxOrient = "vertical"
+				span6.style.overflow = "hidden"
+				span6.style.textOverflow = "ellipsis"
+				span6.textContent = data.planPlaceDto.plan_place_content;
+				divCol8.appendChild(span6);
+				
+				const divRow4 = document.createElement("div");
+				divRow4.className = "row my-2";
+				divCard.appendChild(divRow4);
+				
+				const divCol9 = document.createElement("div");
+				divCol9.className = "col";
+				divRow4.appendChild(divCol9);
+				
+				const span7 = document.createElement("span");
+				span7.style.fontSize = "14px"
+				span7.style.display = "-webkit-box"
+				span7.style.webkitLimeClamp = "1"
+				span7.style.webkitBoxOrient = "vertical"
+				span7.style.overflow = "hidden"
+				span7.style.textOverflow = "ellipsis"
+				span7.textContent = data.planPlaceDto.plan_place_address;
+				divCol9.appendChild(span7);
+				
+			}
+			
+		}
+
+	}
+		xhr.open("post", "./getPlaceList");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send();
+}
+
+window.addEventListener("DOMContentLoaded", function() {
+	
+	showPlaceList();
+	
+});
+
+</script>
+
 <style type="text/css">
-		.btn-gradient {background: linear-gradient(to right, #ca4fff, #4e33ff, #696bff);}
+	.reserveButton {
+        width: auto;
+        height: auto;
+        background-image: linear-gradient(98deg,#03c75a,#49c6dd);
+        border-radius: 25px;
+        border: none;
+        color: rgb(255, 255, 255);
+        font-weight: 600;
+        font-size: 14px;
+        padding: 10px 13px;
+    }
+    
+    .categoryButton {
+    	width: auto;
+    	height: auto;
+    	border-radius: 10px;
+    	border: 1px solid lightgray;
+    	font-size: 14px;
+    	color: gray;
+    	padding:  7px 15px;
+    	background: white;
+    }
+    
+    .categoryFont {
+    	font-size: 1em;
+    	font-weight: 600;
+    	color: gray;
+    	position: relative;
+    	display: inline-block;
+    	
+    }
+    
+    a {
+    	text-decoration: none;
+    	color: gray;
+    }
+    
+    a:hover {
+		text-decoration: none;
+		color: #fc0352;
+	}
+	
+	ul {
+		list-style: none;
+	
+}
+	
 </style>
 
 </head>
 <body>
 
-    <div class="container-fluid background">
-	    <div class="container">
-			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-		</div>
+    <div class="container">
+		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 		
-        <div class="row">
-            <div class="col text-center">
-                <span>카테고리</span>
-            </div>
+        <div class="row mt-4 mb-2">
+        	<ul class="d-flex">
+			    <li class="pe-2">
+			        <a href="#" class="categoryFont">#서울특별시</a>
+			    </li>
+			    <li class="pe-2">
+			        <a href="#" class="categoryFont">#제주도</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#경기도</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#인천광역시</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#부산광역시</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#대구광역시</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#광주광역시</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#대전광역시</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#울산광역시</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#강원도</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#충청북도</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#충청남도</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#전라북도</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#전라남도</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#경상북도</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#경상남도</a>
+			    </li>
+			    <li class="px-2">
+			        <a href="#" class="categoryFont">#기타</a>
+			    </li>
+			</ul>
         </div>
         <div class="row">
         	<div class="col text-center">
         		<c:if test="${!empty sessionuser}">
-					<a style="border-radius: 20px; color: white; position: fixed; z-index: 9999; bottom: 5%; left: 50%; transform: translate(-50%, -50%);" class="btn btn-gradient" href="./registerPlacePage"><span>나만의 명소 등록하기</span></a>
+					<a style="position: fixed; z-index: 9999; bottom: 5%; left: 50%; transform: translate(-50%, -50%);" class="reserveButton" href="./registerPlacePage"><span>나만의 명소 등록하기</span></a>
 				</c:if>
         	</div>
         </div>
-        <div class="row mx-5 my-3">
+        <div class="row my-3">
             <div class="col">
-                <div class="row">
-                	<c:forEach items="${planPlaceList}" var="list">
+                <div class="row" id="listStartRow">
+                <!-- ajax로 처리했어요 -->
+                <%-- 	<c:forEach items="${planPlaceList}" var="list">
                     <div class="col-2 mb-4">
                         <div class="card" style="border: none;">
                             <div class="row">
@@ -65,7 +324,7 @@
                                     </c:choose>
                                 </div>
                                 <div class="col-auto p-0">
-                                	<span style="font-size: 14px; font-weight: bold">${list.loveCount}</span>
+                                	<span id="heartCount" style="font-size: 14px; font-weight: bold">${list.loveCount}</span>
                                 </div>
                                 <div class="col-auto pe-1">
                                     <i style="font-size: 14px;"class="bi bi-chat"></i>
@@ -86,7 +345,7 @@
                             </div>
                         </div>
                     </div>
-                     </c:forEach>
+                     </c:forEach> --%>
                 </div>
                 <div class="row">
                     <div class="col"></div>

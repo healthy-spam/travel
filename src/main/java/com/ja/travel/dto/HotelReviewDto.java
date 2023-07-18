@@ -6,7 +6,7 @@ public class HotelReviewDto {
 
 	private int hotel_review_id;
 	private int hotel_reservation_id;
-	private int hotel_review_point;
+	private double hotel_review_point;
 	private String hotel_review_content;
 	private Date hotel_review_reg_date;
 
@@ -14,7 +14,7 @@ public class HotelReviewDto {
 		super();
 	}
 
-	public HotelReviewDto(int hotel_review_id, int hotel_reservation_id, int hotel_review_point,
+	public HotelReviewDto(int hotel_review_id, int hotel_reservation_id, double hotel_review_point,
 			String hotel_review_content, Date hotel_review_reg_date) {
 		super();
 		this.hotel_review_id = hotel_review_id;
@@ -40,11 +40,11 @@ public class HotelReviewDto {
 		this.hotel_reservation_id = hotel_reservation_id;
 	}
 
-	public int getHotel_review_point() {
+	public double getHotel_review_point() {
 		return hotel_review_point;
 	}
 
-	public void setHotel_review_point(int hotel_review_point) {
+	public void setHotel_review_point(double hotel_review_point) {
 		this.hotel_review_point = hotel_review_point;
 	}
 

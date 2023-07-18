@@ -115,4 +115,16 @@ public class RestPlanPlaceController {
 		
 		return map;
 	}
+	
+	@RequestMapping("getPlaceList")
+	public Map<String, Object> getPlaceList(HttpSession session, String sortType) {
+		
+		Map<String, Object> map =  new HashMap<>();
+		
+		List<Map<String, Object>> list =  planPlaceService.searchPlanPlace(session, sortType);
+		
+		map.put("list", list);
+		
+		return map;
+	}
 }
