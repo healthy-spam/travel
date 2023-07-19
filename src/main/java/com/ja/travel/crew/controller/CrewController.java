@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ja.travel.crew.mapper.CrewMapper;
 import com.ja.travel.crew.service.CrewService;
@@ -97,8 +98,8 @@ public class CrewController {
 	}
 	
 	@RequestMapping("/crewboard/write")
-	public @ResponseBody int boardwrite(@RequestBody Map<String, String> crewBoardDto, HttpSession session) {
-		return crewService.boardwrite(crewBoardDto, session);
+	public @ResponseBody void boardwrite(@RequestBody Map<String, String> crewBoardDto, HttpSession session) {
+		crewService.boardwrite(crewBoardDto, session);
 	}
 	
 	@RequestMapping("/crewboard/modify")
@@ -163,8 +164,8 @@ public class CrewController {
 	}
 	
 	@RequestMapping("/crewboard/uploadfiles")
-	public @ResponseBody void uploadFiles(@RequestPart("myFiles") MultipartFile[] files) {
-//	    crewService.addboard(files);
+	public @ResponseBody void uploadFiles(@RequestParam("files") MultipartFile[] files, HttpSession session) throws Exception {
+		crewService.boardattached(files, session);
 	}
 	
 	@RequestMapping("/crewhome/{crew_domain}/crewmember")

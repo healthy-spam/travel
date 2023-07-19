@@ -105,7 +105,7 @@
 	
 	<!-- 플래너 일정 목록 출력 -->
 	<select id="planDaySelect" resultType="com.ja.travel.dto.PlanDayDto">
-		select * from plan_day WHERE plan_id=#{plan_id}
+		select * from plan_day WHERE plan_id=#{plan_id} ORDER BY plan_day 
 	</select>
 	
 	<!-- 플래너 아이디별 일정 목록 출력 -->
@@ -195,6 +195,7 @@
 	<update id="updateDisclosureStatus">
 		UPDATE plan
 		SET
+		plan_title = #{plan_title},
 		plan_disclosure_status = #{plan_disclosure_status}
 		WHERE plan_id = #{plan_id}
 	</update>
@@ -315,4 +316,27 @@
 	<select id="getAllPlace2" resultType="com.ja.travel.dto.PlanPlaceDto">
 		SELECT * FROM plan_place 
 	</select>
+	
+	<select id="getPlan" resultType="com.ja.travel.dto.PlanDto">
+		SELECT * FROM plan WHERE plan_id=#{plan_id}
+	</select>
+	
+	<delete id="deleteDay">
+		DELETE FROM plan_day WHERE plan_id = #{planId} and plan_day_id=#{dayId}
+	</delete>
+	
+	<select id="getPlanDay" resultType="com.ja.travel.dto.PlanDayDto">
+		
+		SELECT * FROM plan_day WHERE plan_id=#{planId}
+		
+	</select>
+	
+	<update id="updateDays">
+		
+		UPDATE plan_day
+		SET
+		plan_day = #{plan_day}
+		WHERE plan_day_id = #{plan_day_id}
+	
+	</update>
 </mapper>
