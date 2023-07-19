@@ -102,7 +102,54 @@
 	</select>
 
 	<select id="selectAllHotelList" resultType="com.ja.travel.dto.HotelDto">
-		SELECT * FROM hotel ORDER BY hotel_id DESC
+		SELECT * FROM hotel WHERE 1 = 1 
+		<choose>
+			<when test="sortType == 'house'">
+				AND hotel_category = '주택' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'apartment'">
+				AND hotel_category = '아파트' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'logHouse'">
+				AND hotel_category = '통나무집' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'campingCar'">
+				AND hotel_category = '캠핑카' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'hotel'">
+				AND hotel_category = '호텔' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'farm'">
+				AND hotel_category = '농장' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'tent'">
+				AND hotel_category = '텐트' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'guestHouse'">
+				AND hotel_category = '게스트용 별채' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'castle'">
+				AND hotel_category = '캐슬' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'boat'">
+				AND hotel_category = '보트' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'treeHouse'">
+				AND hotel_category = '트리하우스' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'smallHouse'">
+				AND hotel_category = '초소형 주택' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'windmill'">
+				AND hotel_category = '풍차' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'cave'">
+				AND hotel_category = '동굴' ORDER BY hotel_id DESC
+			</when>
+			<when test="sortType == 'containerHouse'">
+				AND hotel_category = '컨테이너하우스' ORDER BY hotel_id DESC
+			</when>
+		</choose>
 	</select>
 
 	<insert id="insertHotelDetailImageByUser">

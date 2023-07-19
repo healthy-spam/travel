@@ -12,7 +12,11 @@
 	rel="stylesheet"
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
+<!-- bootstrap icon CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+<!-- Link Swiper's CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script type="text/javascript">
@@ -20,54 +24,96 @@
 </script>
 
 <style type="text/css">
-		.btn-gradient {background: linear-gradient(to right, #db2566, #f2075a, #f5228c);}
-		
-		.registerButton {
-			border-radius: 25px; 
-			color: white; 
-			position: fixed; 
-			z-index: 9999; 
-			bottom: 5%; 
-			left: 50%; 
-			transform: translate(-50%, -50%);
-			width: auto;
-			height: auto;
-			padding: 12px 20px;
-			background: linear-gradient(to right, #ff0d55, #ff195b, #ff244c, #f20039);
-			font-size: 14px;
-			font-weight: 600;
-		}
-		
-		a {
-			text-decoration: none;
-		}
-		
-		a:hover {
-			text-decoration: none;
-			color: white;
-		}
-		
-		   .carousel-control-prev,
-    .carousel-control-next {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 5%;
-        color: #fff;
-        background: rgba(0, 0, 0, 0.5);
-    }
+	.btn-gradient {
+		background: linear-gradient(to right, #db2566, #f2075a, #f5228c);
+	}
+	
+	.registerButton {
+		border-radius: 25px; 
+		color: white; 
+		position: fixed; 
+		z-index: 9999; 
+		bottom: 5%; 
+		left: 50%; 
+		transform: translate(-50%, -50%);
+		width: auto;
+		height: auto;
+		padding: 12px 20px;
+		background-image: linear-gradient(98deg,#03c75a,#49c6dd);
+		font-size: 0.9em;
+		font-weight: 600;
+	}
 
-    .carousel-control-prev-icon,
-    .carousel-control-next-icon {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-    }
+	.registerButton:hover {
+	   	background-image: linear-gradient(98deg,#07e86b,#57def7);
+	   	color: #f0f0f0;
+	}
+	
+	a {
+		text-decoration: none;
+	}
+	
+	a:hover {
+		text-decoration: none;
+		color: white;
+	}
+	
+	.categoryIcon {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	
+	.categoryIcon:hover span {
+		color: black;
+		font-weight: 800;
+	}
+	
+	.categoryIconFont {
+		color: gray;
+		font-size: 0.8em;
+		padding-top: 0.5em;
+	}
+	
+	/*swiper style*/
+	.swiper {
+		width: 100%;
+		height: 100%;
+	}
+	
+	.swiper-slide {
+	  text-align: center;
+	  font-size: 1em;
+	  font-weight: 600;  	
+	  background: #fff;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	}
+	
+	.swiper-button-next, .swiper-button-prev {
+		color: black;
+		
+	}
+	
+	:root {
+    --swiper-navigation-size: 1em;
+	}
+
+@media (max-width: 760px) {
+	.swiper-button-next {
+		right: 20px;
+		transform: rotate(90deg);
+	}
+		
+	.swiper-button-prev {
+		left: 20px;
+		transform: rotate(90deg);
+	}
+}
 </style>
 
-</head>
+</head>	
 <body>
 	
 	<div class="container-fluid">
@@ -75,61 +121,123 @@
 	<div class="container">
 		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 	</div>
-	
-		<div id="carouselExample" class="carousel slide" data-bs-ride="false">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <div class="row">
-        <div class="col-auto">
-          <i class="bi bi-house"></i>
-        </div>
-        <div class="col-auto">
-          <i class="bi bi-building"></i>
-        </div>
-        <div class="col-auto">
-          <i class="bi bi-heart"></i>
-        </div>
-        <!-- 추가 카테고리 -->
-      </div>
-    </div>
-    <div class="carousel-item">
-      <div class="row">
-        <div class="col">
-          <i class="bi bi-globe"></i>
-        </div>
-        <div class="col">
-          <i class="bi bi-camera"></i>
-        </div>
-        <div class="col">
-          <i class="bi bi-star"></i>
-        </div>
-        <!-- 추가 카테고리 -->
-      </div>
-    </div>
-    <!-- 추가 슬라이드 -->
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-
-
+		<div class="row my-3 mx-5">
+			<div class="col">
+				<!-- 카테고리 스와이퍼입니다. -->
+				<div class="swiper">
+				    <div class="swiper-wrapper">
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=house">
+				      		<span style="font-size: 1.3em; font-weight: 600">전체</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=house">
+				      		<img src="/travel/resources/img/free-icon-building-77486.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">주택</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=apartment">
+				      		<img src="/travel/resources/img/free-icon-apartment-4056455.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">아파트</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=logHouse">
+				      		<img src="/travel/resources/img/free-icon-log-cabin-10726360.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">통나무집</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=campingCar">
+				      		<img src="/travel/resources/img/free-icon-camper-3322510.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">캠핑카</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=hotel">
+				      		<img src="/travel/resources/img/free-icon-hotel-1668915.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">호텔</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=farm">
+				      		<img src="/travel/resources/img/free-icon-farm-house-4185805.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">농장</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=tent">
+				      		<img src="/travel/resources/img/free-icon-camping-tent-3017102.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">텐트</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=guestHouse">
+				      		<img src="/travel/resources/img/free-icon-school-3976510.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">게스트용 별채</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=castle">
+				      		<img src="/travel/resources/img/free-icon-castle-5082433.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">캐슬</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=boat">
+				      		<img src="/travel/resources/img/free-icon-boat-8221451.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">보트</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=treeHouse">
+				      		<img src="/travel/resources/img/free-icon-tree-house-4170073.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">트리하우스</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=smallHouse">
+				      		<img src="/travel/resources/img/free-icon-houses-4955904.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">초소형 주택</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=windmill">
+				      		<img src="/travel/resources/img/free-icon-windmill-2163437.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">풍차</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=cave">
+				      		<img src="/travel/resources/img/free-icon-cave-3430253.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">동굴</span>
+				      	</a>
+				      </div>
+				      <div class="swiper-slide">
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=containerHouse">
+				      		<img src="/travel/resources/img/free-icon-container-860105.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">컨테이너하우스</span>
+				      	</a>
+				      </div>
+				    </div>
+				    <div class="swiper-button-next"></div>
+				    <div class="swiper-button-prev"></div>
+				</div>
+			</div>
+		</div>
 		<div class="row mx-5">
 			<div class="col">
 				<div class="row">
 					<div class="col text-center">
-        					<c:if test="${!empty sessionuser}">
-								<a class="registerButton" href="./hotelRegisterPage1">
-									<span>나만의 숙소 등록하기</span>
-									<i style="font-size: 15px;" class="bi bi-pencil-square"></i>
-								</a>
-							</c:if>
-        				</div>
+       					<c:if test="${!empty sessionuser}">
+							<a class="registerButton" href="./hotelRegisterPage1">
+								<span>나만의 숙소 등록하기</span>
+								<i style="font-size: 15px;" class="bi bi-pencil-square"></i>
+							</a>
+						</c:if>
+        			</div>
 				</div>
 				<div class="row mt-2 mb-5">
 					<c:forEach items="${hotelList}" var="hotelList" varStatus="status">
@@ -183,6 +291,11 @@
 											</div>
 										</div>
 										<div class="row">
+											<div class="col">
+												<span style="color: gray; font-size: 14px;">${hotelList.hotelDto.hotel_address}</span>
+											</div>
+										</div>
+										<div class="row">
 											<div class="col-auto pe-0" >
 												<span style="font-size: 14px; font-weight: bold;">\</span>
 											</div>
@@ -205,6 +318,35 @@
 			</div>
 		</div>
 	</div>
+	
+	
+	
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper('.swiper', {
+      slidesPerView: 14,
+      direction: getDirection(),
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on: {
+        resize: function () {
+          swiper.changeDirection(getDirection());
+        },
+      },
+    });
+
+    function getDirection() {
+      var windowWidth = window.innerWidth;
+      var direction = window.innerWidth <= 760 ? 'vertical' : 'horizontal';
+
+      return direction;
+    }
+  </script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"

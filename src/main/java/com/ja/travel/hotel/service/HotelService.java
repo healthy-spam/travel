@@ -153,11 +153,11 @@ public class HotelService {
 
 	// 모든 숙소 리스트 출력
 
-	public List<Map<String, Object>> selectAllHotelList() {
+	public List<Map<String, Object>> selectAllHotelList(String sortType) {
 
 		List<Map<String, Object>> hotelList = new ArrayList<>();
 
-		List<HotelDto> hotelDtoList = hotelSqlMapper.selectAllHotelList();
+		List<HotelDto> hotelDtoList = hotelSqlMapper.selectAllHotelList(sortType);
 
 		for (HotelDto hotelDto : hotelDtoList) {
 

@@ -217,7 +217,7 @@
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhr.send("hotel_id=" + hotelId + "&hotel_reservation_check_in=" + checkInDate + "&hotel_reservation_check_out=" + checkOutDate);
 		
-		window.location.href = "/travel/hotel/hotelPage";
+		window.location.href = "/travel/hotel/hotelPaymentPage?hotel_id=" + hotelId;
 	}
 
 		  
@@ -267,7 +267,7 @@
         padding: 10px 20px;
         color: rgb(255, 255, 255);
         font-weight: 600;
-        font-size: 14px;
+        font-size: 0.9em;
     }
     .commentProfileImage {
         width: 40px;
@@ -281,7 +281,7 @@
         border-radius: 10px;
         border: solid black 1px;
         font-weight: bold;
-        font-size: 14px;
+        font-size: 0.9em;
         background-color: rgb(255, 255, 255);
         padding: 10px 20px;
     }
@@ -301,7 +301,7 @@
         border-radius: 10px;
         border: solid black 1px;
         font-weight: bold;
-        font-size: 14px;
+        font-size: 0.9em;
         background-color: rgb(255, 255, 255);
         padding: 10px 20px;
     }

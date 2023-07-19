@@ -35,14 +35,25 @@
     	padding: 16px 14px;
     }
     
-     .selectedBox {
-        width: auto;
-        height: auto;
-        border: solid black 2px;
-        border-radius: 10px;
-        padding: 16px 14px;
-        background-color: #f5f5f5;
-        
+    .selectedBox {
+       width: auto;
+       height: auto;
+       border: solid black 2px;
+       border-radius: 10px;
+       padding: 16px 14px;
+       background-color: #f5f5f5;
+    }
+     
+    a {
+	   	text-decoration: none;
+	   	font-weight: 600;
+	   	color: black;
+   	}
+    
+    a:hover {
+		text-decoration: none;
+		color: #9c9c9c
+	}
     </style>
 </head>
 <body>
@@ -55,7 +66,7 @@
             <div class="col"></div>
             <div class="col-auto px-5">
                 <div>
-                    <span>나가기</span>
+                    <a href="/travel/hotel/hotelPage">나가기</a>
                 </div>
             </div>
         </div>

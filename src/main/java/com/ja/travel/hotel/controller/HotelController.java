@@ -25,11 +25,20 @@ public class HotelController {
 
 	@Autowired
 	private HotelService hotelService;
+	
+	
+	@RequestMapping("hotelPaymentPage")
+	public String hotelPaymentPage(int hotel_id) {
+		
+		return "hotel/hotelPaymentPage";
+	}
 
 	@RequestMapping("hotelPage")
-	public String hotelPage(Model model) {
+	public String hotelPage(Model model, String sortType) {
+		
+		System.out.println(sortType);
 
-		List<Map<String, Object>> hotelList = hotelService.selectAllHotelList();
+		List<Map<String, Object>> hotelList = hotelService.selectAllHotelList(sortType);
 
 		List<Map<String, Object>> hotelCategoryList = hotelService.selectAllHotelCategoryList();
 
