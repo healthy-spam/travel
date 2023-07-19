@@ -52,16 +52,16 @@ pageEncoding="UTF-8"%>
                     if (i === 0) { // 첫번째 반복일 때 firstDayId에 저장
                         firstDayId = dayDto.plan_day_id;
                     }
-
+					
                     const newNode = document.createElement('li'); // 새로운 'li' 요소 생성
-                    newNode.innerHTML = '<a class="dropdown-item day-text">' + 'DAY ' + dayDto.plan_day + '</a>'; // 'li' 요소에 'a' 태그와 텍스트 삽입
-                    newNode.querySelector(".dropdown-item").setAttribute("onclick", "loadMyList(" + dayDto.plan_day_id + ")");
+                    newNode.innerHTML = '<a class="dropdown-item day-text text-center" style="font-weight: bolder;">' + '<i class="bi bi-send"></i>' +' Day' + dayDto.plan_day + '</a>'; // 'li' 요소에 'a' 태그와 텍스트 삽입
+                    newNode.querySelector(".dropdown-item").setAttribute("onclick", "loadMyList(" + dayDto.plan_day_id + "," + dayDto.plan_day + ")");
                     dayList.appendChild(newNode);
                  }
 
                  // 첫번째 day에 대한 명소 목록을 로드합니다.
                  if (firstDayId !== undefined) {
-                    loadMyList(firstDayId);
+                    loadMyList(firstDayId, 1); // 1 넣을까 말까
                  }
               }
            }
@@ -72,7 +72,7 @@ pageEncoding="UTF-8"%>
     }
 
 
-    function loadMyList(plan_day_id){
+    function loadMyList(plan_day_id, plan_day){
         const xhr = new XMLHttpRequest();
         
         myDayPlaceList = [];
@@ -130,7 +130,7 @@ pageEncoding="UTF-8"%>
                                 <div class="row">
                                     <div class="col-4">&nbsp;</div>
                                     <div class="col-4 d-grid">
-                                        <a class="btn" style="background-color: #03c75a; color: white; font-weight: bolder; border-radius: 15px;" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}">
+                                        <a class="btn" style="background-color: #03c75a; color: white; font-weight: bolder; border-radius: 15px;" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}&plan_title=${data.planDto.plan_title}">
                                             <i class="bi bi-signpost-split"></i> 루트 수정
                                         </a>
                                     </div>
@@ -153,7 +153,10 @@ pageEncoding="UTF-8"%>
                                 newElementInner.querySelector(".placeContent").innerText = y.planPlaceDto.plan_place_content;
                                 newElementInner.querySelector(".placeAddress").innerText = y.planPlaceDto.plan_place_address;
                                 newElementInner.querySelector(".place_number").innerText = ++placeCounter; // Counter를 증가시키고 place_number에 할당합니다.
-
+								
+                                const dayChangeButton = document.getElementById("dayChange");
+                                dayChangeButton.innerHTML = `<i class="bi bi-calendar-check"></i> Day ` +plan_day;
+                                
                                 newElementInner.querySelector(".placeName").style.fontSize = "20px";
                                 newElementInner.removeAttribute("id");
                                 newElementInner.classList.remove("d-none");
@@ -311,7 +314,7 @@ pageEncoding="UTF-8"%>
 	                                    </button>
 	                                    <ul class="dropdown-menu" >
 	                                        <li class="col-auto"><a class="dropdown-item" href="#"><i class="bi bi-vector-pen"></i> 정보 수정</a></li>
-	                                        <li class="col-auto "><a class="dropdown-item" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}"><i class="bi bi-signpost-split"></i> 루트 수정</a></li>
+	                                        <li class="col-auto "><a class="dropdown-item" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}&plan_title=${data.planDto.plan_title}"><i class="bi bi-signpost-split"></i> 루트 수정</a></li>
 	                                        <li class="col-auto "><a class="dropdown-item" href="./deleteProcess?id=${data.planDto.plan_id}"><i class="bi bi-trash3"></i> 플래너 삭제</a></li>
 	                                    </ul>
 	                                </div>                                    
@@ -374,26 +377,21 @@ pageEncoding="UTF-8"%>
 		    </div>
 		    
 		    <div class="row mt-2">
-		    	<!-- <div class="col-1">
-		    		&nbsp;
-		    	</div> -->
-		    	<div class="col-12">
+		    	<div class="col-1">&nbsp;</div>
+		    	<div class="col-10">
 					<div class="dropdown-center d-grid" >
-						<button class="btn dropdown-toggle" style=" color: white; font-weight: bolder; background-color: #03c75a; border-radius: 12px; font-size: 20px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<button class="btn dropdown-toggle" id="dayChange" style=" color: white; font-weight: bolder; background-color: #03c75a; border-radius: 12px; font-size: 20px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<i class="bi bi-calendar-check"></i> 일정별 루트 목록						 
 						</button>
-						<ul class="dropdown-menu" id="templete_day" style="font-size: 25px;">
-							<!-- <li><a class="dropdown-item day-text" href="#"></a></li> -->
-							
+						<ul class="dropdown-menu align-items-center" id="templete_day" style="font-size: 20px;">
+							<!-- <li><a class="dropdown-item day-text" href="#"><i class="bi bi-send"></i> Day 1</a></li> -->														
 						</ul>
 					</div>
 				</div>
-				<!-- <div class="col-1">
-		    		&nbsp;
-		    	</div> -->
+				<div class="col-1">&nbsp;</div>
 		    </div>
 		    
-		    <div class="row mt-4">
+		    <div class="row mt-3">
 		    	<div class="col" id="route_col">
 		    	
 		    		<div class="row mt-2 align-items-center border p-1 m-1 d-none" id="templete_my_place">

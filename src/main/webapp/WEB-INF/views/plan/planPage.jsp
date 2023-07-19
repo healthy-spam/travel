@@ -787,7 +787,7 @@ window.addEventListener("DOMContentLoaded", () => {
                                  </div>
                                  <div class="row mt-1">
                                     <div class="col-10">
-                                       <span class="placeAddress" style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; color: #9a9a9a;">서울 송파구 올림픽로 300</span>
+                                       <span class="placeAddress text-break" style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; color: #9a9a9a;">서울 송파구 올림픽로 300</span>
                                     </div>
                                  </div>
                                  <div class="row mt-1">
