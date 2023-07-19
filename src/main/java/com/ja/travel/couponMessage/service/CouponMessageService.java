@@ -281,9 +281,11 @@ public class CouponMessageService {
 		
 		MessageDto messageDto = couponMessageSqlMapper.getMessageDtoByMessageId(messageId);
 		String messageStatus = messageDto.getMessage_status();
-		int userId = messageDto.getUser_id();
-		if(messageStatus.contains("보관")) {
-			
+		int SenderId = messageDto.getUser_id();
+		if((SenderId == userId) && (messageStatus.contains("보낸쪽지보관"))) {
+			couponMessageSqlMapper.updateMessageSendNotStored(messageId);
+		}else if((SenderId == userId) && (messageStatus.contains("보낸쪽지보관"))){
+			couponMessageSqlMapper.updateMessageSendStored
 		}
 		
 	}
