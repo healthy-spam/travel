@@ -16,13 +16,12 @@
 <body>
 	<div class="container">
 		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-		
+
 		<div class="row mt-5">
 			<div class="col-11">
 				<div class="row">
 					<div class="col p-0">
-						<span class="fs-3 fw-bold">${sessionuser.user_nickname} 님,
-							안녕하세요!</span>
+						<span class="fs-3 fw-bold">${sessionuser.user_nickname} 님, 안녕하세요!</span>
 					</div>
 				</div>
 				<div class="row mt-5">
@@ -37,32 +36,33 @@
 								<div class="col">
 									<div class="row">
 										<div class="col-auto d-flex align-items-center">
-											<span class="fw-bold">예약번호 : </span> <span>${hotelDtoList.hotelReservationDto.hotel_reservation_id}</span>
+											<span class="fw-bold">예약번호 : </span> 
+											<span>${hotelDtoList.hotelReservationDto.hotel_reservation_id}</span>
 										</div>
 										<div class="col-auto d-flex align-items-center">
-											<span class="fw-bold">숙소명 : </span> <span>${hotelDtoList.hotelDto.hotel_title}</span>
+											<span class="fw-bold">숙소명 : </span> 
+											<span>${hotelDtoList.hotelDto.hotel_title}</span>
 										</div>
 										<div class="col-auto d-flex align-items-center">
-											<span class="fw-bold">예약일 : </span> <span><fmt:formatDate
-													pattern="yyyy년 MM월 dd일"
-													value="${hotelDtoList.hotelReservationDto.hotel_reservation_reg_date}" /></span>
+											<span class="fw-bold">예약일 : </span> 
+											<span><fmt:formatDate pattern="yyyy년 MM월 dd일" value="${hotelDtoList.hotelReservationDto.hotel_reservation_reg_date}" /></span>
 										</div>
 										<div class="col-auto d-flex align-items-center">
-											<span class="fw-bold">체크인 : </span> <span><fmt:formatDate
-													pattern="yyyy년 MM월 dd일"
-													value="${hotelDtoList.hotelReservationDto.hotel_reservation_check_in}" /></span>
+											<span class="fw-bold">체크인 : </span> 
+											<span><fmt:formatDate pattern="yyyy년 MM월 dd일" value="${hotelDtoList.hotelReservationDto.hotel_reservation_check_in}" /></span>
 										</div>
 										<div class="col-auto d-flex align-items-center">
-											<span class="fw-bold">체크아웃 : </span> <span><fmt:formatDate
-													pattern="yyyy년 MM월 dd일"
-													value="${hotelDtoList.hotelReservationDto.hotel_reservation_check_out}" /></span>
+											<span class="fw-bold">체크아웃 : </span> 
+											<span><fmt:formatDate pattern="yyyy년 MM월 dd일" value="${hotelDtoList.hotelReservationDto.hotel_reservation_check_out}" /></span>
 										</div>
 										<c:set var="currentDate" value="<%=new java.util.Date()%>" />
 										<c:if test="${hotelDtoList.hotelReservationDto.hotel_reservation_check_out <= currentDate}">
 											<div class="col-auto">
 												<c:choose>
 													<c:when test="${empty hotelDtoList.hotelReviewDto}">
-														<a href="./hotel/insertHotelReviewPage?hotel_reservation_id=${hotelDtoList.hotelReservationDto.hotel_reservation_id}">리뷰 작성하기</a>
+														<a href="./insertHotelReviewPage?hotel_reservation_id=${hotelDtoList.hotelReservationDto.hotel_reservation_id}">리뷰
+															작성하기
+														</a>
 													</c:when>
 													<c:otherwise>
 														<span>리뷰작성완료</span>

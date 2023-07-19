@@ -119,7 +119,7 @@
 	</select>
 	
 	<select id="getAllPostByCrewDomain" resultType="com.ja.travel.dto.CrewBoardDto">
-		select * from crew_board where crew_domain=#{crew_domain} and crew_board_status != 'deleted' order by crew_board_id desc
+		select * from crew_board where crew_domain=#{crew_domain} and crew_board_status != 'deleted' and crew_board_notice = 'N' order by crew_board_id desc
 	</select>
 	
 	<select id="getCrewOnlyPostByCrewDomain" resultType="com.ja.travel.dto.CrewBoardDto">
@@ -127,11 +127,11 @@
 	</select>
 	
 	<select id="getAllNoticeByCrewDomain" resultType="com.ja.travel.dto.CrewBoardDto">
-		select * from crew_board where crew_domain=#{crew_domain} and crew_board_notice = 'Y' order by crew_board_id desc
+		select * from crew_board where crew_domain=#{crew_domain} and crew_board_notice = 'Y' and crew_board_status != 'deleted' order by crew_board_id desc
 	</select>
 	
 	<select id="getAllPublicPostByCrewDomain" resultType="com.ja.travel.dto.CrewBoardDto">
-		select * from crew_board where crew_domain=#{crew_domain} and crew_board_visibility = 'public' order by crew_board_id desc
+		select * from crew_board where crew_domain=#{crew_domain} and crew_board_visibility = 'public' and crew_board_status != 'deleted'  order by crew_board_id desc
 	</select>
 	
 	<select id="getAllPublicNoticeByCrewDomain" resultType="com.ja.travel.dto.CrewBoardDto">
@@ -159,7 +159,7 @@
 	</select>
 	
 	<select id="getCrewMemberListByCrewDomain" resultType="com.ja.travel.dto.CrewMemberDto">
-		select * from crew_member where crew_domain = #{crew_domain} and crew_join_status = 'member'
+		select * from crew_member where crew_domain = #{crew_domain} and crew_join_status = 'member' order by crew_member_grade_default_id
 	</select>
 	
 	<update id="requestaccept" parameterType="java.util.List">
@@ -195,7 +195,7 @@
 	</select>
 	
 	<select id="getAllCommentByCrewBoardId" resultType="com.ja.travel.dto.CrewBoardCommentDto">
-		select * from crew_board_comment where crew_board_id = #{crew_board_id} and crew_comment_updated = 'none' order by board_comment_id desc
+		select * from crew_board_comment where crew_board_id = #{crew_board_id} and crew_comment_updated = 'none'
 	</select>
 	
 	<insert id="writecomment">
@@ -309,5 +309,17 @@
 	
 	<select id="getcrewlistbysearchword" resultType="com.ja.travel.dto.CrewDto">
 		select * from crew where crew_name like '%' || #{searchWord} || '%' or crew_domain like '%' || #{searchWord} || '%' or master_id = (select user_id from member where user_nickname like '%' || #{searchWord} || '%')
+	</select>
+	
+	<select id="getAllPostByCrewMemberId" resultType="com.ja.travel.dto.CrewBoardDto">
+		select * from crew_board where crew_member_id = #{crew_member_id}
+	</select>
+	
+	<select id="getUserDtoBySearchWord" resultType="com.ja.travel.dto.UserDto">
+		select * from member where user_nickname like '%' || #{searchword} || '%' and user_id = (select user_id from crew_member where crew_domain = #{crew_domain} and crew_join_status = 'member')
+	</select>
+	
+	<select id="getCrewBoardAttachedByCrewBoardId" resultType="com.ja.travel.dto.CrewBoardAttachedDto">
+		select * from crew_board_attached where crew_board_id = #{crew_board_id}
 	</select>
 </mapper>

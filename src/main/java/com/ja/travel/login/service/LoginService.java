@@ -24,44 +24,55 @@ public class LoginService {
 
 	@Autowired
 	private LoginSqlMapper loginSqlMapper;
+	
 	@Autowired
 	private AdminSqlMapper adminSqlMapper;
 
-	 public void register(UserDto userDto, MultipartFile profileImage) {
-			loginSqlMapper.register(userDto);
-			int user_id = loginSqlMapper.getUserDtoByIdandPw(userDto.getUser_email(), userDto.getUser_pw()).getUser_id();
-		   
-		   if (profileImage != null) {
+	public void register(UserDto userDto, MultipartFile profileImage) {
+		loginSqlMapper.register(userDto);
+		updateProfile(userDto, profileImage);
+	}
 
-				String rootFolder = "C:/uploadFiles/profileImage/";
+	public void updateProfile(UserDto userDto, MultipartFile profileImage) {
+		int user_id = loginSqlMapper.getUserDtoByIdandPw(userDto.getUser_email(), userDto.getUser_pw()).getUser_id();
 
-				File targetFolder = new File(rootFolder);
+		if (profileImage != null) {
+			String rootFolder = "C:/uploadFiles/profileImage/";
 
-				if (!targetFolder.exists()) {
-					targetFolder.mkdirs();
-				}
+			// 날짜별 폴더 생성 로직.
+			// 날짜를 문자로 바꿔주는 api
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			String today = sdf.format(new Date());
 
-				String fileName = Integer.toString(user_id);
+			// 파일 속성을 컨트롤
+			File targetFolder = new File(rootFolder + today); // C:/uploadFolder/2023/05/23
 
-				String originalFileName = profileImage.getOriginalFilename();
+			if (!targetFolder.exists()) {// 저런 파일이 존재함?
+				targetFolder.mkdirs(); // 폴더들 생성
+			}
 
-				String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+			// 저장 파일명 만들기. 핵심은 파일명 충돌 방지 = 랜덤 + 시간
+			String fileName = UUID.randomUUID().toString();// 랜덤명 저장
+			fileName += "_" + System.currentTimeMillis();
 
-				String saveFileName = fileName + ext;
+			// 확장자 추출
+			String originalFileName = profileImage.getOriginalFilename();// 사용자 컴퓨터에 있는 파일명
 
-				try {
-					profileImage.transferTo(new File(rootFolder + saveFileName));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-				userDto.setUser_image(saveFileName);
-				loginSqlMapper.updateProfilePicByUserId(saveFileName, user_id);
-				
-		   }
-		   
-	   }
+			String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
 
+			String saveFileName = today + "/" + fileName + ext;
+
+			try {
+				profileImage.transferTo(new File(rootFolder + saveFileName));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			userDto.setUser_image(saveFileName);
+			loginSqlMapper.updateProfilePicByUserId(saveFileName, user_id);
+		}
+	}
+	
 	public String login(String user_email, String user_pw, HttpSession session, Model model) {
 		UserDto userDto = loginSqlMapper.getUserDtoByIdandPw(user_email, user_pw);
 

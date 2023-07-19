@@ -12,7 +12,7 @@
         .reserveButton {
         width: auto;
         height: auto;
-        background: linear-gradient(to right, #ff356b, #f41b55, #ff1c59, #ff0044);
+        background-image: linear-gradient(98deg,#03c75a,#49c6dd);
         border-radius: 10px;
         border: none;
         color: rgb(255, 255, 255);

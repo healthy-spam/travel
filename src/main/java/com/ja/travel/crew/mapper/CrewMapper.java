@@ -76,7 +76,7 @@ public interface CrewMapper {
 
 	public void sendnotification(UserNotificationDto userNotificationDto);
 
-	public int getBoardId(CrewBoardDto crewBoardDto);
+	public int getBoardId(int crew_member_id);
 
 	public void addCrewBoardAttached(CrewBoardAttachedDto crewBoardAttachedDto);
 
@@ -129,5 +129,11 @@ public interface CrewMapper {
 	public void addCrewThumbnailByCrewDomain(@Param("crew_thumbnail") String crew_thumbnail, @Param("crew_domain") String crew_domain);
 
 	public List<CrewDto> getcrewlistbysearchword(String searchWord);
+
+	public List<CrewBoardDto> getAllPostByCrewMemberId(int crew_member_id);
+
+	public List<UserDto> getUserDtoBySearchWord(@Param("searchword") String searchword, @Param("crew_domain") String crew_domain);
+
+	public List<CrewBoardAttachedDto> getCrewBoardAttachedByCrewBoardId(int crew_board_id);
 	
 }

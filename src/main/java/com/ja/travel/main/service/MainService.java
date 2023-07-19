@@ -1,32 +1,43 @@
 package com.ja.travel.main.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ja.travel.admin.mapper.AdminSqlMapper;
-import com.ja.travel.dto.CouponDto;
 import com.ja.travel.dto.GuideDto;
 import com.ja.travel.dto.GuidePlanningDto;
 import com.ja.travel.dto.GuideReportDto;
 import com.ja.travel.dto.GuideRestrictDto;
-import com.ja.travel.dto.MessageDto;
+import com.ja.travel.dto.HotelDto;
+import com.ja.travel.dto.PlanDayDto;
 import com.ja.travel.dto.PlanDto;
-import com.ja.travel.dto.UserCouponDto;
+import com.ja.travel.dto.PlanningDto;
 import com.ja.travel.dto.UserDto;
+import com.ja.travel.hotel.mapper.HotelSqlMapper;
 import com.ja.travel.main.mapper.MainSqlMapper;
+import com.ja.travel.travelApplication.mapper.TravelApplicationSqlMapper;
 
 @Service
 public class MainService {
+	
 	@Autowired
 	private MainSqlMapper mainSqlMapper;
 
-
+	@Autowired
+	private TravelApplicationSqlMapper travelApplicationSqlMapper;
+	
+	@Autowired
+	private HotelSqlMapper hotelSqlMapper;
+	
 	public Map<String, List<PlanDto>> getPlanList(UserDto userDto) {
 
 		int userId = userDto.getUser_id();
@@ -80,148 +91,62 @@ public class MainService {
 		return planLists;
 	}
 
-	public void getCoupon(int id, int userId) {
-
-		mainSqlMapper.decreaseCoupon(id);
-		UserCouponDto userCouponDto = new UserCouponDto();
-		int user_coupon_id = mainSqlMapper.createUserCouponPk();
-		userCouponDto.setUser_coupon_id(user_coupon_id);
-		userCouponDto.setCoupon_id(id);
-		userCouponDto.setUser_id(userId);
-		mainSqlMapper.insertUserCoupon(userCouponDto);
-
-	}
-
-	public List<UserCouponDto> getUserCoupon(int userId) {
-
-		List<UserCouponDto> userCouponList = mainSqlMapper.getUserCouponByUserId(userId);
-
-		return userCouponList;
-	}
-
-	public String sendMassage(MessageDto params) {
-		String result = "";
-		String user_nickname = params.getUser_nickname();
-		UserDto userDto = mainSqlMapper.getUserByUserNickName(user_nickname);
-		if (userDto == null) {
-			result = "main/writeMessageFail";
-		} else {
-			int messageId = mainSqlMapper.createMessagePk();
-			params.setMessage_id(messageId);
-			mainSqlMapper.insertMessage(params);
-			result = "redirect:./messageWrote";
+	public Map<String, Object> getMyList(HttpSession session) {
+		UserDto user = (UserDto) session.getAttribute("sessionuser");
+		int user_id = 0;
+		
+		if (user != null) {
+			user_id = user.getUser_id();
 		}
-		return result;
-
-	}
-
-
-	public MessageDto getMessageGotByMessageId(int id) {
-
-		mainSqlMapper.updateReadDate(id);
-		MessageDto messageDto = mainSqlMapper.getMessageDtoByMessageId(id);
-
-		return messageDto;
-	}
-
-	public List<MessageDto> getMessageWroteById(int userId) {
-
-		List<MessageDto> messageList = mainSqlMapper.selectAllMessageWroteByUserId(userId);
-
-		return messageList;
-	}
-
-	public MessageDto getMessageWroteByMessageId(int id) {
-
-		MessageDto messageDto = mainSqlMapper.getMessageDtoByMessageId(id);
-
-		return messageDto;
-
-	}
-
-	public List<CouponDto> getCouponList() {
-		List<CouponDto> couponList = mainSqlMapper.getCouponList();
-
-		return couponList;
-
-	}
-
-	// 쿠폰등록버튼 누르면 유저쿠폰테이블에 insert
-	public void insertUserCoupon2(int couponId, int userId) {
-
-		int userCouponId = mainSqlMapper.createUserCouponPk();
-		mainSqlMapper.decreaseCoupon(couponId);
-		UserCouponDto userCouponDto = new UserCouponDto();
-		userCouponDto.setUser_coupon_id(userCouponId);
-		userCouponDto.setCoupon_id(couponId);
-		userCouponDto.setUser_id(userId);
-		mainSqlMapper.insertUserCoupon2(userCouponDto);
-
-	}
-	// 유저가 쿠폰 갖고있는지 체크
-	public boolean hasCoupon(int userId, int couponId) {
-
-		UserCouponDto userCouponDto = new UserCouponDto();
-		userCouponDto.setCoupon_id(couponId);
-		userCouponDto.setUser_id(userId);
-
-		return mainSqlMapper.countCoupon(userCouponDto) > 0;
-
-	}
-	// 쿠폰이 만료되었는지 체크
-	public boolean isExpired(int couponId) {
-		// TODO Auto-generated method stub
-
-		return mainSqlMapper.checkExpired(couponId) > 0;
-	}
-	// 쿠폰이 소진되었는지 체크
-	public boolean isExhausted(int couponId) {
-		// TODO Auto-generated method stub
-		return mainSqlMapper.checkExhausted(couponId) > 0;
-	}
-	
-	// 받은 메시지 가져오기
-	public List<Map<String, Object>> getMessageGotById(int userId) {
-		UserDto userDto = mainSqlMapper.getUserDtoByUserId(userId);
-		String user_nickname = userDto.getUser_nickname();
-		List<MessageDto> messageList = mainSqlMapper.selectAllMessageGotByNickName(user_nickname);
-		List<Map<String, Object>> list = new ArrayList<>();
-
-		for (MessageDto messageDto : messageList) {
+		
+		List<PlanningDto> myPlanningList = mainSqlMapper.getMyPlanningList(user_id);
+		
+		List<HotelDto> hotelList = hotelSqlMapper.selectHotelByUser(user_id);
+		
+		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> list2 = new ArrayList<Map<String,Object>>();
+		Map<String, Object> mapList = new HashMap<>();
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		
+		for (HotelDto hotel : hotelList) {
 			Map<String, Object> map = new HashMap<>();
+			Double reviewPoint = hotelSqlMapper.searchCountReviewPoint(hotel.getHotel_id());
 
-			userId = messageDto.getUser_id();
-			userDto = mainSqlMapper.getUserDtoByUserId(userId);
+			map.put("hotel", hotel);
+			map.put("reviewPoint", reviewPoint);
+			
+			list2.add(map);
+		}
 
-			map.put("messageDto", messageDto);
-			map.put("userDto", userDto);
+		for (PlanningDto planningDto : myPlanningList) {
+			Map<String, Object> map = new HashMap<>();
+			
+			PlanDto plan = travelApplicationSqlMapper.getPlanByPlanningId(planningDto.getPlanning_id());
+			List<PlanDayDto> planDay = travelApplicationSqlMapper.getPlanDayByPlanId(plan.getPlan_id());
 
+			map.put("myPlanning", planningDto);
+			map.put("plan", plan);
+			map.put("day", planDay.size());
+			
+			// 종료 시간을 LocalDateTime으로 변환합니다.
+			LocalDateTime endDate = LocalDateTime.parse(planningDto.getPlanning_end_date(), formatter);
+			
+		    // 현재 시간을 얻어옵니다.
+		    LocalDateTime now = LocalDateTime.now();
+		    
+			if (endDate.isBefore(now)) {
+				map.put("planningStatus", "모집종료");
+			} else {
+				map.put("planningStatus", "모집중");
+			}
+				
 			list.add(map);
 		}
-		return list;
-
-	}
-	
-	// 보낸 메시지 가져오기
-	public List<MessageDto> getMessageSendById(int userId) {
 		
-		List<MessageDto> messageSendList = mainSqlMapper.selectAllMessageWroteByUserId(userId);
-
-		return messageSendList;
-	}
-	
-	// 받은 메시지 읽으면 읽은날자 필드 업데이트
-	public void changeMessageReadStatus(int messageId) {
-		MessageDto messageDto = mainSqlMapper.getMessageDtoByMessageId(messageId);
-		if(messageDto.getMessage_read_date() == null) {
-		mainSqlMapper.updateReadDate(messageId);
-		} else return;
-	}
-
-	public void moveMessageToTrashCan() {
-		// TODO Auto-generated method stub
+		mapList.put("list", list);
+		mapList.put("list2", list2);
 		
+		return mapList;
 	}
-	
-
 }
