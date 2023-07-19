@@ -186,8 +186,38 @@
 </delete>
 
 <select id="getMessageInStorageList" resultType="com.ja.travel.dto.MessageDto">
-		SELECT * FROM message
+	SELECT * FROM message
 	WHERE (user_id = #{userId} and message_status like '%보낸쪽지보관%') OR (user_nickname = #{userNickName} and message_status like '%받은쪽지보관%')
 	ORDER BY message_reg_date DESC
+</select>
+
+<update id="updateMessageSendNotStored">
+	UPDATE message
+	SET message_status = REPLACE(message_status, '보낸쪽지보관', '')
+	WHERE message_id = #{messageId}	
+</update>
+
+<update id="updateMessageSendStored">
+	UPDATE message
+	SET message_status = CONCAT('보낸쪽지보관', message_status)
+	WHERE message_id = #{messageId}	
+</update>
+
+<update id="updateMessageGetNotStored">
+	UPDATE message
+	SET message_status = REPLACE(message_status, '받은쪽지보관', '')
+	WHERE message_id = #{messageId}	
+</update>
+
+<update id="updateMessageGetStored">
+	UPDATE message
+	SET message_status = CONCAT('받은쪽지보관', message_status)
+	WHERE message_id = #{messageId}	
+</update>
+
+<select id = "checkStored" resultType="int">
+	SELECT COUNT(*) from message
+	WHERE (user_id = #{userId} and message_status like '%보낸쪽지보관%') OR (user_nickname = #{userNickName} and message_status like '%받은쪽지보관%')
+			AND (message_id = #{messageId})
 </select>
 </mapper>

@@ -28,11 +28,24 @@
 	#messageInTrashTitle:hover {
 		font-weight: bold;
 	}
+	#messageInStorageTitle:hover {
+		font-weight: bold;
+	}
 	
 	#deleteButton:hover {
 		font-weight: bold;
 	}
 	
+	#row1col2 {
+		cursor : pointer;
+	}
+	#row1col2:hover {
+		font-weight: bold;
+	}
+	
+	.aa{
+	color: #fcba03;
+	}
 	</style>
 	<script type="text/javascript">
 			var changeBackColor = true;
@@ -220,6 +233,44 @@
 				readMessageGetInTrashModal.show();
 				
 			}
+			
+			// 보관함에 있는 보낸메시지 모달 읽기
+			function openMessageSendInStoragePage(messageInStorageTitle, messageSendInStorageReceiver, messageSendDateFormatted, messageInStorageContent) {
+				
+				const readMessageSendInStorageModal = bootstrap.Modal.getOrCreateInstance("#readMessageSendInStorageModal");
+				const messageSendInStorageTitle = document.getElementById("messageSendInStorageTitle");
+				const messageSendInStorageReceiverModal = document.getElementById("messageSendInStorageReceiverModal");
+	  			const messageSendInStorageSendTime = document.getElementById("messageSendInStorageSendTime");
+				const messageSendInStorageContent = document.getElementById("messageSendInStorageContent");
+				
+				
+				messageSendInStorageTitle.textContent = messageInStorageTitle;
+				messageSendInStorageReceiverModal.textContent = messageSendInStorageReceiver;
+				messageSendInStorageSendTime.textContent = messageSendDateFormatted;
+				messageSendInStorageContent.innerHTML = messageInStorageContent.replace(/(\r\n|\n)/g, "<br>");
+				
+				readMessageSendInStorageModal.show();
+				
+			}
+			
+			// 보관함에 있는 받은메시지 모달 읽기
+			function openMessageGetInStoragePage(messageInStorageTitle, messageGetInStorageSender, messageSendDateFormatted, messageInStorageContent) {
+				
+				const readMessageGetInStorageModal = bootstrap.Modal.getOrCreateInstance("#readMessageGetInStorageModal");
+				const messageGetInStorageTitle = document.getElementById("messageGetInStorageTitle");
+				const messageGetInStorageSenderModal = document.getElementById("messageGetInStorageSenderModal");
+	  			const messageGetInStorageSendTime = document.getElementById("messageGetInStorageSendTime");
+				const messageGetInStorageContent = document.getElementById("messageGetInStorageContent");
+				
+				
+				messageGetInStorageTitle.textContent = messageInStorageTitle;
+				messageGetInStorageSenderModal.textContent = messageGetInStorageSender;
+				messageGetInStorageSendTime.textContent = messageSendDateFormatted;
+				messageGetInStorageContent.innerHTML = messageInStorageContent.replace(/(\r\n|\n)/g, "<br>");
+				
+				readMessageGetInStorageModal.show();
+				
+			}
 			function getSessionId(){
 				const xhr = new XMLHttpRequest();
 				
@@ -286,8 +337,8 @@
 								      
 								      
 									
-									for(data of response.messageGetList){
-										
+									for(let data of response.messageGetList){
+									console.log(response);
 									if (data.messageDto.message_status && data.messageDto.message_status.indexOf("받은쪽지삭제") >= 0) {
 										
 									}else{									
@@ -320,11 +371,18 @@
 									
 									const row1col2 = document.createElement("div");
 									row1col2.classList.add("col-auto", "d-flex", "align-self-center");
+									row1col2.id ="row1col2";
 									row1.appendChild(row1col2);
 									
 									const i1 = document.createElement("i");
+									if(data.messageDto.message_status && data.messageDto.message_status.indexOf("받은쪽지보관") >= 0){
+									i1.classList.add("bi", "bi-star-fill","aa");
+									
+									}else{
 									i1.classList.add("bi", "bi-star");
-									i1.setAttribute("onclick", "toggleStar(" + messageId + ")");
+									}
+									i1.setAttribute("onclick", "toggleStarGet(" + messageId + ")");
+									console.log(messageId);
 									row1col2.appendChild(i1);
 									
 									const row1col3 = document.createElement("div");
@@ -387,7 +445,7 @@
 									
 									targetCol.appendChild(row1);
 									
-											
+									
 									}
 									}
 									
@@ -452,11 +510,18 @@
 									
 									const row1col2 = document.createElement("div");
 									row1col2.classList.add("col-auto", "d-flex", "align-self-center");
+									row1col2.id = "row1col2";
 									row1.appendChild(row1col2);
 									
-									const i1 = document.createElement("i");
-									i1.classList.add("bi", "bi-star");
-									row1col2.appendChild(i1);
+									const istar2 = document.createElement("i");
+									if(data.message_status && data.message_status.indexOf("받은쪽지보관") >= 0){
+									istar2.classList.add("bi", "bi-star-fill", "aa");
+									}else{
+									istar2.classList.add("bi", "bi-star");
+									}
+									istar2.setAttribute("id", "restoreStar");
+									istar2.setAttribute("onclick", "toggleStarSend(" + messageId + ")");
+									row1col2.appendChild(istar2);
 									
 									const row1col3 = document.createElement("div");
 									row1col3.classList.add("col-2", "align-self-center", "text-center");																
@@ -474,9 +539,7 @@
 									row1col3.appendChild(readMark);
 									}
 									
-									/*const messageSendMark = document.createElement("span");
-									messageSendMark.classList.add("badge", "text-wrap", "bg-secondary");
-									messageSendMark.innerText = "보낸쪽지";*/
+
 									
 									
 									const row1col4 = document.createElement("div");
@@ -519,6 +582,8 @@
 									row1col7.appendChild(deleteButton);
 									
 									targetCol.appendChild(row1);
+									
+									refreshStar(messageId);
 										}
 									
 	
@@ -648,27 +713,46 @@
 								sendDateDiv.id = 'messageInTrashSendDate';
 								sendDateDiv.innerText = messageSendDateFormatted;
 								containerDiv.appendChild(sendDateDiv);
+								
+								// 빈 col 생성
+								const blankDiv = document.createElement('div');
+								blankDiv.classList.add('col-1');
+								containerDiv.appendChild(blankDiv);
+								
+								const colDiv = document.createElement("div");
+								colDiv.classList.add("col-3");
 
-								// 영구삭제 버튼 div 생성
-								const deleteButtonDiv = document.createElement('div');
-								deleteButtonDiv.classList.add('col', 'align-self-center', 'text-center', 'ms-auto');
 								
-								containerDiv.appendChild(deleteButtonDiv);
+								const deleteButtonSpan = document.createElement("span");
+								
+								const deleteButton = document.createElement("button");
+								deleteButton.classList.add("btn", "btn-sm", "border", "border-dark");
+								deleteButton.id = "deleteButton";
+								deleteButton.type = "button";
+								deleteButton.innerText = "영구삭제";
+								deleteButton.setAttribute("onclick", "deleteMessageInTrash(" + messageId + ")");
 
-								// 영구삭제 버튼 생성
-								const deleteButton = document.createElement('button');
-								deleteButton.classList.add('btn', 'btn-sm', 'border', 'border-dark');
-								deleteButton.id = 'deleteButton';
-								deleteButton.type = 'button';
-								deleteButton.setAttribute("onclick", "deleteMessageInTrash(" + messageId +")");
-								deleteButton.textContent = '영구삭제';
-								deleteButtonDiv.appendChild(deleteButton);
+								deleteButtonSpan.appendChild(deleteButton);
 								
+								const restoreButtonSpan = document.createElement("span");
 								
+								const restoreButton = document.createElement("button");
+								restoreButton.classList.add("btn", "btn-sm", "border", "border-dark", "ms-2");
+								restoreButton.id = "restoreButton";
+								restoreButton.type = "button";
+								restoreButton.innerText = "복구";
+								restoreButton.setAttribute("onclick", "restoreMessageInTrash(" + messageId + ")");
+
+								restoreButtonSpan.appendChild(restoreButton);
+								
+								colDiv.appendChild(deleteButton);
+								colDiv.appendChild(restoreButton);
+								
+								containerDiv.appendChild(colDiv);
 								
 								targetCol.appendChild(containerDiv);
 								
-									
+								
 								}
 							}
 						}
@@ -697,6 +781,8 @@
 				}
 			}
 			
+			
+			//보관함 리스트 불러오기
 			function reloadStorage() {
 				const xhr = new XMLHttpRequest();
 				
@@ -725,20 +811,20 @@
 						
 						
 						for(data of response.list){
-						//휴지통에 있는 받은 메시지를 보낸사람
+						//보관함에 있는 받은 메시지를 보낸사람
 						var messageGetInStorageSender = data.userDto.user_nickname;
-						//휴지통에 있는 보낸 메시지의 받는사람 
+						//보관함에 있는 보낸 메시지의 받는사람 
 						var messageSendInStorageReceiver = data.messageDto.user_nickname;
 						var messageInStorageTitle = data.messageDto.message_title;
 						var messageInStorageSendDate = new Date(data.messageDto.message_reg_date);
-						var messageSendDateFormatted = formatDate(messageInTrashSendDate, 'yy-MM-dd hh:mm:ss');							
+						var messageSendDateFormatted = formatDate(messageInStorageSendDate, 'yy-MM-dd hh:mm:ss');							
 						var messageInStorageContent = data.messageDto.message_content;
 						var messageId = data.messageDto.message_id;
 						
 						
 						const containerDiv = document.createElement('div');
 						containerDiv.classList.add('row', 'border-top', 'border-1', 'p-3');
-						containerDiv.id = 'trashList';
+						containerDiv.id = 'storageList';
 
 						// 체크박스 div 생성
 						const checkboxDiv = document.createElement('div');
@@ -756,7 +842,7 @@
 						// 닉네임 div 생성
 						const nicknameDiv = document.createElement('div');
 						nicknameDiv.classList.add('col', 'align-self-center', 'text-center');
-						nicknameDiv.id = 'messageInTrashNickName';
+						nicknameDiv.id = 'messageInStorageNickName';
 
 						// 보낸쪽지일 경우
 						if(parseInt(data.messageDto.user_id) === parseInt(userId)){
@@ -792,40 +878,40 @@
 						if(parseInt(data.messageDto.user_id) === parseInt(userId)){
 						console.log(data.messageDto.user_id);
 						console.log(userId);
-						titleDiv.setAttribute("onclick", "openMessageSendInTrashPage('" + messageInTrashTitle +
-			                      "','" + messageSendInTrashReceiver + "','" + messageSendDateFormatted + "'," +
-			                      JSON.stringify(messageInTrashContent).replace(/(\r\n|\n)/g, "<br>") + ")");
+						titleDiv.setAttribute("onclick", "openMessageSendInStoragePage('" + messageInStorageTitle +
+			                      "','" + messageSendInStorageReceiver + "','" + messageSendDateFormatted + "'," +
+			                      JSON.stringify(messageInStorageContent).replace(/(\r\n|\n)/g, "<br>") + ")");
 						}else{ //받은 메시지일 경우
-							titleDiv.setAttribute("onclick", "openMessageGetInTrashPage('" + messageInTrashTitle +
-				                      "','" + messageGetInTrashSender + "','" + messageSendDateFormatted + "'," +
-				                      JSON.stringify(messageInTrashContent).replace(/(\r\n|\n)/g, "<br>") + ")");	
+							titleDiv.setAttribute("onclick", "openMessageGetInStoragePage('" + messageInStorageTitle +
+				                      "','" + messageGetInStorageSender + "','" + messageSendDateFormatted + "'," +
+				                      JSON.stringify(messageInStorageContent).replace(/(\r\n|\n)/g, "<br>") + ")");	
 						}
 						titleDiv.style.cursor = 'pointer';
-						titleDiv.id = 'messageInTrashTitle';
-						titleDiv.innerText = messageInTrashTitle;
+						titleDiv.id = 'messageInStorageTitle';
+						titleDiv.innerText = messageInStorageTitle;
 						containerDiv.appendChild(titleDiv);
 
 						// 전송일 div 생성
 						const sendDateDiv = document.createElement('div');
 						sendDateDiv.classList.add('col', 'align-self-center', 'text-center', 'ms-2');
-						sendDateDiv.id = 'messageInTrashSendDate';
+						sendDateDiv.id = 'messageInStorageSendDate';
 						sendDateDiv.innerText = messageSendDateFormatted;
 						containerDiv.appendChild(sendDateDiv);
 
-						// 영구삭제 버튼 div 생성
-						const deleteButtonDiv = document.createElement('div');
-						deleteButtonDiv.classList.add('col', 'align-self-center', 'text-center', 'ms-auto');
+						// 보관해제 버튼 div 생성
+						const cancelRestore = document.createElement('div');
+						cancelRestore.classList.add('col', 'align-self-center', 'text-center', 'ms-auto');
 						
-						containerDiv.appendChild(deleteButtonDiv);
+						containerDiv.appendChild(cancelRestore);
 
-						// 영구삭제 버튼 생성
-						const deleteButton = document.createElement('button');
-						deleteButton.classList.add('btn', 'btn-sm', 'border', 'border-dark');
-						deleteButton.id = 'deleteButton';
-						deleteButton.type = 'button';
-						deleteButton.setAttribute("onclick", "deleteMessageInTrash(" + messageId +")");
-						deleteButton.textContent = '영구삭제';
-						deleteButtonDiv.appendChild(deleteButton);
+						// 보관해제 버튼 생성
+						const cancelButton = document.createElement('button');
+						cancelButton.classList.add('btn', 'btn-sm', 'border', 'border-dark');
+						cancelButton.id = 'deleteButton';
+						cancelButton.type = 'button';
+						cancelButton.setAttribute("onclick", "cancelRestore(" + messageId +")");
+						cancelButton.textContent = '보관해제';
+						cancelRestore.appendChild(cancelButton);
 						
 						
 						
@@ -842,13 +928,14 @@
 			
 		}
 			
-			function toggleStar(messageId) {
+			function toggleStarGet(messageId) {
 				const xhr = new XMLHttpRequest();
-				
+				console.log(messageId);
 				xhr.onreadystatechange = function(){
 					if(xhr.readyState == 4 && xhr.status == 200){
 						const response = JSON.parse(xhr.responseText);
 						// js 작업..
+						reloadMessageGet();
 					}
 				}
 				
@@ -857,6 +944,48 @@
 				xhr.send();
 				
 
+			}
+			
+			function toggleStarSend(messageId) {
+				const xhr = new XMLHttpRequest();
+				console.log(messageId);
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200){
+						const response = JSON.parse(xhr.responseText);
+						// js 작업..
+						reloadMessageSend();
+					}
+				}
+				
+				//get
+				xhr.open("get", "./toggleStar?messageId=" + messageId);
+				xhr.send();
+				
+
+			}
+			
+			function refreshStar(messageId){
+				const xhr = new XMLHttpRequest();
+				
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200){
+						const response = JSON.parse(xhr.responseText);
+						// js 작업..
+						const restoreStar = document.getElementById("restoreStar");
+						if(response.isStored){
+							
+							restoreStar.classList.remove("bi-star");
+							restoreStar.classList.add("bi-star-fill");
+						}
+					}
+				}
+				
+				//get
+				xhr.open("get", "./refreshStar?messageId=" + messageId);
+				xhr.send();
+				
+
+				
 			}
 			
 			window.addEventListener("DOMContentLoaded", function(){
@@ -877,7 +1006,7 @@
 						style="background-color: #e8e8e8; height: 100vh; width : 15%;">
 						<div class="row">
 							<div class="col p-3 text-white text-center rounded-top"
-								style="background-color: #BB264A;">쪽지함</div>
+								style="background-color: #17b75e">쪽지함</div>
 						</div>
 						
 						<div class="row">
@@ -930,7 +1059,7 @@
 						<div class="row text-center border-secondary border-2 border-bottom" id="storageButton" onclick="reloadStorage()" style = "cursor: pointer;">
 							<div class="col-4 p-3 text-end"
 								style="-bs-border-opacity: .5; margin-left:30px;">
-								<i class="bi bi-star-fill"></i>
+								<i class="bi bi-star-fill aa"></i>
 							</div>
 							<div class="col-6 text-center p-3"
 								
@@ -954,8 +1083,20 @@
 									<div class="col-auto">
 										<button class="btn btn-sm btn-default border border-dark"
 											type="button" onclick="location.href='./deleteMessageAllProcess'">
-											삭제</button>
+										삭제</button>
 									</div>
+									<div class="col-6">
+									
+									</div>
+									<div class="col-auto my-auto" style="margin-right: -10px;">
+									    <i class="bi bi-search"></i>
+									  </div>
+									  <div class="col-auto">
+									    <input type="text" id="inputPassword6" class="form-control" aria-labelledby="passwordHelpInline">
+									  </div>
+									  <div class="col-auto my-auto">
+									    <button type="button" class="btn btn-primary btn btn-sm">검색</button>
+									  </div>
 								</div>
 							</div>
 						</div>
@@ -977,7 +1118,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header"
-						style="background-color: #BB264A; color: white;">
+						style="background-color: #17b75e; color: white;">
 						<h1 class="modal-title fs-5" id="exampleModalLabel">받은 쪽지</h1>
 						<button type="button" class="btn-close btn-light"
 							data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
@@ -1003,7 +1144,7 @@
 					<div class="modal-footer justify-content-center">
 						<div class="col-2 text-end">
 							<button type="button" class="btn"
-								style="background-color: #BB264A; color: white;">답장</button>
+								style="background-color: #17b75e; color: white;">답장</button>
 						</div>
 						<div class="col-2">
 							<button type="button" class="btn btn-secondary"
@@ -1020,7 +1161,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header"
-						style="background-color: #BB264A; color: white;">
+						style="background-color: #17b75e; color: white;">
 						<h1 class="modal-title fs-5" id="exampleModalLabel">보낸 쪽지</h1>
 						<button type="button" class="btn-close btn-light"
 							data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
@@ -1058,7 +1199,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header"
-						style="background-color: #BB264A; color: white;">
+						style="background-color: #17b75e; color: white;">
 						<h1 class="modal-title fs-5" id="exampleModalLabel">삭제된 쪽지</h1>
 						<button type="button" class="btn-close btn-light"
 							data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
@@ -1096,7 +1237,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header"
-						style="background-color: #BB264A; color: white;">
+						style="background-color: #17b75e; color: white;">
 						<h1 class="modal-title fs-5" id="exampleModalLabel">삭제된 쪽지</h1>
 						<button type="button" class="btn-close btn-light"
 							data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
@@ -1128,6 +1269,84 @@
 				</div>
 			</div>
 		</div>
+		
+		<div class="modal fade" id="readMessageSendInStorageModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header"
+						style="background-color: #17b75e; color: white;">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">삭제된 쪽지</h1>
+						<button type="button" class="btn-close btn-light"
+							data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
+					</div>
+					<div class="modal-body" style="padding-top: 0;">
+						<div class="row mt-3">
+							<div class="col-3">제목</div>
+							<div class="col" id="messageSendInStorageTitle"></div>
+						</div>
+						<div class="row mt-1">
+							<div class="col-3">받는 사람</div>
+							<div class="col" id="messageSendInStorageReceiverModal"></div>
+						</div>
+						<div class="row mt-1">
+							<div class="col-3">보낸 시간</div>
+							<div class="col" id="messageSendInStorageSendTime"></div>
+						</div>
+						<div class="row mt-3">
+							<div class="col mx-2 px-0 border border-2" id="messageSendInStorageContent"
+								style="width: 50%; height: 200px; overflow-y: scroll;"></div>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-center">
+						<div class="col-2">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="readMessageGetInStorageModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header"
+						style="background-color: #17b75e; color: white;">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">삭제된 쪽지</h1>
+						<button type="button" class="btn-close btn-light"
+							data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
+					</div>
+					<div class="modal-body" style="padding-top: 0;">
+						<div class="row mt-3">
+							<div class="col-3">제목</div>
+							<div class="col" id="messageGetInStorageTitle"></div>
+						</div>
+						<div class="row mt-1">
+							<div class="col-3">보낸 사람</div>
+							<div class="col" id="messageGetInStorageSenderModal"></div>
+						</div>
+						<div class="row mt-1">
+							<div class="col-3">보낸 시간</div>
+							<div class="col" id="messageGetInStorageSendTime"></div>
+						</div>
+						<div class="row mt-3">
+							<div class="col mx-2 px-0 border border-2" id="messageGetInStorageContent"
+								style="width: 50%; height: 200px; overflow-y: scroll;"></div>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-center">
+						<div class="col-2">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 			integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
