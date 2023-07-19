@@ -309,7 +309,7 @@ pageEncoding="UTF-8"%>
 								<c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">                                                    
 		                        <div class="col-3 text-left">                                                                            
 	                                <div class="dropdown">
-	                                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: 500; background-color: #03c75a; color: white;">
+	                                    <button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: bolder; background-color: #faf7f0;">
 	                                        <i class="bi bi-gear"></i> 관리
 	                                    </button>
 	                                    <ul class="dropdown-menu" >
@@ -324,12 +324,12 @@ pageEncoding="UTF-8"%>
 								<c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">
 		                     	<div class="col-4 ps-0">
 		                            <c:if test="${data.planDto.plan_statuse != '모집'}">
-		                                <a href="./travelRecruitmentPage?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style="background-color: #03c75a; color: white; font-weight: bolder; border-radius: 17px;" >
+		                                <a href="./travelRecruitmentPage?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style="font-weight: bolder; border-radius: 17px; background-color: #faf7f0;" >
 		                                <i class="bi bi-people"></i> 모집
 		                                </a>
 		                            </c:if> 
 		                            <c:if test="${data.planDto.plan_statuse != '모집' && guideCheck == 1 }">
-		                                <a href="../guidePackage/packageRecruitmentPage?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style="background-color: #03c75a; color: white; font-weight: bolder; border-radius: 17px;">
+		                                <a href="../guidePackage/packageRecruitmentPage?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style=" font-weight: bolder; border-radius: 17px; background-color: #faf7f0;">
 		                                패키지 모집
 		                                </a>
 		                            </c:if>
@@ -338,7 +338,7 @@ pageEncoding="UTF-8"%>
 								
 		                       	<c:if test="${!empty sessionuser && sessionuser.user_id != data.planDto.user_id && data.planDto.plan_disclosure_status == '공개'}">
 		                        <div class="col-5">
-			                        <a href="./copyPlanProcess?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style="background-color: #03c75a; color: white; font-weight: bolder; border-radius: 17px;">
+			                        <a href="./copyPlanProcess?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style="font-weight: bolder; border-radius: 17px; background-color: #faf7f0;">
 									<i class="bi bi-bookmark"></i> 일정 담기
 			                        </a>
 		                        </div>
@@ -350,8 +350,8 @@ pageEncoding="UTF-8"%>
 		                <div class="col-2">
 		                    <c:choose>
 		                        <c:when test="${data.planDto.referenced_plan_id != 0}">
-		                            <a class="btn" href="readPlanPage?id=${data.planDto.referenced_plan_id}">
-		                                <i class="bi bi-bookmark-fill" style=" color: #03c75a; font-size: 30px;"></i> 참조한 플래너 이름
+		                            <a class="btn shadow-sm" href="readPlanPage?id=${data.planDto.referenced_plan_id}">
+		                                <i class="bi bi-bookmark-fill" style="font-size: 30px; background-color: #faf7f0;"></i> 참조한 플래너 이름
 		                            </a>
 		                        </c:when>
 		                        <c:otherwise>
@@ -380,7 +380,7 @@ pageEncoding="UTF-8"%>
 		    	<div class="col-1">&nbsp;</div>
 		    	<div class="col-10">
 					<div class="dropdown-center d-grid" >
-						<button class="btn dropdown-toggle" id="dayChange" style=" color: white; font-weight: bolder; background-color: #03c75a; border-radius: 12px; font-size: 20px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<button class="btn dropdown-toggle shadow-sm" id="dayChange" style="font-weight: bolder;  border-radius: 12px; font-size: 20px; background-color: #faf7f0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<i class="bi bi-calendar-check"></i> 일정별 루트 목록						 
 						</button>
 						<ul class="dropdown-menu align-items-center" id="templete_day" style="font-size: 20px;">

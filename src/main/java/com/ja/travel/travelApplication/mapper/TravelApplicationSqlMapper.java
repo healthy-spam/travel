@@ -35,11 +35,7 @@ public interface TravelApplicationSqlMapper {
 
 	public void refusalApplicationaStatusByUser(PlanningApplicationDto planningApplicationDto);
 
-	public PlanningDto getPlanAndPlanningInfoByPlanId(int plan_id);
-
 	public PlanningDto getPlanStatusByPlanId(int plan_id);
-
-	public void updateToPlanning(PlanningDto planningDto);
 
 	public void updatePlanningData(PlanningDto planningDto);
 

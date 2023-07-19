@@ -280,12 +280,41 @@ public class CouponMessageService {
 	public void updateStar(int userId, int messageId) {
 		
 		MessageDto messageDto = couponMessageSqlMapper.getMessageDtoByMessageId(messageId);
-		String messageStatus = messageDto.getMessage_status();
-		int userId = messageDto.getUser_id();
-		if(messageStatus.contains("보관")) {
-			
-		}
+		UserDto userDto = couponMessageSqlMapper.getUserDtoByUserId(userId);
 		
+		
+		String messageStatus = messageDto.getMessage_status();
+		int senderId = messageDto.getUser_id();
+		String receiverNickname = messageDto.getUser_nickname();
+		String userNickname = userDto.getUser_nickname();
+		
+		System.out.println("userNickname = " + userNickname);
+		System.out.println("receiverNickname = " + receiverNickname);
+		System.out.println("senderId = " + senderId);
+		System.out.println("userId = " + userId);
+		System.out.println("messageStatus= " + messageStatus);
+
+		
+		if((senderId == userId) && (messageStatus == null || !messageStatus.contains("보낸쪽지보관"))){
+			couponMessageSqlMapper.updateMessageSendStored(messageId);
+		}else if(senderId == userId && messageStatus.contains("보낸쪽지보관")) {
+			couponMessageSqlMapper.updateMessageSendNotStored(messageId);
+		}else if(receiverNickname.equals(userNickname) && (messageStatus == null || !messageStatus.contains("받은쪽지보관"))) {
+			couponMessageSqlMapper.updateMessageGetStored(messageId);
+		}else if(receiverNickname.equals(userNickname) && messageStatus.contains("받은쪽지보관")) {
+			couponMessageSqlMapper.updateMessageGetNotStored(messageId);
+		}else return;
+		
+		
+		
+	}
+
+	public boolean isStored(int userId ,int messageId) {
+		
+		UserDto userDto = couponMessageSqlMapper.getUserDtoByUserId(userId);
+		String userNickName = userDto.getUser_nickname(); 
+		System.out.println(userId);
+		return couponMessageSqlMapper.checkStored(userId, messageId, userNickName) > 0;
 	}
 	
 
