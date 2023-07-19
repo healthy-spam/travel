@@ -191,9 +191,10 @@
 			return;
 			
 		}
-		
+		const guestNum = document.getElementById("numberOfPeople").innerText;
 		const checkInDate = document.getElementById("checkInDate").value;
 		const checkOutDate = document.getElementById("checkOutDate").value;
+		const totalFee = document.getElementById("reservationTotal").innerText;
 		
 		if (checkInDate && checkOutDate == null) {
 			
@@ -217,7 +218,7 @@
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhr.send("hotel_id=" + hotelId + "&hotel_reservation_check_in=" + checkInDate + "&hotel_reservation_check_out=" + checkOutDate);
 		
-		window.location.href = "/travel/hotel/hotelPage";
+		window.location.href = "/travel/hotel/hotelPaymentPage?hotel_id=" + hotelId + "&guestNum=" + guestNum + "&checkInDate=" + checkInDate + "&checkOutDate=" + checkOutDate + "&totalFee=" + totalFee;
 	}
 
 		  
@@ -267,7 +268,7 @@
         padding: 10px 20px;
         color: rgb(255, 255, 255);
         font-weight: 600;
-        font-size: 14px;
+        font-size: 0.9em;
     }
     .commentProfileImage {
         width: 40px;
@@ -281,7 +282,7 @@
         border-radius: 10px;
         border: solid black 1px;
         font-weight: bold;
-        font-size: 14px;
+        font-size: 0.9em;
         background-color: rgb(255, 255, 255);
         padding: 10px 20px;
     }
@@ -301,7 +302,7 @@
         border-radius: 10px;
         border: solid black 1px;
         font-weight: bold;
-        font-size: 14px;
+        font-size: 0.9em;
         background-color: rgb(255, 255, 255);
         padding: 10px 20px;
     }
@@ -641,7 +642,7 @@
                                         <span>x</span>
                                     </div>
                                     <div class="col-auto px-0">
-                                        <span>1</span>
+                                        <span id="reserveDay">1</span>
                                     </div>
                                     <div class="col-auto ps-0">
                                         <span>박</span>

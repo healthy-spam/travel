@@ -35,7 +35,8 @@ public interface PlanSqlMapper {
 	public void update(PlanDto planDto);
 	
 	// 플랜 공개 비공개 
-	public void updateDisclosureStatus(@Param("plan_id") int plan_id, @Param("plan_disclosure_status") String plan_disclosure_status);
+	public void updateDisclosureStatus(@Param("plan_id") int plan_id, @Param("plan_disclosure_status") String plan_disclosure_status,
+										@Param("plan_title") String plan_title);
 	
 	// 플랜 일정 입력
 	public void planDayInsert(PlanDayDto planDayDto);
@@ -122,6 +123,16 @@ public interface PlanSqlMapper {
     public void insertPlanRouteCity(@Param("planPlaceId") int planPlaceId, @Param("planDayCityId") int planDayCityId);
 
 	public List<PlanPlaceDto> getAllPlace2();
+
+	public PlanDto getPlan(int plan_id);
+
+	public void deleteDay(@Param("dayId") int dayId, @Param("planId")int planId);
+
+	public List<PlanDayDto> getPlanDay(int planId);
+
+	public void updateDays(PlanDayDto firstCheck);
+
+
 	
 
 	

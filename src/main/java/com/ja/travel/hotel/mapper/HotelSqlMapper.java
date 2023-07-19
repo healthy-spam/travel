@@ -2,6 +2,8 @@ package com.ja.travel.hotel.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.ja.travel.dto.HotelCategoryDto;
 import com.ja.travel.dto.HotelDto;
 import com.ja.travel.dto.HotelFacilityDto;
@@ -25,7 +27,7 @@ public interface HotelSqlMapper {
 	public List<HotelCategoryDto> selectAllHotelCategoryList();
 
 //	숙소 리스트 출력
-	public List<HotelDto> selectAllHotelList();
+	public List<HotelDto> selectAllHotelList(@Param("sortType") String sortType);
 
 //	숙소 PK로 숙소 상세 이미지 출력 
 	public List<HotelImageDetailsDto> selectAllHotelImageDetailsByHotelId(int hotel_id);

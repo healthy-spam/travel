@@ -30,58 +30,244 @@
 	
 	}
 
-	function getPlanData() {
-		
-		const xhr = new XMLHttpRequest();
-	
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState === 4) {
-				if (xhr.status === 200) {
-					const response = JSON.parse(xhr.responseText);
-					
-					console.log(response.plan);
-					
-					console.log(response.plan.planDto.plan_title);
-					
-					const planTitle = document.getElementById("planTitle");
-					
-					planTitle.innerText = response.plan.planDto.plan_title; 
-				}
-			}
-		}
-		
-		xhr.open("get", "./getPlan?planId="+planId);
-		xhr.send();
-	}
 
-	function updatePlanDisclosure(){
-	    const xhr = new XMLHttpRequest();
+
+const planTitle =   new URLSearchParams(location.search).get("plan_title");
+
+const planId =   new URLSearchParams(location.search).get("plan_id");
+
+
+function submitModal(planId){
+	   
+	   const formData = new FormData();
+	   
+	  
+	   
+	  
+	    const planTitle = document.getElementById('plan_title').value;
+	    const planDisclosureStatus = document.querySelector('input[name="planDisclosureStatus"]:checked');
+	    const planDisclosureStatusValue = planDisclosureStatus ? planDisclosureStatus.value : '';
+
+	   
 	    
-	    const openRadio = document.querySelector('.open');
-	    const closeRadio = document.querySelector('.close');
-	    let planDisclosureStatus = openRadio.checked ? openRadio.value : closeRadio.checked ? closeRadio.value : null;
+	    // FormData에 값 추가
+	    formData.append('plan_title', planTitle);
+	    formData.append('planDisclosureStatus', planDisclosureStatusValue);
 	    
-	    console.log(planDisclosureStatus);
-	    console.log(planId);
 	
-	    xhr.onreadystatechange = function() {
-	        if (xhr.readyState === 4) {
-	            if (xhr.status === 200) {
-	                const response = JSON.parse(xhr.responseText);
-	                
-	                console.log(planDisclosureStatus);
-	                console.log(planId);
-	                
-	                window.location.href = "/travel/plan/planPage";
-	            }
-	        }
-	    }
+
+	    const xhr = new XMLHttpRequest();
 	    
 	    xhr.open("POST", "./updatePlan");
 	    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	    xhr.send("planId="+planId + "&planDisclosureStatus="+ planDisclosureStatus);
+	    xhr.send("plan_title="+encodeURIComponent(planTitle) + "&planDisclosureStatus="+ encodeURIComponent(planDisclosureStatusValue) +"&planId=" + planId);
+	  
+	    
+	    xhr.onreadystatechange = function(){
+	      if(xhr.readyState == 4 && xhr.status == 200){
+	         const response = JSON.parse(xhr.responseText);
+	         
+	      		window.location.href = "/travel/plan/planPage";
+	      		
+	      }else {
+	         console.log('에이잭스 요청 실패')
+	      }
+	   }
 	}
 
+function save() {
+     createModal();
+     modal = new bootstrap.Modal(document.getElementById('dynamicModal'));
+     modal.show();
+  }
+
+function removeModal() {
+   var modal = document.getElementById('dynamicModal');
+   modal.remove();
+}
+
+function createModal() {
+	   
+	
+
+    // 모달 요소 생성
+    var modalDiv = document.createElement('div');
+    modalDiv.classList.add('modal');
+    modalDiv.classList.add('fade');
+    modalDiv.id = 'dynamicModal';
+    modalDiv.setAttribute('data-bs-backdrop', 'static');
+    modalDiv.setAttribute('data-bs-keyboard', 'false');
+    modalDiv.setAttribute('tabindex', '-1');
+    modalDiv.setAttribute('aria-labelledby', 'dynamicModalLabel');
+    modalDiv.setAttribute('aria-hidden', 'true');
+
+    // 모달 다이얼로그 생성
+    var modalDialogDiv = document.createElement('div');
+    modalDialogDiv.classList.add('modal-dialog');
+    modalDialogDiv.classList.add('modal-dialog-centered');
+    modalDialogDiv.classList.add('modal-dialog-scrollable');
+    modalDialogDiv.classList.add('modal-lg');
+
+    // 모달 콘텐츠 생성
+    var modalContentDiv = document.createElement('div');
+    modalContentDiv.classList.add('modal-content');
+
+    // 모달 헤더 생성
+    var modalHeaderDiv = document.createElement('div');
+    modalHeaderDiv.classList.add('modal-header');
+
+    // 모달 제목 생성
+    var modalTitleH1 = document.createElement('h1');
+    modalTitleH1.classList.add('modal-title');
+    modalTitleH1.classList.add('fs-5');
+    modalTitleH1.id = 'dynamicModalLabel';
+    modalTitleH1.innerText = 'SAVE';
+
+    // 모달 닫기 버튼 생성
+    var closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.classList.add('btn-close');
+    closeButton.setAttribute('data-bs-dismiss', 'modal');
+    closeButton.setAttribute('aria-label', 'Close');
+    closeButton.setAttribute('onclick', 'removeModal()');
+
+    // 모달 바디 생성
+    var modalBodyDiv = document.createElement('div');
+    modalBodyDiv.classList.add('modal-body');
+
+    // 모달 바디내 container생성
+    var containerDiv = document.createElement('div');
+    containerDiv.classList.add('container');
+    modalBodyDiv.appendChild(containerDiv);
+
+    // 모달 바디내 container내 row 생성
+    var rowDiv = document.createElement('div');
+    rowDiv.classList.add('row');
+    containerDiv.appendChild(rowDiv);
+
+    // 모달 바디내 container내 row내 col1 생성
+    var col1Div = document.createElement('div');
+    col1Div.classList.add('col');
+    rowDiv.appendChild(col1Div);
+   
+    // 0 번째 row
+    var row0 = document.createElement('div');
+    row0.classList.add('row');
+    row0.classList.add('mt-4');
+    col1Div.appendChild(row0);
+
+    var row0Col1 = document.createElement('div');
+    row0Col1.classList.add('col');
+    row0.appendChild(row0Col1);
+    
+    var row0Col1Icon = document.createElement('i');
+    row0Col1Icon.classList.add('bi');
+    row0Col1Icon.classList.add('bi-pencil');
+    row0Col1Icon.classList.add('me-1');
+    row0Col1.appendChild(row0Col1Icon);
+
+    var row0Col1Span = document.createElement('span');
+    row0Col1Span.innerText = '플랜 제목';
+    
+    row0Col1.appendChild(row0Col1Span);
+    
+    
+    var row0Col1Input = document.createElement('input');
+    row0Col1Input.type ='text';
+    row0Col1Input.setAttribute('id', 'plan_title');
+    row0Col1Input.setAttribute('name', 'plan_title');
+    row0Col1Input.setAttribute('value', planTitle);
+    row0Col1.appendChild(row0Col1Input);
+    
+    // 첫 번째 
+    var row1 = document.createElement('div');
+    row1.classList.add('row');
+    row1.classList.add('mt-4');
+    col1Div.appendChild(row1);
+
+    var row1Col1 = document.createElement('div');
+    row1Col1.classList.add('col');
+    row1.appendChild(row1Col1);
+    
+	var publicRadio = document.createElement('input');
+	publicRadio.type = 'radio';
+	publicRadio.name = 'planDisclosureStatus';
+	publicRadio.value = '공개';
+	publicRadio.id = 'publicRadio';
+	
+	// 공개 라벨 생성
+	var publicLabel = document.createElement('label');
+	publicLabel.innerHTML = '공개';
+	publicLabel.setAttribute('for', 'publicRadio');
+	
+	// 비공개 라디오 버튼 생성
+	var privateRadio = document.createElement('input');
+	privateRadio.type = 'radio';
+	privateRadio.name = 'planDisclosureStatus';
+	privateRadio.value = '비공개';
+	privateRadio.id = 'privateRadio';
+	
+	// 비공개 라벨 생성
+	var privateLabel = document.createElement('label');
+	privateLabel.innerHTML = '비공개';
+	privateLabel.setAttribute('for', 'privateRadio');
+	
+	// 요소들을 row1Col1 요소에 추가
+	row1Col1.appendChild(publicRadio);
+	row1Col1.appendChild(publicLabel);
+	row1Col1.appendChild(privateRadio);
+	row1Col1.appendChild(privateLabel);
+
+
+  	
+    var row2 = document.createElement('div');
+    row2.classList.add('row');
+    row2.classList.add('mt-4');
+    col1Div.appendChild(row2);
+    
+    
+    var row2Col1 = document.createElement('div');
+    row2Col1.classList.add('col');
+    row2.appendChild(row2Col1);
+    
+    var completeButton = document.createElement('button');
+    completeButton.innerText = '완료';
+
+    // row2Col1 요소에 스타일을 적용하여 오른쪽으로 배치
+    row2Col1.style.display = 'flex';
+    row2Col1.style.justifyContent = 'flex-end';
+
+    // 완료 버튼을 row2Col1 요소의 자식으로 추가
+    row2Col1.appendChild(completeButton);
+    completeButton.setAttribute('onclick', 'submitModal(' + planId + ')');
+    
+
+    
+  
+
+    // 모달 요소 구성
+    modalHeaderDiv.appendChild(modalTitleH1);
+    modalHeaderDiv.appendChild(closeButton);
+
+    modalContentDiv.appendChild(modalHeaderDiv);
+    modalContentDiv.appendChild(modalBodyDiv);
+
+    modalDialogDiv.appendChild(modalContentDiv);
+
+    modalDiv.appendChild(modalDialogDiv);
+
+    // 모달을 추가할 요소 찾기 (예시로는 body로 가정)
+    var targetElement = document.body;
+
+    // 모달 추가
+    targetElement.appendChild(modalDiv);
+ }
+
+	
+	//저장  
+
+	
+	
 	function showPlace(item) {
 	     
 	     var placeAddressElement = item.querySelector('.address');
@@ -140,7 +326,7 @@
 	               });
 		}	
 	
-		const planId =   new URLSearchParams(location.search).get("plan_id"); // 중요..
+	
 	   
 		let globalCityId = null;
 		let globalDayId = null;
@@ -186,17 +372,13 @@
                   const dayText = newNode.querySelector(".day-text");
                   dayText.innerText = "DAY " + dayDto.plan_day;
 
-                  const icon = document.createElement("i");
-                  icon.classList.add("bi", "bi-trash3");
-                  icon.style.fontSize = "15px";
-                  icon.style.marginLeft = "10px";
-               /*    icon.setAttribute("onclick", "deleteDay(" + dayDto.plan_day_id + ")"); */
+                 
                   
                   const newDayId = dayDto.plan_day_id;
                     newNode.setAttribute("id", "day_" + newDayId); // 새로운 id를 지정합니다.
                     newNode.setAttribute("onclick", "handleClickDay(" + newDayId + ")");
 
-                  dayText.appendChild(icon);
+                 
                
                                     
                   document.getElementById("day_col").appendChild(newNode);
@@ -212,33 +394,13 @@
       xhr.send();
    }
    
-/*    function deleteDay(dayId) {
 
-      const xhr = new XMLHttpRequest();
-
-      xhr.onreadystatechange = function() {
-         if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-               const response = JSON.parse(xhr.responseText);
-               
-               loadDay();
-               
-            }
-         }
-      }
-
-      xhr.open("get", "./deleteDay?planId=" + planId);
-      xhr.send();
-   } */
    
    
    
    let selectedDayElement = null; // 선택된 날짜 요소를 저장할 변수
 
    function handleClickDay(dayId) {
-      
-      
-      
       
      const clickedElement = document.getElementById("day_" + dayId);
 
@@ -251,12 +413,12 @@
      if (selectedDayElement) {
        // 이전에 선택된 요소가 있는 경우
        selectedDayElement.classList.remove("selected-day");
-       addTrashIcon(selectedDayElement, dayId);
+      
        resetFontSize(selectedDayElement);
      }
 
      clickedElement.classList.add("selected-day");
-     removeTrashIcon(clickedElement);
+   
      setFontSize(clickedElement);
 
      selectedDayElement = clickedElement;
@@ -265,34 +427,22 @@
      loadMyList();
    }
 
-   function addTrashIcon(element, dayId) {
-        const trashIcon = document.createElement("i");
-        trashIcon.classList.add("bi", "bi-trash3");
-        trashIcon.style.fontSize = "15px";
-        trashIcon.style.marginLeft = "10px";
-       /*  trashIcon.setAttribute("onclick", "deleteDay(" + dayId + ")"); */
-       element.querySelector(".day-text").appendChild(trashIcon);
-      }
-   function removeTrashIcon(element) {
-     const trashIcon = element.querySelector(".bi-trash3");
-     if (trashIcon) {
-       trashIcon.remove();
-     }
-   }
+  
 
    function resetFontSize(element) {
      const dayText = element.querySelector(".day-text");
      if (dayText) {
-       dayText.style.fontSize = "30px";
-       dayText.style.color = "black";
+       dayText.style.fontSize = "25px";
+       dayText.style.fontWeight = "bold";
+      
      }
    }
 
 	function setFontSize(element) {
 	  const dayText = element.querySelector(".day-text");
 	  if (dayText) {
-		dayText.style.fontSize = "35px";
-		dayText.style.color = "white";
+		dayText.style.fontSize = "30px";
+		dayText.style.fontWeight = "bold";
 	  }
 	}
    
@@ -318,7 +468,7 @@
                   const newElement = document.getElementById("templete_city").cloneNode(true);
                   newElement.querySelector(".cityName").innerText = cityDto.plan_city_name;
                   
-                  newElement.querySelector(".cityName").style.fontSize = "20px";
+                  //newElement.querySelector(".cityName").style.fontSize = "20px";
                   
                   newElement.removeAttribute("id");
                   newElement.classList.remove("d-none");
@@ -369,8 +519,8 @@
                   newElement.classList.remove("d-none");
                   newElement.querySelector(".add i").setAttribute("onclick", "addPlace("+ placeDto.plan_place_id +")")
                   newElement.classList.add("newElement");
-                  newElement.querySelector(".name").style.fontSize = "20px";
-                  newElement.querySelector(".address").style.fontSize = "16px";
+                  newElement.querySelector(".placeImg").src = "/uploadFiles/mainImage/" + placeDto.plan_place_photo;
+                  
                   newElement.querySelector(".show").addEventListener("click", function() {
                        search(placeDto.plan_place_address);
                      });
@@ -407,8 +557,7 @@
                   newElement.classList.remove("d-none");
                   newElement.querySelector(".add i").setAttribute("onclick", "addPlace("+ placeDto.plan_place_id +")")
                   newElement.classList.add("newElement");
-                  newElement.querySelector(".name").style.fontSize = "20px";
-                  newElement.querySelector(".address").style.fontSize = "16px";
+                  newElement.querySelector(".placeImg").src = "/uploadFiles/mainImage/" + placeDto.plan_place_photo;
                   newElement.querySelector(".show").addEventListener("click", function() {
                        search(placeDto.plan_place_address);
                      });
@@ -466,7 +615,7 @@
                   for(y of x.listInner){
                      const newElementInner = document.getElementById("templete_my_place").cloneNode(true);
                      newElementInner.querySelector(".placeName").innerText = y.planPlaceDto.plan_place_name;
-                     newElementInner.querySelector(".placeName").style.fontSize = "20px";
+                    
                      newElementInner.querySelector(".address").remove();
                      newElementInner.removeAttribute("id");
                      newElementInner.classList.remove("d-none");
@@ -481,19 +630,205 @@
       xhr.open("get", "./getMyList?dayId=" + globalDayId);
       xhr.send();
    }
+   
+   function edit() {
+	    const xhr = new XMLHttpRequest();
+
+	    xhr.onreadystatechange = function() {
+	        if (xhr.readyState === 4) {
+	            if (xhr.status === 200) {
+	                const response = JSON.parse(xhr.responseText);
+
+	                // 기존에 생성된 offcanvas 요소를 제거합니다.
+	                const existingOffcanvas = document.querySelector(".offcanvas");
+	                if (existingOffcanvas) {
+	                    existingOffcanvas.remove();
+	                }
+
+	                // Offcanvas 엘리먼트 생성
+	                const offcanvas = document.createElement("div");
+	                offcanvas.classList.add("offcanvas", "offcanvas-end");
+	                offcanvas.setAttribute("data-bs-backdrop", "static");
+	                offcanvas.setAttribute("tabindex", "-1");
+	                offcanvas.setAttribute("id", "staticBackdrop");
+
+	                // Offcanvas 헤더 생성
+	                const header = document.createElement("div");
+	                header.classList.add("offcanvas-header");
+
+	                // Offcanvas 타이틀 생성
+	                const title = document.createElement("h5");
+	                title.classList.add("offcanvas-title");
+	                title.setAttribute("id", "staticBackdropLabel");
+	                title.innerText = "일정을 수정해보세요";
+
+	                // 닫기 버튼 생성
+	                const closeButton = document.createElement("button");
+	                closeButton.setAttribute("type", "button");
+	                closeButton.classList.add("btn-close", "closeButton");
+	                closeButton.setAttribute("data-bs-dismiss", "offcanvas");
+	                closeButton.setAttribute("aria-label", "Close");
+
+	                // Offcanvas 바디 생성
+	                const body = document.createElement("div");
+	                body.classList.add("offcanvas-body");
+
+	                for (const dayDto of response.data) {
+	                    const aaa = document.getElementById("templete_edit").cloneNode(true);
+	                    aaa.classList.remove("d-none");
+	                    aaa.removeAttribute("id");
+
+	                    aaa.querySelector(".edit_day").innerText = "DAY " + dayDto.plan_day;
+	                   
+	                    const trashButton = aaa.querySelector(".trash");
+	                    trashButton.addEventListener("click", function() {
+	                    	deleteDay(dayDto.plan_day_id); // 클릭 이벤트가 발생할 때 콜백 함수를 호출하면서 day를 전달합니다.
+	                    });
+	                    
+	                    
+	                    body.appendChild(aaa);
+	                }
+
+	                // Offcanvas 구조 조립
+	                header.appendChild(title);
+	                header.appendChild(closeButton);
+	                offcanvas.appendChild(header);
+	                offcanvas.appendChild(body);
+
+	                // 문서에 Offcanvas 추가
+	                document.body.appendChild(offcanvas);
+
+	                // Offcanvas 표시
+	                const offcanvasInstance = new bootstrap.Offcanvas(offcanvas);
+	                offcanvasInstance.show();
+
+	                // 닫기 버튼 클릭 시 백드롭 제거
+	                closeButton.addEventListener("click", function() {
+	                	loadDay();
+	                    offcanvasInstance.hide();
+	                    document.querySelector(".offcanvas-backdrop").remove();
+	                });
+	            }
+	        }
+	    };
+
+	    xhr.open("GET", "./getPlanDayList2?planId=" + planId);
+	    xhr.send();
+	}
+   
+ function deleteDay(dayId) {
+
+     const xhr = new XMLHttpRequest();
+
+     xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+           if (xhr.status === 200) {
+              const response = JSON.parse(xhr.responseText);
+            
+              
+
+              // 기존에 생성된 offcanvas 요소를 제거합니다.
+              const existingOffcanvas = document.querySelector(".offcanvas-body");
+              if (existingOffcanvas) {
+                  existingOffcanvas.remove();
+              }
+
+             /*  // Offcanvas 엘리먼트 생성
+              const offcanvas = document.createElement("div");
+              offcanvas.classList.add("offcanvas", "offcanvas-end");
+              offcanvas.setAttribute("data-bs-backdrop", "static");
+              offcanvas.setAttribute("tabindex", "-1");
+              offcanvas.setAttribute("id", "staticBackdrop");
+
+              // Offcanvas 헤더 생성
+              const header = document.createElement("div");
+              header.classList.add("offcanvas-header");
+
+              // Offcanvas 타이틀 생성
+              const title = document.createElement("h5");
+              title.classList.add("offcanvas-title");
+              title.setAttribute("id", "staticBackdropLabel");
+              title.innerText = "일정을 수정해보세요";
+
+              // 닫기 버튼 생성
+              const closeButton = document.createElement("button");
+              closeButton.setAttribute("type", "button");
+              closeButton.classList.add("btn-close", "closeButton");
+              closeButton.setAttribute("data-bs-dismiss", "offcanvas");
+              closeButton.setAttribute("aria-label", "Close"); */
+
+              // Offcanvas 바디 생성
+              const body = document.createElement("div");
+              body.classList.add("offcanvas-body");
+
+              for (const dayDto of response.data) {
+                  const aaa = document.getElementById("templete_edit").cloneNode(true);
+                  aaa.classList.remove("d-none");
+                  aaa.removeAttribute("id");
+
+                  aaa.querySelector(".edit_day").innerText = "DAY " + dayDto.plan_day;
+                 
+                  const trashButton = aaa.querySelector(".trash");
+                  trashButton.addEventListener("click", function() {
+                  	deleteDay(dayDto.plan_day_id); // 클릭 이벤트가 발생할 때 콜백 함수를 호출하면서 day를 전달합니다.
+                  });
+                  
+                  
+                  body.appendChild(aaa);
+                  
+              }
+              const Offcanvas = document.querySelector(".offcanvas");
+              
+              Offcanvas.appendChild(body);
+
+            /*   // Offcanvas 구조 조립
+              header.appendChild(title);
+              header.appendChild(closeButton);
+              offcanvas.appendChild(header);
+           
+
+              // 문서에 Offcanvas 추가
+              document.body.appendChild(offcanvas);
+
+              // Offcanvas 표시
+              const offcanvasInstance = new bootstrap.Offcanvas(offcanvas);
+              offcanvasInstance.show();
+
+              // 닫기 버튼 클릭 시 백드롭 제거
+              closeButton.addEventListener("click", function() {
+              	loadDay();
+                  offcanvasInstance.hide();
+                  document.querySelector(".offcanvas-backdrop").remove();
+              }); */
+
+              
+           }
+        }
+     }
+
+     xhr.open("get", "./deleteDay?dayId=" + dayId + "&planId=" + planId);
+     xhr.send();
+  } 
+
+
+
       
    window.addEventListener("DOMContentLoaded", () => {
       loadDay();
       citySearch();
       allPlace();
       map();
-      getPlanData();
+     
    });
    
 </script>
 <style>
+	
+	
+	
 	.selected-day {
-	   background-color: #BB4465 !important;
+	   border : solid 2px #03c75a;
+	   border-radius: 20px;
 	  
 	}
 	
@@ -529,6 +864,13 @@
 	    overflow-y: scroll; /* 세로 스크롤 사용 */
 	    height: 300px; /* 스크롤의 길이를 200px로 설정 */s
 	}
+	
+	.gradient-background {
+   background-color: gray;
+   border-radius: 10px;
+   border-right:solid 1px white;
+   border-left:solid 1px white;
+}
 
 </style>
 
@@ -538,36 +880,6 @@
 	<div class="container">
 		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 	</div>
-
-   	<div class="row bg-light">
-	    <div class="col align-items-center">			    	
-	        <div class="row">
-	            <div class="col">
-	                <img src="/travel/resources/img/icon.png" style="width: 2rem">
-	                <span id="planTitle">플래너 제목</span>
-	            </div>
-	        </div>			    	
-	    </div>
-	
-	    <div class="col align-items-center">			    
-	        <div class="row">
-	            <div class="col">
-	                <input class="form-check-input open" type="radio" name="plan_disclosure_status" value="공개">
-	                <label class="form-check-label" for="plan_disclosure_status1">공개</label>
-	                <input class="form-check-input close" type="radio" name="plan_disclosure_status"  value="비공개">
-	                <label class="form-check-label" for="plan_disclosure_status2">비공개</label>
-	            </div>
-	        </div>
-	    </div>
-	
-	    <div class="col align-items-center">
-	        <div class="row">
-	            <div class="col">
-	                <button type="button" class="btn btn-primary" onclick="updatePlanDisclosure()">작업완료</button>
-	            </div>
-	        </div>
-	    </div>
-	</div>
    
    
    <div class="container-fluid" style="margin-top: 20px; ">
@@ -576,31 +888,47 @@
       
          <!-- 일차 -->
          
-         <div class = "col " style="background: #fffaf0;">
+         <div class = "col " style="background: #fdfdfd;">
             <div class="row">
-               <div class="col-1" style="border-right: 2px solid #000000; border-top : 2px solid #000000;">
-                  <div class="row py-3" style ="border-bottom : 2px solid #000000;">
-                     <div class="col text-center" style = "font-size : 40px; font-weight:bold; ">
+               <div class="col-1 d-flex flex-column justify-content-between" >
+                  <div class="row py-3 gradient-background">
+                     <div class="col text-center" style = "font-size : 20px; font-weight:bold; color:white;">
                         DAY
                      </div>
                   </div>
-                  <div class="row py-2" style="border-bottom : 2px solid #000000;">
-                     <div class="col " id="addDay" style=" font-size : 30px; font-weight:bold; display: flex; align-items: center; justify-content: center;" onclick="addDay()">
-                        DAY <i class="bi bi-plus-circle-fill "  style="color: #BB4465; font-size: 30px; margin-left: 10px; " ></i>
+                  <div class="row py-2" >
+                     <div class="col " id="addDay" style=" font-size : 25px; font-weight:bold; display: flex; align-items: center; justify-content: center;" onclick="addDay()">
+                        DAY <i class="bi bi-plus-lg fw-bold"  style=" margin-left: 10px; " ></i>
                      </div>
                   </div>
                   <div class="row">
                      <div class="col" id="day_col">
                      </div>
                   </div>
+                   <div class="row mt-auto " >
+                     <div class="col text-center" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop"
+                     style="border-radius:20px; border-bottom:solid 3px white;
+                     font-size : 25px; font-weight:700; background: #03c75a; cursor: pointer;color:white;">
+                     	<a onclick = "edit()" >EDIT</a>
+                     </div>
+                  </div>
+                   
+                  <div class="row mt-0 ">
+                     <div class="col text-center" style="border-radius:20px;
+                     font-size : 25px; font-weight:700; background: #03c75a; cursor: pointer;color:white; ">
+                     	<a onclick = "save()" >SAVE</a>
+                     </div>
+                  </div>
+                 
+                 
                   
                </div>
          
          <!-- 명소 -->
          
-            <div class="col-3" style="border-right: 2px solid #000000; border-top : 2px solid #000000;">
-               <div class="row py-3" style ="border-bottom : 2px solid #000000">
-                  <div class="col  text-center" style = "font-size : 40px; font-weight:bold; ">My Route</div>
+            <div class="col-2" >
+               <div class="row py-3 gradient-background" >
+                  <div class="col  text-center" style = "font-size : 20px; font-weight:bold; color:white; ">My Route</div>
                </div>
                <div class="row ">
                   <div class="col " id="route_col" >
@@ -611,19 +939,16 @@
          
          <!-- 선택 박스 -->
       
-            <div class="col-3" style="border-right: 2px solid #000000; border-top : 2px solid #000000;">
-               <div class="row py-3"  style ="border-bottom : 2px solid #000000">
-                  <div class="col text-center" style = "font-size : 40px; font-weight:bold; ">Tour Spot</div>
+            <div class="col-2" >
+               <div class="row py-3 gradient-background"  >
+                  <div class="col text-center" style = "font-size : 20px; font-weight:bold; color:white;">Tour Spot</div>
                </div>
                <!-- 시티 선택 리스트 -->
                <div class="row">
                   <div class="col">
-                     <div class="row py-3">
-                        <div class="col">
-                           <input onkeyup="citySearch()" type="text" class="form-control" id="city_search_text_box">
-                        </div>
-                        <div class="col">
-                           <select onchange="citySearch()" class="form-select" id="city_search_select_box">
+                     <div class="row py-1 mt-2">
+                        <div class="col pe-0">
+                           <select onchange="citySearch()" class="form-select form-select-sm" id="city_search_select_box">
                               <option value="">전체</option>
                               <option value="서울">서울</option>
                               <option value="경기">경기</option>
@@ -638,20 +963,38 @@
                               
                            </select>
                         </div>
+                        <div class="col-5 pe-0">
+                           <input onkeyup="citySearch()" type="text" class="form-control form-control-sm" id="city_search_text_box" placeholder="검색어 입력">
+                        </div>
+                        <div class="col-3 d-grid">
+                        	<button class="btn btn-primary btn-sm"><i class="bi bi-search"></i></button>
+                        </div>
                      </div>
-                     <div class="row border-bottom : 2px solid #000000;">
+                     <div class="row mt-3">
+                     	<div class="col fw-bold fst-italic fs-5">지역 목록</div>
+                     </div>
+                     <div class="row border-bottom : 3px solid #ededed;">
                         <div class="col" id="city_list">
                         </div>
                      </div>
                   </div>
                </div>
                <!-- 명소 선택 리스트 -->
-               <div class="row border py-2">
+               <div class="row border py-1">
                   <div class="col">
-                     <div class="row py-2 my-3">
-                        <div class="col">
-                           <input onkeyup="searchPlace()" id="place_search_box" type="text" class="form-control" placeholder="검색">
+                     <div class="row py-2 my-1">
+                        <div class="col pe-0">
+                           <input onkeyup="searchPlace()" id="place_search_box" type="text" class="form-control form-control-sm" placeholder="검색어를 입력하세요">
                         </div>
+                        <div class="col-3 d-grid">
+                        	<button class="btn btn-primary btn-sm"><i class="bi bi-search"></i></button>
+                        </div>
+                     </div>
+                     
+                     <div class="row">
+                     	<div class="col fw-bold fst-italic fs-5">
+                     		명소 목록
+                     	</div>
                      </div>
                      <div class="row">
                         <div class="col" id="place_list">
@@ -663,11 +1006,16 @@
          
          <!-- 지도 -->
          
-            <div class="col-5">
+            <div class="col-7">
                <div class ="row">
-                  <div class="col">
-                     <div id="map" style="width:100%;height:850px;"></div>
-                  </div>
+				 <div class="col">
+				 	
+				      <div id="map" style="width:100%;height:850px;">
+				  
+				        <!-- 지도가 표시될 공간 -->
+				     
+				      </div>
+				    </div>
                </div>   
             </div>
          </div>
@@ -682,8 +1030,8 @@
       <div class="row d-none py-3" id="templete_my_city">
          <div class="col d-flex justify-content-center">
             <div class="card rounded shadow border mx-auto" style="width: 25rem; ">
-              <div class="card-body text-center text-white" style="background-color:#BB4465;">
-                <h5 class="card-title cityName" style="font-weight:bold; font-size:30px; ">Card title</h5>
+              <div class="card-body text-center " style="border-bottom:solid 2px #ededed;">
+                <div class="card-title cityName">Card title</div>
               </div>
               <ul class="list-group list-group-flush placeList">
                 
@@ -699,14 +1047,15 @@
             <div class="col placeName fw-bold">송리...</div>
          </div>
          <div class="row ">
-            <div class="col address text-secondary" style="font-size:0.7em">주소.. 어쩌...</div>
+            <div class="col address text-secondary">주소.. 어쩌...</div>
          </div>
       </div>
    </div>
 
    <div class="row border-bottom py-2 d-none" id="templete_place">
-      <div class="col-3">
-      	이미지
+      <div class="col-3 " >
+      	<img class = "placeImg" alt="" src="" style="width:50px; height:50px; border-radius:50%;">
+      	
       </div>
       <div class="col show">
          <div class="row">
@@ -716,19 +1065,19 @@
             <div class="col address text-secondary" style="font-size: 0.7em">대충 주소</div>
          </div>
       </div>
-      <div class="col-2 fs-3 add"><i class="bi bi-plus-circle-fill" style="color: #BB4465;"></i></div>
+      <div class="col-2 d-flex align-items-center justify-content-center fs-3 fw-bold add"> <i class="bi bi-plus-lg "  style=" margin-right: 20px; " ></i></div>
    </div>
 
 
-   <div class="row border-bottom py-3 d-none text-center" id="templete_city">
-      <div class="col fw-bold cityName">송파구</div>
+   <div class="row border-bottom py-2 d-none" id="templete_city">
+      <div class="col cityName text-secondary">송파구</div>
    </div>
 
 
    <div class="row d-none " id="templete_day">
       <div class="col" >
-         <div class="row py-2"  style = "border-bottom: 2px solid #000000;">
-            <div class="col day-text"  id="day" style=" font-size : 30px; font-weight:bold; display: flex; align-items: center; justify-content: center;">
+         <div class="row py-2">
+            <div class="col day-text"  id="day" style=" font-size : 25px; font-weight:bold; display: flex; align-items: center; justify-content: center;">
                day 1  
             </div>
             
@@ -745,6 +1094,48 @@
       </div>
       
    </div>
+   
+   
+<div class="templete_edit d-none" id="templete_edit">
+	<div class="row">
+	    <div class="col">
+	        <div class="row">
+	            <!-- DAY -->
+	            <div class="col-6 edit_day">
+	            	
+	            </div>
+	            <!-- 휴지통 -->
+	            <div class="col-3">
+	                <!-- 휴지통 아이콘 -->
+	                <i class="bi bi-trash trash"></i>
+	            </div>
+	            <!-- 위아래 -->
+	            <div class="col-3">
+	                <!-- 첫 번째 row -->
+	                <div class="row">
+	                    <!-- 첫 번째 row의 첫 번째 col -->
+	                    <div class="col text-center">
+	                        <!-- 위쪽 화살표 아이콘 -->
+	                        <i class="bi bi-caret-up-fill"></i>
+	                    </div>
+	                </div>
+	                <!-- 두 번째 row -->
+	                <div class="row">
+	                    <!-- 두 번째 row의 첫 번째 col -->
+	                    <div class="col text-center">
+	                        <!-- 아래쪽 화살표 아이콘 -->
+	                        <i class="bi bi-caret-down-fill"></i>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>
+   
+   
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>

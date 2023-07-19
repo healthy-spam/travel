@@ -180,20 +180,20 @@ body {
 						<div class="card-wrapper">
 							<div class="card-title">내프로필</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
-								<div class="d-flex justify-content-between my-3">
+								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;"> 
 										<i class="bi bi-person me-2"></i>
 										${sessionuser.user_nickname}
 									</span>
 									<button style="border: none;">수정</button>
 								</div>
-								<div class="d-flex justify-content-between my-3">
+								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;"> 
 										<i class="bi bi-phone me-2"></i> 010-1234-5678
 									</span>
 									<button style="border: none;">수정</button>
 								</div>
-								<div class="d-flex justify-content-between my-3">
+								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;">
 										<i class="bi bi-envelope me-2"></i>
 										${sessionuser.user_email}
@@ -217,13 +217,84 @@ body {
 									</c:when>
 									<c:otherwise>
 										<c:forEach items="${map.list}" var="data">
-											<div>
-												<a class="d-flex justify-content-between my-3" href="./plan/travelApplicationDetailPage?planning_id=${data.myPlanning.planning_id}" style="text-decoration: none;">
+											<div class="d-flex justify-content-between my-2">
+												<a href="./plan/travelApplicationDetailPage?planning_id=${data.myPlanning.planning_id}" style="text-decoration: none;">
 													<span style="color: black;">[${data.planningStatus}] ${data.myPlanning.planning_title}</span>
+												</a>
+												<div>
+													<button type="button" style="border: none; color: #999999; font-size: 0.9	em;" data-bs-toggle="modal" data-bs-target="#appList">신청 리스트</button>
 													<fmt:parseDate var="parsedDate" value="${data.myPlanning.planning_end_date}" pattern="yyyy-MM-dd HH:mm:ss" />
 													<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">
 													<fmt:formatDate value="${parsedDate}" pattern="yyyy/MM/dd" /> 종료</span>
-												</a>
+
+													<!-- Modal -->
+													<div class="modal fade" id="appList">
+														<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h1 class="modal-title fs-5" id="appListLabel">동행 신청 리스트</h1>
+																	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+																</div>
+																<div class="modal-body">
+																	<div class="container border rounded-top">
+																		<div class="row py-2" style="background-color: #dfdfdf;">
+																			<div class="col"></div>
+																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
+																				신청자
+																			</div>
+																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
+																				상태
+																			</div>
+																		</div>
+																		<div class="row py-2">
+																			<div class="col d-flex justify-content-center">
+																				<span class="badge text-bg-secondary px-4 py-1 d-flex align-items-center" style="font-weight: 100;">신청</span>
+																			</div>
+																			<div class="col d-flex justify-content-center align-items-center">
+																				신호영
+																				<a class="bi bi-envelope ms-1" href="#collapseExample" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" style="color: black;"></a>
+																			</div>
+																			<div class="col d-flex justify-content-center">
+																				<button style="border: none; color: #03c75a;">수락</button>
+																				<button style="border: none; color: #ff4e4e;">거절</button>
+																			</div>
+																		</div>
+																		<div class="row">
+																			<div class="col-1"></div>
+																			<div class="col p-0">
+																				<div class="collapse pb-2" id="collapseExample">
+																					<div>Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.</div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="row py-2">
+																			<div class="col d-flex justify-content-center">
+																				<span class="badge px-4 py-1 d-flex align-items-center" style="background-color: #03c358; font-weight: 100;">수락</span>
+																			</div>
+																			<div class="col d-flex justify-content-center">
+																				호영신
+																			</div>
+																			<div class="col d-flex justify-content-center">
+																				수락 / 거절
+																			</div>
+																		</div>
+																		<div class="row py-2">
+																			<div class="col d-flex justify-content-center">
+																				<span class="badge text-bg-danger px-4 py-1 d-flex align-items-center" style="font-weight: 100;">거절</span>
+																			</div>
+																			<div class="col d-flex justify-content-center">
+																				영신호
+																			</div>
+																			<div class="col d-flex justify-content-center">
+																				수락 / 거절
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
 										</c:forEach>
 									</c:otherwise>
@@ -238,15 +309,15 @@ body {
 							<div class="card-title">마이플랜</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
 								<c:choose>
-									<c:when test="${empty map.list}">
+									<c:when test="${empty map.list3}">
 										<div class="d-flex justify-content-center mt-3">
 											플랜 목록이 없습니다.
 										</div>
 									</c:when>
 									<c:otherwise>
-										<c:forEach items="${map.list}" var="data">
+										<c:forEach items="${map.list3}" var="data">
 											<div>
-												<a class="d-flex justify-content-between my-3" href="./plan/readPlanPage?id=${data.plan.plan_id}" style="text-decoration: none;">
+												<a class="d-flex justify-content-between my-2" href="./plan/readPlanPage?id=${data.plan.plan_id}" style="text-decoration: none;">
 													<span style="color: black;">${data.plan.plan_title}</span>
 													<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">${data.day} days</span>
 												</a>

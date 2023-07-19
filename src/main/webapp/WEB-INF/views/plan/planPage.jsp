@@ -262,9 +262,7 @@ function planSearch() {
         if (xhr.readyState === 4 && xhr.status === 200) {
             const response = JSON.parse(xhr.responseText);
 
-            const planPublicList = document.getElementById("planPublicList");
-
-            console.log(planCardBoxOriginal);
+            const planPublicList = document.getElementById("planPublicList");            
             
             while (planPublicList.firstChild) {
                 planPublicList.removeChild(planPublicList.firstChild);
@@ -294,10 +292,13 @@ function planSearch() {
                     
                     planPublicList.appendChild(planCardBox);
                     
-                 	// 각 플랜 카드에 버튼 컨테이너 추가                                                            
-                     loadDay(plan.planDto.plan_id, buttonsContainer, route_col, templateNode).then(() => {
-                        setDayButtonEvents(buttonsContainer);
-                    });
+                	// 각 플랜 카드에 버튼 컨테이너 추가                                                            
+					loadDay(plan.planDto.plan_id, buttonsContainer, route_col, templateNode).then((totalDays) => {
+                   	 
+						planCardBox.querySelector(".plan-total-days").innerText = totalDays + "일";
+                   	 
+                       	setDayButtonEvents(buttonsContainer);
+                   	});
                 }
             }
         }
@@ -337,8 +338,8 @@ function loadDay(planId, buttonsContainer, route_col, templateNode) {
                     buttonsContainer.appendChild(newButton);
                 }
 
-                // Now we call the function to set events for all buttons
-                resolve();
+                // 총일자 수 반환
+                resolve(response.data.length);
             }
         }
 
@@ -359,6 +360,8 @@ function loadMyList(plan_day_id, route_col, templateNode) {
                 while (route_col.firstChild) {
                     route_col.removeChild(route_col.firstChild);
                 }
+                
+                let totalPlaces = 0;
 
                 for(x of response.myList){
                     for(y of x.listInner){
@@ -367,13 +370,44 @@ function loadMyList(plan_day_id, route_col, templateNode) {
                         newElementInner.querySelector(".placeName").innerText = y.planPlaceDto.plan_place_name;
                         newElementInner.querySelector(".placeImage").src = "/uploadFiles/mainImage/"+y.planPlaceDto.plan_place_photo;                        
                         newElementInner.querySelector(".placeAddress").innerText = y.planPlaceDto.plan_place_address;            
+                        newElementInner.querySelector(".readPlace").href = "../planPlace/PlanPlaceDetailPage?plan_place_id=" + y.planPlaceDto.plan_place_id;
                         
                         newElementInner.removeAttribute("id");
                         route_col.appendChild(newElementInner);
                         
-                        setLandmarkScrollEvents();
+                        totalPlaces++;
                     }                  
-                }                                                   
+                }
+
+                // if no places were loaded, show the default message
+                if (totalPlaces === 0) {
+                    const newElementInner = document.createElement('div');
+
+                    newElementInner.className = 'col-12 mx-1 d-grid';
+                    newElementInner.id = 'template_my_place';
+                    newElementInner.style.borderStyle = 'dotted';
+                    newElementInner.style.borderWidth = 'thin';
+                    newElementInner.style.borderColor = '#ddebe3';
+                    newElementInner.style.borderRadius = '10px';
+                    newElementInner.style.height = '5rem';
+
+                    const innerHTML = `
+                        <div class="row">&nbsp;</div>
+                        <div class="row">
+                            <div class="col-1">&nbsp;</div>
+                            <div class="col-10 text-center">
+                                <span style="font-size: 14px; color: #03c75a;">아직 선택된 장소가 없습니다.</span>
+                            </div>
+                            <div class="col-1">&nbsp;</div>
+                        </div>
+                        <div class="row">&nbsp;</div>
+                    `;
+
+                    newElementInner.innerHTML = innerHTML;
+                    route_col.appendChild(newElementInner);
+                }
+                
+                setLandmarkScrollEvents();
             }
         }
     }
@@ -381,6 +415,7 @@ function loadMyList(plan_day_id, route_col, templateNode) {
     xhr.open("get", "./getMyList?dayId=" + plan_day_id);
     xhr.send();
 }
+
 
 
 //Day버튼 시작
@@ -403,7 +438,7 @@ function setDayButtonEvents(buttonsContainer) {
             }
 
             // 클릭한 버튼의 색상을 변경하고 아이콘을 추가
-            this.style.background = 'linear-gradient(to right, #ff356b, #f41b55, #ff1c59, #ff0044)';
+            this.style.background = '#252525';
             this.style.color = 'white';
             
             // Add icon to the clicked button
@@ -501,23 +536,9 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <style type="text/css">
-   
-/*    .btn-l{
-    width:200px;
-    height: 40px;
-    background: linear-gradient(to right, #f5d3df, #f5d3df, #f5d3df, #f5d3df);
-    border-radius: 10px;
-    border: solid hidden;
-    color: rgb(255, 255, 255);
-    font-weight: bold;
-    font-size: 15px;
-    margin-top : 200px;
-    /* background-color: #f5d3df */
-    } */
     
     .planTitle{
-       
-       
+              
     }
     
     .imgText {
@@ -624,7 +645,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	                  	 <div class="row">
 	                        <div class="col-2">&nbsp;</div>
 	                        <div class="col">         
-	                           <a class="btn btn-lg d-grid align-items-center my-button" onclick="showModal();" style="border-radius: 20px; background: linear-gradient(to right, #ff356b, #f41b55, #ff1c59, #ff0044); font-size: 20px; color: white; font-weight: bolder; border: 0px;">플래너 작성하기</a>         
+	                           <a class="btn btn-lg d-grid align-items-center my-button" onclick="showModal();" style="border-radius: 20px; background: #03c75a; font-size: 20px; color: white; font-weight: bolder; border: 0px;">플래너 작성하기</a>         
 	                        </div>	                        
 	                        <div class="col-4">&nbsp;</div>
 	                     </div>
@@ -686,12 +707,12 @@ window.addEventListener("DOMContentLoaded", () => {
 								<div class="col-4">
 									<div class="row">
 										<div class="col text-center">
-											<span class="user-name text-break" style="font-size: 13px; font-weight: bolder; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">기훈</span>                        
+											<span class="user-name text-break" style="font-size: 13px; font-weight: bolder; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; color: #000;">기훈</span>                        
 										</div>
 									</div>
 									<div class="row">
 										<div class="col text-center" style="line-height: 15px;">
-											<span class="user-age " style="font-size: 12px; color: #e7104a; font-weight: 600; ">20대 남</span>                        
+											<span class="user-age " style="font-size: 12px; color: #007aff; font-weight: 600; ">20대 남</span>                        
 										</div>
 									</div>
 								</div>
@@ -699,14 +720,14 @@ window.addEventListener("DOMContentLoaded", () => {
 								<div class="col-1 d-flex align-items-center justify-content-center">ㅣ</div>
 								
 								<div class="col-1 d-flex align-items-center justify-content-center">
-									<i class="bi bi-calendar d-flex align-items-center justify-content-center"></i>
+									<i class="bi bi-calendar d-flex align-items-center justify-content-center" style="color: #9a9a9a;"></i>
 								</div>																										
 											
 								<div class="col-4 ps-0">
 									<div class="row">
 										<div class="col" style="font-size: 12px;">
-											<span class="" style="font-weight: bolder;">여행기간</span>                        
-											<span class="" style="/* color: #e7104a;  */font-weight: bolder; ">12일</span>                        
+											<span class="" style="font-weight: bolder; color: #9a9a9a;">여행기간</span>                        
+											<span class="plan-total-days" style="color: #03c75a; font-weight: bolder; ">12일</span>                        
 										</div>																						
 									</div>
 								</div>
@@ -731,7 +752,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	                        </p>                
 						</div>
 						<div class="col text-end pe-0">
-							<i class="bi bi-bookmark-fill" style="width: 4rem; color: #ff356b;"></i>
+							<i class="bi bi-bookmark-fill" style="width: 4rem; color: #007aff;"></i>
 						</div>
 						<div class="col ps-0 align-items-center">
 							<span style="font-size: 15px; font-weight: bolder;">1125</span>
@@ -764,10 +785,15 @@ window.addEventListener("DOMContentLoaded", () => {
                                        <span class="placeName" style="font-weight: bolder; font-size: 14px;">롯데타워</span>                                                                      
                                     </div>
                                  </div>
-                                 <div class="row mt-2">
-                                    <div class="col">
-                                       <span class="placeAddress" style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">서울 송파구 올림픽로 300</span>
+                                 <div class="row mt-1">
+                                    <div class="col-10">
+                                       <span class="placeAddress text-break" style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; color: #9a9a9a;">서울 송파구 올림픽로 300</span>
                                     </div>
+                                 </div>
+                                 <div class="row mt-1">
+                                 	<a class="readPlace" href="" style="text-decoration: none;">
+                                 	<span class="" style="color: #ffa800; font-size: 12px; font-weight: bolder;">자세히보기</span>
+                                 	</a>
                                  </div>
                               </div>
                            </div>
@@ -780,13 +806,13 @@ window.addEventListener("DOMContentLoaded", () => {
                      <div class="col-12">
                         <div class="row">
                            <div class="col d-grid">
-                              <a class="btn copyPlan" style="border-radius: 15px; border-color: #ff356b; border-width: 2px; color: #ff356b; font-weight: 600;" href="">
-                                 <i class="bi bi-bookmark" style="width: 1rem; filter: drop-shadow(0 0 1px #ff356b);"></i>일정담기
+                              <a class="btn copyPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 2px; color: #03c75a; font-weight: 600;" href="">
+                                 <i class="bi bi-bookmark" style="width: 1rem;"></i> 일정담기
                               </a>
                            </div>
                            <div class="col d-grid">
-                              <a class="btn readPlan" style="border-radius: 15px; border-color: #ff356b; border-width: 2px; color: #ff356b; font-weight: 600;" href="">
-                                 <i class="bi bi-list-ul" style="width: 1rem; filter: drop-shadow(0 0 1px #ff356b);"></i> 상세보기
+                              <a class="btn readPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 2px; color: #03c75a; font-weight: 600;" href="">
+                                 <i class="bi bi-list-ul" style="width: 1rem;"></i> 상세보기
                               </a>
                            </div>
                         </div>

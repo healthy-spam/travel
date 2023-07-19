@@ -12,8 +12,11 @@
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-
+<!-- Link Swiper's CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 <script type="text/javascript">
+
+const categoryValue = 'recent';
 
 //플레이스 목록을 보여줍니다.
 function showPlaceList() {
@@ -73,7 +76,7 @@ function showPlaceList() {
 				divRow2.appendChild(divCol3);
 				
 				const span1 = document.createElement("span");
-				span1.style.fontSize = "14px";
+				span1.style.fontSize = "0.9em";
 				span1.style.fontWeight = "bold";
 				span1.style.display = "-webkit-box";
 				span1.style.webkitLineClamp = "1";
@@ -98,7 +101,7 @@ function showPlaceList() {
 				divRow2.appendChild(divCol5);
 				
 				const span3 = document.createElement("span");
-				span3.style.fontSize = "14px";
+				span3.style.fontSize = "0.9em";
 				span3.style.fontWeight = "bold";
 				span3.textContent = data.loveCount;
 				divCol5.appendChild(span3);
@@ -108,7 +111,7 @@ function showPlaceList() {
 				divRow2.appendChild(divCol6);
 				
 				const icon = document.createElement("i");
-				icon.style.fontSize = "14px";
+				icon.style.fontSize = "0.9em";
 				icon.className = "bi bi-chat";
 				divCol6.appendChild(icon);
 				
@@ -117,7 +120,7 @@ function showPlaceList() {
 				divRow2.appendChild(divCol7);
 				
 				const span5 = document.createElement("span");
-				span5.style.fontSize = "14px";
+				span5.style.fontSize = "0.9em";
 				span5.style.fontWeight = "bold";
 				span5.textContent = data.commentCount;
 				divCol7.appendChild(span5);
@@ -131,7 +134,7 @@ function showPlaceList() {
 				divRow3.appendChild(divCol8);
 				
 				const span6 = document.createElement("span");
-				span6.style.fontSize = "14px"
+				span6.style.fontSize = "0.9em"
 				span6.style.color = "gray"
 				span6.style.display = "-webkit-box"
 				span6.style.webkitLineClamp = "3"
@@ -150,7 +153,7 @@ function showPlaceList() {
 				divRow4.appendChild(divCol9);
 				
 				const span7 = document.createElement("span");
-				span7.style.fontSize = "14px"
+				span7.style.fontSize = "0.9em"
 				span7.style.display = "-webkit-box"
 				span7.style.webkitLimeClamp = "1"
 				span7.style.webkitBoxOrient = "vertical"
@@ -166,7 +169,7 @@ function showPlaceList() {
 	}
 		xhr.open("post", "./getPlaceList");
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhr.send();
+		xhr.send("sortType=" + categoryValue);
 }
 
 window.addEventListener("DOMContentLoaded", function() {
@@ -177,18 +180,30 @@ window.addEventListener("DOMContentLoaded", function() {
 
 </script>
 
+
+
 <style type="text/css">
-	.reserveButton {
-        width: auto;
-        height: auto;
-        background-image: linear-gradient(98deg,#03c75a,#49c6dd);
-        border-radius: 25px;
-        border: none;
-        color: rgb(255, 255, 255);
-        font-weight: 600;
-        font-size: 14px;
-        padding: 10px 13px;
-    }
+
+	.registerButton {
+			border-radius: 25px; 
+			color: white; 
+			position: fixed; 
+			z-index: 9999; 
+			bottom: 5%; 
+			left: 50%; 
+			transform: translate(-50%, -50%);
+			width: auto;
+			height: auto;
+			padding: 12px 20px;
+			background-image: linear-gradient(98deg,#03c75a,#49c6dd);
+			font-size: 0.9em;
+			font-weight: 600;
+		}
+    
+    .registerButton:hover {
+    	background-image: linear-gradient(98deg,#07e86b,#57def7);
+    	color: #f0f0f0;
+	}
     
     .categoryButton {
     	width: auto;
@@ -217,14 +232,49 @@ window.addEventListener("DOMContentLoaded", function() {
     
     a:hover {
 		text-decoration: none;
-		color: #fc0352;
+		color: black;
 	}
 	
 	ul {
 		list-style: none;
 	
-}
+	}
 	
+	/*swiper style*/
+	 .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 1em;
+	  font-weight: 600;  	
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    :root {
+    --swiper-navigation-size: 1em;
+    
+    .swiper-button-next, .swiper-button-prev {
+		color: black;
+		
+	}
+	
+	@media (max-width: 760px) {
+      .swiper-button-next {
+        right: 20px;
+        transform: rotate(90deg);
+      }
+
+      .swiper-button-prev {
+        left: 20px;
+        transform: rotate(90deg);
+      }
+}
 </style>
 
 </head>
@@ -234,64 +284,41 @@ window.addEventListener("DOMContentLoaded", function() {
 		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 		
         <div class="row mt-4 mb-2">
-        	<ul class="d-flex">
-			    <li class="pe-2">
-			        <a href="#" class="categoryFont">#서울특별시</a>
-			    </li>
-			    <li class="pe-2">
-			        <a href="#" class="categoryFont">#제주도</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#경기도</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#인천광역시</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#부산광역시</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#대구광역시</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#광주광역시</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#대전광역시</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#울산광역시</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#강원도</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#충청북도</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#충청남도</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#전라북도</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#전라남도</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#경상북도</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#경상남도</a>
-			    </li>
-			    <li class="px-2">
-			        <a href="#" class="categoryFont">#기타</a>
-			    </li>
-			</ul>
-        </div>
+			<div class="col">
+				 <!-- Swiper -->
+				<div class="swiper">
+				    <div class="swiper-wrapper">
+				      <div class="swiper-slide"><a href="#">전체</a></div>
+				      <div class="swiper-slide"><a href="/travel/planPlace/placePage?sortType=seoul">서울특별시</a></div>
+				      <div class="swiper-slide"><a href="#">경기도</a></div>
+				      <div class="swiper-slide"><a href="#">강원도</a></div>
+				      <div class="swiper-slide"><a href="#">충청북도</a></div>
+				      <div class="swiper-slide"><a href="#">충청남도</a></div>
+				      <div class="swiper-slide"><a href="#">전라북도</a></div>
+				      <div class="swiper-slide"><a href="#">전라남도</a></div>
+				      <div class="swiper-slide"><a href="#">경상북도</a></div>
+				      <div class="swiper-slide"><a href="#">경상남도</a></div>
+				      <div class="swiper-slide"><a href="#">제주도</a></div>
+				      <div class="swiper-slide"><a href="#">부산광역시</a></div>
+				      <div class="swiper-slide"><a href="#">대구광역시</a></div>
+				      <div class="swiper-slide"><a href="#">인천광역시</a></div>
+				      <div class="swiper-slide"><a href="#">광주광역시</a></div>
+				      <div class="swiper-slide"><a href="#">대전광역시</a></div>
+				      <div class="swiper-slide"><a href="#">울산광역시</a></div>
+				      <div class="swiper-slide"><a href="#">세종특별자치시</a></div>
+				    </div>
+				    <div class="swiper-button-next"></div>
+				    <div class="swiper-button-prev"></div>
+				  </div>
+			</div>
+		</div>
         <div class="row">
         	<div class="col text-center">
         		<c:if test="${!empty sessionuser}">
-					<a style="position: fixed; z-index: 9999; bottom: 5%; left: 50%; transform: translate(-50%, -50%);" class="reserveButton" href="./registerPlacePage"><span>나만의 명소 등록하기</span></a>
+					<a class="registerButton" href="./registerPlacePage">
+						<span>나만의 명소 등록하기</span>
+						<i style="font-size: 15px;" class="bi bi-pencil-square"></i>
+					</a>
 				</c:if>
         	</div>
         </div>
@@ -437,6 +464,32 @@ window.addEventListener("DOMContentLoaded", function() {
 	</div> --%>
 
 
+<!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper('.swiper', {
+      slidesPerView: 8,
+      direction: getDirection(),
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on: {
+        resize: function () {
+          swiper.changeDirection(getDirection());
+        },
+      },
+    });
+
+    function getDirection() {
+      var windowWidth = window.innerWidth;
+      var direction = window.innerWidth <= 760 ? 'vertical' : 'horizontal';
+
+      return direction;
+    }
+  </script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"

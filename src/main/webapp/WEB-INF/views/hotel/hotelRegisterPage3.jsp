@@ -261,6 +261,17 @@ function sendHotelBasics() {
         padding: 17px 15px;
 
     }
+    
+    a {
+    	text-decoration: none;
+    	font-weight: 600;
+    	color: black;
+    }
+    
+    a:hover {
+		text-decoration: none;
+		color: #9c9c9c
+	}
     </style>
 </head>
 <body>
@@ -273,7 +284,7 @@ function sendHotelBasics() {
             <div class="col"></div>
             <div class="col-auto px-5">
                 <div>
-                    <span>나가기</span>
+                    <a href="/travel/hotel/hotelPage">나가기</a>
                 </div>
             </div>
         </div>

@@ -65,26 +65,37 @@ function sendHotelBasics2() {
 <style>
 
     .reserveButton {
-    width: auto;
-    height: auto;
-    background: linear-gradient(to right, rgb(60, 60, 60), rgb(36, 36, 36), rgb(46, 46, 46), rgb(46, 46, 46));
-    border-radius: 10px;
-    border: none;
-    color: rgb(255, 255, 255);
-    padding: 10px 30px;
-    font-weight: 600;
-    font-size: 16px;
-    text-align: center;
-}
+	    width: auto;
+	    height: auto;
+	    background: linear-gradient(to right, rgb(60, 60, 60), rgb(36, 36, 36), rgb(46, 46, 46), rgb(46, 46, 46));
+	    border-radius: 10px;
+	    border: none;
+	    color: rgb(255, 255, 255);
+	    padding: 10px 30px;
+	    font-weight: 600;
+	    font-size: 16px;
+	    text-align: center;
+	}
 
-.box {
-    width: auto;
-    height: auto;
-    border: solid rgb(205, 205, 205) 1px;
-    border-radius: 10px;
-    padding: 17px 15px;
+	.box {
+	    width: auto;
+	    height: auto;
+	    border: solid rgb(205, 205, 205) 1px;
+	    border-radius: 10px;
+	    padding: 17px 15px;
+	
+	}
 
-}
+	a {
+    	text-decoration: none;
+    	font-weight: 600;
+    	color: black;
+    }
+    
+    a:hover {
+		text-decoration: none;
+		color: #9c9c9c
+	}
 </style>
 </head>
 <body>
@@ -98,7 +109,7 @@ function sendHotelBasics2() {
             <div class="col"></div>
             <div class="col-auto px-5">
                 <div>
-                    <span>나가기</span>
+                    <a href="/travel/hotel/hotelPage">나가기</a>
                 </div>
             </div>
         </div>

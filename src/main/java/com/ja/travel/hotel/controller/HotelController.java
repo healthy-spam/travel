@@ -1,5 +1,8 @@
 package com.ja.travel.hotel.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ja.travel.dto.HotelDto;
@@ -25,11 +29,68 @@ public class HotelController {
 
 	@Autowired
 	private HotelService hotelService;
+	
+	
+	@RequestMapping("hotelPaymentPage")
+	public String hotelPaymentPage(@RequestParam("hotel_id") int hotel_id, @RequestParam("guestNum") int guestNum, 
+				@RequestParam("checkInDate") String checkInDate, @RequestParam("checkOutDate") String checkOutDate, @RequestParam("totalFee") int totalFee,  Model model) {
+		
+		System.out.println(guestNum);
+		System.out.println(checkInDate);
+		System.out.println(checkOutDate);
+		System.out.println(totalFee);
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Date formatCheckInDate = null;
+		Date formatCheckOutDate = null;
+		
+		try {
+			
+			formatCheckInDate = dateFormat.parse(checkInDate);
+			System.out.println("변환된 Date 객체: " + formatCheckInDate);
+			
+		} catch (ParseException e) {
+		
+			System.out.println("날짜 변환에 실패하였습니다. 유효하지 않은 날짜 형식입니다.");
+			
+			e.printStackTrace();
+		}
+		
+		try {
+			
+			formatCheckOutDate = dateFormat.parse(checkOutDate);
+			System.out.println("변환된 Date 객체: " + formatCheckInDate);
+			
+		} catch (ParseException e) {
+		
+			System.out.println("날짜 변환에 실패하였습니다. 유효하지 않은 날짜 형식입니다.");
+			
+			e.printStackTrace();
+		}
+		
+		
+		Integer countOfReview = hotelService.searchCountReview(hotel_id);
+		Double avgPointOfReview = hotelService.searchCountReviewPoint(hotel_id);
+		Map<String, Object> hotelMap =  hotelService.searchHotel(hotel_id);
+		
+		model.addAttribute("countOfReview", countOfReview);
+		model.addAttribute("avgPointOfReview", avgPointOfReview);
+		model.addAttribute("hotelMap", hotelMap);
+		model.addAttribute("formatCheckInDate", formatCheckInDate);
+		model.addAttribute("formatCheckOutDate", formatCheckOutDate);
+		model.addAttribute("guestNum", guestNum);
+		model.addAttribute("totalFee", totalFee);
+		
+		return "hotel/hotelPaymentPage";
+	}
 
 	@RequestMapping("hotelPage")
-	public String hotelPage(Model model) {
+	public String hotelPage(Model model, String sortType) {
+		
+		System.out.println(sortType);
 
-		List<Map<String, Object>> hotelList = hotelService.selectAllHotelList();
+		List<Map<String, Object>> hotelList = hotelService.selectAllHotelList(sortType);
 
 		List<Map<String, Object>> hotelCategoryList = hotelService.selectAllHotelCategoryList();
 

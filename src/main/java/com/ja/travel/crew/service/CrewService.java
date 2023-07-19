@@ -172,6 +172,11 @@ public class CrewService {
 			UserDto userDto2 = crewMapper.getUserDtoByCrewMemberId(post.getCrew_member_id()); //게시글 작성자 닉네임
 			List<Integer> boardlikelist = crewMapper.getBoardLikeListByCrewBoardId(post.getCrew_board_id()); //해당 게시글에 좋아요 누른 crew_member_id 리스트
 
+			List<CrewBoardAttachedDto> files = crewMapper.getCrewBoardAttachedByCrewBoardId(post.getCrew_board_id());
+			if(files!=null) {
+				map.put("files", files);
+			}
+			
 			int count = 0;
 			int k = mycrewMemberDto.getCrew_member_id(); //sessionuser의 crew_member_id
 			if(boardlikelist.size()!=0) { //boardlikelist의 값이 null이 아닐때
@@ -184,6 +189,7 @@ public class CrewService {
 					}
 				}
 			}
+
 			map.put("crewMemberDto", mycrewMemberDto);
 			map.put("boardlikecount", count);
 			map.put("userDto", userDto2);
@@ -257,7 +263,7 @@ public class CrewService {
 		return "redirect:/main";
 	}
 
-	public int boardwrite(Map<String, String> aa, HttpSession session) {
+	public void boardwrite(Map<String, String> aa, HttpSession session) {
 		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
 		CrewBoardDto crewBoardDto = new CrewBoardDto();
 		crewBoardDto.setCrew_board_title(aa.get("crew_board_title"));
@@ -274,7 +280,7 @@ public class CrewService {
 		}
 		crewMapper.boardwrite(crewBoardDto);
 		System.out.println("boardid = "+crewMapper.getLastCrewBoardIdByCrewMemberId(crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id()).getCrew_member_id()));
-		return crewMapper.getLastCrewBoardIdByCrewMemberId(crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id()).getCrew_member_id());
+		
 	}
 
 	public String boarddelete(int crew_board_id) {
@@ -708,6 +714,51 @@ public class CrewService {
 			aa.add(map);
 		}
 		return aa;
+	}
+
+
+	public void boardattached(MultipartFile[] files, HttpSession session) {
+		System.out.println(files.length);
+		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
+		String boardid = Integer.toString(crewMapper.getBoardId(crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id()).getCrew_member_id()));
+		
+		int order = 1;
+		
+		for(MultipartFile f : files) {
+			System.out.println("파일명: " + f.getOriginalFilename());
+			
+			String rootFolder = "C:/uploadFiles/crewFiles/crewboard/"+boardid+"/";
+			
+			File targetFolder = new File(rootFolder); // C:/uploadFolder/crewthumbnail
+			
+			if(!targetFolder.exists()) {
+				targetFolder.mkdirs();
+			}
+			
+			// 저장 파일명 만들기.
+			String fileName = Integer.toString(order);
+			
+			// 확장자 추출
+			String originalFileName = f.getOriginalFilename();
+			
+			String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+			
+			String saveFileName = fileName + ext;
+			
+			try {
+				f.transferTo(new File(rootFolder + saveFileName));
+			}catch(Exception e) {
+				System.out.println(e);
+				e.printStackTrace();
+			}
+			
+			CrewBoardAttachedDto c = new CrewBoardAttachedDto();
+			c.setCrew_board_id(Integer.parseInt(boardid));
+			c.setCrew_board_original_attached(originalFileName);
+			c.setCrew_board_attached(saveFileName);
+			crewMapper.addCrewBoardAttached(c);
+			order++;
+		}
 	}
 		
 }
