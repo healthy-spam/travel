@@ -100,11 +100,13 @@ public class MainService {
 		}
 		
 		List<PlanningDto> myPlanningList = mainSqlMapper.getMyPlanningList(user_id);
-		
+		List<PlanDto> planList = mainSqlMapper.getPlanList(user_id);
 		List<HotelDto> hotelList = hotelSqlMapper.selectHotelByUser(user_id);
 		
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 		List<Map<String, Object>> list2 = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> list3 = new ArrayList<Map<String,Object>>();
+		
 		Map<String, Object> mapList = new HashMap<>();
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -119,15 +121,21 @@ public class MainService {
 			list2.add(map);
 		}
 
-		for (PlanningDto planningDto : myPlanningList) {
+		for (PlanDto plan : planList) {
 			Map<String, Object> map = new HashMap<>();
 			
-			PlanDto plan = travelApplicationSqlMapper.getPlanByPlanningId(planningDto.getPlanning_id());
 			List<PlanDayDto> planDay = travelApplicationSqlMapper.getPlanDayByPlanId(plan.getPlan_id());
-
-			map.put("myPlanning", planningDto);
+			
 			map.put("plan", plan);
 			map.put("day", planDay.size());
+			
+			list3.add(map);
+		}
+		
+		for (PlanningDto planningDto : myPlanningList) {
+			Map<String, Object> map = new HashMap<>();
+						
+			map.put("myPlanning", planningDto);
 			
 			// 종료 시간을 LocalDateTime으로 변환합니다.
 			LocalDateTime endDate = LocalDateTime.parse(planningDto.getPlanning_end_date(), formatter);
@@ -146,6 +154,7 @@ public class MainService {
 		
 		mapList.put("list", list);
 		mapList.put("list2", list2);
+		mapList.put("list3", list3);
 		
 		return mapList;
 	}

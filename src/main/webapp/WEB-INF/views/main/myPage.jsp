@@ -315,7 +315,7 @@ body {
 										</div>
 									</c:when>
 									<c:otherwise>
-										<c:forEach items="${map.list}" var="data">
+										<c:forEach items="${map.list3}" var="data">
 											<div>
 												<a class="d-flex justify-content-between my-2" href="./plan/readPlanPage?id=${data.plan.plan_id}" style="text-decoration: none;">
 													<span style="color: black;">${data.plan.plan_title}</span>
