@@ -309,7 +309,7 @@ body {
 							<div class="card-title">마이플랜</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
 								<c:choose>
-									<c:when test="${empty map.list}">
+									<c:when test="${empty map.list3}">
 										<div class="d-flex justify-content-center mt-3">
 											플랜 목록이 없습니다.
 										</div>
