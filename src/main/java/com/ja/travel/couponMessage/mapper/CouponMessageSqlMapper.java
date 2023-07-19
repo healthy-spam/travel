@@ -85,4 +85,14 @@ public interface CouponMessageSqlMapper {
 
 	public List<MessageDto> getMessageInStorageList(@Param("userId") int userId, @Param("userNickName") String userNickName);
 
+	public void updateMessageSendNotStored(@RequestParam("messageId") Integer messageId);
+
+	public void updateMessageSendStored(@RequestParam("messageId") Integer messageId);
+
+	public void updateMessageGetNotStored(@RequestParam("messageId") Integer messageId);
+
+	public void updateMessageGetStored(@RequestParam("messageId") Integer messageId);
+
+	public int checkStored(@Param("userId") int userId, @Param("messageId") int messageId, @Param("userNickName") String userNickName);
+
 }
