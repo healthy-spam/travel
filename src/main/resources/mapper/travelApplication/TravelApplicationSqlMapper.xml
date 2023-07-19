@@ -176,20 +176,11 @@
 		SELECT * FROM planning WHERE planning_id = #{planning_id}
 	</select>
 
-	<select id="getPlanAndPlanningInfoByPlanId" resultType="com.ja.travel.dto.PlanningDto">
-		SELECT * FROM planning
-		INNER JOIN plan ON plan.plan_id = planning.plan_id
-		WHERE plan_statuse = '기획중'
-		AND plan.plan_id =
-		#{plan_id}
-	</select>
-
 	<select id="getPlanStatusByPlanId" resultType="com.ja.travel.dto.PlanningDto">
 		SELECT * FROM planning
 		INNER JOIN plan ON plan.plan_id = planning.plan_id
 		WHERE plan_statuse = '모집중'
-		AND plan.plan_id =
-		#{plan_id}
+		AND plan.plan_id = #{plan_id}
 	</select>
 
 	<select id="getPlanningAcceptCountByPlanningId" resultType="com.ja.travel.dto.UserDto">
@@ -218,15 +209,6 @@
 		= '거절'
 		WHERE planning_id = ${planning_id}
 		AND user_id = ${user_id}
-	</update>
-
-	<update id="updateToPlanning">
-		UPDATE plan
-		SET
-		plan_statuse = '기획중'
-		WHERE
-		plan_id =
-		#{plan_id}
 	</update>
 
 	<update id="updatePlanningData">
