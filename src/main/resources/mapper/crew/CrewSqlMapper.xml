@@ -318,4 +318,8 @@
 	<select id="getUserDtoBySearchWord" resultType="com.ja.travel.dto.UserDto">
 		select * from member where user_nickname like '%' || #{searchword} || '%' and user_id = (select user_id from crew_member where crew_domain = #{crew_domain} and crew_join_status = 'member')
 	</select>
+	
+	<select id="getCrewBoardAttachedByCrewBoardId" resultType="com.ja.travel.dto.CrewBoardAttachedDto">
+		select * from crew_board_attached where crew_board_id = #{crew_board_id}
+	</select>
 </mapper>

@@ -46,8 +46,16 @@
 				"crew_board_visibility" : crew_board_visibility,
 				"crew_board_notice" : crew_board_notice
 				}),
-				success : function(res) {
-					uploadPhotos(res);
+				success : function() {
+					if( document.getElementById("image-upload").value != null) {
+						console.log("사진있음")
+						uploadPhotos();
+					}
+					else {
+						console.log("사진없음")
+						alert("작성이 완료되었어요!");
+					      location.reload();
+					}
 					},
 					error : function(err) {
 						console.error("삭제 실패",err);
@@ -58,33 +66,29 @@
 </script>
 
 <script>
-function uploadPhotos(res) {
-	console.log(res);
-	  var formData = new FormData();
-	  var files = $('#crew_thumbnail')[0].files;
+function uploadPhotos() {
+	var formData = new FormData();
+	var files = document.getElementById("image-upload").files;
+	for(var i = 0; i<files.length;i++) {
+		formData.append('files', files[i]);
+	}
 
-	    // 선택된 각 파일을 FormData에 추가
-	    for (var i = 0; i < files.length; i++) {
-	      formData.append('myFiles[]', files[i]);
-	    }
+	// AJAX 요청 보내기
+	  const xhr = new XMLHttpRequest();
+	  xhr.open('POST', '/travel/crew/crewboard/uploadfiles', true);
 
-	  $.ajax({
-	    url: "/travel/crew/crewboard/uploadfiles",
-	    type: 'POST',
-	    data: formData,
-	    processData: false,
-	    contentType: false,
-	    success: function(response) {
-	      console.log('Photos uploaded successfully.');
-	      alert("작성이 완료되었어요!");
+	  xhr.onreadystatechange = function() {
+	    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+	      // 요청이 성공적으로 완료되었을 때 처리할 로직
+	      alert("작성이 완료되었습니다.");
 	      location.reload();
-	    },
-	    error: function(xhr, status, error) {
-	      // 오류 발생 시 처리할 코드 작성
-	      console.log('Error occurred during photo upload.');
-	      return;
+	      
+	      console.log(xhr.responseText);
 	    }
-	  });
+	  };
+
+	  xhr.send(formData);
+
 	}
 
 </script>
@@ -532,9 +536,29 @@ strong#Createnewpost {
 								<p class="postcontent">${list.c.crew_board_content }</p>
 							</div>
 							
-							<!--  <div class="row mx-2 mb-3">
-								<img src="https://github.com/mdo.png" height="500px">
-							</div>-->
+							<div class="row mx-2 mb-3">
+								<c:if test="${!empty list.files }">
+								
+								<div id="carouselExample" class="carousel slide">
+									<div class="carousel-inner">
+									<c:forEach var="photos" items="${list.files}" varStatus="status">
+										    <div class="carousel-item">
+										      <img src="/uploadFiles/crewFiles/crewboard/${photos.crew_board_id }/${photos.crew_board_attached}" class="d-block w-100" alt="${crew_board_original_attached }">
+										    </div>
+									</c:forEach>
+										</div>
+										  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+										    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+										    <span class="visually-hidden">Previous</span>
+										  </button>
+										  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+										    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+										    <span class="visually-hidden">Next</span>
+										  </button>
+									</div>
+								</c:if>
+								
+							</div>
 							
 							<div class="row mx-2">
 								<div class="col-auto">
@@ -694,8 +718,9 @@ strong#Createnewpost {
 							style="height: 150px" required></textarea>
 					</div>
 					<hr>
-					<i class="bi bi-images txt"> <input type="file" id="image-upload" multiple>클릭해 사진을 추가해보세요!</i>
-					
+<form id="uploadForm" enctype="multipart/form-data">
+  <input type="file" name="image-upload" id="image-upload" multiple>
+					</form>
 					<div id="preview-container" class="sortable-container"></div>
 				</div>
 				<div class="modal-footer">
