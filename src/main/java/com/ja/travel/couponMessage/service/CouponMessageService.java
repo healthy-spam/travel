@@ -250,6 +250,43 @@ public class CouponMessageService {
 		}
 		return list;
 	}
+
+	public void deleteMessageInTrash(int messageId) {
+		// TODO Auto-generated method stub
+		couponMessageSqlMapper.deleteMessagePerman(messageId);
+	}
+
+	public List<Map<String, Object>> getMessageInStorage(int userId) {
+		
+		List<Map<String,Object>> list = new ArrayList<>();
+		UserDto userDto = couponMessageSqlMapper.getUserDtoByUserId(userId);
+		String userNickName = userDto.getUser_nickname();
+		
+		List<MessageDto> messageTrashList = couponMessageSqlMapper.getMessageInStorageList(userId, userNickName);
+		for(MessageDto messageDto : messageTrashList) {
+			
+			Map<String, Object> map = new HashMap<>();
+			userId = messageDto.getUser_id();
+			userDto = couponMessageSqlMapper.getUserDtoByUserId(userId);
+
+			map.put("messageDto", messageDto);
+			map.put("userDto", userDto);
+			list.add(map);
+		}
+		return list;
+		
+	}
+
+	public void updateStar(int userId, int messageId) {
+		
+		MessageDto messageDto = couponMessageSqlMapper.getMessageDtoByMessageId(messageId);
+		String messageStatus = messageDto.getMessage_status();
+		int userId = messageDto.getUser_id();
+		if(messageStatus.contains("보관")) {
+			
+		}
+		
+	}
 	
 
 }

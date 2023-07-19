@@ -115,9 +115,7 @@
 
 </head>	
 <body>
-	
-	<div class="container-fluid">
-	
+
 	<div class="container">
 		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 	</div>
@@ -261,7 +259,8 @@
 													<div class="col text-end">
 														<i class="bi bi-star-fill" style="color: #fcc203; font-size: 14px;"></i>
 														<span class="p-0 fw-bold" style="font-size: 14px;">${hotelList.hotelReviewPointCount}</span>
-														<span style="font-size: 14px;">(</span><span style="font-size: 14px;">${hotelList.hotelReviewCount}</span><span>)</span>
+														<span style="font-size: 14px;">(</span>
+														<span style="font-size: 14px;">${hotelList.hotelReviewCount}</span><span>)</span>
 													</div>
 												</c:when>
 												<c:otherwise>
@@ -282,12 +281,13 @@
 										<div class="row">
 											<div class="col-auto pe-0">
 												<span style="color: gray; font-size: 14px;"><fmt:formatDate value="${hotelList.hotelDto.hotel_reserve_start_date}" pattern="MM월 dd일" /></span>
-											</div> 
+											</div>
 											<div class="col-auto px-0">
 												<span style="color: gray; font-size: 14px;">~</span>
 											</div>
 											<div class="col-auto ps-0">
-												<span style="color: gray; font-size: 14px;"><fmt:formatDate value="${hotelList.hotelDto.hotel_reserve_end_date}" pattern="MM월 dd일" /></span> 
+												<span style="color: gray; font-size: 14px;">
+												<fmt:formatDate value="${hotelList.hotelDto.hotel_reserve_end_date}" pattern="MM월 dd일" /></span>
 											</div>
 										</div>
 										<div class="row">
@@ -296,7 +296,7 @@
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-auto pe-0" >
+											<div class="col-auto pe-0">
 												<span style="font-size: 14px; font-weight: bold;">\</span>
 											</div>
 											<div class="col-auto px-0">

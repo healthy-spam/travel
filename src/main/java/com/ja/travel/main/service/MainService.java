@@ -111,8 +111,10 @@ public class MainService {
 		
 		for (HotelDto hotel : hotelList) {
 			Map<String, Object> map = new HashMap<>();
+			Double reviewPoint = hotelSqlMapper.searchCountReviewPoint(hotel.getHotel_id());
 
 			map.put("hotel", hotel);
+			map.put("reviewPoint", reviewPoint);
 			
 			list2.add(map);
 		}

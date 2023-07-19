@@ -25,7 +25,6 @@
 		var crew_board_title = document.getElementById("crew_board_title").value;
 		var crew_board_content = document.getElementById("crew_board_content").value;
 		var crew_board_visibility = document.getElementById("crew_board_visibility").value;
-		var crew_board_notice = document.getElementById("crew_board_notice").value;
 		
 		if(crew_board_title == "") {
 			alert("제목을 입력하세요");return
@@ -421,9 +420,12 @@ strong#Createnewpost {
         }
         
         #crewmain {
-        	background-color: #BB2649;
+        background-color: #17b75e;
         }
         
+        .vs {
+        	font-size:14px;
+        }
 </style>
 
 
@@ -481,8 +483,9 @@ strong#Createnewpost {
 
 
 				<div class="row">
-					<!--여기서부터 jsp c:foreach 반복-->
-					<c:forEach var="list" items="${list}" varStatus="status">
+					<c:choose>
+						<c:when test="${!empty list }">
+												<c:forEach var="list" items="${list}" varStatus="status">
 						<div class="card boardlist mt-3 p-2 pb-3">
 							<div class="row mx-2 ">
 								<div
@@ -497,12 +500,22 @@ strong#Createnewpost {
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-auto">
+										<div class="col-auto pt-1">
 											<p class="postregdate">
 												<fmt:formatDate value="${list.c.crew_board_reg_date }"
 													pattern="yyyy-MM-dd HH:mm" var="regdate" />
 												${regdate }
 											</p>
+										</div>
+										<div class="col ps-0 pb-3">
+											<c:choose>
+												<c:when test="${list.c.crew_board_visibility == 'public' }">
+													<i class="bi bi-globe-americas vs"></i>
+												</c:when>
+												<c:otherwise>
+													<i class="bi bi-people-fill vs"></i>
+												</c:otherwise>
+											</c:choose>
 										</div>
 									</div>
 								</div>
@@ -607,6 +620,16 @@ strong#Createnewpost {
 							</c:choose>
 						</div>
 					</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<div class="row mt-5">
+								<div class="col text-center mt-5">
+									등록된 게시글이 없습니다.
+								</div>
+							</div>
+						</c:otherwise>
+					</c:choose>
+
 					<!--반복 끝-->
 
 				</div>

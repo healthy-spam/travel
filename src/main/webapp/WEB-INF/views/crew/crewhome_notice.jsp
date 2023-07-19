@@ -25,7 +25,6 @@
 		var crew_board_title = document.getElementById("crew_board_title").value;
 		var crew_board_content = document.getElementById("crew_board_content").value;
 		var crew_board_visibility = document.getElementById("crew_board_visibility").value;
-		var crew_board_notice = document.getElementById("crew_board_notice").value;
 		
 		if(crew_board_title == "") {
 			alert("제목을 입력하세요");return
@@ -34,7 +33,7 @@
 			alert("내용을 입력하세요");return
 		}
 		
-		crew_board_notice = 'N';
+		crew_board_notice = 'Y';
 
 		
 		$.ajax({
@@ -168,7 +167,7 @@ function deleteboard(crew_board_id) {
 	        }),
 	        success: function(res) {
 	            alert("삭제되었습니다.");
-	            window.location.href = res
+	            location.reload();
 	        },
 	        error: function(err) {
 	            console.error("삭제 실패", err);
@@ -421,7 +420,11 @@ strong#Createnewpost {
         }
         
         #crewnotice {
-        	background-color: #BB2649;
+        background-color: #17b75e;
+        }
+        
+        .vs {
+        	font-size:14px;
         }
 </style>
 
@@ -449,11 +452,13 @@ strong#Createnewpost {
 							placeholder="Search">
 					</div>
 				</div>
+				
+				<c:if test="${myGrade <= 2 }">
 				<div class="row">
 					<div class="card boardwrite" id="openBoardWrite">
 						<div class="row mx-2 mt-3">
 							<div class="col-auto">
-								<Strong id="Createnewpost">새 게시글 작성하기</Strong>
+								<Strong id="Createnewpost">공지 작성하기</Strong>
 							</div>
 							<div class="col text-end">
 								<i class="bi bi-three-dots"></i>
@@ -477,11 +482,13 @@ strong#Createnewpost {
 						</div>
 					</div>
 				</div>
-
+				</c:if>
 
 				<div class="row">
 					<!--여기서부터 jsp c:foreach 반복-->
-					<c:forEach var="list" items="${list}" varStatus="status">
+					<c:choose>
+						<c:when test="${!empty noticepost }">
+												<c:forEach var="list" items="${noticepost}" varStatus="status">
 						<div class="card boardlist mt-3 p-2 pb-3">
 							<div class="row mx-2 ">
 								<div
@@ -496,12 +503,22 @@ strong#Createnewpost {
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-auto">
+										<div class="col-auto  pt-1">
 											<p class="postregdate">
-												<fmt:formatDate value="${list.c.crew_board_reg_date }"
+												<fmt:formatDate value="${list.crewBoardDto.crew_board_reg_date }"
 													pattern="yyyy-MM-dd HH:mm" var="regdate" />
 												${regdate }
 											</p>
+										</div>
+										<div class="col ps-0 pb-3">
+											<c:choose>
+												<c:when test="${list.crewBoardDto.crew_board_visibility == 'public' }">
+													<i class="bi bi-globe-americas vs"></i>
+												</c:when>
+												<c:otherwise>
+													<i class="bi bi-people-fill vs"></i>
+												</c:otherwise>
+											</c:choose>
 										</div>
 									</div>
 								</div>
@@ -509,13 +526,13 @@ strong#Createnewpost {
 									<i class="bi bi-three-dots"  data-bs-toggle="dropdown"></i>
 									<ul class="dropdown-menu">
 										<li class="dropdown-item" id="commentmodify">수정2</li>
-										<li class="dropdown-item" onclick="deleteboard('${list.c.crew_board_id}')">삭제</li>
+										<li class="dropdown-item" onclick="deleteboard('${list.crewBoardDto.crew_board_id}')">삭제</li>
 									</ul>
 								</div>
 							</div>
 							<div class="row m-2" id="getboarddetails">
-								<h5>${list.c.crew_board_title }</h5>
-								<p class="postcontent">${list.c.crew_board_content }</p>
+								<h5>${list.crewBoardDto.crew_board_title }</h5>
+								<p class="postcontent">${list.crewBoardDto.crew_board_content }</p>
 							</div>
 							
 							<!--  <div class="row mx-2 mb-3">
@@ -527,85 +544,32 @@ strong#Createnewpost {
 									<c:choose>
 										<c:when test="${empty list.liked }">
 											<i class="bi bi-suit-heart"
-												onclick="likeboard('${crewMemberDto.crew_member_id}', '${list.c.crew_board_id }', '${list.c.crew_member_id }')"> ${list.boardlikecount }</i>
+												onclick="likeboard('${crewMemberDto.crew_member_id}', '${list.crewBoardDto.crew_board_id }', '${list.crewBoardDto.crew_member_id }')"> ${list.boardlikecount }</i>
 										</c:when>
 										<c:otherwise>
 											<i class="bi bi-suit-heart-fill"
-												onclick="dislikeboard('${crewMemberDto.crew_member_id}', '${list.c.crew_board_id }', '${list.c.crew_member_id }')"> ${list.boardlikecount }</i>
+												onclick="dislikeboard('${crewMemberDto.crew_member_id}', '${list.crewBoardDto.crew_board_id }', '${list.crewBoardDto.crew_member_id }')"> ${list.boardlikecount }</i>
 										</c:otherwise>
 									</c:choose>
 
-								</div>
-								<div class="col-auto">
-									<i class="bi bi-chat-left-text" onclick="getcommentlist('${list.c.crew_board_content}')"> ${list.boardcommentcount }</i>
 								</div>
 								<div class="col text-end">
 									<i class="bi bi-bookmark-plus"></i>
 								</div>
 							</div>
 						</div>
-						<div class="commentlist card p-2" style="display: block;">
-							<div class="row p-2">
-								<div class="col pe-0">
-									<input placeholder="댓글 내용을 입력하세요." class="postwritearea nonboarder form-control" name="board_comment_content"  id="comment-${status.index}">
-								</div>
-								<div class="col-auto px-3 pt-1">
-									<i class="bi bi-send " onclick="writecomment('${list.c.crew_board_id}', '${status.index}')"></i>
+						
+					</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<div class="row mt-5">
+								<div class="col text-center mt-5">
+									등록된 공지가 없습니다.
 								</div>
 							</div>
-							<c:choose>
-								<c:when test="${list.boardcommentcount != 0 }">
-									<c:forEach var="comment" items="${list.commentlist}">
-										<div class="row m-2">
-											<div class="col-auto px-0">
-												<img
-													src="/uploadFiles/profileImage/${comment.commentWriter.user_image }"
-													width="35" height="35" class="rounded-circle ">
-											</div>
-											<div class="col me-4">
-												<div class="card commentcard  p-2 ">
-													<div class="row ">
-														<div class="col commentwriter">
-															${comment.commentWriter.user_nickname }</div>
-													</div>
-													<div class="row ">
-														<div class="col commentcontent">
-															${comment.crewBoardCommentDto.crew_comment }</div>
-													</div>
-													
-												</div>
-												<div class="row">
-														<div class="col commentwritedate mt-1">
-															<fmt:formatDate
-																value="${comment.crewBoardCommentDto.crew_comment_date }"
-																pattern="yyyy-MM-dd HH:mm" var="formattedDate" />
-															${formattedDate }
-														</div>
-														<div class="col text-end">
-															<c:if test="${comment.crewBoardCommentDto.crew_member_id == crewMemberDto.crew_member_id }">
-															<i class="bi bi-three-dots" data-bs-toggle="dropdown"></i>
-															  <ul class="dropdown-menu">
-															    <li class="dropdown-item" id="commentmodify">수정</li>
-															    <li class="dropdown-item" onclick="commentdelete('${comment.crewBoardCommentDto.board_comment_id}')">삭제</li>
-															  </ul>
-															</c:if>
-														</div>
-												</div>
-											</div>
-										</div>
+						</c:otherwise>
+					</c:choose>
 
-									</c:forEach>
-								</c:when>
-								<c:otherwise>
-								<div class="row py-5">
-									<div class="col text-center nocomment">
-										등록된 댓글이 없습니다.
-									</div>
-								</div>
-								</c:otherwise>
-							</c:choose>
-						</div>
-					</c:forEach>
 					<!--반복 끝-->
 
 				</div>
@@ -626,7 +590,7 @@ strong#Createnewpost {
 			class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="exampleModalLabel">게시글 작성</h1>
+					<h1 class="modal-title fs-5" id="exampleModalLabel">공지 작성</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
@@ -677,7 +641,7 @@ strong#Createnewpost {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-primary" onclick="boardwrite()">작성</button>
+					<button type="submit" class="btn btn-primary" onclick="boardwrite()">등록</button>
 				</div>
 			</div>
 		</div>

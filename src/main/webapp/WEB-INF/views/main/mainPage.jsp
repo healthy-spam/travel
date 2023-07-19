@@ -97,6 +97,7 @@
 						var cardBody = document.createElement('div');
 						var title = document.createElement('div');
 						var content = document.createElement('div');
+						var partyMember = document.createElement('div');
 						var userInfo = document.createElement('span');
 						var icon2 = document.createElement('i');
 						var icon3 = document.createElement('span');
@@ -119,12 +120,14 @@
 						cardBody.className = 'card-body';
 						title.className = 'd-flex justify-content-between';
 						div.className = 'title text-truncate';
-						content.className = 'content mb-3 text-truncate text-secondary';
+						content.className = 'content mb-3 text-truncate';
+						partyMember.innerText = '모집중 3 / 5';
 						div2.className = 'd-flex align-items-center';
 						div2.style.fontWeight = '700';
 						userInfo.className = 'user-info';
 						icon2.className = 'bi bi-calendar-check';
 						icon2.style.marginRight = '0.5em';
+						icon2.style.color = '#999999';
 						icon3.className = 'titleIcon bi bi-diagram-3';
 						icon3.innerText = response.list[i].recursiveList == null ? 0 : response.list[i].recursiveList;
 						img2.setAttribute('src', '/uploadFiles/profileImage/'+response.list[i].user.user_image);
@@ -161,6 +164,7 @@
 						div2.appendChild(userInfo);
 						cardBody.appendChild(title);
 						cardBody.appendChild(content);
+						cardBody.appendChild(partyMember);
 						cardBody.appendChild(div2);
 						title.appendChild(div);
 						title.appendChild(icon3);
@@ -298,6 +302,7 @@ body {
 
 .titleIcon {
 	font-size: 1em;
+	color: #999999;
 }
 
 .card-body {
@@ -306,7 +311,7 @@ body {
 
 .content, .user-info {
 	font-size: 0.8em;
-	color: #5C5C5C;
+	color: #999999;
 }
 
 .cardWrapper:hover .iconWrapper1 {

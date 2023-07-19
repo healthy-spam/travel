@@ -127,6 +127,7 @@ public class RestCouponMessageController {
 		return map;
 	}
 	
+	// 휴지통 리스트 띄우기
 	@RequestMapping("/reloadTrash")
 	public Map<String, Object> reloadTrash(HttpSession session) {
 		Map<String, Object> map = new HashMap<>();
@@ -140,6 +141,46 @@ public class RestCouponMessageController {
 		map.put("result", "success");
 		map.put("list", list);
 		map.put("userId", userId);
+		return map;
+	}
+	
+	@RequestMapping("/deleteMessageInTrash")
+	public Map<String, Object> deleteMessageInTrash(@RequestParam("messageId") Integer messageId) {
+		Map<String, Object> map = new HashMap<>();
+		
+		couponMessageService.deleteMessageInTrash(messageId);
+		
+		map.put("result", "success");
+		return map;
+	}
+	
+	@RequestMapping("/reloadStorage")
+	public Map<String, Object> reloadStorage(HttpSession session) {
+
+		Map<String, Object> map = new HashMap<>();
+		
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		int userId = sessionUser.getUser_id();
+		
+		List<Map<String, Object>> list = couponMessageService.getMessageInStorage(userId);
+		
+		
+		map.put("result", "success");
+		map.put("list", list);
+		map.put("userId", userId);
+		return map;
+	}
+	
+	@RequestMapping("/toggleStar")
+	public Map<String, Object> toggleStar(HttpSession session ,@RequestParam("messageId") Integer messageId) {
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		int userId = sessionUser.getUser_id();
+		
+		couponMessageService.updateStar(userId , messageId);
+		
 		return map;
 	}
 }

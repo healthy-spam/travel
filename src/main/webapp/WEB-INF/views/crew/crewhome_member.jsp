@@ -19,10 +19,11 @@
 
 
 <script>
-function getProfile(user_image, user_nickname,crew_member_log_date) {
+function getProfile(user_image, user_nickname,crew_member_log_date, user_id) {
 	var profilemodal = bootstrap.Modal.getOrCreateInstance("#profilemodal");
 
 	console.log(crew_member_log_date)
+	console.log(user_id)
 	
 	var crew_member_log_date= crew_member_log_date;
 	var user_image = user_image;
@@ -46,7 +47,6 @@ function getProfile(user_image, user_nickname,crew_member_log_date) {
 	document.getElementById("modalprofilename").innerHTML = `<span>\${user_nickname}</span>`;
 	document.getElementById("modalprofilejoindate").innerHTML = `<span>since \${year}.\${month}.\${day}.`;
 	
-	var user_id = document.getElementById("user_id").value;
 	
 	if(user_id != user_image.split(".")[0]) {
 		document.getElementById("postlistanddm").innerHTML = `
@@ -167,7 +167,7 @@ body {
 }
 
 #crewmember {
-background-color: #BB2649;
+        background-color: #17b75e;
 }
 
 .margin-left-col {
@@ -216,7 +216,7 @@ background-color: #BB2649;
 
 .member2 {
     font-style: normal;
-    color: #bb2649;
+    color: #17b75e;
 }
 
 .member3 {
@@ -277,7 +277,7 @@ font-size: 30px
 					<div class="row">
 						<div class="col-auto">
 							<span>
-								<img src="/uploadFiles/profileImage/${memberList.userDto.user_image }" width="45" height="45" class="rounded-circle" onclick="getProfile('${memberList.userDto.user_image }', '${memberList.userDto.user_nickname }', '${memberList.crewMemberDto.crew_member_log_date }')">
+								<img src="/uploadFiles/profileImage/${memberList.userDto.user_image }" width="45" height="45" class="rounded-circle" onclick="getProfile('${memberList.userDto.user_image }', '${memberList.userDto.user_nickname }', '${memberList.crewMemberDto.crew_member_log_date }','${memberList.userDto.user_id }')">
 							</span>
 						</div>
 						<div class="col-auto member3 ps-1 pt-2">
@@ -289,7 +289,7 @@ font-size: 30px
 						<div class="col text-end">
 							<i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
 							<ul class="dropdown-menu">
-								<li class="dropdown-item" onclick="getProfile('${memberList.userDto.user_image }', '${memberList.userDto.user_nickname }', '${memberList.crewMemberDto.crew_member_log_date }')">프로필 보기</li>
+								<li class="dropdown-item" onclick="getProfile('${memberList.userDto.user_image }', '${memberList.userDto.user_nickname }', '${memberList.crewMemberDto.crew_member_log_date }','${memberList.userDto.user_id }')">프로필 보기</li>
 								<li class="dropdown-item" onclick="commentdelete('${comment.crewBoardCommentDto.board_comment_id}')">쪽지 보내기</li>
 							</ul>
 						</div>
