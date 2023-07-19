@@ -1,6 +1,7 @@
 package com.ja.travel.crew.controller;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -84,6 +85,11 @@ public class CrewController {
     
 	@RequestMapping("/crewhome/{crew_domain}")
 	public String crewhome(@PathVariable("crew_domain") String crew_domain, Model model, HttpSession session) {
+//		Map<String, Object> crewMainResources = crewService.crewMainResources(crew_domain, session);
+//		for (Map.Entry<String, Object> entry : crewMainResources.entrySet()) {
+//            model.addAttribute(entry.getKey(), entry.getValue());
+//        }
+//		Map<String, Object> crewPostResources = crewService.crewPostResources(crew_domain, "");
 		return crewService.crewhome(crew_domain, session, model);
 	}
 	
