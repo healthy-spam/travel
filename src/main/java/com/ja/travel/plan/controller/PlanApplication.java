@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ja.travel.dto.PlanDto;
 import com.ja.travel.dto.UserDto;
+import com.ja.travel.guidePackage.service.PackageService;
 import com.ja.travel.login.service.LoginService;
 import com.ja.travel.plan.service.PlanService;
 
@@ -29,6 +30,9 @@ public class PlanApplication {
    
    @Autowired
    public LoginService loginService;
+   
+   @Autowired
+   public PackageService packageService;
    
    // 플래너 메인 페이지
    @RequestMapping("planPage")
@@ -47,9 +51,16 @@ public class PlanApplication {
       
    // 플래너 일정추가 페이지
    @RequestMapping("registerPlanRoutePage")
-   public String registerPlanRoutePage(Model model, int plan_id) {
+   public String registerPlanRoutePage(Model model,  @RequestParam int plan_id, @RequestParam String plan_title) {
       
       model.addAttribute("plan_id", plan_id); // plan_id를 모델에 추가
+      
+    
+
+      model.addAttribute("plan_title", plan_title); // plan_id를 모델에 추가
+      
+      System.out.println(plan_title);
+      
       
       return "plan/registerPlanRoutePage";
    }
@@ -194,4 +205,7 @@ public class PlanApplication {
       return "redirect:./planPage";
    }
    
+   
+	
+	
 }

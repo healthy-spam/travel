@@ -31,6 +31,15 @@ var startPoint = '${map.guidePlanningDto.guide_planning_start_point}'; // 최초
 
 const guidePlanningId = new URLSearchParams(location.search).get("guide_planning_id");
 
+function addThousandSeparator(number) {
+	  // 숫자를 문자열로 변환
+	  const numberString = number.toString();
+	  
+	  // 정규식을 사용하여 천 단위 구분자(쉼표) 추가
+	  const numberWithSeparator = numberString.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	  
+	  return numberWithSeparator;
+	}
 
 function pay(partner_order_id, partner_user_id, item_name, total_amount) {
  const xhr = new XMLHttpRequest();
@@ -209,7 +218,7 @@ function search(keyword) {
 function planprice(){
 	
 	var planPrice = document.querySelector(".planprice");
-	planPrice.innerText = ${map.guidePlanningDto.guide_planning_price} + '원'
+	planPrice.innerText = addThousandSeparator(${map.guidePlanningDto.guide_planning_price}) + '원'
 	    
 
 
@@ -300,6 +309,7 @@ function planningDay() {
 					            	
 					            	city.innerText = ' (' + place.planCityName+ ')';
 					            	city.style.fontSize = '15px';  // 폰트 크기를 20px로 설정
+					            	city.style.fontWeight = 'bold';
 					            	city.style.color = 'gray';  // 텍스트 색상을 회색으로 설정
 					            	placeNameElement.appendChild(city);
 					            	
@@ -319,7 +329,7 @@ function planningDay() {
 					            	placeThumbnailElement.innerHTML = '';
 					            	placeThumbnailElement.appendChild(imageElement);  */
 					            	
-					            	bbb.querySelector(".place_thumbnail").innerText = "이미지";
+					            	bbb.querySelector(".place_thumbnail").src = "/uploadFiles/mainImage/" + place.planPlace.plan_place_photo;
 					            	
 					            	bbb.querySelector(".place_content").innerText = place.planPlace.plan_place_content;
 					            	
@@ -421,7 +431,8 @@ document.addEventListener("DOMContentLoaded", function() {
    height: 500px;
     border-collapse: collapse;
     vertical-align: middle;
-   	border-top : 3px solid black; 
+   	border-top : 5px solid #ededed;
+   	
 }
 .table th,
 .table td {
@@ -431,26 +442,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
 }
 .table th {
-	background-color :#fcf0f0;
-    width: 40%;
-    font-size : 30px;
+	background-color :#faefea;
+    width: 20%;
+    font-size : 20px;
 }
 .table td {
 	background-color : white;
-    width: 60%;
-    font-size : 20px;
+    width: 80%;
+    font-size : 15px;
     
 }
 
 .place_name:hover{
 	cursor: pointer;
 }
-
-
-    
-
-
-
 
 
 </style>
@@ -548,32 +553,39 @@ document.addEventListener("DOMContentLoaded", function() {
 				</table>
 			</div>
 			<div class="col-1"></div>
-			<div class="col-3 text-center shadow" style="border:solid 3px black; border-radius: 10px; background-color :#fcf0f0; ">
+			<div class="col-3 text-center shadow" style="border:solid 3px #ededed; border-radius: 10px; background-color :#faefea; ">
 				<div class="row mt-3">
 					<div class="col">
-						<span style="font-size : 25px; font-weight:bold;">${map.guide.guide_name}</span><span style="font-size : 20px; font-weight:bold;">  가이드 님</span>
+						<span style="font-size : 20px; font-weight:bold;">${map.guide.guide_name}</span><span style="font-size : 15px; font-weight:bold;">  가이드 님</span>
 					</div>
 				</div>
 				<div class="row mt-5">
 					<div class="col">
-						이미지
+						<img src="/uploadFiles/profileImage/${map.user.user_image}" style="width : 100px; height:100px; border-radius:50px;">
 					</div>
 				</div>
 				<div class="row mt-5">
-					<div class="col" style="font-weight:bold;">
+					<div class="col" style="color : gray;">
 						${map.guide.guide_profile }
 					</div>
 				</div>
-				<div class="row mt-5 mb-5">
-					<div class="col planprice" style="font-size:50px; font-weight: bold;">
+				<div class="row mt-5">
+					<div class="col"  >
+						<span style="font-size : 20px; font-weight: bold;">패키지 비용</span><span style="font-size : 10px; color:gray;  font-weight: bold;">(성인 1인 기준)</span>
+					</div>
+				</div>
+				<div class="row mt-1 mb-2">
+					<div class="col planprice" style="font-size:40px; font-weight: bold;">
 						
 					</div>
 				</div>
-				<div class="row mt-5">
-					<div class="col payButton">
+				<div class="row mt-5 mb-5 ">
+					<div class="col-3"></div>
+					<div class="col-6 payButton ">
 						<a class="btn pay-button d-grid" role="button" onclick="packageIn(guidePlanningId)"
 	   						 style="font-size: 30px; font-weight: bold; background-color: #BB4465; color: white;">결제</a>
 					</div>
+					<div class="col-3"></div>
 				</div>
 			</div>
 				
@@ -585,74 +597,19 @@ document.addEventListener("DOMContentLoaded", function() {
 		</div>
 	</div>
 	
-<div class="row mt-5">
-	<div class="col">
-		<hr class="mt-0 shadow">
+<div class="row mt-5 mb-5">
+	<div class="col-2">
+	
+	</div>
+	<div class="col" style="border-top : solid 3px 	#ededed;">
+	
+	</div>
+	<div class="col-2">
+		
 	</div>
 </div>
 
-				<%-- <div class="row">
-					<div class="col packageInfo ">
-						<!-- 패키지 간던 설명 -->
-						<div class="row mt-5">
-							<div class="col d-flex justify-content-center"
-								style="font-size: 20px; font-weight: bold;">
-								<!-- 패키지명 -->
-								<span class="badge"
-									style="color: white; background-color: #304782;">${map.guidePlanningDto.guide_planning_start_point}
-									출발</span> <span class="badge"
-									style="color: white; background-color: #304782;">${map.packageMember}/${map.guidePlanningDto.guide_planning_member }</span>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col d-flex justify-content-center"
-								style="font-size: 50px; font-weight: bold;">
-								<!-- 패키지명 -->
-								${map.guidePlanningDto.guide_planning_title}
-							</div>
-						</div>
-						<div class="row py-3">
-							<div class="col planningDay d-flex justify-content-center"
-								style="font-size: 30px; font-weight: bold;">
-								<!-- 날짜, 밑에 packageInfo 에이잭스로 따올떄 같이 따오기 -->
 
-							</div>
-						</div>
-						<div class="row py-3">
-							<div class="col d-flex justify-content-center"
-								style="font-size: 20px; color: gray;">
-								<!-- 패키지 설명 -->
-								${map.guidePlanningDto.guide_planning_content}
-							</div>
-						</div>
-						<div class="row mt-3">
-							<div class="col d-flex justify-content-center"
-								style="color: gray;">
-								<i class="bi bi-info-circle-fill" style="color: #304782"></i>
-								가이드 비용, 1인 기준
-							</div>
-						</div>
-						<div class="row">
-							<div class="col planprice d-flex justify-content-center"
-								style="font-size: 30px; font-weight: bold;">
-								<!-- 비용 -->
-
-							</div>
-						</div>
-
-						<div class="row mt-4">
-							<div class="col d-flex justify-content-center">
-								<!-- 결제 버튼 -->
-								<a class="btn pay-button" href="#" role="button" onclick="pay()"
-									style="font-size: 20px; font-weight: bold; background-color: #BB4465; color: white;">결제</a>
-
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> --%>
 
 
 
@@ -660,13 +617,13 @@ document.addEventListener("DOMContentLoaded", function() {
 		<div class="row">
 			<div class="col">
 				<div class="row">
-					<div class="col-4">
+					<div class="col-5">
 						<div class="row mt-5"  >
 							<div class="col" id="planDetail" style=" overflow-y: scroll; height : 600px" >
 							</div>
 						</div>
 					</div>
-					<div class="col-2">
+					<div class="col-1">
 					</div>
 					<div class="col">
 						<div class="row "  >
@@ -701,7 +658,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 <div class="row d-none" id = "templete_planDetail">
 	<div class="col" style="background:#fcf0f0;">
-		<div class="row" style="position: sticky; top: 0px; height:60px;">
+		<div class="row" style="position : sticky; top :0px;" >
 			<div class="col-3 planDetail_Day text-center" style=" font-size : 30px; font-weight:bold; color:white; background:#BB4465;">
 					
 			</div>
@@ -722,7 +679,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <div class="row mt-5 mb-3 d-none" id="templete_place">
 	<div class="col">
 		<div class="row mt-3 mb-3">
-			<div class="col place_name" style="font-size : 25px; font-weight:bold;">
+			<div class="col place_name" style="font-size : 20px; font-weight:bold;">
 			
 			</div>
 			
@@ -731,7 +688,8 @@ document.addEventListener("DOMContentLoaded", function() {
 			<div class="col-1">
 			
 			</div>
-			<div class="col-3 place_thumbnail">
+			<div class="col-3">
+				<img class="place_thumbnail" src="" style="width:100px; height:100px; border-radius: 50px;" >
 			
 			</div>
 			<div class="col place_content">

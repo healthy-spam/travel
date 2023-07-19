@@ -46,26 +46,18 @@ public class PlanService {
 //	    lastRegisteredPlanDay = 0;
 	}
 
-	public Map<String, Object> registerPlanDay(PlanDayDto planDayDto) {
-	   
-		
-		 Map<String, Object> map = new HashMap<String, Object>();
+	public void registerPlanDay(PlanDayDto planDayDto) {
 
-		    int maxPlanDay = planSqlMapper.getMaxPlanDay(planDayDto.getPlan_id());
-		    
-		    int planDayPk = planSqlMapper.createPlanDayPk();
-		    planDayDto.setPlan_day_id(planDayPk);
-		    
-		    int plan_day = maxPlanDay + 1;
-		    
-		    planDayDto.setPlan_day(plan_day);
-	    	planSqlMapper.planDayInsert(planDayDto);
-	    	
-	    	map.put("planDayDto", planDayDto);
-	    	map.put("day", plan_day);
-	    	
-	    	return map;
+	    int maxPlanDay = planSqlMapper.getMaxPlanDay(planDayDto.getPlan_id());
 	    
+	    int planDayPk = planSqlMapper.createPlanDayPk();
+	    planDayDto.setPlan_day_id(planDayPk);
+	    
+	    int plan_day = maxPlanDay + 1;
+	    
+	    planDayDto.setPlan_day(plan_day);
+		planSqlMapper.planDayInsert(planDayDto);
+	    	
 	    
 	}
 	
@@ -149,8 +141,8 @@ public class PlanService {
 	}
 	
 	// 플래너 공개여부 수정
-	public void updateDisclosure(int planId, String planDisclosureStatus) {
-	    planSqlMapper.updateDisclosureStatus(planId, planDisclosureStatus);
+	public void updateDisclosure(int planId, String planDisclosureStatus, String plan_title) {
+	    planSqlMapper.updateDisclosureStatus(planId, planDisclosureStatus, plan_title);
 	}
 	
 	// 지역 목록
@@ -460,6 +452,57 @@ public class PlanService {
 		      
 	      return planSqlMapper.getAllPlace2();
 	   }
+
+	public PlanDto getPlanById(int plan_id) {
+		// TODO Auto-generated method stub
+		return planSqlMapper.getPlan(plan_id);
+	}
+
+	
+
+	public void deleteDay(int dayId, int planId) {
+
+
+		planSqlMapper.deleteDay(dayId, planId);
+		
+	}
+
+	public void updateDay(int planId) {
+		
+		List<PlanDayDto> list = planSqlMapper.getPlanDay(planId);
+		
+		PlanDayDto firstCheck = list.get(0);
+		
+		if(firstCheck.getPlan_day() != 1) {
+			firstCheck.setPlan_day(1);
+			
+			
+			planSqlMapper.updateDays(firstCheck);
+			
+		}
+		
+			
+		for (int i = 0; i < list.size()-1; i++) {
+		    PlanDayDto planDay = list.get(i);
+		    PlanDayDto nextDay = list.get(i+1);
+		    
+		    if(nextDay.getPlan_day() - planDay.getPlan_day() != 1 ) {
+		    	
+		    	nextDay.setPlan_day(planDay.getPlan_day() + 1);
+		    	
+		    }
+		    
+		    planSqlMapper.updateDays(nextDay);
+		 
+		    
+		}
+			
+		
+		
+		
+	}
+
+	
 
 
 	

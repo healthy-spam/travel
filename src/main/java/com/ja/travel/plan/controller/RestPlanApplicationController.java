@@ -1,6 +1,8 @@
 package com.ja.travel.plan.controller;
 
 import java.io.File;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,10 +56,11 @@ public class RestPlanApplicationController {
 	
 	@RequestMapping("registerPlanDayProcess")
 	public Map<String, Object> registerPlanDayProcess(PlanDayDto params){
+		Map<String, Object> map = new HashMap<>();
 		
-		Map<String, Object> map = planService.registerPlanDay(params);
+		planService.registerPlanDay(params);
 		
-		map.put("placeList", planService.getPlanPlaceList());
+	
 		
 		return map;
 	}
@@ -132,7 +135,8 @@ public class RestPlanApplicationController {
 		planService.registerNewPlanDay(planDayDto);
 		System.out.println("플래너 등록하기 서블릿 컨트롤러 작동");
 		
-		String redirectUrl = "./registerPlanRoutePage?plan_id=" + params.getPlan_id();
+		String redirectUrl = "./registerPlanRoutePage?plan_id=" + params.getPlan_id() + "&plan_title=" + URLEncoder.encode(params.getPlan_title(), StandardCharsets.UTF_8);
+
 		
 		Map<String , Object> map = new HashMap<>();
 		
@@ -142,11 +146,11 @@ public class RestPlanApplicationController {
 	}
 	
 	@RequestMapping("updatePlan")
-	public Map<String, Object> updatePlan(@RequestParam int planId, @RequestParam String planDisclosureStatus){
+	public Map<String, Object> updatePlan(@RequestParam String plan_title, @RequestParam String planDisclosureStatus, @RequestParam int planId){
 		
 		Map<String , Object> map = new HashMap<>();
 		
-		planService.updateDisclosure(planId, planDisclosureStatus);
+		planService.updateDisclosure(planId, planDisclosureStatus,plan_title );
 		
 		map.put("plnaUpdate", "Updated successfully");
 		
@@ -227,5 +231,24 @@ public class RestPlanApplicationController {
 
 	    return map;
 	}
+	
+	@RequestMapping("deleteDay")
+	public Map<String, Object> deleteDay(@RequestParam("dayId") int dayId, @RequestParam("planId") int planId) {
+		
+		Map<String, Object> map = new HashMap<>();
+		
+	 	planService.deleteDay(dayId, planId);
+	 	
+	 	planService.updateDay(planId);
+	 	
+	 	map.put("data" , planService.getPlanDayList2(planId));
+	 	
+	 	return map;
+		
+	}
+   
+
+	
+
 
 }
