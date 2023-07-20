@@ -10,14 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ja.travel.dto.PlanningApplicationDto;
 import com.ja.travel.dto.UserDto;
 import com.ja.travel.login.service.LoginService;
+import com.ja.travel.main.service.MainService;
 
 @RestController
 public class RestMainController {
 	
 	@Autowired
 	private LoginService loginService;
+	
+	@Autowired
+	private MainService mainService;
 	
 	@RequestMapping("/getMyId")
 	public Map<String, Object> getMyId(HttpSession session) {
@@ -38,5 +43,10 @@ public class RestMainController {
 	public void insertImage(MultipartFile file, HttpSession session) {
 		UserDto user = (UserDto) session.getAttribute("sessionuser");
 		loginService.updateProfile(user, file);
+	}
+	
+	@RequestMapping("confirm")
+	public PlanningApplicationDto confirm(PlanningApplicationDto planningApplicationDto) {
+		return mainService.updateApplicationaStatusByUser(planningApplicationDto);
 	}
 }

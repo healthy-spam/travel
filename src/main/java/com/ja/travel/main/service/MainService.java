@@ -180,4 +180,14 @@ public class MainService {
 		
 		return mapList;
 	}
+
+	public PlanningApplicationDto updateApplicationaStatusByUser(PlanningApplicationDto planningApplicationDto) {
+		if (planningApplicationDto.getPlanning_member_status().equals("수락")) {
+			travelApplicationSqlMapper.acceptApplicationaStatusByUser(planningApplicationDto);
+		} else {
+			travelApplicationSqlMapper.refusalApplicationaStatusByUser(planningApplicationDto);
+		}
+		
+		return travelApplicationSqlMapper.getApplicationStatus(planningApplicationDto);
+	}
 }

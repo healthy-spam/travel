@@ -7,6 +7,7 @@
 	<select id="getPlanList" resultType="com.ja.travel.dto.PlanDto">
 		SELECT * FROM plan
 		WHERE user_id = #{user_id}
+		ORDER BY plan_id DESC
 	</select>
 
 	<select id="getGuideDtoByUserId" resultType="com.ja.travel.dto.GuideDto">
@@ -42,6 +43,7 @@
 		planning_application.planning_id
 		WHERE member.user_id = #{user_id}
 		AND planning_member_status = '수락'
+		ORDER BY planning.planning_id DESC
 	</select>
 	
 	<select id="getApplicationList" resultType="com.ja.travel.dto.PlanningApplicationDto">
@@ -49,5 +51,6 @@
 		INNER JOIN planning_application ON planning.planning_id = planning_application.planning_id
 		WHERE planning.user_id = #{user_id}
 		AND planning_application.user_id != #{user_id}
+		ORDER BY planning_application_id DESC
 	</select>
 </mapper>

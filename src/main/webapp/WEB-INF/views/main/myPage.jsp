@@ -102,6 +102,40 @@
 	        iconButton.classList.add('bi-envelope');
 	    }
 	}
+	
+	function confirm(value) {
+	    const values = value.split(','); // value를 쉼표 기준으로 분해하여 배열로 만듭니다.
+	    const status = values[0];
+	    const user_id = values[1];
+	    const planning_id = values[2];
+	    
+		const xhr = new XMLHttpRequest();
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				const response = JSON.parse(xhr.responseText);
+				
+				if (response != null) {
+					console.log(response);
+					
+					if (response.planning_member_status == '수락') {
+						const span = document.getElementById(response.user_id);
+						span.innerText = '수락';
+						span.style.backgroundColor = '#03c358';
+					} else {
+						const span = document.getElementById(response.user_id);
+						span.innerText = '거절';
+						span.style.backgroundColor = '#DC3545';
+					}
+				}
+			}
+		}
+
+		//post
+		xhr.open("post", "./confirm");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send("user_id=" + user_id + "&planning_id=" + planning_id + "&planning_member_status=" + status);
+	}
 </script>
 <style type="text/css">
 body {
@@ -156,8 +190,8 @@ button {
 
 .thumb {
 	border-radius: 50%;
-	width: 1.8em;
-	height: 1.8em;
+	width: 1.5em;
+	height: 1.5em;
 	margin-right: 0.5em;
 }
 </style>
@@ -272,7 +306,7 @@ button {
 												</a>
 												<div>
 													<c:if test="${data.myPlanning.user_id == sessionuser.user_id}">
-														<button type="button" style="border: none; color: #999999; font-size: 0.9em;" data-bs-toggle="modal" data-bs-target="#appList">신청 리스트</button>
+														<button type="button" style="border: none; color: #03c75a; font-size: 0.9em;" data-bs-toggle="modal" data-bs-target="#appList">신청 리스트</button>
 													</c:if>
 													<fmt:parseDate var="parsedDate" value="${data.myPlanning.planning_end_date}" pattern="yyyy-MM-dd HH:mm:ss" />
 													<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">
@@ -305,18 +339,18 @@ button {
 																				<div class="col d-flex justify-content-center">
 																					<c:choose>
 																						<c:when test="${item.planningApp.planning_member_status == '신청'}">
-																							<span class="badge text-bg-secondary px-4 py-1 d-flex align-items-center" style="font-weight: 100;">신청</span>
+																							<span id="${item.user.user_id}" class="badge px-4 py-1 d-flex align-items-center" style="background-color: #6C757D; font-weight: 100;">신청</span>
 																						</c:when>
 																						<c:when test="${item.planningApp.planning_member_status == '수락'}">
-																							<span class="badge px-4 py-1 d-flex align-items-center" style="background-color: #03c358; font-weight: 100;">수락</span>
+																							<span id="${item.user.user_id}" class="badge px-4 py-1 d-flex align-items-center" style="background-color: #03c358; font-weight: 100;">수락</span>
 																						</c:when>
 																						<c:otherwise>
-																							<span class="badge text-bg-danger px-4 py-1 d-flex align-items-center" style="font-weight: 100;">거절</span>
+																							<span id="${item.user.user_id}" class="badge px-4 py-1 d-flex align-items-center" style="background-color: #DC3545; font-weight: 100;">거절</span>
 																						</c:otherwise>
 																					</c:choose>
 																				</div>
 																				<div class="col d-flex justify-content-center align-items-center">
-																					<img src="https://via.placeholder.com/50x50" class="thumb">
+																					<img src="/uploadFiles/profileImage/${item.user.user_image}" class="thumb">
 																					<span>
 																						${item.user.user_nickname}
 																						<a id="iconButton${item.user.user_id}" class="bi bi-envelope ms-1" style="color: black; cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapseExample${item.user.user_id}"></a>
@@ -326,14 +360,14 @@ button {
 																					<fmt:formatDate value="${item.planningApp.reg_date}" pattern="yyyy-MM-dd"/>
 																				</div>
 																				<div class="col d-flex justify-content-center">
-																					<button style="border: none; color: #03c75a;">수락</button>
-																					<button style="border: none; color: #ff4e4e;">거절</button>
+																					<button style="border: none; color: #03c75a;" onclick="confirm(this.value)" value="수락, ${item.planningApp.user_id}, ${item.planningApp.planning_id}">수락</button>
+																					<button style="border: none; color: #ff4e4e;" onclick="confirm(this.value)" value="거절, ${item.planningApp.user_id}, ${item.planningApp.planning_id}">거절</button>
 																				</div>
 																			</div>
 																			<div class="row">
 																				<div class="col-1"></div>
 																				<div class="col p-0">
-																					<div class="collapse pb-2" id="collapseExample${item.user.user_id}">
+																					<div class="collapse" id="collapseExample${item.user.user_id}">
 																						<div>${item.planningApp.planning_application_content}</div>
 																					</div>
 																				</div>
