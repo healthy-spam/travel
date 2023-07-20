@@ -49,4 +49,27 @@ public class RestMainController {
 	public PlanningApplicationDto confirm(PlanningApplicationDto planningApplicationDto) {
 		return mainService.updateApplicationaStatusByUser(planningApplicationDto);
 	}
+	
+	@RequestMapping("passwordCheck")
+	public Map<String, Object> passwordCheck(String pwd, HttpSession session) {
+		Map<String, Object> map = mainService.passwordCheck(pwd, session);
+		
+		return map;
+	}
+	
+	@RequestMapping("nicknameCheck")
+	public Map<String, Object> nicknameCheck(String nick) {
+		Map<String, Object> map = mainService.nicknameCheck(nick);
+		
+		return map;
+	}
+	
+	@RequestMapping("confirmNick")
+	public void confirmNick(UserDto sessionUser, HttpSession session) {
+		mainService.updateNickname(sessionUser);
+		
+		UserDto user = (UserDto) session.getAttribute("sessionuser");
+		user.setUser_nickname(sessionUser.getUser_nickname());
+		session.setAttribute("sessionuser", user);
+	}
 }

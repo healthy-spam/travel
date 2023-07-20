@@ -137,6 +137,81 @@
 		xhr.send("user_id=" + user_id + "&planning_id=" + planning_id + "&planning_member_status=" + status);
 	}
 </script>
+<script type="text/javascript">
+	var availableNick = false;
+	var nick;
+	
+	function passwordCheck() {
+		const pwd = document.getElementById('pwd');
+		
+		const xhr = new XMLHttpRequest();
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				const response = JSON.parse(xhr.responseText);
+				
+				if (response.ok) {
+					alert('인증이 완료되었습니다.');
+					
+					const nickChkForm = document.getElementById('nickChkForm');
+					nickChkForm.style.display = 'block';
+					
+					pwd.setAttribute('disabled', 'true');
+				} else {
+					alert('잘못된 비밀번호입니다.');
+				}
+			}
+		}
+
+		//post
+		xhr.open("post", "./passwordCheck");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send("pwd="+pwd.value);
+	}
+	
+	function nicknameCheck() {
+		nick = document.getElementById('nickname');
+		
+		const xhr = new XMLHttpRequest();
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				const response = JSON.parse(xhr.responseText);
+				
+				if (response.ok) {
+					alert('사용가능한 닉네임입니다.');
+					availableNick = true;
+				} else {
+					alert('존재하는 닉네임입니다.');
+					availableNick = false;
+				}
+			}
+		}
+
+		//post
+		xhr.open("post", "./nicknameCheck");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send("nick="+nick.value);
+	}
+	
+	function confirmNick() {
+		if (availableNick) {
+			const xhr = new XMLHttpRequest();
+
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4 && xhr.status == 200) {
+			        // 화면 새로고침
+			        location.reload();
+				}
+			}
+
+			//post
+			xhr.open("post", "./confirmNick");
+			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhr.send("user_nickname=" + nick.value + "&user_id=" + ${sessionuser.user_id});	
+		}
+	}
+</script>
 <style type="text/css">
 body {
 	font-family: 'Noto Sans KR', sans-serif;
@@ -289,21 +364,29 @@ button {
 														<div class="row mb-2">
 															<div class="col">
 																<div class="input-group">
-																	<input type="password" class="form-control" placeholder="현재 비밀번호를 입력해주세요" style="border: none;">
-																	<button class="btn" type="button">확인</button>
+																	<input type="password" class="form-control" placeholder="현재 비밀번호를 입력해주세요" style="border: none;" id="pwd">
+																	<button class="btn" type="button" onclick="passwordCheck()">확인</button>
 																</div>
 															</div>
 														</div>
 														<div class="row">
-															<div class="col mx-1">
-																<span style="font-size: 0.8em; color: lightgrey; margin: 2em 0;">네이버 서비스의 변경/종료, 본인 작성 게시물 조치 등 대부분의 네이버 안내에 사용합니다.</span><br>
-																<span style="font-size: 0.8em; color: lightgrey;">등록된 이메일 주소가 기억나지 않는다면 휴대전화 인증 후 이메일을 수정할 수 있습니다.</span>
+															<div class="col mx-2">
+																<span style="font-size: 0.8em; color: lightgrey; margin: 2em 0;">트립스테이션 서비스의 변경/종료, 본인 작성 게시물 조치 등 대부분의 트립스테이션 안내에 사용합니다.</span>
+															</div>
+														</div>
+														<div class="row my-4" style="display: none;"
+															id="nickChkForm">
+															<div class="col">
+																<div class="input-group">
+																	<input type="text" class="form-control" placeholder="변경할 닉네임을 입력해주세요" style="border: none;" id="nickname">
+																	<button class="btn" type="button" onclick="nicknameCheck()">중복체크</button>
+																</div>
 															</div>
 														</div>
 														<div class="row">
 															<div class="col d-flex justify-content-end">
 																<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal">취소</button>
-																<button type="button" class="btn" id="confirmButton" style="background-color: #03c75a; color: white;">확인</button>
+																<button type="button" class="btn" style="background-color: #03c75a; color: white;" onclick="confirmNick()">확인</button>
 															</div>
 														</div>
 													</div>
@@ -316,12 +399,14 @@ button {
 									<span style="font-size: 1.1em;"> 
 										<i class="bi bi-phone me-2"></i> 010-1234-5678
 									</span>
+									<button style="border: none;" data-bs-toggle="modal" data-bs-target="#editPhone">수정</button>
 								</div>
 								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;">
 										<i class="bi bi-envelope me-2"></i>
 										${sessionuser.user_email}
 									</span>
+									<button style="border: none;" data-bs-toggle="modal" data-bs-target="#editNickname">수정</button>
 								</div>
 							</div>
 						</div>
