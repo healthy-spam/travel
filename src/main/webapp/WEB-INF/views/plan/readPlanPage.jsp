@@ -17,7 +17,7 @@ pageEncoding="UTF-8"%>
     var infowindow; // 인포윈도우 변수
     var markers = [];
     let polyline = null;
-
+    
     
     const planId = new URLSearchParams(location.search).get("id");
 
@@ -76,7 +76,8 @@ pageEncoding="UTF-8"%>
         const xhr = new XMLHttpRequest();
         
         myDayPlaceList = [];
-        
+        myDayPlaceNames = [];
+        myDayPlacePhoto = [];
         // 모든 마커 제거
         for (let i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
@@ -165,8 +166,9 @@ pageEncoding="UTF-8"%>
                                 route_col.appendChild(newElementInner);
                                 
                                 myDayPlaceList.push(y.planPlaceDto.plan_place_address);
-                                
-                                console.log(y.planPlaceDto.plan_place_photo);
+                                myDayPlaceNames.push(y.planPlaceDto.plan_place_name);
+                                myDayPlacePhoto.push(y.planPlaceDto.plan_place_photo);
+                                console.log(myDayPlacePhoto);
                                 
                                 if (myDayPlaceList.length >= 2) {
                                     drawPin(myDayPlaceList[myDayPlaceList.length - 2], myDayPlaceList[myDayPlaceList.length - 1], polyline);  // polyline 객체를 인수로 전달
@@ -181,6 +183,68 @@ pageEncoding="UTF-8"%>
         xhr.open("get", "./getMyList?dayId=" + plan_day_id);
         xhr.send();
     }
+
+    //일정별 마커와 루트
+    async function drawPin() {
+        var geocoder = new kakao.maps.services.Geocoder();
+        let coords = [];
+
+        // Wrap the address search in a new Promise
+        const searchAddress = (address) => new Promise((resolve, reject) => {
+            geocoder.addressSearch(address, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    resolve(new kakao.maps.LatLng(result[0].y, result[0].x));
+                } else {
+                    reject(status);
+                }
+            });
+        });
+
+        // Use a for loop to await the address search for each address
+        for (let i = 0; i < myDayPlaceList.length; i++) {
+            coords[i] = await searchAddress(myDayPlaceList[i]);
+        }
+
+        // Separate loop for marker creation and event listener
+        for (let i = 0; i < coords.length; i++) {
+            createMarker(i, coords[i]);
+        }
+
+        polyline.setPath(coords);
+        polyline.setMap(map);
+    }
+
+    // 일정별 루트 명소들 이름
+    function createMarker(i, coords) {
+	    var marker = new kakao.maps.Marker({
+	        map: map,
+	        position: coords
+	    });
+	
+	    var content = '<div style="padding:5px; font-size: 11px; font-weight: bolder;">' +'<img style="width: 35px; height: 35px; border-radius: 50%;" src="/uploadFiles/mainImage/'+ myDayPlacePhoto[i] +'">'+' '+ myDayPlaceNames[i] + '</div>';
+	
+	    // Create a custom overlay
+	    let overlay = new kakao.maps.CustomOverlay({
+	        content: content,
+	        map: map,
+	        position: marker.getPosition()
+	    });
+	
+	    // Show overlay when mouseover
+	    kakao.maps.event.addListener(marker, 'mouseover', function() {
+	        overlay.setMap(map);
+	    });
+	
+	    // Hide overlay when mouseout
+	    kakao.maps.event.addListener(marker, 'mouseout', function() {
+	        overlay.setMap(null);
+	    });
+	
+	    markers.push(marker);
+	}
+
+
+
 
     
     function search2(keyword, index) {
@@ -216,7 +280,6 @@ pageEncoding="UTF-8"%>
 		path.push(coords);
 		polyline.setPath(path);
         
-        var content = '<div style="width:150px; text-align:center; padding:6px 0;">' + keyword + '</div>';
         
         // 인포윈도우가 이미 존재하는 경우, 인포윈도우의 내용을 변경
         if (infowindow) {
@@ -238,40 +301,7 @@ pageEncoding="UTF-8"%>
         
 		});
 	}
-     
-    async function drawPin() {
-        var geocoder = new kakao.maps.services.Geocoder();
-
-        let coords = [];
-
-        // Wrap the address search in a new Promise
-        const searchAddress = (address) => new Promise((resolve, reject) => {
-            geocoder.addressSearch(address, function(result, status) {
-                if (status === kakao.maps.services.Status.OK) {
-                    resolve(new kakao.maps.LatLng(result[0].y, result[0].x));
-                } else {
-                    reject(status);
-                }
-            });
-        });
-
-        // Use a for loop to await the address search for each address
-        for (let i = 0; i < myDayPlaceList.length; i++) {
-            coords[i] = await searchAddress(myDayPlaceList[i]);
-
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: coords[i]
-            });
-
-            markers.push(marker);
-        }
-
-        polyline.setPath(coords);
-        polyline.setMap(map);
-    }
-
-    
+       
     window.addEventListener("DOMContentLoaded", () => {
         map();
         loadDay();        
