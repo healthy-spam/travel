@@ -9,6 +9,16 @@
 <title>Insert title here</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+<script type="text/javascript">
+
+const hotelId = new URLSearchParams(location.search).get("hotel_id");
+
+function returnPage() {
+	
+	window.location.href = "/travel/hotel/hotelDetailPage?hotel_id=" + hotelId
+}
+</script>
 <style>
 
     .reserveCard {
@@ -47,14 +57,13 @@
 
 <div class="container">
 <jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-
     <div class="row mt-5">
         <div class="col-auto">
             <div class="row mt-1">
                 <div class="col pe-0">
-                    <a href="./hotelDetailPage">
+                    <div onclick="returnPage()">
                         <i style="font-size: 1.3em;" class="bi bi-chevron-left"></i>
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -169,7 +178,7 @@
                             <hr class="my-4">
                             <div class="row">
                                 <div class="col">
-                                    <span style="font-size: 0.7em; line-height: 0;">아래 버튼을 선택하면 호스트가 설정한 숙소 이용규칙, 게스트에게 적용되는 기본 규칙, 에어비앤비 재예약 및 환불 정책에 동의하며, 피해에 대한 책임이 본인에게 있을 경우 트립스테이션이 결제 수단으로 청구의 조치를 취할 수 있다는 사실에 동의하는 것입니다.</span>
+                                    <span style="font-size: 0.8em; color: gray;">아래 버튼을 선택하면 호스트가 설정한 숙소 이용규칙, 게스트에게 적용되는 기본 규칙, 에어비앤비 재예약 및 환불 정책에 동의하며, 피해에 대한 책임이 본인에게 있을 경우 트립스테이션이 결제 수단으로 청구의 조치를 취할 수 있다는 사실에 동의하는 것입니다.</span>
                                 </div>
                             </div>
                             <div class="row my-4">
@@ -247,7 +256,7 @@
                                         </div>
                                         <div class="col-auto px-0">
                                             <span style="font-size: 0.9em;">
-                                 
+                                 				${numDays }
                                             </span>
                                         </div>
                                         <div class="col-auto ps-0">
@@ -298,7 +307,6 @@
             </div>
         </div>
     </div>
-</div>
 <div class="container-fluid" >
     <div class="row">
         <div class="col" style="background-color: #ededed;">
