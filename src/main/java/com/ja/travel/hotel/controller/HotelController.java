@@ -33,12 +33,8 @@ public class HotelController {
 	
 	@RequestMapping("hotelPaymentPage")
 	public String hotelPaymentPage(@RequestParam("hotel_id") int hotel_id, @RequestParam("guestNum") int guestNum, 
-				@RequestParam("checkInDate") String checkInDate, @RequestParam("checkOutDate") String checkOutDate, @RequestParam("totalFee") int totalFee,  Model model) {
-		
-		System.out.println(guestNum);
-		System.out.println(checkInDate);
-		System.out.println(checkOutDate);
-		System.out.println(totalFee);
+				@RequestParam("checkInDate") String checkInDate, @RequestParam("checkOutDate") String checkOutDate, @RequestParam("totalFee") int totalFee,
+				@RequestParam("numDays") int numDays, Model model) {
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -81,6 +77,7 @@ public class HotelController {
 		model.addAttribute("formatCheckOutDate", formatCheckOutDate);
 		model.addAttribute("guestNum", guestNum);
 		model.addAttribute("totalFee", totalFee);
+		model.addAttribute("numDays", numDays);
 		
 		return "hotel/hotelPaymentPage";
 	}

@@ -43,4 +43,11 @@
 		WHERE member.user_id = #{user_id}
 		AND planning_member_status = '수락'
 	</select>
+	
+	<select id="getApplicationList" resultType="com.ja.travel.dto.PlanningApplicationDto">
+		SELECT planning_application.* FROM planning
+		INNER JOIN planning_application ON planning.planning_id = planning_application.planning_id
+		WHERE planning.user_id = #{user_id}
+		AND planning_application.user_id != #{user_id}
+	</select>
 </mapper>

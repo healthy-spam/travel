@@ -20,9 +20,11 @@ import com.ja.travel.dto.GuideRestrictDto;
 import com.ja.travel.dto.HotelDto;
 import com.ja.travel.dto.PlanDayDto;
 import com.ja.travel.dto.PlanDto;
+import com.ja.travel.dto.PlanningApplicationDto;
 import com.ja.travel.dto.PlanningDto;
 import com.ja.travel.dto.UserDto;
 import com.ja.travel.hotel.mapper.HotelSqlMapper;
+import com.ja.travel.login.mapper.LoginSqlMapper;
 import com.ja.travel.main.mapper.MainSqlMapper;
 import com.ja.travel.travelApplication.mapper.TravelApplicationSqlMapper;
 
@@ -37,6 +39,9 @@ public class MainService {
 	
 	@Autowired
 	private HotelSqlMapper hotelSqlMapper;
+	
+	@Autowired
+	private LoginSqlMapper loginSqlMapper;
 	
 	public Map<String, List<PlanDto>> getPlanList(UserDto userDto) {
 
@@ -92,11 +97,11 @@ public class MainService {
 	}
 
 	public Map<String, Object> getMyList(HttpSession session) {
-		UserDto user = (UserDto) session.getAttribute("sessionuser");
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
 		int user_id = 0;
 		
-		if (user != null) {
-			user_id = user.getUser_id();
+		if (sessionUser != null) {
+			user_id = sessionUser.getUser_id();
 		}
 		
 		List<PlanningDto> myPlanningList = mainSqlMapper.getMyPlanningList(user_id);
@@ -132,10 +137,27 @@ public class MainService {
 			list3.add(map);
 		}
 		
+		
 		for (PlanningDto planningDto : myPlanningList) {
 			Map<String, Object> map = new HashMap<>();
-						
+			
+			List<PlanningApplicationDto> planningAppList = mainSqlMapper.getApplicationList(user_id);
+			
+			List<Map<String, Object>> list4 = new ArrayList<Map<String,Object>>();
+			
+			for (PlanningApplicationDto planningApp : planningAppList) {
+				Map<String, Object> map2 = new HashMap<>();
+				
+				UserDto user = loginSqlMapper.selectById(planningApp.getUser_id());
+				
+				map2.put("user", user);
+				map2.put("planningApp", planningApp);
+				
+				list4.add(map2);
+			}
+			
 			map.put("myPlanning", planningDto);
+			map.put("list4", list4);
 			
 			// 종료 시간을 LocalDateTime으로 변환합니다.
 			LocalDateTime endDate = LocalDateTime.parse(planningDto.getPlanning_end_date(), formatter);

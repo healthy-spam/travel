@@ -75,7 +75,7 @@
 		padding-top: 0.5em;
 	}
 	
-	/*swiper style*/
+	/*swiper 스타일입니다.*/
 	.swiper {
 		width: 100%;
 		height: 100%;
@@ -96,6 +96,7 @@
 		
 	}
 	
+	/* 좌우 버튼 크기 조절하는 스타일입니다. */
 	:root {
     --swiper-navigation-size: 1em;
 	}
@@ -125,8 +126,9 @@
 				<div class="swiper">
 				    <div class="swiper-wrapper">
 				      <div class="swiper-slide">
-				      	<a class="categoryIcon" href="/travel/hotel/hotelPage?sortType=house">
-				      		<span style="font-size: 1.3em; font-weight: 600">전체</span>
+				      	<a class="categoryIcon" href="/travel/hotel/hotelPage">
+				      		<img src="/travel/resources/img/free-icon-grid-2277189.png" alt="" style="width: 25px;">
+				      		<span class="categoryIconFont">전체</span>
 				      	</a>
 				      </div>
 				      <div class="swiper-slide">
@@ -220,6 +222,7 @@
 				      	</a>
 				      </div>
 				    </div>
+				    <!-- 스와이퍼 좌우 버튼입니다. -->
 				    <div class="swiper-button-next"></div>
 				    <div class="swiper-button-prev"></div>
 				</div>
@@ -259,8 +262,7 @@
 													<div class="col text-end">
 														<i class="bi bi-star-fill" style="color: #fcc203; font-size: 14px;"></i>
 														<span class="p-0 fw-bold" style="font-size: 14px;">${hotelList.hotelReviewPointCount}</span>
-														<span style="font-size: 14px;">(</span>
-														<span style="font-size: 14px;">${hotelList.hotelReviewCount}</span><span>)</span>
+														<span style="font-size: 14px;">(</span><span style="font-size: 14px;">${hotelList.hotelReviewCount}</span><span>)</span>
 													</div>
 												</c:when>
 												<c:otherwise>
@@ -317,7 +319,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
 	
 	
 	
@@ -327,7 +328,7 @@
   <!-- Initialize Swiper -->
   <script>
     var swiper = new Swiper('.swiper', {
-      slidesPerView: 14,
+      slidesPerView: 14, /* 슬라이드 내부에 표시될 아이템 갯수입니다. */
       direction: getDirection(),
       navigation: {
         nextEl: '.swiper-button-next',
