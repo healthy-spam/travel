@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +9,16 @@
 <title>Insert title here</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+<script type="text/javascript">
+
+const hotelId = new URLSearchParams(location.search).get("hotel_id");
+
+function returnPage() {
+	
+	window.location.href = "/travel/hotel/hotelDetailPage?hotel_id=" + hotelId
+}
+</script>
 <style>
 
     .reserveCard {
@@ -15,7 +27,7 @@
         border: solid rgb(218, 218, 218) 1px;
         border-radius: 15px;
         background: #ffffff;
-        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.18);
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
         padding: 20px 20px;
     }
 
@@ -45,14 +57,13 @@
 
 <div class="container">
 <jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-
     <div class="row mt-5">
         <div class="col-auto">
             <div class="row mt-1">
                 <div class="col pe-0">
-                    <a href="./hotelDetailPage">
+                    <div onclick="returnPage()">
                         <i style="font-size: 1.3em;" class="bi bi-chevron-left"></i>
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -60,7 +71,7 @@
              <!-- 확인 및 결제 -->
             <div class="row mb-4">
                 <div class="col">
-                    <span style="font-size: 1.8em; font-weight: 600;">확인 및 결제</span>
+                    <span style="font-size: 1.9em; font-weight: 600;">확인 및 결제</span>
                 </div>
             </div>
             <div class="row mb-5">
@@ -71,46 +82,49 @@
                             <!-- 예약 정보 -->
                             <div class="row my-3">
                                 <div class="col">
-                                    <span style="font-size: 1.2em; font-weight: 600;">예약 정보</span>
+                                    <span style="font-size: 1.4em; font-weight: 600;">예약 정보</span>
                                 </div>
                             </div>
                             <!-- 날짜 -->
                             <div class="row">
                                 <div class="col">
-                                    <span style="font-size: 0.9em; font-weight: 600;">날짜</span>
+                                    <span style="font-size: 1em; font-weight: 600;">날짜</span>
                                 </div>
                                 <div class="col text-end">
-                                    <span style="font-size: 0.9em; font-weight: 600;">수정</span>
+                                    <span style="font-size: 1em; font-weight: 600;">수정</span>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col">
-                                    <span style="font-size: 0.9em;">7월 24일~29일</span>
+                                    <span style="font-size: 1em;"><fmt:formatDate value="${formatCheckInDate }" pattern="M월 d일"/>~<fmt:formatDate value="${formatCheckOutDate }" pattern="d일"/></span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <span style="font-size: 0.9em; font-weight: 600;">게스트</span>
+                                    <span style="font-size: 1em; font-weight: 600;">게스트</span>
                                 </div>
                                 <div class="col text-end">
-                                    <span style="font-size: 0.9em; font-weight: 600;">수정</span>
+                                    <span style="font-size: 1em; font-weight: 600;">수정</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <span style="font-size: 0.9em;">게스트 1명</span>
+                                    <span style="font-size: 1em;">게스트 ${guestNum}명</span>
                                 </div>
                             </div>
                             <hr class="my-4">
                             <!-- 환불정책 -->
                             <div class="row pb-4">
                                 <div class="col">
-                                    <span style="font-size: 1.2em; font-weight: 600;">환불정책</span>
+                                    <span style="font-size: 1.4em; font-weight: 600;">환불정책</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-auto pe-0">
-                                    <span style="font-size: 0.9em; font-weight: 600;">7월 19일</span>
+                                    <span style="font-size: 0.9em; font-weight: 600;">
+	                                    <c:set var="currentDate" value="<%= new java.util.Date() %>" />
+	    								<fmt:formatDate value="${currentDate}" pattern="M월 d일" />
+                                    </span>
                                 </div>
                                 <div class="col-auto ps-0">
                                     <span style="font-size: 0.9em; font-weight: 600;">
@@ -119,7 +133,7 @@
                                 </div>
                                 <div class="col-auto">
                                     <span style="font-size: 0.9em;">
-                                        체크인 날짜인 7월 24일 전에 취소하면 부분 환불을 받으실 수 있습니다.
+                                        체크인 날짜인 <fmt:formatDate value="${formatCheckInDate }" pattern="M월 d일"/> 전에 취소하면 부분 환불을 받으실 수 있습니다.
                                     </span>
                                 </div>
                             </div>
@@ -127,7 +141,7 @@
                             <!-- 기본 규칙 -->
                             <div class="row pb-4">
                                 <div class="col">
-                                    <span style="font-size: 1.2em; font-weight: 600;">기본 규칙</span>
+                                    <span style="font-size: 1.4em; font-weight: 600;">기본 규칙</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -164,7 +178,7 @@
                             <hr class="my-4">
                             <div class="row">
                                 <div class="col">
-                                    <span style="font-size: 0.7em; line-height: 0;">아래 버튼을 선택하면 호스트가 설정한 숙소 이용규칙, 게스트에게 적용되는 기본 규칙, 에어비앤비 재예약 및 환불 정책에 동의하며, 피해에 대한 책임이 본인에게 있을 경우 트립스테이션이 결제 수단으로 청구의 조치를 취할 수 있다는 사실에 동의하는 것입니다.</span>
+                                    <span style="font-size: 0.8em; color: gray;">아래 버튼을 선택하면 호스트가 설정한 숙소 이용규칙, 게스트에게 적용되는 기본 규칙, 에어비앤비 재예약 및 환불 정책에 동의하며, 피해에 대한 책임이 본인에게 있을 경우 트립스테이션이 결제 수단으로 청구의 조치를 취할 수 있다는 사실에 동의하는 것입니다.</span>
                                 </div>
                             </div>
                             <div class="row my-4">
@@ -183,17 +197,21 @@
                                 <!-- 사진 -->
                                 <div class="row">
                                     <div class="col-auto pe-0">
-                                        <img class="imgCard" style="width: 100%;" src="images/ccc.jpg" alt="">
+                                        <img class="imgCard" style="width: 100%;" src="/uploadFiles/hotelMainImage/${hotelMap.hotelDto.hotel_main_image}" alt="">
                                     </div>
                                     <div class="col-auto">
                                         <div class="row">
                                             <div class="col">
-                                                <span class="align-text-top" style="font-size: 0.7em; color: gray;">펜션</span>
+                                                <span class="align-text-top" style="font-size: 0.7em; color: gray;">
+                                                	${hotelMap.hotelDto.hotel_category}
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col">
-                                                <span class="align-text-top" style="font-size: 0.8em;">숙소 제목란입니다 </span>
+                                                <span class="align-text-top" style="font-size: 0.8em;">
+                                                	${hotelMap.hotelDto.hotel_title}
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="row" style="bottom: 0;">
@@ -201,10 +219,12 @@
                                                 <i style="font-size: 0.6em;" class="bi bi-star-fill"></i>
                                             </div>
                                             <div class="col-auto px-0">
-                                                <span style="font-size: 0.8em;">4.87</span>
+                                                <span style="font-size: 0.8em;">
+                                                	${avgPointOfReview}
+                                                </span>
                                             </div>
                                             <div class="col-auto px-0">
-                                                <span style="font-size: 0.8em; color: gray;">(후기 4개)</span>
+                                                <span style="font-size: 0.8em; color: gray;">(후기 ${countOfReview}개)</span>
                                             </div>
                                             <div class="col-auto px-1">
                                                 <span style="font-size: 0.8em;">•</span>
@@ -227,13 +247,17 @@
                                             <span style="font-size: 0.9em;">\</span>
                                         </div>
                                         <div class="col-auto px-0">
-                                            <span style="font-size: 0.9em;">50000</span>
+                                            <span style="font-size: 0.9em;">
+                                            	${hotelMap.hotelDto.hotel_price }
+                                            </span>
                                         </div>
                                         <div class="col-auto px-1">
                                             <span style="font-size: 0.9em;">x</span>
                                         </div>
                                         <div class="col-auto px-0">
-                                            <span style="font-size: 0.9em;">4</span>
+                                            <span style="font-size: 0.9em;">
+                                 				${numDays }
+                                            </span>
                                         </div>
                                         <div class="col-auto ps-0">
                                             <span style="font-size: 0.9em;">박</span>
@@ -242,7 +266,9 @@
                                             <span style="font-size: 0.9em;">\</span>
                                         </div>
                                         <div class="col-auto ps-0">
-                                            <span style="font-size: 0.9em;">200000</span>
+                                            <span style="font-size: 0.9em;">
+                                            	${totalFee }
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="row my-2">
@@ -268,7 +294,9 @@
                                             <span style="font-size: 1em; font-weight: 600;">\</span>
                                         </div>
                                         <div class="col-auto text-end ps-0">
-                                            <span style="font-size: 1em; font-weight: 600;">200000</span>
+                                            <span style="font-size: 1em; font-weight: 600;">
+                                            	${totalFee }
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -279,7 +307,6 @@
             </div>
         </div>
     </div>
-</div>
 <div class="container-fluid" >
     <div class="row">
         <div class="col" style="background-color: #ededed;">

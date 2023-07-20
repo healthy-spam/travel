@@ -122,6 +122,8 @@
 		  xhr.send();
 	}
 	
+	let numDays = 0;
+	
 	// 예약금 총합 계산 함수
 	function calculateReservationTotal() {
 		  const { checkInDate, checkOutDate } = getSelectedDates();
@@ -133,7 +135,7 @@
 
 		  const timeDiff = checkOutTime - checkInTime;
 
-		  const numDays = Math.round(timeDiff / millisecondsPerDay);
+		  numDays = Math.round(timeDiff / millisecondsPerDay);
 		  
 		  let numPeople = parseInt(numberOfPeople.innerText);
 		  
@@ -148,8 +150,16 @@
 	  const reservationTotal = calculateReservationTotal();
 	  	  
 	  const reservationTotalElement = document.getElementById("reservationTotal");
+	  const reserveDay = document.getElementById("reserveDay");
 	  
+	  reserveDay.innerText = numDays
 	  reservationTotalElement.innerText = reservationTotal;
+	  
+	  if (isNaN(reserveDay.innerText)) {
+		  
+		  reserveDay.innerText = 0;
+		  
+	  }
 	  
 	  if (isNaN(reservationTotalElement.innerText)) {
 		  
@@ -191,9 +201,10 @@
 			return;
 			
 		}
-		
+		const guestNum = document.getElementById("numberOfPeople").innerText;
 		const checkInDate = document.getElementById("checkInDate").value;
 		const checkOutDate = document.getElementById("checkOutDate").value;
+		const totalFee = document.getElementById("reservationTotal").innerText;
 		
 		if (checkInDate && checkOutDate == null) {
 			
@@ -217,7 +228,7 @@
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhr.send("hotel_id=" + hotelId + "&hotel_reservation_check_in=" + checkInDate + "&hotel_reservation_check_out=" + checkOutDate);
 		
-		window.location.href = "/travel/hotel/hotelPaymentPage?hotel_id=" + hotelId;
+		window.location.href = "/travel/hotel/hotelPaymentPage?hotel_id=" + hotelId + "&guestNum=" + guestNum + "&checkInDate=" + checkInDate + "&checkOutDate=" + checkOutDate + "&totalFee=" + totalFee + "&numDays=" + numDays;
 	}
 
 		  
@@ -230,6 +241,7 @@
 		const checkInDateId = document.getElementById("checkInDate");
 		const checkOutDateId = document.getElementById("checkOutDate");
 		const numberOfPeople = document.getElementById("numberOfPeople");
+		const reserveDay = document.getElementById("reserveDay");
 		  
 		numberOfPeople.innerText = 1;
 		
@@ -641,7 +653,7 @@
                                         <span>x</span>
                                     </div>
                                     <div class="col-auto px-0">
-                                        <span>1</span>
+                                        <span id="reserveDay">1</span>
                                     </div>
                                     <div class="col-auto ps-0">
                                         <span>박</span>

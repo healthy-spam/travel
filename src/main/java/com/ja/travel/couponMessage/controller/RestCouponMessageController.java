@@ -75,6 +75,7 @@ public class RestCouponMessageController {
 		
 		List<Map<String, Object>> messageGetList = couponMessageService.getMessageGotById(userId);
 		
+		map.put("userId", userId);
 		map.put("result", "success");
 		map.put("messageGetList", messageGetList);
 		return map;
@@ -111,7 +112,6 @@ public class RestCouponMessageController {
 		Map<String, Object> map = new HashMap<>();
 		
 		couponMessageService.moveMessageGetToTrashCan(messageId);
-		
 		map.put("result", "success");
 		return map;
 	}
@@ -180,6 +180,22 @@ public class RestCouponMessageController {
 		int userId = sessionUser.getUser_id();
 		
 		couponMessageService.updateStar(userId , messageId);
+		
+		map.put("result", "success");
+		
+		return map;
+	}
+	
+	@RequestMapping("/refreshStar")
+	public Map<String, Object> refreshStar(HttpSession session ,@RequestParam("messageId") int messageId){
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		int userId = sessionUser.getUser_id();
+		System.out.println(userId);
+		map.put("result", "success");
+		map.put("isStored", couponMessageService.isStored(userId ,messageId));
 		
 		return map;
 	}

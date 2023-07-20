@@ -22,7 +22,7 @@
 					keyboard : false
 				});
 		var confirmButton = document.getElementById("confirmButton");
-
+		
 		fileInput.addEventListener("change", function() {
 			selectedFile = fileInput.files[0];
 
@@ -68,7 +68,40 @@
 
 			reader.readAsDataURL(selectedFile);
 		});
+		
+		setupCollapseListeners();
 	});
+</script>
+<script type="text/javascript">
+	function setupCollapseListeners() {
+		// Get all collapse elements
+		const collapseElements = document
+				.querySelectorAll('[id^="collapseExample"]');
+
+		collapseElements.forEach(function(collapseElement) {
+			// Add event listener for 'show' event
+			collapseElement.addEventListener('show.bs.collapse', function() {
+				changeIcon('iconButton' + this.id.replace('collapseExample', ''), true);
+			});
+
+			// Add event listener for 'hide' event
+			collapseElement.addEventListener('hide.bs.collapse', function() {
+				changeIcon('iconButton' + this.id.replace('collapseExample', ''), false);
+			});
+		});
+	}
+
+	function changeIcon(buttonId, isOpen) {
+	    const iconButton = document.getElementById(buttonId);
+	    
+	    if (isOpen) {
+	        iconButton.classList.remove('bi-envelope');
+	        iconButton.classList.add('bi-envelope-open');
+	    } else {
+	        iconButton.classList.remove('bi-envelope-open');
+	        iconButton.classList.add('bi-envelope');
+	    }
+	}
 </script>
 <style type="text/css">
 body {
@@ -93,7 +126,7 @@ body {
 }
 
 .icon-wrapper {
-	border: 2px solid white;
+	border: 0.18em solid white;
 	width: 2em;
 	height: 2em;
 	border-radius: 50%;
@@ -105,12 +138,28 @@ body {
 	justify-content: center;
 }
 
+.fileInput {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+
 .image-container {
 	width: 8.2em;
 	height: 8.2em;
 	border-radius: 50%;
 }
 
+button {
+	background: none;
+}
+
+.thumb {
+	border-radius: 50%;
+	width: 1.8em;
+	height: 1.8em;
+	margin-right: 0.5em;
+}
 </style>
 </head>
 <body>
@@ -124,7 +173,7 @@ body {
 						<div class="d-flex justify-content-center align-items-center" style="height: 9em; position: relative;">
 							<img class="image-container" src="/uploadFiles/profileImage/${sessionuser.user_image}">
 							<div class="icon-wrapper">
-								<label for="fileInput">
+								<label for="fileInput" class="fileInput d-flex justify-content-center align-items-center">
 									<i class="bi bi-pencil-fill" style="color: white; font-size: 0.7em;"></i>
 								</label>
 								<input type="file" id="fileInput" style="display: none;">
@@ -180,20 +229,20 @@ body {
 						<div class="card-wrapper">
 							<div class="card-title">내프로필</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
-								<div class="d-flex justify-content-between my-3">
+								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;"> 
 										<i class="bi bi-person me-2"></i>
 										${sessionuser.user_nickname}
 									</span>
 									<button style="border: none;">수정</button>
 								</div>
-								<div class="d-flex justify-content-between my-3">
+								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;"> 
 										<i class="bi bi-phone me-2"></i> 010-1234-5678
 									</span>
 									<button style="border: none;">수정</button>
 								</div>
-								<div class="d-flex justify-content-between my-3">
+								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;">
 										<i class="bi bi-envelope me-2"></i>
 										${sessionuser.user_email}
@@ -207,7 +256,7 @@ body {
 				<div class="row my-4">
 					<div class="col">
 						<div class="card-wrapper">
-							<div class="card-title">동행모집</div>
+							<div class="card-title">동행모집 & 참여</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
 								<c:choose>
 									<c:when test="${empty map.list}">
@@ -217,13 +266,85 @@ body {
 									</c:when>
 									<c:otherwise>
 										<c:forEach items="${map.list}" var="data">
-											<div>
-												<a class="d-flex justify-content-between my-3" href="./plan/travelApplicationDetailPage?planning_id=${data.myPlanning.planning_id}" style="text-decoration: none;">
+											<div class="d-flex justify-content-between my-2">
+												<a href="./plan/travelApplicationDetailPage?planning_id=${data.myPlanning.planning_id}" style="text-decoration: none;">
 													<span style="color: black;">[${data.planningStatus}] ${data.myPlanning.planning_title}</span>
+												</a>
+												<div>
+													<c:if test="${data.myPlanning.user_id == sessionuser.user_id}">
+														<button type="button" style="border: none; color: #999999; font-size: 0.9em;" data-bs-toggle="modal" data-bs-target="#appList">신청 리스트</button>
+													</c:if>
 													<fmt:parseDate var="parsedDate" value="${data.myPlanning.planning_end_date}" pattern="yyyy-MM-dd HH:mm:ss" />
 													<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">
 													<fmt:formatDate value="${parsedDate}" pattern="yyyy/MM/dd" /> 종료</span>
-												</a>
+
+													<!-- Modal -->
+													<div class="modal modal-lg fade" id="appList">
+														<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h1 class="modal-title fs-5" id="appListLabel">동행 신청 리스트</h1>
+																	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+																</div>
+																<div class="modal-body">
+																	<div class="container border rounded-top">
+																		<div class="row py-2" style="background-color: #dfdfdf;">
+																			<div class="col"></div>
+																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
+																				신청자
+																			</div>
+																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
+																				신청날짜
+																			</div>
+																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
+																				수락 / 거절
+																			</div>
+																		</div>
+																		<c:forEach items="${data.list4}" var="item">
+																			<div class="row py-3">
+																				<div class="col d-flex justify-content-center">
+																					<c:choose>
+																						<c:when test="${item.planningApp.planning_member_status == '신청'}">
+																							<span class="badge text-bg-secondary px-4 py-1 d-flex align-items-center" style="font-weight: 100;">신청</span>
+																						</c:when>
+																						<c:when test="${item.planningApp.planning_member_status == '수락'}">
+																							<span class="badge px-4 py-1 d-flex align-items-center" style="background-color: #03c358; font-weight: 100;">수락</span>
+																						</c:when>
+																						<c:otherwise>
+																							<span class="badge text-bg-danger px-4 py-1 d-flex align-items-center" style="font-weight: 100;">거절</span>
+																						</c:otherwise>
+																					</c:choose>
+																				</div>
+																				<div class="col d-flex justify-content-center align-items-center">
+																					<img src="https://via.placeholder.com/50x50" class="thumb">
+																					<span>
+																						${item.user.user_nickname}
+																						<a id="iconButton${item.user.user_id}" class="bi bi-envelope ms-1" style="color: black; cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapseExample${item.user.user_id}"></a>
+																					</span>
+																				</div>
+																				<div class="col d-flex justify-content-center">
+																					<fmt:formatDate value="${item.planningApp.reg_date}" pattern="yyyy-MM-dd"/>
+																				</div>
+																				<div class="col d-flex justify-content-center">
+																					<button style="border: none; color: #03c75a;">수락</button>
+																					<button style="border: none; color: #ff4e4e;">거절</button>
+																				</div>
+																			</div>
+																			<div class="row">
+																				<div class="col-1"></div>
+																				<div class="col p-0">
+																					<div class="collapse pb-2" id="collapseExample${item.user.user_id}">
+																						<div>${item.planningApp.planning_application_content}</div>
+																					</div>
+																				</div>
+																			</div>
+																		</c:forEach>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
 										</c:forEach>
 									</c:otherwise>
@@ -238,16 +359,16 @@ body {
 							<div class="card-title">마이플랜</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
 								<c:choose>
-									<c:when test="${empty map.list}">
+									<c:when test="${empty map.list3}">
 										<div class="d-flex justify-content-center mt-3">
 											플랜 목록이 없습니다.
 										</div>
 									</c:when>
 									<c:otherwise>
-										<c:forEach items="${map.list}" var="data">
+										<c:forEach items="${map.list3}" var="data">
 											<div>
-												<a class="d-flex justify-content-between my-3" href="./plan/readPlanPage?id=${data.plan.plan_id}" style="text-decoration: none;">
-													<span style="color: black;">${data.plan.plan_title}</span>
+												<a class="d-flex justify-content-between my-2" href="./plan/readPlanPage?id=${data.plan.plan_id}" style="text-decoration: none;">
+													<span style="color: black;">[${data.plan.plan_statuse}] ${data.plan.plan_title}</span>
 													<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">${data.day} days</span>
 												</a>
 											</div>

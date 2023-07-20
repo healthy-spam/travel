@@ -17,7 +17,7 @@ pageEncoding="UTF-8"%>
     var infowindow; // 인포윈도우 변수
     var markers = [];
     let polyline = null;
-
+    
     
     const planId = new URLSearchParams(location.search).get("id");
 
@@ -52,16 +52,16 @@ pageEncoding="UTF-8"%>
                     if (i === 0) { // 첫번째 반복일 때 firstDayId에 저장
                         firstDayId = dayDto.plan_day_id;
                     }
-
+					
                     const newNode = document.createElement('li'); // 새로운 'li' 요소 생성
-                    newNode.innerHTML = '<a class="dropdown-item day-text">' + 'DAY ' + dayDto.plan_day + '</a>'; // 'li' 요소에 'a' 태그와 텍스트 삽입
-                    newNode.querySelector(".dropdown-item").setAttribute("onclick", "loadMyList(" + dayDto.plan_day_id + ")");
+                    newNode.innerHTML = '<a class="dropdown-item day-text text-center" style="font-weight: bolder;">' + '<i class="bi bi-send"></i>' +' Day' + dayDto.plan_day + '</a>'; // 'li' 요소에 'a' 태그와 텍스트 삽입
+                    newNode.querySelector(".dropdown-item").setAttribute("onclick", "loadMyList(" + dayDto.plan_day_id + "," + dayDto.plan_day + ")");
                     dayList.appendChild(newNode);
                  }
 
                  // 첫번째 day에 대한 명소 목록을 로드합니다.
                  if (firstDayId !== undefined) {
-                    loadMyList(firstDayId);
+                    loadMyList(firstDayId, 1); // 1 넣을까 말까
                  }
               }
            }
@@ -72,11 +72,12 @@ pageEncoding="UTF-8"%>
     }
 
 
-    function loadMyList(plan_day_id){
+    function loadMyList(plan_day_id, plan_day){
         const xhr = new XMLHttpRequest();
         
         myDayPlaceList = [];
-        
+        myDayPlaceNames = [];
+        myDayPlacePhoto = [];
         // 모든 마커 제거
         for (let i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
@@ -130,7 +131,7 @@ pageEncoding="UTF-8"%>
                                 <div class="row">
                                     <div class="col-4">&nbsp;</div>
                                     <div class="col-4 d-grid">
-                                        <a class="btn" style="background-color: #03c75a; color: white; font-weight: bolder; border-radius: 15px;" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}">
+                                        <a class="btn" style="background-color: #03c75a; color: white; font-weight: bolder; border-radius: 15px;" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}&plan_title=${data.planDto.plan_title}">
                                             <i class="bi bi-signpost-split"></i> 루트 수정
                                         </a>
                                     </div>
@@ -153,7 +154,10 @@ pageEncoding="UTF-8"%>
                                 newElementInner.querySelector(".placeContent").innerText = y.planPlaceDto.plan_place_content;
                                 newElementInner.querySelector(".placeAddress").innerText = y.planPlaceDto.plan_place_address;
                                 newElementInner.querySelector(".place_number").innerText = ++placeCounter; // Counter를 증가시키고 place_number에 할당합니다.
-
+								
+                                const dayChangeButton = document.getElementById("dayChange");
+                                dayChangeButton.innerHTML = `<i class="bi bi-calendar-check"></i> Day ` +plan_day;
+                                
                                 newElementInner.querySelector(".placeName").style.fontSize = "20px";
                                 newElementInner.removeAttribute("id");
                                 newElementInner.classList.remove("d-none");
@@ -162,8 +166,9 @@ pageEncoding="UTF-8"%>
                                 route_col.appendChild(newElementInner);
                                 
                                 myDayPlaceList.push(y.planPlaceDto.plan_place_address);
-                                
-                                console.log(y.planPlaceDto.plan_place_photo);
+                                myDayPlaceNames.push(y.planPlaceDto.plan_place_name);
+                                myDayPlacePhoto.push(y.planPlaceDto.plan_place_photo);
+                                console.log(myDayPlacePhoto);
                                 
                                 if (myDayPlaceList.length >= 2) {
                                     drawPin(myDayPlaceList[myDayPlaceList.length - 2], myDayPlaceList[myDayPlaceList.length - 1], polyline);  // polyline 객체를 인수로 전달
@@ -178,6 +183,68 @@ pageEncoding="UTF-8"%>
         xhr.open("get", "./getMyList?dayId=" + plan_day_id);
         xhr.send();
     }
+
+    //일정별 마커와 루트
+    async function drawPin() {
+        var geocoder = new kakao.maps.services.Geocoder();
+        let coords = [];
+
+        // Wrap the address search in a new Promise
+        const searchAddress = (address) => new Promise((resolve, reject) => {
+            geocoder.addressSearch(address, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    resolve(new kakao.maps.LatLng(result[0].y, result[0].x));
+                } else {
+                    reject(status);
+                }
+            });
+        });
+
+        // Use a for loop to await the address search for each address
+        for (let i = 0; i < myDayPlaceList.length; i++) {
+            coords[i] = await searchAddress(myDayPlaceList[i]);
+        }
+
+        // Separate loop for marker creation and event listener
+        for (let i = 0; i < coords.length; i++) {
+            createMarker(i, coords[i]);
+        }
+
+        polyline.setPath(coords);
+        polyline.setMap(map);
+    }
+
+    // 일정별 루트 명소들 이름
+    function createMarker(i, coords) {
+	    var marker = new kakao.maps.Marker({
+	        map: map,
+	        position: coords
+	    });
+	
+	    var content = '<div style="padding:5px; font-size: 11px; font-weight: bolder;">' +'<img style="width: 35px; height: 35px; border-radius: 50%;" src="/uploadFiles/mainImage/'+ myDayPlacePhoto[i] +'">'+' '+ myDayPlaceNames[i] + '</div>';
+	
+	    // Create a custom overlay
+	    let overlay = new kakao.maps.CustomOverlay({
+	        content: content,
+	        map: map,
+	        position: marker.getPosition()
+	    });
+	
+	    // Show overlay when mouseover
+	    kakao.maps.event.addListener(marker, 'mouseover', function() {
+	        overlay.setMap(map);
+	    });
+	
+	    // Hide overlay when mouseout
+	    kakao.maps.event.addListener(marker, 'mouseout', function() {
+	        overlay.setMap(null);
+	    });
+	
+	    markers.push(marker);
+	}
+
+
+
 
     
     function search2(keyword, index) {
@@ -213,7 +280,6 @@ pageEncoding="UTF-8"%>
 		path.push(coords);
 		polyline.setPath(path);
         
-        var content = '<div style="width:150px; text-align:center; padding:6px 0;">' + keyword + '</div>';
         
         // 인포윈도우가 이미 존재하는 경우, 인포윈도우의 내용을 변경
         if (infowindow) {
@@ -235,40 +301,7 @@ pageEncoding="UTF-8"%>
         
 		});
 	}
-     
-    async function drawPin() {
-        var geocoder = new kakao.maps.services.Geocoder();
-
-        let coords = [];
-
-        // Wrap the address search in a new Promise
-        const searchAddress = (address) => new Promise((resolve, reject) => {
-            geocoder.addressSearch(address, function(result, status) {
-                if (status === kakao.maps.services.Status.OK) {
-                    resolve(new kakao.maps.LatLng(result[0].y, result[0].x));
-                } else {
-                    reject(status);
-                }
-            });
-        });
-
-        // Use a for loop to await the address search for each address
-        for (let i = 0; i < myDayPlaceList.length; i++) {
-            coords[i] = await searchAddress(myDayPlaceList[i]);
-
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: coords[i]
-            });
-
-            markers.push(marker);
-        }
-
-        polyline.setPath(coords);
-        polyline.setMap(map);
-    }
-
-    
+       
     window.addEventListener("DOMContentLoaded", () => {
         map();
         loadDay();        
@@ -306,12 +339,12 @@ pageEncoding="UTF-8"%>
 								<c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">                                                    
 		                        <div class="col-3 text-left">                                                                            
 	                                <div class="dropdown">
-	                                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: 500; background-color: #03c75a; color: white;">
+	                                    <button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: bolder; background-color: #faf7f0;">
 	                                        <i class="bi bi-gear"></i> 관리
 	                                    </button>
 	                                    <ul class="dropdown-menu" >
 	                                        <li class="col-auto"><a class="dropdown-item" href="#"><i class="bi bi-vector-pen"></i> 정보 수정</a></li>
-	                                        <li class="col-auto "><a class="dropdown-item" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}"><i class="bi bi-signpost-split"></i> 루트 수정</a></li>
+	                                        <li class="col-auto "><a class="dropdown-item" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}&plan_title=${data.planDto.plan_title}"><i class="bi bi-signpost-split"></i> 루트 수정</a></li>
 	                                        <li class="col-auto "><a class="dropdown-item" href="./deleteProcess?id=${data.planDto.plan_id}"><i class="bi bi-trash3"></i> 플래너 삭제</a></li>
 	                                    </ul>
 	                                </div>                                    
@@ -321,12 +354,12 @@ pageEncoding="UTF-8"%>
 								<c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">
 		                     	<div class="col-4 ps-0">
 		                            <c:if test="${data.planDto.plan_statuse != '모집'}">
-		                                <a href="./travelRecruitmentPage?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style="background-color: #03c75a; color: white; font-weight: bolder; border-radius: 17px;" >
+		                                <a href="./travelRecruitmentPage?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style="font-weight: bolder; border-radius: 17px; background-color: #faf7f0;" >
 		                                <i class="bi bi-people"></i> 모집
 		                                </a>
 		                            </c:if> 
 		                            <c:if test="${data.planDto.plan_statuse != '모집' && guideCheck == 1 }">
-		                                <a href="../guidePackage/packageRecruitmentPage?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style="background-color: #03c75a; color: white; font-weight: bolder; border-radius: 17px;">
+		                                <a href="../guidePackage/packageRecruitmentPage?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style=" font-weight: bolder; border-radius: 17px; background-color: #faf7f0;">
 		                                패키지 모집
 		                                </a>
 		                            </c:if>
@@ -335,7 +368,7 @@ pageEncoding="UTF-8"%>
 								
 		                       	<c:if test="${!empty sessionuser && sessionuser.user_id != data.planDto.user_id && data.planDto.plan_disclosure_status == '공개'}">
 		                        <div class="col-5">
-			                        <a href="./copyPlanProcess?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style="background-color: #03c75a; color: white; font-weight: bolder; border-radius: 17px;">
+			                        <a href="./copyPlanProcess?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style="font-weight: bolder; border-radius: 17px; background-color: #faf7f0;">
 									<i class="bi bi-bookmark"></i> 일정 담기
 			                        </a>
 		                        </div>
@@ -347,8 +380,8 @@ pageEncoding="UTF-8"%>
 		                <div class="col-2">
 		                    <c:choose>
 		                        <c:when test="${data.planDto.referenced_plan_id != 0}">
-		                            <a class="btn" href="readPlanPage?id=${data.planDto.referenced_plan_id}">
-		                                <i class="bi bi-bookmark-fill" style=" color: #03c75a; font-size: 30px;"></i> 참조한 플래너 이름
+		                            <a class="btn shadow-sm" href="readPlanPage?id=${data.planDto.referenced_plan_id}">
+		                                <i class="bi bi-bookmark-fill" style="font-size: 30px; background-color: #faf7f0;"></i> 참조한 플래너 이름
 		                            </a>
 		                        </c:when>
 		                        <c:otherwise>
@@ -374,26 +407,21 @@ pageEncoding="UTF-8"%>
 		    </div>
 		    
 		    <div class="row mt-2">
-		    	<!-- <div class="col-1">
-		    		&nbsp;
-		    	</div> -->
-		    	<div class="col-12">
+		    	<div class="col-1">&nbsp;</div>
+		    	<div class="col-10">
 					<div class="dropdown-center d-grid" >
-						<button class="btn dropdown-toggle" style=" color: white; font-weight: bolder; background-color: #03c75a; border-radius: 12px; font-size: 20px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<button class="btn dropdown-toggle shadow-sm" id="dayChange" style="font-weight: bolder;  border-radius: 12px; font-size: 20px; background-color: #faf7f0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<i class="bi bi-calendar-check"></i> 일정별 루트 목록						 
 						</button>
-						<ul class="dropdown-menu" id="templete_day" style="font-size: 25px;">
-							<!-- <li><a class="dropdown-item day-text" href="#"></a></li> -->
-							
+						<ul class="dropdown-menu align-items-center" id="templete_day" style="font-size: 20px;">
+							<!-- <li><a class="dropdown-item day-text" href="#"><i class="bi bi-send"></i> Day 1</a></li> -->														
 						</ul>
 					</div>
 				</div>
-				<!-- <div class="col-1">
-		    		&nbsp;
-		    	</div> -->
+				<div class="col-1">&nbsp;</div>
 		    </div>
 		    
-		    <div class="row mt-4">
+		    <div class="row mt-3">
 		    	<div class="col" id="route_col">
 		    	
 		    		<div class="row mt-2 align-items-center border p-1 m-1 d-none" id="templete_my_place">

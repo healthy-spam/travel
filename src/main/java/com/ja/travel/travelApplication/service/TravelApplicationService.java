@@ -119,12 +119,6 @@ public class TravelApplicationService {
 	public int getPlanningCount(String searchWord) {
 		return travelApplicationSqlMapper.getPlanningCount(searchWord);
 	}
-
-	public PlanningDto getPlanningByPlanIdAndUserId(int plan_id) {
-		PlanningDto planningDto = travelApplicationSqlMapper.getPlanAndPlanningInfoByPlanId(plan_id);
-		
-		return planningDto;
-	}
 	
 	public List<Map<String, Object>> getPlanDayList(int plan_id) {
 		List<PlanDayDto> planDayList = travelApplicationSqlMapper.getPlanDayByPlanId(plan_id);

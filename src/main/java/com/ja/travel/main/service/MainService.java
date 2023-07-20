@@ -20,9 +20,11 @@ import com.ja.travel.dto.GuideRestrictDto;
 import com.ja.travel.dto.HotelDto;
 import com.ja.travel.dto.PlanDayDto;
 import com.ja.travel.dto.PlanDto;
+import com.ja.travel.dto.PlanningApplicationDto;
 import com.ja.travel.dto.PlanningDto;
 import com.ja.travel.dto.UserDto;
 import com.ja.travel.hotel.mapper.HotelSqlMapper;
+import com.ja.travel.login.mapper.LoginSqlMapper;
 import com.ja.travel.main.mapper.MainSqlMapper;
 import com.ja.travel.travelApplication.mapper.TravelApplicationSqlMapper;
 
@@ -37,6 +39,9 @@ public class MainService {
 	
 	@Autowired
 	private HotelSqlMapper hotelSqlMapper;
+	
+	@Autowired
+	private LoginSqlMapper loginSqlMapper;
 	
 	public Map<String, List<PlanDto>> getPlanList(UserDto userDto) {
 
@@ -92,19 +97,21 @@ public class MainService {
 	}
 
 	public Map<String, Object> getMyList(HttpSession session) {
-		UserDto user = (UserDto) session.getAttribute("sessionuser");
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
 		int user_id = 0;
 		
-		if (user != null) {
-			user_id = user.getUser_id();
+		if (sessionUser != null) {
+			user_id = sessionUser.getUser_id();
 		}
 		
 		List<PlanningDto> myPlanningList = mainSqlMapper.getMyPlanningList(user_id);
-		
+		List<PlanDto> planList = mainSqlMapper.getPlanList(user_id);
 		List<HotelDto> hotelList = hotelSqlMapper.selectHotelByUser(user_id);
 		
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 		List<Map<String, Object>> list2 = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> list3 = new ArrayList<Map<String,Object>>();
+		
 		Map<String, Object> mapList = new HashMap<>();
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -119,15 +126,38 @@ public class MainService {
 			list2.add(map);
 		}
 
+		for (PlanDto plan : planList) {
+			Map<String, Object> map = new HashMap<>();
+			
+			List<PlanDayDto> planDay = travelApplicationSqlMapper.getPlanDayByPlanId(plan.getPlan_id());
+			
+			map.put("plan", plan);
+			map.put("day", planDay.size());
+			
+			list3.add(map);
+		}
+		
+		
 		for (PlanningDto planningDto : myPlanningList) {
 			Map<String, Object> map = new HashMap<>();
 			
-			PlanDto plan = travelApplicationSqlMapper.getPlanByPlanningId(planningDto.getPlanning_id());
-			List<PlanDayDto> planDay = travelApplicationSqlMapper.getPlanDayByPlanId(plan.getPlan_id());
-
+			List<PlanningApplicationDto> planningAppList = mainSqlMapper.getApplicationList(user_id);
+			
+			List<Map<String, Object>> list4 = new ArrayList<Map<String,Object>>();
+			
+			for (PlanningApplicationDto planningApp : planningAppList) {
+				Map<String, Object> map2 = new HashMap<>();
+				
+				UserDto user = loginSqlMapper.selectById(planningApp.getUser_id());
+				
+				map2.put("user", user);
+				map2.put("planningApp", planningApp);
+				
+				list4.add(map2);
+			}
+			
 			map.put("myPlanning", planningDto);
-			map.put("plan", plan);
-			map.put("day", planDay.size());
+			map.put("list4", list4);
 			
 			// 종료 시간을 LocalDateTime으로 변환합니다.
 			LocalDateTime endDate = LocalDateTime.parse(planningDto.getPlanning_end_date(), formatter);
@@ -146,6 +176,7 @@ public class MainService {
 		
 		mapList.put("list", list);
 		mapList.put("list2", list2);
+		mapList.put("list3", list3);
 		
 		return mapList;
 	}

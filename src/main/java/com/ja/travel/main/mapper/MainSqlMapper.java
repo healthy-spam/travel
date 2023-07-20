@@ -9,6 +9,7 @@ import com.ja.travel.dto.GuidePlanningDto;
 import com.ja.travel.dto.GuideReportDto;
 import com.ja.travel.dto.GuideRestrictDto;
 import com.ja.travel.dto.PlanDto;
+import com.ja.travel.dto.PlanningApplicationDto;
 import com.ja.travel.dto.PlanningDto;
 
 @Mapper
@@ -27,4 +28,6 @@ public interface MainSqlMapper {
 	public PlanDto getPlanDtoByPlanId(int planId);
 	
 	public List<PlanningDto> getMyPlanningList(int user_id);
+	
+	public List<PlanningApplicationDto> getApplicationList(int user_id);
 }
