@@ -22,6 +22,7 @@ import com.ja.travel.crew.mapper.CrewMapper;
 import com.ja.travel.dto.CrewBoardAttachedDto;
 import com.ja.travel.dto.CrewBoardCommentDto;
 import com.ja.travel.dto.CrewBoardDto;
+import com.ja.travel.dto.CrewBoardLikeDto;
 import com.ja.travel.dto.CrewDto;
 import com.ja.travel.dto.CrewMemberDto;
 import com.ja.travel.dto.UserDto;
@@ -122,46 +123,63 @@ public class CrewService {
 		crewMapper.addcrewmember(crewMemberDto);
 		}
 
+	public Map<String, Object> crewMainResources(String crew_domain, HttpSession session) {
+		Map<String, Object> map = new HashMap<>();
 
-
-	
-	public String crewhome(String crew_domain, HttpSession session, Model model) {
+		//기본적인 크루 정보 가져오기
+		CrewDto crew = crewMapper.getCrewDtoByCrewDomain(crew_domain);
+		map.put("crewDto", crew);
+		map.put("masterName", crewMapper.getUserDtoByUserId(crew.getMaster_id()).getUser_nickname());
+		map.put("membersize", crewMapper.getCrewMemberListByCrewDomain(crew_domain).size());
+		
+		//들어온 사람권한주기
 		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
-		if(userDto==null) {
-			return "redirect:/crew/findcrew";
-		}
-//		CrewDto crewDto = crewMapper.getCrewDtoByUserId(userDto.getUser_id()); //크루 정보
-		CrewDto crewDto = crewMapper.getCrewDtoByCrewDomain(crew_domain);
-		
-		try {
-			CrewMemberDto crewMemberDto = crewMapper.getMyCrewInfo(userDto.getUser_id()); //크루원일 경우, 크루 내 나의 정보
-			String gradename = crewMapper.getGradeNameByGradeId(crewMemberDto.getCrew_member_grade_default_id()); //크루원일 경우, 크루 내 나의 등급
-			model.addAttribute("crewMemberDto", crewMemberDto);
-			model.addAttribute("mygrade", gradename);
-			Integer mypoint = crewMapper.getMyPointByCrewMemberId(crewMemberDto.getCrew_member_id());
-			if(mypoint == null) {
-				model.addAttribute("mypoint", 0);
-			}
-			model.addAttribute("mypoint", mypoint);
-			model.addAttribute("list", getBoardList(crew_domain, userDto));
+		map.put("userDto", userDto);
+		try { //회원
+			CrewMemberDto crewMember = crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id());
+			map.put("crewMemberDto", crewMember);
+			map.put("mygrade", crewMapper.getGradeNameByGradeId(crewMember.getCrew_member_grade_default_id()));
+			int mypoint = crewMapper.getMyPointByCrewMemberId(crewMember.getCrew_member_id()) == null ? 0 : crewMapper.getMyPointByCrewMemberId(crewMember.getCrew_member_id());
+			map.put("mypoint", mypoint);
+			List<CrewBoardDto> getmypostlist = crewMapper.getMyBoardListByCrewMemberId(crewMember);
+			map.put("mypostlist", getmypostlist);
+			List<CrewBoardDto> getmylikedpostlist = crewMapper.getMyLikedBoardListByCrewMemberId(crewMember.getCrew_member_id());
+			map.put("mylikelist", getmylikedpostlist);
 
-		} catch (Exception e) { //크루원 아님
-			System.out.println("오류뜸!!");
-			List<CrewBoardDto> publicpostlist = crewMapper.getAllPublicPostByCrewDomain(crew_domain);
-			List<CrewBoardDto> publicnoticelist = crewMapper.getAllPublicNoticeByCrewDomain(crew_domain);
-			
-			model.addAttribute("list", publicpostlist);
-			model.addAttribute("list", publicnoticelist);
-			model.addAttribute("list", getBoardList(crew_domain, userDto));
+		} catch (Exception e) { //비회원
+			CrewMemberDto appliedMember = crewMapper.getAppliedMemberInfo(userDto.getUser_id());
+			map.put("applied", appliedMember);
 		}
-		CrewMemberDto crewappliedDto = crewMapper.getAppliedMemberInfo(userDto.getUser_id());
-		model.addAttribute("applied", crewappliedDto);
-		
-		model.addAttribute("crewDto", crewDto);
-		model.addAttribute("userDto", userDto);
-		return "crew/crewhome";
+		return map;
 	}
-	
+
+	public Map<String, Object> crewPostResources(String crew_domain, String searchWord) {
+		List<CrewBoardDto> postlist = crewMapper.getPostListByCrewDomainAndSearchWord(crew_domain, searchWord);
+		List<Map<String, Object>> ss = new ArrayList<Map<String,Object>>();
+		for(CrewBoardDto post : postlist) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			UserDto writerDto = crewMapper.getUserDtoByCrewMemberId(post.getCrew_member_id());
+			map.put("userDto", writerDto);
+			
+			List<CrewBoardAttachedDto> files =crewMapper.getCrewBoardAttachedByCrewBoardId(post.getCrew_board_id());
+			if(files!=null) {
+				map.put("files", files);
+			}
+			int likecount = 0;
+			List<Integer> boardlikelist = crewMapper.getBoardLikeListByCrewBoardId(post.getCrew_board_id()); //해당 게시글에 좋아요 누른 crew_member_id 리스트
+			if(boardlikelist.size()!=0) { //boardlikelist의 값이 null이 아닐때
+				likecount = boardlikelist.size(); //좋아요 개수
+				}
+			map.put("boardlikecount", likecount);
+			
+			map.put("c", post);
+			ss.add(map);
+			}
+		Map<String, Object> bb = new HashMap<String, Object>();
+		bb.put("list", ss);
+		return bb;
+	}
+		
 	//게시글 불러오는 함수@######################!#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	public List<Map<String, Object>> getBoardList(String crew_domain, UserDto userDto) {
 		List<CrewBoardDto> allpostlist = crewMapper.getAllPostByCrewDomain(crew_domain); //게시글 전체 불러오기
@@ -178,16 +196,21 @@ public class CrewService {
 			}
 			
 			int count = 0;
-			int k = mycrewMemberDto.getCrew_member_id(); //sessionuser의 crew_member_id
-			if(boardlikelist.size()!=0) { //boardlikelist의 값이 null이 아닐때
-				count = boardlikelist.size(); //좋아요 개수
-				
-				for(int L:boardlikelist) {
-					if(L == k) { // 좋아요 crew_member_id list에 본인 id가 있을 시
-						map.put("liked", "dd"); //c태그에서 empty값 확인용
-						break;
+			try {
+
+				int k = mycrewMemberDto.getCrew_member_id(); //sessionuser의 crew_member_id
+				if(boardlikelist.size()!=0) { //boardlikelist의 값이 null이 아닐때
+					count = boardlikelist.size(); //좋아요 개수
+					
+					for(int L:boardlikelist) {
+						if(L == k) { // 좋아요 crew_member_id list에 본인 id가 있을 시
+							map.put("liked", "dd"); //c태그에서 empty값 확인용
+							break;
+						}
 					}
 				}
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
 
 			map.put("crewMemberDto", mycrewMemberDto);
@@ -220,6 +243,41 @@ public class CrewService {
 		return list;
 	}
 	
+	
+	public String crewhome(String crew_domain, HttpSession session, Model model) {
+		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
+
+		if(userDto==null) {
+			return "redirect:/crew/main";
+		}
+//		CrewDto crewDto = crewMapper.getCrewDtoByUserId(userDto.getUser_id()); //크루 정보
+		CrewDto crewDto = crewMapper.getCrewDtoByCrewDomain(crew_domain);
+		model.addAttribute("masterName", crewMapper.getUserNameById(crewDto.getMaster_id()));
+		model.addAttribute("membersize", Integer.toString(crewMapper.getCrewMemberListByCrewDomain(crew_domain).size()));
+		
+		try {
+			CrewMemberDto crewMember = crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id());
+			model.addAttribute("crewMemberDto", crewMember);
+			model.addAttribute("mygrade", crewMapper.getGradeNameByGradeId(crewMember.getCrew_member_grade_default_id()));
+			int mypoint = crewMapper.getMyPointByCrewMemberId(crewMember.getCrew_member_id()) == null ? 0 : crewMapper.getMyPointByCrewMemberId(crewMember.getCrew_member_id());
+			model.addAttribute("mypoint", mypoint);
+			List<CrewBoardDto> getmypostlist = crewMapper.getMyBoardListByCrewMemberId(crewMember);
+			model.addAttribute("mypostlist", getmypostlist);
+			List<CrewBoardDto> getmylikedpostlist = crewMapper.getMyLikedBoardListByCrewMemberId(crewMember.getCrew_member_id());
+			model.addAttribute("mylikelist", getmylikedpostlist);
+
+		} catch (Exception e) { //크루원 아님
+			System.out.println("오류뜸!!");
+			CrewMemberDto appliedMember = crewMapper.getAppliedMemberInfo(userDto.getUser_id());
+			model.addAttribute("applied", appliedMember);
+		}
+		
+		model.addAttribute("list", getBoardList(crew_domain, userDto));
+		model.addAttribute("crewDto", crewDto);
+		model.addAttribute("userDto", userDto);
+		return "crew/crewhome";
+	}
+
 	
 	
 
@@ -517,7 +575,7 @@ public class CrewService {
 			userDto.setUser_address(null);
 			userDto.setUser_phone(null);
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("postcount", crewMapper.getMyBoardListByCrewMemberId(mem.getCrew_member_id()).size());
+//			map.put("postcount", crewMapper.getMyBoardListByCrewMemberId(mem.getCrew_member_id()).size());
 			map.put("commentcount", crewMapper.getMyCommentListByCrewMemberId(mem.getCrew_member_id()).size());
 			map.put("userDto", userDto);
 			map.put("crewMemberDto", mem);

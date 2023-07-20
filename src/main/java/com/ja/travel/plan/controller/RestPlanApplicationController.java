@@ -67,18 +67,13 @@ public class RestPlanApplicationController {
 	
 	// 명소 선택시 plan_day_city, plan_route_city 에 동시 입력
     @RequestMapping("registerPlaceProcess")
-    public ResponseEntity<Map<String, Object>> registerPlaceProcess(@RequestParam int plan_day_id, @RequestParam int plan_city_id, @RequestParam int plan_place_id) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-        	int plan_day_city_id = planService.registerPlace(plan_day_id, plan_city_id, plan_place_id);
-            response.put("status", "success");
-            response.put("plan_day_city_id", plan_day_city_id);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            response.put("status", "error");
-            response.put("message", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public Map<String,Object> registerPlaceProcess(@RequestParam int plan_day_id, @RequestParam int plan_city_id, @RequestParam int plan_place_id) {
+        	Map<String, Object> map = new HashMap<>();
+
+    	
+    	planService.registerPlace(plan_day_id, plan_city_id, plan_place_id);
+    	
+    	return map;
     }
 	
 	@RequestMapping("registerPlanProcess")
@@ -246,6 +241,8 @@ public class RestPlanApplicationController {
 	 	return map;
 		
 	}
+	
+
    
 
 	

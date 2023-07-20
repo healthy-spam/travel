@@ -96,7 +96,7 @@ public interface CrewMapper {
 
 	public List<Integer> getBoardLikeListByCrewBoardId(int crew_board_id);
 
-	public List<Integer> getMyLikedBoardListByCrewMemberId(int crew_member_id);
+	public List<CrewBoardDto> getMyLikedBoardListByCrewMemberId(int crew_member_id);
 
 	public void dislikeboard(@Param("crew_board_id") int crew_board_id, @Param("crew_member_id") int crew_member_id);
 
@@ -106,7 +106,7 @@ public interface CrewMapper {
 
 	public void crewclosecancel(int crew_id);
 
-	public List<CrewBoardDto> getMyBoardListByCrewMemberId(int crew_member_id);
+	public List<CrewBoardDto> getMyBoardListByCrewMemberId(CrewMemberDto crewMemberDto);
 
 	public List<CrewBoardCommentDto> getMyCommentListByCrewMemberId(int crew_member_id);
 
@@ -135,5 +135,7 @@ public interface CrewMapper {
 	public List<UserDto> getUserDtoBySearchWord(@Param("searchword") String searchword, @Param("crew_domain") String crew_domain);
 
 	public List<CrewBoardAttachedDto> getCrewBoardAttachedByCrewBoardId(int crew_board_id);
+
+	public List<CrewBoardDto> getPostListByCrewDomainAndSearchWord(@Param("crew_domain") String crew_domain, @Param("searchWord") String searchWord);
 	
 }

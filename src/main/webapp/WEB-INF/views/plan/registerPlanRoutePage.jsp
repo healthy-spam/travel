@@ -367,7 +367,7 @@ function createModal() {
                   
                   newNode.classList.remove("d-none");
                   newNode.removeAttribute("id");
-                  newNode.setAttribute("onclick", "handleClickDay(" + dayDto.plan_day_id + ")");
+                 
                   
                   const dayText = newNode.querySelector(".day-text");
                   dayText.innerText = "DAY " + dayDto.plan_day;
@@ -384,8 +384,10 @@ function createModal() {
                   document.getElementById("day_col").appendChild(newNode);
                }
                
-               
-               console.log(response);
+               const firstDay = response.data[0].plan_day_id;
+               handleClickDay(firstDay);
+           
+              
             }
          }
       }
@@ -398,20 +400,22 @@ function createModal() {
    
    
    
-   let selectedDayElement = null; // 선택된 날짜 요소를 저장할 변수
+   let selectedDayElement = null; 
 
    function handleClickDay(dayId) {
       
      const clickedElement = document.getElementById("day_" + dayId);
+     
+    
 
      if (selectedDayElement === clickedElement) {
-       // 이미 선택된 요소를 클릭한 경우
+      
        return;
      }
      
 
      if (selectedDayElement) {
-       // 이전에 선택된 요소가 있는 경우
+       
        selectedDayElement.classList.remove("selected-day");
       
        resetFontSize(selectedDayElement);
@@ -432,7 +436,7 @@ function createModal() {
    function resetFontSize(element) {
      const dayText = element.querySelector(".day-text");
      if (dayText) {
-       dayText.style.fontSize = "25px";
+       
        dayText.style.fontWeight = "bold";
       
      }
@@ -441,7 +445,7 @@ function createModal() {
 	function setFontSize(element) {
 	  const dayText = element.querySelector(".day-text");
 	  if (dayText) {
-		dayText.style.fontSize = "30px";
+		
 		dayText.style.fontWeight = "bold";
 	  }
 	}
@@ -537,41 +541,26 @@ function createModal() {
             
    }
    
-   function allPlace(){      
-      
-      const xhr = new XMLHttpRequest();
-
-      xhr.onreadystatechange = function() {
+   function checkPlace(placeId){
+	   
+     xhr.onreadystatechange = function() {
          if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                const response = JSON.parse(xhr.responseText);
-                              
-               const place_list = document.getElementById("place_list");
-               place_list.innerHTML = "";
                
-               for(const placeDto of response.placeList) {
-                  const newElement = document.getElementById("templete_place").cloneNode(true);
-                  newElement.querySelector(".name").innerText = placeDto.plan_place_name;
-                  newElement.querySelector(".address").innerText = placeDto.plan_place_address;
-                  newElement.removeAttribute("id");
-                  newElement.classList.remove("d-none");
-                  newElement.querySelector(".add i").setAttribute("onclick", "addPlace("+ placeDto.plan_place_id +")")
-                  newElement.classList.add("newElement");
-                  newElement.querySelector(".placeImg").src = "/uploadFiles/mainImage/" + placeDto.plan_place_photo;
-                  newElement.querySelector(".show").addEventListener("click", function() {
-                       search(placeDto.plan_place_address);
-                     });
-                                    
-                  place_list.appendChild(newElement);
-               }
+               
+               addPlace(placeId)
+               
             }
          }
-      }
-
-      xhr.open("get", "./getAllPlaceList2");
-      xhr.send();
-            
+     } 
+     
+     xhr.open("get", "./checkPlace?plan_day_id=" + globalDayId + "&plan_city_id=" + globalCityId + "&plan_place_id=" + placeId);
+     xhr.send();
+	   
    }
+   
+
         
    
    function addPlace(placeId ){
@@ -582,7 +571,12 @@ function createModal() {
             if (xhr.status === 200) {
                const response = JSON.parse(xhr.responseText);
                console.log(response);
+               
+               
+               
                loadMyList();
+               
+               
             }
          }
       }
@@ -733,30 +727,7 @@ function createModal() {
                   existingOffcanvas.remove();
               }
 
-             /*  // Offcanvas 엘리먼트 생성
-              const offcanvas = document.createElement("div");
-              offcanvas.classList.add("offcanvas", "offcanvas-end");
-              offcanvas.setAttribute("data-bs-backdrop", "static");
-              offcanvas.setAttribute("tabindex", "-1");
-              offcanvas.setAttribute("id", "staticBackdrop");
-
-              // Offcanvas 헤더 생성
-              const header = document.createElement("div");
-              header.classList.add("offcanvas-header");
-
-              // Offcanvas 타이틀 생성
-              const title = document.createElement("h5");
-              title.classList.add("offcanvas-title");
-              title.setAttribute("id", "staticBackdropLabel");
-              title.innerText = "일정을 수정해보세요";
-
-              // 닫기 버튼 생성
-              const closeButton = document.createElement("button");
-              closeButton.setAttribute("type", "button");
-              closeButton.classList.add("btn-close", "closeButton");
-              closeButton.setAttribute("data-bs-dismiss", "offcanvas");
-              closeButton.setAttribute("aria-label", "Close"); */
-
+            
               // Offcanvas 바디 생성
               const body = document.createElement("div");
               body.classList.add("offcanvas-body");
@@ -781,25 +752,7 @@ function createModal() {
               
               Offcanvas.appendChild(body);
 
-            /*   // Offcanvas 구조 조립
-              header.appendChild(title);
-              header.appendChild(closeButton);
-              offcanvas.appendChild(header);
-           
-
-              // 문서에 Offcanvas 추가
-              document.body.appendChild(offcanvas);
-
-              // Offcanvas 표시
-              const offcanvasInstance = new bootstrap.Offcanvas(offcanvas);
-              offcanvasInstance.show();
-
-              // 닫기 버튼 클릭 시 백드롭 제거
-              closeButton.addEventListener("click", function() {
-              	loadDay();
-                  offcanvasInstance.hide();
-                  document.querySelector(".offcanvas-backdrop").remove();
-              }); */
+              loadDay();
 
               
            }
@@ -816,7 +769,7 @@ function createModal() {
    window.addEventListener("DOMContentLoaded", () => {
       loadDay();
       citySearch();
-      allPlace();
+     
       map();
      
    });
@@ -827,8 +780,8 @@ function createModal() {
 	
 	
 	.selected-day {
-	   border : solid 2px #03c75a;
-	   border-radius: 20px;
+	   border : solid 1px #03c75a;
+	   
 	  
 	}
 	
@@ -872,6 +825,8 @@ function createModal() {
    border-left:solid 1px white;
 }
 
+
+
 </style>
 
 
@@ -893,7 +848,7 @@ function createModal() {
                <div class="col-1 d-flex flex-column justify-content-between" >
                   <div class="row py-3 gradient-background">
                      <div class="col text-center" style = "font-size : 20px; font-weight:bold; color:white;">
-                        DAY
+                        DAY<i class="bi bi-gear" style="margin-left: 7px; cursor: pointer;" onclick = "edit()" ></i>
                      </div>
                   </div>
                   <div class="row py-2" >
@@ -905,19 +860,14 @@ function createModal() {
                      <div class="col" id="day_col">
                      </div>
                   </div>
-                   <div class="row mt-auto " >
-                     <div class="col text-center" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop"
-                     style="border-radius:20px; border-bottom:solid 3px white;
-                     font-size : 25px; font-weight:700; background: #03c75a; cursor: pointer;color:white;">
-                     	<a onclick = "edit()" >EDIT</a>
-                     </div>
-                  </div>
                    
-                  <div class="row mt-0 ">
-                     <div class="col text-center" style="border-radius:20px;
+                  <div class="row mt-auto ">
+                  	<div class="col-1"></div>
+                     <div class="col text-center" style="border-radius:10px;
                      font-size : 25px; font-weight:700; background: #03c75a; cursor: pointer;color:white; ">
                      	<a onclick = "save()" >SAVE</a>
                      </div>
+                     <div class="col-1"></div>
                   </div>
                  
                  
@@ -973,14 +923,14 @@ function createModal() {
                      <div class="row mt-3">
                      	<div class="col fw-bold fst-italic fs-5">지역 목록</div>
                      </div>
-                     <div class="row border-bottom : 3px solid #ededed;">
+                     <div class="row">
                         <div class="col" id="city_list">
                         </div>
                      </div>
                   </div>
                </div>
                <!-- 명소 선택 리스트 -->
-               <div class="row border py-1">
+               <div class="row py-1">
                   <div class="col">
                      <div class="row py-2 my-1">
                         <div class="col pe-0">
@@ -998,6 +948,13 @@ function createModal() {
                      </div>
                      <div class="row">
                         <div class="col" id="place_list">
+                        	<div class="row">
+							    <div class="col" style="display: flex; align-items: center; justify-content: center; color: grey; height: 20vh;">
+							        지역을 선택해주세요
+							    </div>
+							</div>
+
+                        	
                         </div>
                      </div>
                   </div>
@@ -1052,7 +1009,7 @@ function createModal() {
       </div>
    </div>
 
-   <div class="row border-bottom py-2 d-none" id="templete_place">
+   <div class="row py-2 d-none" id="templete_place">
       <div class="col-3 " >
       	<img class = "placeImg" alt="" src="" style="width:50px; height:50px; border-radius:50%;">
       	
@@ -1080,15 +1037,6 @@ function createModal() {
             <div class="col day-text"  id="day" style=" font-size : 25px; font-weight:bold; display: flex; align-items: center; justify-content: center;">
                day 1  
             </div>
-            
-            <!-- <div class="col-4">
-               <div class="row">
-                  <div class="col"><i class="bi bi-caret-up" style="font-size: 13px;"></i></div>
-               </div>
-               <div class="row">
-                  <div class="col"><i class="bi bi-caret-down" style="font-size: 13px;"></i></div>
-               </div>
-            </div> -->
          
          </div>
       </div>

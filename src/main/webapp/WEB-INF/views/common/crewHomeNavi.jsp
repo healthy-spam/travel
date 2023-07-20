@@ -1,14 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 			<div
-				class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark fixed-sidebar"
-				style="width: 18vw; height: 100vh;">
+				class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark">
 				<a href="#"
-					class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-					<img src="/uploadFiles/crewFiles/crewthumbnail/${crewDto.crew_thumbnail }" class="bi pe-none me-2" width="40" height="40">
+					class="align-items-center text-center mb-3">
+					<img src="/uploadFiles/crewFiles/crewthumbnail/${crewDto.crew_thumbnail }" class="bi pe-none me-2" width="150" height="150">
 						<use xlink:href="/travel/crew/crewhome/${crewDto.crew_domain }"></use>
-					<span class="fs-4">${crewDto.crew_name }</span>
 				</a>
+				<span class="text-center crewname">${crewDto.crew_name }</span>
+				<div class="row">
+					<div class="col">
+						멤버 ${membersize } / 20　・　리더 ${masterName }
+					</div>
+				</div>
+				<c:choose>
+					<c:when test="${!empty crewMemberDto}">
+						<button class="btn btn-success">글쓰기</button>
+					</c:when>
+					<c:when test="${!empty applied}">
+						<button class="btn btn-success">가입신청중</button>
+					</c:when>
+					<c:otherwise>
+						<button class="btn btn-success">가입하기</button>
+					</c:otherwise>
+				</c:choose>
 				<hr>
 				<ul class="nav nav-pills flex-column mb-auto">
 					<li class="nav-item"><a href="/travel/crew/crewhome/${crewDto.crew_domain }" class="nav-link text-white"  id="crewmain"
@@ -44,22 +60,5 @@
 					</a></li>
 
 				</ul>
-				<hr>
-				<div class="dropdown">
-					<a href="#"
-						class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-						data-bs-toggle="dropdown" aria-expanded="false"> <img
-						src="/uploadFiles/profileImage/${userDto.user_image }" alt="" width="32" height="32"
-						class="rounded-circle me-2"> <strong>${userDto.user_nickname }</strong>
-					</a>
-					<ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-						<li><a class="dropdown-item" href="#">New project...</a></li>
-						<li><a class="dropdown-item" href="#">Settings</a></li>
-						<li><a class="dropdown-item" href="#">Profile</a></li>
-						<li>
-							<hr class="dropdown-divider">
-						</li>
-						<li><a class="dropdown-item" href="#">Sign out</a></li>
-					</ul>
-				</div>
+
 			</div>

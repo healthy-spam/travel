@@ -120,6 +120,7 @@ public interface PlanSqlMapper {
 	// 명소 선택시 동시에 값 입력 시작
 	public PlanDayCityDto getPlanDayCityByCityIdAndDayId(@Param("dayId") int dayId, @Param("cityId") int cityId);
 	public void insertPlanDayCity(@Param("planDayId") int planDayId, @Param("planCityId") int planCityId);
+	
     public void insertPlanRouteCity(@Param("planPlaceId") int planPlaceId, @Param("planDayCityId") int planDayCityId);
 
 	public List<PlanPlaceDto> getAllPlace2();
@@ -131,6 +132,8 @@ public interface PlanSqlMapper {
 	public List<PlanDayDto> getPlanDay(int planId);
 
 	public void updateDays(PlanDayDto firstCheck);
+
+	
 
 
 	

@@ -254,6 +254,10 @@ body {
 	overflow-x: hidden;
 }
 
+.sidebar{
+	position: fixed;
+}
+
 .commentwritedate {
 	font-size:12px;
 }
@@ -262,25 +266,11 @@ body {
 	width: 19vw;
 }
 
-.fixed-sidebar {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 18vw;
-	height: 100vh;
-	background-color: #fff2f8b4;
-	color: white;
-	padding: 20px;
-}
-
 .margin-left-col {
 	margin-left: 5vw;
 	/* Adjust this value to match the width of the fixed sidebar */
 }
 
-.searchbar {
-	background-color: gainsboro
-}
 
 .icon {
 	height: 30px;
@@ -438,21 +428,40 @@ strong#Createnewpost {
 </head>
 
 <body>
+	<div class="container-fluid">
+		<div class="container">
+			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<div class="container">
 	<div class="row">
-		<div class="col-2">
+		<div class="col-3">
 			<jsp:include page="../common/crewHomeNavi.jsp"></jsp:include>
 		</div>
-		<div class="col-6 margin-left-col">
-			<!-- <div class="row"> -->
-			<!-- <div class="col-7"> -->
-			<div class="container main p-4">
-				<div class="row">
-					<div class="col-7">
-						<Strong>Hello Jon</Strong>
-						<p>Hurry up and do the course now!</p>
-					</div>
-					<div class="col">
-						<input type="text" class="form-control searchbar nonboarder"
+		<div class="col-6">
+
+			<div class="container main px-4">
+				<!-- <div class="row mb-3">
+
+							<div class="col text-center">
+								<button class="btn btn-outline-success">게시글</button>
+							</div>
+							<div class="col text-center">
+								<button class="btn btn-outline-success">일정</button>
+							</div>
+							<div class="col text-center">
+								<button class="btn btn-outline-success">멤버</button>
+							</div>
+							<div class="col text-center">
+								<button class="btn btn-outline-success">설정</button>
+							</div>
+				</div> -->
+			
+				<div class="row mb-2">
+					<div class="col px-0">
+						<input type="text" class="form-control nonboarder"
 							placeholder="Search">
 					</div>
 				</div>
@@ -460,7 +469,7 @@ strong#Createnewpost {
 					<div class="card boardwrite" id="openBoardWrite">
 						<div class="row mx-2 mt-3">
 							<div class="col-auto">
-								<Strong id="Createnewpost">새 게시글 작성하기</Strong>
+								<Strong id="Createnewpost">게시글 작성하기</Strong>
 							</div>
 							<div class="col text-end">
 								<i class="bi bi-three-dots"></i>
@@ -538,13 +547,19 @@ strong#Createnewpost {
 							
 							<div class="row mx-2 mb-3">
 								<c:if test="${!empty list.files }">
-								
 								<div id="carouselExample" class="carousel slide">
 									<div class="carousel-inner">
 									<c:forEach var="photos" items="${list.files}" varStatus="status">
-										    <div class="carousel-item">
-										      <img src="/uploadFiles/crewFiles/crewboard/${photos.crew_board_id }/${photos.crew_board_attached}" class="d-block w-100" alt="${crew_board_original_attached }">
-										    </div>
+									  <c:if test="${status.index == 0}">
+									    <div class="carousel-item active">
+									      <img src="/uploadFiles/crewFiles/crewboard/${photos.crew_board_id}/${photos.crew_board_attached}" class="d-block w-100" alt="${photos.crew_board_original_attached}">
+									    </div>
+									  </c:if>
+									  <c:if test="${status.index != 0}">
+									    <div class="carousel-item">
+									      <img src="/uploadFiles/crewFiles/crewboard/${photos.crew_board_id}/${photos.crew_board_attached}" class="d-block w-100" alt="${photos.crew_board_original_attached}">
+									    </div>
+									  </c:if>
 									</c:forEach>
 										</div>
 										  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
@@ -659,13 +674,14 @@ strong#Createnewpost {
 				</div>
 			</div>
 		</div>
-		<div class="col sideend">
+		<div class="col-3">
 			<div class="card calendarcard">
 				<div id="calendar"></div>
 			</div>
 		</div>
 	</div>
-
+</div>
+</div>
 	<!-- Modal -->
 
 	<div class="modal fade" id="boardWriteModal" tabindex="-1"
