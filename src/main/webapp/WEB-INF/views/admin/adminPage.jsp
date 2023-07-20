@@ -8,18 +8,24 @@ pageEncoding="UTF-8"%>
 <meta charset="UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 <title>Insert title here</title>
+<style>
+	#naviBack {
+		background-color:#474747;
+		color:white;
+	}
+</style>
 </head>
 <body>
-<div class="container">
+<div class="container-fluid">
 		<div class="row gx-5">
-			<div class="col-md-2 mt-3">
+			<div class="col-md-2" id="naviBack">
 				<jsp:include page="../common/leftNavi.jsp"></jsp:include>
 			</div>
 			<div class="col-md-9 offset-md-1">
 				<div class="row d-flex justify-content-center h1 mt-5">
 					관리자 페이지입니다.
 				</div>
-				
+							
 			</div>
 		</div>
 </div>
