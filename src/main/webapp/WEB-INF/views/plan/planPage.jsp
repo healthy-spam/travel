@@ -806,12 +806,12 @@ window.addEventListener("DOMContentLoaded", () => {
                      <div class="col-12">
                         <div class="row">
                            <div class="col d-grid">
-                              <a class="btn copyPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 2px; color: #03c75a; font-weight: 600;" href="">
+                              <a class="btn copyPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #03c75a; font-weight: 600;" href="">
                                  <i class="bi bi-bookmark" style="width: 1rem;"></i> 일정담기
                               </a>
                            </div>
                            <div class="col d-grid">
-                              <a class="btn readPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 2px; color: #03c75a; font-weight: 600;" href="">
+                              <a class="btn readPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #03c75a; font-weight: 600;" href="">
                                  <i class="bi bi-list-ul" style="width: 1rem;"></i> 상세보기
                               </a>
                            </div>

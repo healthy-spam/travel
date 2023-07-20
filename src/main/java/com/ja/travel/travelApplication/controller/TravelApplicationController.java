@@ -24,10 +24,8 @@ public class TravelApplicationController {
 	
 	@RequestMapping("travelRecruitmentPage")
 	public String travelRecruitmentPage(Model model, int plan_id) {
-		PlanningDto plaDto = travelApplicationService.getPlanningByPlanIdAndUserId(plan_id);
 		List<Map<String, Object>> list = travelApplicationService.getPlanDayList(plan_id);
 		
-		model.addAttribute("data", plaDto);
 		model.addAttribute("plan_id", plan_id);
 		model.addAttribute("list", list);
 		
