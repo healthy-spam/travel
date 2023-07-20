@@ -327,7 +327,7 @@
 	
 	<select id="getPlanDay" resultType="com.ja.travel.dto.PlanDayDto">
 		
-		SELECT * FROM plan_day WHERE plan_id=#{planId}
+		SELECT * FROM plan_day WHERE plan_id=#{planId} ORDER BY plan_day
 		
 	</select>
 	
@@ -339,4 +339,6 @@
 		WHERE plan_day_id = #{plan_day_id}
 	
 	</update>
+	
+
 </mapper>
