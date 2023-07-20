@@ -332,7 +332,7 @@ body {
 							<i class="bi bi-calendar-check"></i> 여행 출발 날짜
 						</div>
 						<div class="col mt-1">
-							<input id="startDate" class="form-control" type="text" value="${data.planning_start_date}" name="planning_start_date" placeholder="여행 출발 날짜">
+							<input id="startDate" class="form-control" type="text" name="planning_start_date" placeholder="여행 출발 날짜">
 						</div>
 					</div>
 					<div class="row mt-5">
@@ -340,7 +340,7 @@ body {
 							<i class="bi bi-compass"></i> 모집 위치
 						</div>
 						<div class="col mt-1">
-							<input class="form-control start-point" type="text" name="planning_start_point" value="${data.planning_start_point}" placeholder="ex) 위치 or 주소">
+							<input class="form-control start-point" type="text" name="planning_start_point" placeholder="ex) 위치 or 주소">
 						</div>
 					</div>
 					<div class="row mt-5">
@@ -348,7 +348,7 @@ body {
 							<i class="bi bi-card-heading"></i> 모집 제목
 						</div>
 						<div class="col mt-1">
-							<input class="form-control title" type="text" value="${data.planning_title}" name="planning_title" placeholder="ex) 12월 3박 4일 제주도 같이 가실 동행 3분 구합니다.">
+							<input class="form-control title" type="text" name="planning_title" placeholder="ex) 12월 3박 4일 제주도 같이 가실 동행 3분 구합니다.">
 						</div>
 					</div>
 					<div class="row mt-5">
@@ -366,7 +366,7 @@ body {
 						<div class="col mt-1 d-flex justify-content-between">
 							<button class="button" type="button" onclick="calc(-1)">-</button>
 							<span id="totalPeople">
-								<input class="form-control count" type="text" value="${data.planning_member == null ? 1 : data.planning_member}" name="planning_member">
+								<input class="form-control count" type="text" name="planning_member">
 							</span>
 							<button class="button" type="button" onclick="calc(1)">+</button>
 						</div>
@@ -376,7 +376,7 @@ body {
 							<i class="bi bi-calendar-check"></i> 모집 종료 날짜
 						</div>
 						<div class="col mt-1">
-							<input id="endDate" class="form-control" type="text" value="${data.planning_end_date}" name="planning_end_date" placeholder="모집 종료 날짜">
+							<input id="endDate" class="form-control" type="text" name="planning_end_date" placeholder="모집 종료 날짜">
 						</div>
 					</div>
 					<div class="row mt-5">

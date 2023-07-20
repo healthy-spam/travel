@@ -93,7 +93,7 @@ body {
 }
 
 .icon-wrapper {
-	border: 2px solid white;
+	border: 0.18em solid white;
 	width: 2em;
 	height: 2em;
 	border-radius: 50%;
@@ -105,12 +105,28 @@ body {
 	justify-content: center;
 }
 
+.fileInput {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+
 .image-container {
 	width: 8.2em;
 	height: 8.2em;
 	border-radius: 50%;
 }
 
+button {
+	background: none;
+}
+
+.thumb {
+	border-radius: 50%;
+	width: 1.8em;
+	height: 1.8em;
+	margin-right: 0.5em;
+}
 </style>
 </head>
 <body>
@@ -124,7 +140,7 @@ body {
 						<div class="d-flex justify-content-center align-items-center" style="height: 9em; position: relative;">
 							<img class="image-container" src="/uploadFiles/profileImage/${sessionuser.user_image}">
 							<div class="icon-wrapper">
-								<label for="fileInput">
+								<label for="fileInput" class="fileInput d-flex justify-content-center align-items-center">
 									<i class="bi bi-pencil-fill" style="color: white; font-size: 0.7em;"></i>
 								</label>
 								<input type="file" id="fileInput" style="display: none;">
@@ -207,7 +223,7 @@ body {
 				<div class="row my-4">
 					<div class="col">
 						<div class="card-wrapper">
-							<div class="card-title">동행모집</div>
+							<div class="card-title">동행모집 & 참여</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
 								<c:choose>
 									<c:when test="${empty map.list}">
@@ -222,13 +238,13 @@ body {
 													<span style="color: black;">[${data.planningStatus}] ${data.myPlanning.planning_title}</span>
 												</a>
 												<div>
-													<button type="button" style="border: none; color: #999999; font-size: 0.9	em;" data-bs-toggle="modal" data-bs-target="#appList">신청 리스트</button>
+													<button type="button" style="border: none; color: #999999; font-size: 0.9em;" data-bs-toggle="modal" data-bs-target="#appList">신청 리스트</button>
 													<fmt:parseDate var="parsedDate" value="${data.myPlanning.planning_end_date}" pattern="yyyy-MM-dd HH:mm:ss" />
 													<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">
 													<fmt:formatDate value="${parsedDate}" pattern="yyyy/MM/dd" /> 종료</span>
 
 													<!-- Modal -->
-													<div class="modal fade" id="appList">
+													<div class="modal modal-lg fade" id="appList">
 														<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 															<div class="modal-content">
 																<div class="modal-header">
@@ -240,19 +256,34 @@ body {
 																		<div class="row py-2" style="background-color: #dfdfdf;">
 																			<div class="col"></div>
 																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
+																				모집명
+																			</div>
+																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
+																				모집 인원
+																			</div>
+																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
 																				신청자
 																			</div>
 																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
 																				상태
 																			</div>
 																		</div>
-																		<div class="row py-2">
+																		<div class="row py-3">
 																			<div class="col d-flex justify-content-center">
 																				<span class="badge text-bg-secondary px-4 py-1 d-flex align-items-center" style="font-weight: 100;">신청</span>
 																			</div>
+																			<div class="col text-truncate">
+																				<span>7월 부산 여행 가실분~~~</span>
+																			</div>
+																			<div class="col d-flex justify-content-center">
+																				3 / 5
+																			</div>
 																			<div class="col d-flex justify-content-center align-items-center">
-																				신호영
-																				<a class="bi bi-envelope ms-1" href="#collapseExample" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" style="color: black;"></a>
+																				<img src="https://via.placeholder.com/50x50" class="thumb">
+																				<span>
+																					신호영
+																					<a class="bi bi-envelope ms-1" href="#collapseExample" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" style="color: black;"></a>
+																				</span>
 																			</div>
 																			<div class="col d-flex justify-content-center">
 																				<button style="border: none; color: #03c75a;">수락</button>
@@ -260,33 +291,62 @@ body {
 																			</div>
 																		</div>
 																		<div class="row">
-																			<div class="col-1"></div>
-																			<div class="col p-0">
+																			<div class="col ps-5">
 																				<div class="collapse pb-2" id="collapseExample">
 																					<div>Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.</div>
 																				</div>
 																			</div>
 																		</div>
-																		<div class="row py-2">
+																		<div class="row py-3">
 																			<div class="col d-flex justify-content-center">
 																				<span class="badge px-4 py-1 d-flex align-items-center" style="background-color: #03c358; font-weight: 100;">수락</span>
 																			</div>
+																			<div class="col text-truncate">
+																				<span>당신이 원하는 동작에 맞게 자바스크립트를 수정하려면, 먼저 이미지 컨테이너의 태그가 img로 바뀌었다는 것을 감안해야 합니다.</span>
+																			</div>
 																			<div class="col d-flex justify-content-center">
+																				3 / 3
+																			</div>
+																			<div class="col d-flex justify-content-center">
+																				<img src="https://via.placeholder.com/50x50" class="thumb">
 																				호영신
+																				<a class="bi bi-envelope ms-1" href="#collapseExample1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" style="color: black;"></a>
 																			</div>
 																			<div class="col d-flex justify-content-center">
 																				수락 / 거절
 																			</div>
 																		</div>
-																		<div class="row py-2">
+																		<div class="row">
+																			<div class="col ps-5">
+																				<div class="collapse pb-2" id="collapseExample1">
+																					<div>Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.</div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="row py-3">
 																			<div class="col d-flex justify-content-center">
 																				<span class="badge text-bg-danger px-4 py-1 d-flex align-items-center" style="font-weight: 100;">거절</span>
 																			</div>
+																			<div class="col text-truncate">
+																				당신이 원하는 동작에 맞게 자바스크립트를 수정하려면, 먼저 이미지 컨테이너의 태그가 img로 바뀌었다는 것을 감안해야 합니다.
+																			</div>
 																			<div class="col d-flex justify-content-center">
+																				2 / 4
+																			</div>
+																			<div class="col d-flex justify-content-center">
+																				<img src="https://via.placeholder.com/50x50" class="thumb">
 																				영신호
+																				<a class="bi bi-envelope ms-1" href="#collapseExample2" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" style="color: black;"></a>
 																			</div>
 																			<div class="col d-flex justify-content-center">
 																				수락 / 거절
+																			</div>
+																		</div>
+																		<div class="row">
+																			<div class="col ps-5">
+																				<div class="collapse pb-2" id="collapseExample2">
+																					<div>Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.</div>
+																				</div>
 																			</div>
 																		</div>
 																	</div>
@@ -309,16 +369,16 @@ body {
 							<div class="card-title">마이플랜</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
 								<c:choose>
-									<c:when test="${empty map.list}">
+									<c:when test="${empty map.list3}">
 										<div class="d-flex justify-content-center mt-3">
 											플랜 목록이 없습니다.
 										</div>
 									</c:when>
 									<c:otherwise>
-										<c:forEach items="${map.list}" var="data">
+										<c:forEach items="${map.list3}" var="data">
 											<div>
 												<a class="d-flex justify-content-between my-2" href="./plan/readPlanPage?id=${data.plan.plan_id}" style="text-decoration: none;">
-													<span style="color: black;">${data.plan.plan_title}</span>
+													<span style="color: black;">[${data.plan.plan_statuse}] ${data.plan.plan_title}</span>
 													<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">${data.day} days</span>
 												</a>
 											</div>

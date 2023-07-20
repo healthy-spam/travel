@@ -787,7 +787,7 @@ window.addEventListener("DOMContentLoaded", () => {
                                  </div>
                                  <div class="row mt-1">
                                     <div class="col-10">
-                                       <span class="placeAddress" style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; color: #9a9a9a;">서울 송파구 올림픽로 300</span>
+                                       <span class="placeAddress text-break" style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; color: #9a9a9a;">서울 송파구 올림픽로 300</span>
                                     </div>
                                  </div>
                                  <div class="row mt-1">
@@ -806,12 +806,12 @@ window.addEventListener("DOMContentLoaded", () => {
                      <div class="col-12">
                         <div class="row">
                            <div class="col d-grid">
-                              <a class="btn copyPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 2px; color: #03c75a; font-weight: 600;" href="">
+                              <a class="btn copyPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #03c75a; font-weight: 600;" href="">
                                  <i class="bi bi-bookmark" style="width: 1rem;"></i> 일정담기
                               </a>
                            </div>
                            <div class="col d-grid">
-                              <a class="btn readPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 2px; color: #03c75a; font-weight: 600;" href="">
+                              <a class="btn readPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #03c75a; font-weight: 600;" href="">
                                  <i class="bi bi-list-ul" style="width: 1rem;"></i> 상세보기
                               </a>
                            </div>

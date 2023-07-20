@@ -10,6 +10,12 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <title>메인 페이지</title>
+<style>
+	.bg{
+		background-color:#c5d6c3;
+	}
+</style>
+
 <script type="text/javascript">
 	var changeBackColor = true;
 
@@ -328,10 +334,15 @@
 <body>
 	<div class="container-fluid">
 		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-		<div class="container">
+		<div class="container bg">
 			<div class="row mt-5">
-				<div class="col-4 text-start">
-					<h2>쿠폰 발급 페이지</h2>
+				<div class="col mt-5 text-center">
+					<h2>이벤트 쿠폰존</h2>
+				</div>
+			</div>
+			<div class = "row">
+				<div class = "col">
+					<img src = "../../../webapp.img/couponBanner.jpg" alt="">
 				</div>
 			</div>
 			
