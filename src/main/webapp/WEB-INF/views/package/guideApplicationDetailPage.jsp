@@ -107,6 +107,18 @@ function map(){
 
 }
 
+function map2(){
+	var container = document.getElementById('map2');
+	var options = {
+		center: new kakao.maps.LatLng(33.450701, 126.570667),
+		level: 3
+	};
+
+	 map = new kakao.maps.Map(container, options);
+	 startPointLocation();
+
+}
+
 function showPlace(item) {
 	  // 전달받은 element 내에서 .placeName 클래스를 가진 요소를 찾습니다.
 	  var placeAddressElement = item.querySelector('.address');
@@ -259,8 +271,110 @@ function planningDay() {
 		  const calculatedDate = new Date(start.getTime() + (planDay - 1) * 24 * 60 * 60 * 1000);
 		  return formatPlanningDate(calculatedDate);
 		}
-		
-		function info() {
+
+
+	/* function info() {
+	    const planDetail = document.getElementById("planDetail");
+	    const xhr = new XMLHttpRequest();
+
+	    xhr.onreadystatechange = function () {
+	        if (xhr.readyState === 4 && xhr.status === 200) {
+	            const response = JSON.parse(xhr.responseText);
+
+	            if (response.list != null) {
+
+	                for (data of response.list) {
+	                    // 카드 제목 생성
+	                    const aaa = document.createElement("div");
+	                    aaa.classList.add("card");
+
+	                    const cardHeader = document.createElement("div");
+	                    cardHeader.classList.add("card-header");
+
+	                    const cardTitle = document.createElement("h5");
+	                    cardTitle.classList.add("card-title");
+	                    cardTitle.innerText = `DAY ${data.planDay.plan_day}`;
+
+	                    const cardText = document.createElement("p");
+	                    cardText.classList.add("card-text");
+	                    cardText.innerText = calculateDate(response.guidePlanningDto.guide_planning_start_date,
+	                        data.planDay.plan_day);
+
+	                    cardHeader.appendChild(cardTitle);
+	                    cardHeader.appendChild(cardText);
+	                    aaa.appendChild(cardHeader);
+
+	                    // 카드 바디 생성
+	                    const cardBody = document.createElement("div");
+	                    cardBody.classList.add("card-body");
+
+	                    for (place of data.placeList) {
+	                        const bbb = document.createElement("div");
+	                        bbb.classList.add("card");
+	                        bbb.classList.add("mb-3");
+
+	                        // 카드 바디 내용 구성
+	                        const placeNameElement = document.createElement("div");
+	                        placeNameElement.classList.add("place_name");
+	                        placeNameElement.setAttribute("onclick", "showPlace(this)");
+
+	                        const placeIndex = data.placeList.indexOf(place) + 1;
+	                        const iconClass = `bi-${placeIndex}-circle-fill`;
+
+	                        const iconElement = document.createElement("span");
+	                        iconElement.classList.add(iconClass);
+
+	                        const spaceTextNode = document.createTextNode(" ");
+	                        const content = place.planPlace.plan_place_name;
+	                        const city = document.createElement("span");
+	                        city.innerText = ` (${place.planCityName})`;
+	                        city.style.fontSize = "15px";
+	                        city.style.fontWeight = "bold";
+	                        city.style.color = "gray";
+
+	                        const address = document.createElement("input");
+	                        address.classList.add("address");
+	                        address.setAttribute("type", "hidden");
+	                        address.value = place.planPlace.plan_place_address;
+
+	                        placeNameElement.appendChild(iconElement);
+	                        placeNameElement.appendChild(spaceTextNode);
+	                        placeNameElement.append(content);
+	                        placeNameElement.appendChild(city);
+	                        placeNameElement.appendChild(address);
+
+	                        const placeThumbnail = document.createElement("img");
+	                        placeThumbnail.classList.add("place_thumbnail");
+	                        placeThumbnail.src = `/uploadFiles/mainImage/${place.planPlace.plan_place_photo}`;
+	                        placeThumbnail.alt = "";
+
+	                        const placeContent = document.createElement("p");
+	                        placeContent.classList.add("place_content");
+	                        placeContent.innerText = place.planPlace.plan_place_content;
+
+	                        bbb.appendChild(placeNameElement);
+	                        bbb.appendChild(placeThumbnail);
+	                        bbb.appendChild(placeContent);
+
+	                        cardBody.appendChild(bbb);
+	                    }
+
+
+	                    aaa.appendChild(cardBody);
+
+	                    // 최종적으로 planDetail에 추가
+	                    planDetail.appendChild(aaa);
+	                }
+	            }
+	        }
+	    };
+
+	    xhr.open("POST", "./guideApplicationDetailInfo");
+	    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	    xhr.send("guide_planning_id=" + guidePlanningId);
+	} */
+
+		 function info() {
 			
             const planDetail = document.getElementById("planDetail");
 		    const xhr = new XMLHttpRequest();
@@ -319,15 +433,6 @@ function planningDay() {
 				                     address.value = place.planPlace.plan_place_address; 
 				                     placeNameElement.appendChild(address); 
 					            	
-					             	/* const placeThumbnailElement = bbb.querySelector(".place_thumbnail");
-					             	const imageUrl = ""; 
-
-
-					            	const imageElement = document.createElement("img");
-					            	imageElement.src = imageUrl;
-
-					            	placeThumbnailElement.innerHTML = '';
-					            	placeThumbnailElement.appendChild(imageElement);  */
 					            	
 					            	bbb.querySelector(".place_thumbnail").src = "/uploadFiles/mainImage/" + place.planPlace.plan_place_photo;
 					            	
@@ -347,7 +452,7 @@ function planningDay() {
 		    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		    xhr.send("guide_planning_id=" + guidePlanningId);
 		}
-		
+		 
 		
 
 	
@@ -356,6 +461,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	  info();
 	  map();
 	  planprice();
+	  map2();
 	});
 
 </script>
@@ -613,7 +719,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-	<div class="container" style="height: 600px;">
+	<div class="container" >
 		<div class="row">
 			<div class="col">
 				<div class="row">
@@ -633,12 +739,20 @@ document.addEventListener("DOMContentLoaded", function() {
 								<span onclick="showStart()" style="font-weight: bold;">${map.guidePlanningDto.guide_planning_start_point}</span>
 							</div>
 						</div>
-						<div class="row mt-5" >
+						<div class="row mt-3" >
 							<div class="col">
-								<div class="map shadow" id="map" style="width: 100%; height: 600px;">
+								<div class="map shadow" id="map" style="width: 100%; height: 300px;">
 								</div>						
 							</div>
-						</div>					
+						</div>
+								
+						
+						<div class= "row mt-5">
+							<div class="col">
+								<div class="map shadow" id="map2" style="width: 100%; height: 600px;">
+								</div>	
+							</div>
+						</div>			
 					</div>
 				</div>
 			</div>

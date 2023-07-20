@@ -2,12 +2,16 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@100;300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <title>플래너 페이지</title>
 <style >
  
@@ -610,23 +614,23 @@ window.addEventListener("DOMContentLoaded", () => {
 	                     
 	                     <div class="row">
 	                        <div class="col">
-	                           <h2 class="imgText mb-0" style="font-weight: bolder; font-size: 48px; color: white;">여행의 시작</h2>
+	                           <h2 class="imgText mb-0" style="font-weight: bolder; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">여행의 시작</h2>
 	                        </div>
 	                     </div>
 	                     
 	                     <div class="row mt-0">
 	                     	<div class="col">
-	                     		<h2 class="imgText" style="font-weight: bolder; font-size: 48px; color: white;">TripStation</h2>		
+	                     		<h2 class="imgText" style="font-weight: bolder; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">TripStation</h2>		
 	                     	</div>
 	                     </div>
 	                     <div class="row mt-3">
 	                        <div class="col">
-	                           <h3 class="m-0" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">다른 여행자들과 공유한 일정을 참조하거나</h3>
+	                           <h3 class="m-0" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">다른 여행자들과 공유한 일정을 참조하거나</h3>
 	                        </div>
 	                     </div>
 	                     <div class="row">
 	                        <div class="col">
-	                           <h3 class="" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">당신만의 특별한 여행 계획을 세우세요.</h3>
+	                           <h3 class="" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">당신만의 특별한 여행 계획을 세우세요.</h3>
 	                        </div>
 	                     </div>	                     	                    
 	                     
@@ -642,12 +646,15 @@ window.addEventListener("DOMContentLoaded", () => {
 	                  	<div class="row">&nbsp;</div>
 	                  	<div class="row">&nbsp;</div>
 	                  	<div class="row">&nbsp;</div>
+	                  	<div class="row">&nbsp;</div>
+	                  	<div class="row">&nbsp;</div>
+	                  	
 	                  	 <div class="row">
-	                        <div class="col-2">&nbsp;</div>
-	                        <div class="col">         
-	                           <a class="btn btn-lg d-grid align-items-center my-button" onclick="showModal();" style="border-radius: 20px; background: #03c75a; font-size: 20px; color: white; font-weight: bolder; border: 0px;">플래너 작성하기</a>         
-	                        </div>	                        
 	                        <div class="col-4">&nbsp;</div>
+	                        <div class="col">         
+	                           <a class="btn btn-lg d-grid align-items-center my-button" onclick="showModal();" style="border-radius: 18px; background: #03c75a; font-size: 20px; color: white; font-weight: bolder; border: 0px;">플래너 작성하기</a>         
+	                        </div>	                        
+	                        <div class="col-2">&nbsp;</div>
 	                     </div>
 	                     <div class="row">&nbsp;</div>
 	                  </div>
@@ -656,7 +663,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	                     
 	            </div>
    
-            	<div class="col-6">&nbsp;</div>
+            	<div class="col-3">&nbsp;</div>
    
 			</div>
 		</div>
@@ -727,7 +734,7 @@ window.addEventListener("DOMContentLoaded", () => {
 									<div class="row">
 										<div class="col" style="font-size: 12px;">
 											<span class="" style="font-weight: bolder; color: #9a9a9a;">여행기간</span>                        
-											<span class="plan-total-days" style="color: #03c75a; font-weight: bolder; ">12일</span>                        
+											<span class="plan-total-days" style="color: #00b04f; font-weight: bolder; ">12일</span>                        
 										</div>																						
 									</div>
 								</div>
@@ -806,12 +813,12 @@ window.addEventListener("DOMContentLoaded", () => {
                      <div class="col-12">
                         <div class="row">
                            <div class="col d-grid">
-                              <a class="btn copyPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #03c75a; font-weight: 600;" href="">
+                              <a class="btn copyPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #00b04f; font-weight: 600;" href="">
                                  <i class="bi bi-bookmark" style="width: 1rem;"></i> 일정담기
                               </a>
                            </div>
                            <div class="col d-grid">
-                              <a class="btn readPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #03c75a; font-weight: 600;" href="">
+                              <a class="btn readPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #00b04f; font-weight: 600;" href="">
                                  <i class="bi bi-list-ul" style="width: 1rem;"></i> 상세보기
                               </a>
                            </div>

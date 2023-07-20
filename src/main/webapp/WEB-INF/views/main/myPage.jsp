@@ -22,7 +22,7 @@
 					keyboard : false
 				});
 		var confirmButton = document.getElementById("confirmButton");
-
+		
 		fileInput.addEventListener("change", function() {
 			selectedFile = fileInput.files[0];
 
@@ -68,7 +68,40 @@
 
 			reader.readAsDataURL(selectedFile);
 		});
+		
+		setupCollapseListeners();
 	});
+</script>
+<script type="text/javascript">
+	function setupCollapseListeners() {
+		// Get all collapse elements
+		const collapseElements = document
+				.querySelectorAll('[id^="collapseExample"]');
+
+		collapseElements.forEach(function(collapseElement) {
+			// Add event listener for 'show' event
+			collapseElement.addEventListener('show.bs.collapse', function() {
+				changeIcon('iconButton' + this.id.replace('collapseExample', ''), true);
+			});
+
+			// Add event listener for 'hide' event
+			collapseElement.addEventListener('hide.bs.collapse', function() {
+				changeIcon('iconButton' + this.id.replace('collapseExample', ''), false);
+			});
+		});
+	}
+
+	function changeIcon(buttonId, isOpen) {
+	    const iconButton = document.getElementById(buttonId);
+	    
+	    if (isOpen) {
+	        iconButton.classList.remove('bi-envelope');
+	        iconButton.classList.add('bi-envelope-open');
+	    } else {
+	        iconButton.classList.remove('bi-envelope-open');
+	        iconButton.classList.add('bi-envelope');
+	    }
+	}
 </script>
 <style type="text/css">
 body {
@@ -238,7 +271,9 @@ button {
 													<span style="color: black;">[${data.planningStatus}] ${data.myPlanning.planning_title}</span>
 												</a>
 												<div>
-													<button type="button" style="border: none; color: #999999; font-size: 0.9em;" data-bs-toggle="modal" data-bs-target="#appList">신청 리스트</button>
+													<c:if test="${data.myPlanning.user_id == sessionuser.user_id}">
+														<button type="button" style="border: none; color: #999999; font-size: 0.9em;" data-bs-toggle="modal" data-bs-target="#appList">신청 리스트</button>
+													</c:if>
 													<fmt:parseDate var="parsedDate" value="${data.myPlanning.planning_end_date}" pattern="yyyy-MM-dd HH:mm:ss" />
 													<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">
 													<fmt:formatDate value="${parsedDate}" pattern="yyyy/MM/dd" /> 종료</span>
@@ -256,99 +291,54 @@ button {
 																		<div class="row py-2" style="background-color: #dfdfdf;">
 																			<div class="col"></div>
 																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
-																				모집명
-																			</div>
-																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
-																				모집 인원
-																			</div>
-																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
 																				신청자
 																			</div>
 																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
-																				상태
+																				신청날짜
 																			</div>
-																		</div>
-																		<div class="row py-3">
-																			<div class="col d-flex justify-content-center">
-																				<span class="badge text-bg-secondary px-4 py-1 d-flex align-items-center" style="font-weight: 100;">신청</span>
-																			</div>
-																			<div class="col text-truncate">
-																				<span>7월 부산 여행 가실분~~~</span>
-																			</div>
-																			<div class="col d-flex justify-content-center">
-																				3 / 5
-																			</div>
-																			<div class="col d-flex justify-content-center align-items-center">
-																				<img src="https://via.placeholder.com/50x50" class="thumb">
-																				<span>
-																					신호영
-																					<a class="bi bi-envelope ms-1" href="#collapseExample" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" style="color: black;"></a>
-																				</span>
-																			</div>
-																			<div class="col d-flex justify-content-center">
-																				<button style="border: none; color: #03c75a;">수락</button>
-																				<button style="border: none; color: #ff4e4e;">거절</button>
-																			</div>
-																		</div>
-																		<div class="row">
-																			<div class="col ps-5">
-																				<div class="collapse pb-2" id="collapseExample">
-																					<div>Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.</div>
-																				</div>
-																			</div>
-																		</div>
-																		<div class="row py-3">
-																			<div class="col d-flex justify-content-center">
-																				<span class="badge px-4 py-1 d-flex align-items-center" style="background-color: #03c358; font-weight: 100;">수락</span>
-																			</div>
-																			<div class="col text-truncate">
-																				<span>당신이 원하는 동작에 맞게 자바스크립트를 수정하려면, 먼저 이미지 컨테이너의 태그가 img로 바뀌었다는 것을 감안해야 합니다.</span>
-																			</div>
-																			<div class="col d-flex justify-content-center">
-																				3 / 3
-																			</div>
-																			<div class="col d-flex justify-content-center">
-																				<img src="https://via.placeholder.com/50x50" class="thumb">
-																				호영신
-																				<a class="bi bi-envelope ms-1" href="#collapseExample1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" style="color: black;"></a>
-																			</div>
-																			<div class="col d-flex justify-content-center">
+																			<div class="col d-flex justify-content-center" style="font-weight: 700;">
 																				수락 / 거절
 																			</div>
 																		</div>
-																		<div class="row">
-																			<div class="col ps-5">
-																				<div class="collapse pb-2" id="collapseExample1">
-																					<div>Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.</div>
+																		<c:forEach items="${data.list4}" var="item">
+																			<div class="row py-3">
+																				<div class="col d-flex justify-content-center">
+																					<c:choose>
+																						<c:when test="${item.planningApp.planning_member_status == '신청'}">
+																							<span class="badge text-bg-secondary px-4 py-1 d-flex align-items-center" style="font-weight: 100;">신청</span>
+																						</c:when>
+																						<c:when test="${item.planningApp.planning_member_status == '수락'}">
+																							<span class="badge px-4 py-1 d-flex align-items-center" style="background-color: #03c358; font-weight: 100;">수락</span>
+																						</c:when>
+																						<c:otherwise>
+																							<span class="badge text-bg-danger px-4 py-1 d-flex align-items-center" style="font-weight: 100;">거절</span>
+																						</c:otherwise>
+																					</c:choose>
+																				</div>
+																				<div class="col d-flex justify-content-center align-items-center">
+																					<img src="https://via.placeholder.com/50x50" class="thumb">
+																					<span>
+																						${item.user.user_nickname}
+																						<a id="iconButton${item.user.user_id}" class="bi bi-envelope ms-1" style="color: black; cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapseExample${item.user.user_id}"></a>
+																					</span>
+																				</div>
+																				<div class="col d-flex justify-content-center">
+																					<fmt:formatDate value="${item.planningApp.reg_date}" pattern="yyyy-MM-dd"/>
+																				</div>
+																				<div class="col d-flex justify-content-center">
+																					<button style="border: none; color: #03c75a;">수락</button>
+																					<button style="border: none; color: #ff4e4e;">거절</button>
 																				</div>
 																			</div>
-																		</div>
-																		<div class="row py-3">
-																			<div class="col d-flex justify-content-center">
-																				<span class="badge text-bg-danger px-4 py-1 d-flex align-items-center" style="font-weight: 100;">거절</span>
-																			</div>
-																			<div class="col text-truncate">
-																				당신이 원하는 동작에 맞게 자바스크립트를 수정하려면, 먼저 이미지 컨테이너의 태그가 img로 바뀌었다는 것을 감안해야 합니다.
-																			</div>
-																			<div class="col d-flex justify-content-center">
-																				2 / 4
-																			</div>
-																			<div class="col d-flex justify-content-center">
-																				<img src="https://via.placeholder.com/50x50" class="thumb">
-																				영신호
-																				<a class="bi bi-envelope ms-1" href="#collapseExample2" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" style="color: black;"></a>
-																			</div>
-																			<div class="col d-flex justify-content-center">
-																				수락 / 거절
-																			</div>
-																		</div>
-																		<div class="row">
-																			<div class="col ps-5">
-																				<div class="collapse pb-2" id="collapseExample2">
-																					<div>Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.</div>
+																			<div class="row">
+																				<div class="col-1"></div>
+																				<div class="col p-0">
+																					<div class="collapse pb-2" id="collapseExample${item.user.user_id}">
+																						<div>${item.planningApp.planning_application_content}</div>
+																					</div>
 																				</div>
 																			</div>
-																		</div>
+																		</c:forEach>
 																	</div>
 																</div>
 															</div>

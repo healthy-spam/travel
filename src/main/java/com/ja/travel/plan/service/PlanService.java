@@ -401,26 +401,26 @@ public class PlanService {
 	}
 
 	// 일정별 명소 선택시 동시 입력 서비스 시작
-	@Transactional
-	public int registerPlace(int planDayId, int planCityId, int planPlaceId) {
+	
+	public void registerPlace(int planDayId, int planCityId, int planPlaceId) {
 
-		int aaa = 0;
+		int planDayCityId = 0;
 
-		// 존재 여부
-		PlanDayCityDto planDayCityDto = planSqlMapper.getPlanDayCityByCityIdAndDayId(planDayId, planCityId);
+		//같은 일자에 같은 도시가 있는지 확인 
+		PlanDayCityDto planDayCityDto = planSqlMapper.getPlanDayCityByCityIdAndDayId(planDayId, planCityId); 
 
 		if (planDayCityDto != null) {
-			aaa = planDayCityDto.getPlan_day_city_id();
+			planDayCityId = planDayCityDto.getPlan_day_city_id();
 		} else {
 			planSqlMapper.insertPlanDayCity(planDayId, planCityId);
 			PlanDayCityDto planDayCityDto2 = planSqlMapper.getPlanDayCityByCityIdAndDayId(planDayId, planCityId);
-			aaa = planDayCityDto2.getPlan_day_city_id();
+			planDayCityId = planDayCityDto2.getPlan_day_city_id();
 		}
 
-//	    int lastInsertedId = getLastInsertedId("plan_day_city", "plan_day_city_id");
-		planSqlMapper.insertPlanRouteCity(planPlaceId, aaa);
-		// plan_day_city_id 값을 반환
-		return aaa;
+
+		planSqlMapper.insertPlanRouteCity(planPlaceId, planDayCityId);
+	
+		
 	}
 	// 일정별 명소 선택시 동시 입력 서비스 끝
 	
