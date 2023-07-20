@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ja.travel.dto.PlanningApplicationDto;
 import com.ja.travel.dto.PlanningChatDto;
 import com.ja.travel.dto.PlanningComment;
 import com.ja.travel.dto.TravelApplicationRequestDto;
@@ -24,15 +23,6 @@ public class RestTravelApplicationController {
 
 	@Autowired
 	private TravelApplicationService travelApplicationService;
-
-//	@RequestMapping("updateApplicationaStatusByUser")
-//	public Map<String, Object> updateApplicationaStatusByUser(PlanningApplicationDto planningApplicationDto,
-//			String value) {
-//		Map<String, Object> map = travelApplicationService.updateApplicationaStatusByUser(planningApplicationDto,
-//				value);
-//
-//		return map;
-//	}
 
 	@RequestMapping("getTravelApplicationList")
 	public Map<String, Object> getTravelApplicationList(TravelApplicationRequestDto travelApplicationRequestDto) {

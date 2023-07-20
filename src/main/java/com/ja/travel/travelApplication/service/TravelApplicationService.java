@@ -58,26 +58,6 @@ public class TravelApplicationService {
 			travelApplicationSqlMapper.insertPlanningApplicationParty(planningApplicationDto);
 		}
 	}
-	
-//	public Map<String, Object> updateApplicationaStatusByUser(PlanningApplicationDto planningApplicationDto,
-//			String value) {
-//		if (value.equals("수락")) {
-//			travelApplicationSqlMapper.acceptApplicationaStatusByUser(planningApplicationDto);
-//		} else {
-//			travelApplicationSqlMapper.refusalApplicationaStatusByUser(planningApplicationDto);
-//		}
-//	
-//		PlanningApplicationDto planningStatus = travelApplicationSqlMapper.getApplicationStatus(planningApplicationDto);
-//		PlanningDto planning = travelApplicationSqlMapper.getPlanningByPlanningId(planningStatus.getPlanning_id());
-//		List<PlanningApplicationDto> count = travelApplicationSqlMapper.getPlanningAcceptCountByPlanningId(planning.getPlanning_id());
-//	
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("planningStatus", planningStatus);
-//		map.put("planning", planning);
-//		map.put("planningAcceptCount", count);
-//	
-//		return map;
-//	}
 
 	public List<Map<String, Object>> getPlanningList(TravelApplicationRequestDto travelApplicationRequestDto) {
 		List<PlanningDto> planningList = travelApplicationSqlMapper.getPlanningList(travelApplicationRequestDto);

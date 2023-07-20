@@ -261,27 +261,67 @@ button {
 				<div class="row my-4">
 					<div class="col">
 						<div class="card-wrapper">
-							<div class="card-title">내프로필</div>
+							<div class="card-title">
+								내프로필
+							</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
 								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;"> 
 										<i class="bi bi-person me-2"></i>
 										${sessionuser.user_nickname}
 									</span>
-									<button style="border: none;">수정</button>
+									<button style="border: none;" data-bs-toggle="modal" data-bs-target="#editNickname">수정</button>
+
+									<div class="modal fade" id="editNickname" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered">
+											<div class="modal-content">
+												<div class="modal-body">
+													<div class="container">
+														<div class="row">
+															<div class="col">
+																<span style="font-weight: bold; font-size: 1.5em;">${sessionuser.user_nickname}</span>
+																<span style="font-size: 1.5em; font-weight: 300;">님의 회원정보 중</span>
+																<span style="font-size: 1.5em; color: #03c75a; font-weight: 300;">닉네임</span>
+																<span style="font-size: 1.5em; font-weight: 300;">을 수정하기 위해 인증절차가 필요합니다.</span>
+																<hr style="font-weight: bold;">
+															</div>
+														</div>
+														<div class="row mb-2">
+															<div class="col">
+																<div class="input-group">
+																	<input type="password" class="form-control" placeholder="현재 비밀번호를 입력해주세요" style="border: none;">
+																	<button class="btn" type="button">확인</button>
+																</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col mx-1">
+																<span style="font-size: 0.8em; color: lightgrey; margin: 2em 0;">네이버 서비스의 변경/종료, 본인 작성 게시물 조치 등 대부분의 네이버 안내에 사용합니다.</span><br>
+																<span style="font-size: 0.8em; color: lightgrey;">등록된 이메일 주소가 기억나지 않는다면 휴대전화 인증 후 이메일을 수정할 수 있습니다.</span>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col d-flex justify-content-end">
+																<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal">취소</button>
+																<button type="button" class="btn" id="confirmButton" style="background-color: #03c75a; color: white;">확인</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;"> 
 										<i class="bi bi-phone me-2"></i> 010-1234-5678
 									</span>
-									<button style="border: none;">수정</button>
 								</div>
 								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;">
 										<i class="bi bi-envelope me-2"></i>
 										${sessionuser.user_email}
 									</span>
-									<button style="border: none;">수정</button>
 								</div>
 							</div>
 						</div>
