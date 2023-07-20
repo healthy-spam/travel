@@ -27,8 +27,7 @@
 	</select>
 	
 	<select id="selectById" resultType="com.ja.travel.dto.UserDto">
-		select *
-		from member
+		select * from member
 		where user_id = #{user_id}
 	</select>
 	

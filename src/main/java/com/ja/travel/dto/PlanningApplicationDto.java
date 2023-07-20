@@ -1,22 +1,29 @@
 package com.ja.travel.dto;
 
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class PlanningApplicationDto {
 
 	private int planning_application_id, user_id, planning_id;
 	private String planning_application_content, planning_member_status;
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	private Date reg_date;
 
 	public PlanningApplicationDto() {
 		super();
 	}
 
 	public PlanningApplicationDto(int planning_application_id, int user_id, int planning_id,
-			String planning_application_content, String planning_member_status) {
+			String planning_application_content, String planning_member_status, Date reg_date) {
 		super();
 		this.planning_application_id = planning_application_id;
 		this.user_id = user_id;
 		this.planning_id = planning_id;
 		this.planning_application_content = planning_application_content;
 		this.planning_member_status = planning_member_status;
+		this.reg_date = reg_date;
 	}
 
 	public int getPlanning_application_id() {
@@ -59,11 +66,19 @@ public class PlanningApplicationDto {
 		this.planning_member_status = planning_member_status;
 	}
 
+	public Date getReg_date() {
+		return reg_date;
+	}
+
+	public void setReg_date(Date reg_date) {
+		this.reg_date = reg_date;
+	}
+
 	@Override
 	public String toString() {
 		return "PlanningApplicationDto [planning_application_id=" + planning_application_id + ", user_id=" + user_id
 				+ ", planning_id=" + planning_id + ", planning_application_content=" + planning_application_content
-				+ ", planning_member_status=" + planning_member_status + "]";
+				+ ", planning_member_status=" + planning_member_status + ", reg_date=" + reg_date + "]";
 	}
 
 }
