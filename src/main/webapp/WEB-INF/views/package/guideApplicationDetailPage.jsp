@@ -33,6 +33,9 @@ var infowindow2;
 var coords2;
 var startPoint = '${map.guidePlanningDto.guide_planning_start_point}'; // 최초 모집장소
 
+var user_id = '${sessionuser.user_id}';
+
+var couponDiscountValue = 0;
 
 
 const guidePlanningId = new URLSearchParams(location.search).get("guide_planning_id");
@@ -83,7 +86,9 @@ function packageIn(guidePlanningId){
 				var partner_order_id = response.partner_order_id;
 				var partner_user_id = response.userId;
 				var item_name = response.item_name;
-				var total_amount = response.total_amount;
+				var total_amount0 = response.total_amount;
+				
+				var total_amount = total_amount0 - couponDiscountValue;
 				
 				console.log(partner_order_id);
 				
@@ -246,10 +251,6 @@ function planprice(){
 	var planPrice = document.querySelector(".planprice");
 	planPrice.innerText = addThousandSeparator(${map.guidePlanningDto.guide_planning_price}) + '원'
 	    
-
-
-
-	
 }
 
 function planningDay() {
@@ -433,6 +434,7 @@ function planningDay() {
 
 	                    // 최종적으로 planDetail에 추가
 	                    planDetail.appendChild(aaa);
+	                    showCard(0);
 	                }
 	            }
 	        }
@@ -442,7 +444,102 @@ function planningDay() {
 	    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	    xhr.send("guide_planning_id=" + guidePlanningId);
 	} 
+	 
+	 let currentCardIndex = 0;
 
+	 function showCard(index) {
+		  const cards = document.getElementsByClassName("card");
+		  if (index < 0) {
+		    index = 0;
+		  } else if (index >= cards.length) {
+		    index = cards.length - 1;
+		  }
+
+		  currentCardIndex = index;
+
+		  // 모든 카드를 숨기고, 현재 인덱스의 카드만 보여줍니다.
+		  for (let i = 0; i < cards.length; i++) {
+		    if (i === currentCardIndex) {
+		      cards[i].style.display = "block";
+		    } else {
+		      cards[i].style.display = "none";
+		    }
+		  }
+		}
+
+
+	 function showPreviousCard() {
+	   showCard(currentCardIndex - 1);
+	 }
+
+	 function showNextCard() {
+	   showCard(currentCardIndex + 1);
+	 }
+	 
+	
+	 
+	 function showCoupon(){
+		
+		 
+		 const xhr = new XMLHttpRequest();
+			
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState == 4 && xhr.status == 200){
+					const response = JSON.parse(xhr.responseText);
+					
+					
+					
+					const myCoupon = document.querySelector(".myCoupon");
+					
+					const ccc = document.createElement("option");
+					ccc.classList.add("selected");
+					ccc.value = 0;
+					ccc.innerText="My Coupon"
+					
+					myCoupon.appendChild(ccc);
+					 
+					if (response.list != null){
+						
+						for ( data of response.list){
+							
+							const option = document.createElement("option");
+							option.value = data.couponDto.coupon_discount;
+						    option.innerText = data.couponDto.coupon_title + " (" +addThousandSeparator(option.value)+"원)"
+						    
+						    myCoupon.appendChild(option);
+							
+						}
+						 myCoupon.addEventListener("change", function () {
+						        discount(myCoupon.value);
+						      });
+
+					}
+					
+					
+				}
+			}
+			
+			//get
+			xhr.open("get", "./getCoupon?user_id="+user_id);
+			xhr.send();
+	
+	 }
+	 
+	 function discount(couponDiscount) {
+		  
+		
+		 const guidePlanningPrice = parseFloat(${map.guidePlanningDto.guide_planning_price});
+
+		
+		  couponDiscountValue = parseFloat(couponDiscount);
+
+		  
+		  const discountPay = guidePlanningPrice - couponDiscountValue;
+		  
+		 var planPrice = document.querySelector(".planprice");
+			planPrice.innerText = addThousandSeparator(discountPay) + '원'
+		
+		}
 		 /* function info() {
 			
             const planDetail = document.getElementById("planDetail");
@@ -532,10 +629,30 @@ document.addEventListener("DOMContentLoaded", function() {
 	  planprice();
 	  initMap1();
 		initMap2();
+		showCoupon();
 	});
 
 </script>
 <style>
+
+
+#planDetail{
+	
+	
+}
+
+.card-body {
+    overflow-y: scroll; /* 크롬, 사파리, 오페라, 엣지 */
+    height : 500px;
+}
+
+.card-body::-webkit-scrollbar {
+    display: none; /* 크롬, 사파리, 오페라, 엣지 */
+}
+
+
+ 
+
 
 .startDateBack {
 	background-color: #d5f0ff;
@@ -618,7 +735,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 }
 .table th {
-	background-color :#faefea;
+	background-color :#fafafa;
     width: 20%;
     font-size : 20px;
 }
@@ -729,7 +846,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				</table>
 			</div>
 			<div class="col-1"></div>
-			<div class="col-3 text-center shadow" style="border:solid 3px #ededed; border-radius: 10px; background-color :#faefea; ">
+			<div class="col-3 text-center shadow" style=" border-radius: 10px; background-color :#fafafa; ">
 				<div class="row mt-3">
 					<div class="col">
 						<span style="font-size : 20px; font-weight:bold;">${map.guide.guide_name}</span><span style="font-size : 15px; font-weight:bold;">  가이드 님</span>
@@ -750,16 +867,23 @@ document.addEventListener("DOMContentLoaded", function() {
 						<span style="font-size : 20px; font-weight: bold;">패키지 비용</span><span style="font-size : 10px; color:gray;  font-weight: bold;">(성인 1인 기준)</span>
 					</div>
 				</div>
-				<div class="row mt-1 mb-2">
+				<div class="row mt-1">
 					<div class="col planprice" style="font-size:40px; font-weight: bold;">
 						
 					</div>
+				</div>
+				<div class="row mt-3 mb-2">
+					<select class="col form-select myCoupon" aria-label="Default select example">
+					  
+					</select>
+				
+			
 				</div>
 				<div class="row mt-5 mb-5 ">
 					<div class="col-3"></div>
 					<div class="col-6 payButton ">
 						<a class="btn pay-button d-grid" role="button" onclick="packageIn(guidePlanningId)"
-	   						 style="font-size: 30px; font-weight: bold; background-color: #BB4465; color: white;">결제</a>
+	   						 style="font-size: 30px; font-weight: bold; background-color: #03c75a; color: white;">결제</a>
 					</div>
 					<div class="col-3"></div>
 				</div>
@@ -793,7 +917,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		<div class="row">
 			<div class="col">
 				<div class="row">
-					<div class="col-5">
+					<div class="col-6">
 						<div class="row "  >
 								<div class="col">
 									<i class="bi-flag-fill"></i>
@@ -808,13 +932,22 @@ document.addEventListener("DOMContentLoaded", function() {
 								</div>
 							</div>
 						<div class="row mt-5"  >
-							<div class="col" id="planDetail" style=" overflow-y: scroll; height : 600px" >
+							<div class="col-1 d-flex align-items-center ">
+								<i class="bi bi-caret-left-fill" style="cursor: pointer; font-size: 30px; " onclick="showPreviousCard()"></i>
+
+							</div>
+							<div class="col" id="planDetail"  >
+							</div>
+							<div class="col-1 d-flex align-items-center">
+								<i class="bi bi-caret-right-fill" style="cursor: pointer; font-size: 30px; " onclick="showNextCard()"></i>
+								
+							
 							</div>
 						</div>
 					</div>
 					<div class="col-1">
 					</div>
-					<div class="col">
+					<div class="col-5">
 						<div class= "row mt-5">
 							<div class="col">
 								<div class="map2 shadow" id="map2" style="width: 100%; height: 900px;">
