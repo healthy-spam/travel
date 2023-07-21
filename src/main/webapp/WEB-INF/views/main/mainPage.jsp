@@ -105,6 +105,7 @@
 						var div2 = document.createElement('div');
 						var img2 = document.createElement('img');
 						var span = document.createElement('span');
+						var icon4 = document.createElement('i');
 						
 						// 클래스와 속성 설정
 						col.className = 'col-3 mb-5';
@@ -121,7 +122,10 @@
 						title.className = 'd-flex justify-content-between';
 						div.className = 'title text-truncate';
 						content.className = 'content mb-3 text-truncate';
-						partyMember.innerText = '모집중 3 / 5';
+						icon4.className = 'bi bi-people-fill me-2';
+						partyMember.innerText = '모집중 ' + response.list[i].planningApplicationList + ' / ' + response.list[i].planning.planning_member;
+						partyMember.style.color = '#ffa800';
+						partyMember.style.marginBottom = '0.5em';
 						div2.className = 'd-flex align-items-center';
 						div2.style.fontWeight = '700';
 						userInfo.className = 'user-info';
@@ -162,6 +166,7 @@
 						div2.appendChild(span);
 						div2.appendChild(icon2);
 						div2.appendChild(userInfo);
+						partyMember.prepend(icon4);
 						cardBody.appendChild(title);
 						cardBody.appendChild(content);
 						cardBody.appendChild(partyMember);
