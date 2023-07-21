@@ -43,16 +43,20 @@ public class RestPlanApplicationController {
 	
 	// plan 검색 리스트
 	@RequestMapping("getSearchPlanList")
-	public Map<String, Object> getSearchPlanList(@RequestParam("type") String type, @RequestParam("word")String word){
-		Map<String, Object> map = new HashMap<>();
-		
-		System.out.println("type="+ type);
-		System.out.println("word="+ word);
-		
-		map.put("planSearchList", planService.searchPlan(type, word));
-		
-		return map;
+	public Map<String, Object> getSearchPlanList(@RequestParam("type") String type, @RequestParam("word")String word, HttpSession session){
+	    Map<String, Object> map = new HashMap<>();
+
+	    UserDto sessionuser = (UserDto) session.getAttribute("sessionuser");
+
+	    if(sessionuser != null) {         
+	        map.put("sessionuser", sessionuser);
+	    }
+
+	    map.put("planSearchList", planService.searchPlan(type, word));
+
+	    return map;
 	}
+
 	
 	@RequestMapping("registerPlanDayProcess")
 	public Map<String, Object> registerPlanDayProcess(PlanDayDto params){
