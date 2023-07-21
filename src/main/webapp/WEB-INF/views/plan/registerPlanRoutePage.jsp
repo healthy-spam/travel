@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=db6c20ca60db131bdca5b89e7568dc3f&libraries=services"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 
 	var map;
@@ -541,24 +542,7 @@ function createModal() {
             
    }
    
-   function checkPlace(placeId){
-	   
-     xhr.onreadystatechange = function() {
-         if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-               const response = JSON.parse(xhr.responseText);
-               
-               
-               addPlace(placeId)
-               
-            }
-         }
-     } 
-     
-     xhr.open("get", "./checkPlace?plan_day_id=" + globalDayId + "&plan_city_id=" + globalCityId + "&plan_place_id=" + placeId);
-     xhr.send();
-	   
-   }
+ 
    
 
         
@@ -572,9 +556,17 @@ function createModal() {
                const response = JSON.parse(xhr.responseText);
                console.log(response);
                
+               if(response.check == 1){
+            	   
+            	   swal('명소 중복', '해당 명소는 이미 추가된 명소입니다!', 'warning'); 
+            	  
+            	   loadMyList();
+               }else{
+            	    
+                   loadMyList();
+               }
                
-               
-               loadMyList();
+           
                
                
             }
@@ -819,7 +811,7 @@ function createModal() {
 	}
 	
 	.gradient-background {
-   background-color: gray;
+   background-color: #ececec;
    border-radius: 10px;
    border-right:solid 1px white;
    border-left:solid 1px white;
@@ -847,7 +839,7 @@ function createModal() {
             <div class="row">
                <div class="col-1 d-flex flex-column justify-content-between" >
                   <div class="row py-3 gradient-background">
-                     <div class="col text-center" style = "font-size : 20px; font-weight:bold; color:white;">
+                     <div class="col text-center" style = "font-size : 20px; font-weight:bold; color:black;">
                         DAY<i class="bi bi-gear" style="margin-left: 7px; cursor: pointer;" onclick = "edit()" ></i>
                      </div>
                   </div>
@@ -878,7 +870,7 @@ function createModal() {
          
             <div class="col-2" >
                <div class="row py-3 gradient-background" >
-                  <div class="col  text-center" style = "font-size : 20px; font-weight:bold; color:white; ">My Route</div>
+                  <div class="col  text-center" style = "font-size : 20px; font-weight:bold; color:black; ">My Route</div>
                </div>
                <div class="row ">
                   <div class="col " id="route_col" >
@@ -891,7 +883,7 @@ function createModal() {
       
             <div class="col-2" >
                <div class="row py-3 gradient-background"  >
-                  <div class="col text-center" style = "font-size : 20px; font-weight:bold; color:white;">Tour Spot</div>
+                  <div class="col text-center" style = "font-size : 20px; font-weight:bold; color:black;">Tour Spot</div>
                </div>
                <!-- 시티 선택 리스트 -->
                <div class="row">
@@ -1047,22 +1039,22 @@ function createModal() {
 <div class="templete_edit d-none" id="templete_edit">
 	<div class="row">
 	    <div class="col">
-	        <div class="row">
+	        <div class="row border">
 	            <!-- DAY -->
-	            <div class="col-6 edit_day">
+	            <div class="col-4 edit_day text-center" style="font-size:20px;display: flex; justify-content: center; align-items: center;">
 	            	
 	            </div>
 	            <!-- 휴지통 -->
-	            <div class="col-3">
+	            <div class="col-2 " style="font-size:20px;display: flex; justify-content: center; align-items: center;">
 	                <!-- 휴지통 아이콘 -->
 	                <i class="bi bi-trash trash"></i>
 	            </div>
 	            <!-- 위아래 -->
-	            <div class="col-3">
+	            <div class="col-6">
 	                <!-- 첫 번째 row -->
 	                <div class="row">
 	                    <!-- 첫 번째 row의 첫 번째 col -->
-	                    <div class="col text-center">
+	                    <div class="col">
 	                        <!-- 위쪽 화살표 아이콘 -->
 	                        <i class="bi bi-caret-up-fill"></i>
 	                    </div>

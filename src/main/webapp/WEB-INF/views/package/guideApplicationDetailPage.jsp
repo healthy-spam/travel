@@ -21,10 +21,16 @@
 
 <script>
 
-var map;
-var coords;
-var marker; // 마커 변수
-var infowindow; // 인포윈도우 변수
+var map1;
+var marker1;
+var infowindow1;
+var coords1;
+
+// map2와 관련된 변수들
+var map2;
+var marker2;
+var infowindow2;
+var coords2;
 var startPoint = '${map.guidePlanningDto.guide_planning_start_point}'; // 최초 모집장소
 
 
@@ -95,137 +101,145 @@ function packageIn(guidePlanningId){
 	   
 }
 
-function map(){
-	var container = document.getElementById('map');
+function initMap1() {
+	var container = document.getElementById('map1');
 	var options = {
 		center: new kakao.maps.LatLng(33.450701, 126.570667),
 		level: 3
 	};
 
-	 map = new kakao.maps.Map(container, options);
-	 startPointLocation();
-
+	map1 = new kakao.maps.Map(container, options);
 }
 
-function map2(){
+function initMap2() {
 	var container = document.getElementById('map2');
 	var options = {
 		center: new kakao.maps.LatLng(33.450701, 126.570667),
 		level: 3
 	};
 
-	 map = new kakao.maps.Map(container, options);
-	 startPointLocation();
-
+	map2 = new kakao.maps.Map(container, options);
 }
 
 function showPlace(item) {
 	  // 전달받은 element 내에서 .placeName 클래스를 가진 요소를 찾습니다.
 	  var placeAddressElement = item.querySelector('.address');
 	  var address = placeAddressElement.value;
-	  search(address);
+	  search2(address);
 	}
 	
 
 
 function startPointLocation() {
-
-	// Geocoder 객체 생성
 	var geocoder = new kakao.maps.services.Geocoder();
 
-	// 주소로 좌표를 검색
-	geocoder.addressSearch(startPoint,function(result, status) {
-						// 정상적으로 검색이 완료됐으면
-						if (status === kakao.maps.services.Status.OK) {
-							var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+	geocoder.addressSearch(startPoint, function(result, status) {
+		if (status === kakao.maps.services.Status.OK) {
+			coords1 = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-							// 마커가 이미 존재하는 경우, 마커의 위치를 변경
-							if (marker) {
-								marker.setPosition(coords);
-							} else {
-								// 처음 마커를 생성하는 경우
-								marker = new kakao.maps.Marker({
-									map : map,
-									position : coords
-								});
-							}
+			if (marker1) {
+				marker1.setPosition(coords1);
+			} else {
+				marker1 = new kakao.maps.Marker({
+					map: map1,
+					position: coords1
+				});
+			}
 
-							var content = '<div style="width:150px; text-align:center; padding:6px 0;">' + startPoint + '</div>';
+			var content = '<div style="width:150px; text-align:center; padding:6px 0;">' + startPoint + '</div>';
 
-							// 인포윈도우가 이미 존재하는 경우, 인포윈도우의 내용을 변경
-							if (infowindow) {
-								infowindow.setContent(content);
-							} else {
-								// 처음 인포윈도우를 생성하는 경우
-								infowindow = new kakao.maps.InfoWindow({
-									content : content
-								});
-							}
+			if (infowindow) {
+				infowindow.setContent(content);
+			} else {
+				infowindow = new kakao.maps.InfoWindow({
+					content: content
+				});
+			}
 
-							// 인포윈도우 오픈
-							infowindow.open(map, marker);
+			infowindow.open(map1, marker1);
 
-							// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-							map.setCenter(coords);
-							map.setLevel(4);
-						}
-					});
-};
+			map1.setCenter(coords1);
+			map1.setLevel(4);
+		}
+	});
+}
 
-function showStart(){
-
+function showStart() {
 	var address = startPoint;
 	search(address);
 }
 
 
-function search(keyword) {
 
-	// 주소-좌표 변환 객체를 생성합니다
+function search(keyword) {
 	var geocoder = new kakao.maps.services.Geocoder();
 
-	// 주소로 좌표를 검색합니다
-	geocoder
-			.addressSearch(
-					keyword,
-					function(result, status) {
-						// 정상적으로 검색이 완료됐으면
-						if (status === kakao.maps.services.Status.OK) {
-							coords = new kakao.maps.LatLng(result[0].y,
-									result[0].x);
+	geocoder.addressSearch(keyword, function(result, status) {
+		if (status === kakao.maps.services.Status.OK) {
+			coords1 = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-							// 마커가 이미 존재하는 경우, 마커의 위치를 변경
-							if (marker) {
-								marker.setPosition(coords);
-							} else {
-								// 처음 마커를 생성하는 경우
-								marker = new kakao.maps.Marker({
-									map : map,
-									position : coords
-								});
-							}
+			if (marker1) {
+				marker1.setPosition(coords1);
+			} else {
+				marker1 = new kakao.maps.Marker({
+					map: map1,
+					position: coords1
+				});
+			}
 
-							var content = '<div style="width:150px; text-align:center; padding:6px 0;">'
-									+ keyword + '</div>';
+			var content = '<div style="width:150px; text-align:center; padding:6px 0;">' + keyword + '</div>';
 
-							// 인포윈도우가 이미 존재하는 경우, 인포윈도우의 내용을 변경
-							if (infowindow) {
-								infowindow.setContent(content);
-							} else {
-								// 처음 인포윈도우를 생성하는 경우
-								infowindow = new kakao.maps.InfoWindow({
-									content : content
-								});
-							}
+			if (infowindow1) {
+				infowindow1.setContent(content);
+			} else {
+				infowindow1 = new kakao.maps.InfoWindow({
+					content: content
+				});
+			}
 
-							infowindow.open(map, marker);
+			infowindow1.open(map1, marker1);
 
-							// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-							map.setCenter(coords);
-							map.setLevel(3);
-						}
-					});
+			map1.setCenter(coords1);
+			map1.setLevel(3);
+		}
+	});
 }
+
+// search2 함수 수정
+function search2(keyword) {
+	var geocoder = new kakao.maps.services.Geocoder();
+
+	geocoder.addressSearch(keyword, function(result, status) {
+		if (status === kakao.maps.services.Status.OK) {
+			coords2 = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+			if (marker2) {
+				marker2.setPosition(coords2);
+			} else {
+				marker2 = new kakao.maps.Marker({
+					map: map2,
+					position: coords2
+				});
+			}
+
+			var content = '<div style="width:150px; text-align:center; padding:6px 0;">' + keyword + '</div>';
+
+			if (infowindow2) {
+				infowindow2.setContent(content);
+			} else {
+				infowindow2 = new kakao.maps.InfoWindow({
+					content: content
+				});
+			}
+
+			infowindow2.open(map2, marker2);
+
+			map2.setCenter(coords2);
+			map2.setLevel(3);
+		}
+	});
+}
+
 
 function planprice(){
 	
@@ -273,7 +287,7 @@ function planningDay() {
 		}
 
 
-	/* function info() {
+	 function info() {
 	    const planDetail = document.getElementById("planDetail");
 	    const xhr = new XMLHttpRequest();
 
@@ -293,7 +307,10 @@ function planningDay() {
 
 	                    const cardTitle = document.createElement("h5");
 	                    cardTitle.classList.add("card-title");
-	                    cardTitle.innerText = `DAY ${data.planDay.plan_day}`;
+	                    cardTitle.innerText = 'DAY' + data.planDay.plan_day;
+	                    cardTitle.style.fontSize = "25px";
+	                    cardTitle.style.fontWeight = "bold";
+	                    
 
 	                    const cardText = document.createElement("p");
 	                    cardText.classList.add("card-text");
@@ -307,27 +324,44 @@ function planningDay() {
 	                    // 카드 바디 생성
 	                    const cardBody = document.createElement("div");
 	                    cardBody.classList.add("card-body");
+	                    
+	                    const row1 = document.createElement("div");
+                        row1.classList.add("row");
+                        cardBody.appendChild(row1);
+                        
+                        const col1 = document.createElement("div");
+                        col1.classList.add("col");
+                        row1.appendChild(col1);
 
 	                    for (place of data.placeList) {
-	                        const bbb = document.createElement("div");
-	                        bbb.classList.add("card");
-	                        bbb.classList.add("mb-3");
+	                        const row2 = document.createElement("div");
+	                        row2.classList.add("row");
+	                        row2.classList.add("mt-3");
+	                        col1.appendChild(row2);
+	                        
+	                        const col2 = document.createElement("div");
+	                        col2.classList.add("col");
+	                        row2.appendChild(col2);
 
 	                        // 카드 바디 내용 구성
 	                        const placeNameElement = document.createElement("div");
 	                        placeNameElement.classList.add("place_name");
-	                        placeNameElement.setAttribute("onclick", "showPlace(this)");
+	                        placeNameElement.addEventListener("click", function() {
+	                            showPlace(this);
+	                        });
 
 	                        const placeIndex = data.placeList.indexOf(place) + 1;
-	                        const iconClass = `bi-${placeIndex}-circle-fill`;
+	                        const iconClass = 'bi-' + placeIndex + '-circle-fill';
+	                       
 
 	                        const iconElement = document.createElement("span");
 	                        iconElement.classList.add(iconClass);
 
 	                        const spaceTextNode = document.createTextNode(" ");
-	                        const content = place.planPlace.plan_place_name;
+	                        const content =  document.createElement("span");
+	                        content.innerText = place.planPlace.plan_place_name;
 	                        const city = document.createElement("span");
-	                        city.innerText = ` (${place.planCityName})`;
+	                        city.innerText =  ' (' + place.planCityName+ ')';
 	                        city.style.fontSize = "15px";
 	                        city.style.fontWeight = "bold";
 	                        city.style.color = "gray";
@@ -336,27 +370,62 @@ function planningDay() {
 	                        address.classList.add("address");
 	                        address.setAttribute("type", "hidden");
 	                        address.value = place.planPlace.plan_place_address;
-
+	                        
+	                        content.style.fontSize = "20px";
+	                        content.style.fontWeight = "bold";
+	                        content.style.marginRight = "5px";
+	                        content.style.cursor = "pointer";
+	                        
+	                        iconElement.style.fontSize = "20px";
+	                        iconElement.style.marginRight = "5px";
+							
+	                        
 	                        placeNameElement.appendChild(iconElement);
 	                        placeNameElement.appendChild(spaceTextNode);
-	                        placeNameElement.append(content);
+	                        placeNameElement.appendChild(content);
 	                        placeNameElement.appendChild(city);
 	                        placeNameElement.appendChild(address);
 
+	                        col2.appendChild(placeNameElement);
+	                        
+	                        const row3 = document.createElement("div");
+	                        row3.classList.add("row");
+	                        row3.classList.add("mt-3");
+	                        col1.appendChild(row3);
+	                        
+	                        const col3 = document.createElement("div");
+	                        col3.classList.add("col-3");
+	                        col3.classList.add("text-center");
+	                        col3.classList.add("px-auto");
+	                        col3.classList.add("mx-auto");
+	                        row3.appendChild(col3);
+	                        
+	                        const col4 = document.createElement("div");
+	                        col4.classList.add("col");
+	                        row3.appendChild(col4);
+	                        
+	                        
+
 	                        const placeThumbnail = document.createElement("img");
 	                        placeThumbnail.classList.add("place_thumbnail");
-	                        placeThumbnail.src = `/uploadFiles/mainImage/${place.planPlace.plan_place_photo}`;
-	                        placeThumbnail.alt = "";
+	                        placeThumbnail.src = "/uploadFiles/mainImage/" + place.planPlace.plan_place_photo;
+	                        placeThumbnail.style.width = "90px";
+	                        placeThumbnail.style.height = "90px";
+	                        placeThumbnail.style.borderRadius = "50%";
 
 	                        const placeContent = document.createElement("p");
 	                        placeContent.classList.add("place_content");
 	                        placeContent.innerText = place.planPlace.plan_place_content;
 
-	                        bbb.appendChild(placeNameElement);
-	                        bbb.appendChild(placeThumbnail);
-	                        bbb.appendChild(placeContent);
+	                        
 
-	                        cardBody.appendChild(bbb);
+		                     // placeThumbnail과 placeContent를 컨테이너에 추가합니다.
+		                     col3.appendChild(placeThumbnail);
+		                     col4.appendChild(placeContent);
+	
+		                    
+
+	                       
 	                    }
 
 
@@ -372,9 +441,9 @@ function planningDay() {
 	    xhr.open("POST", "./guideApplicationDetailInfo");
 	    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	    xhr.send("guide_planning_id=" + guidePlanningId);
-	} */
+	} 
 
-		 function info() {
+		 /* function info() {
 			
             const planDetail = document.getElementById("planDetail");
 		    const xhr = new XMLHttpRequest();
@@ -454,14 +523,15 @@ function planningDay() {
 		}
 		 
 		
-
+ */
 	
 document.addEventListener("DOMContentLoaded", function() {
 	  planningDay();
 	  info();
-	  map();
+	  showStart()
 	  planprice();
-	  map2();
+	  initMap1();
+		initMap2();
 	});
 
 </script>
@@ -724,6 +794,19 @@ document.addEventListener("DOMContentLoaded", function() {
 			<div class="col">
 				<div class="row">
 					<div class="col-5">
+						<div class="row "  >
+								<div class="col">
+									<i class="bi-flag-fill"></i>
+									<span>모집 장소 : </span>
+									<span style="font-weight: bold;">${map.guidePlanningDto.guide_planning_start_point}</span>
+								</div>
+							</div>
+							<div class="row mt-3" >
+								<div class="col">
+									<div class="map1 shadow" id="map1" style="width: 100%; height: 300px;">
+									</div>						
+								</div>
+							</div>
 						<div class="row mt-5"  >
 							<div class="col" id="planDetail" style=" overflow-y: scroll; height : 600px" >
 							</div>
@@ -732,24 +815,9 @@ document.addEventListener("DOMContentLoaded", function() {
 					<div class="col-1">
 					</div>
 					<div class="col">
-						<div class="row "  >
-							<div class="col">
-								<i class="bi-flag-fill"></i>
-								<span>모집 장소 : </span>
-								<span onclick="showStart()" style="font-weight: bold;">${map.guidePlanningDto.guide_planning_start_point}</span>
-							</div>
-						</div>
-						<div class="row mt-3" >
-							<div class="col">
-								<div class="map shadow" id="map" style="width: 100%; height: 300px;">
-								</div>						
-							</div>
-						</div>
-								
-						
 						<div class= "row mt-5">
 							<div class="col">
-								<div class="map shadow" id="map2" style="width: 100%; height: 600px;">
+								<div class="map2 shadow" id="map2" style="width: 100%; height: 900px;">
 								</div>	
 							</div>
 						</div>			
@@ -770,7 +838,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 	
 	
-<div class="row d-none" id = "templete_planDetail">
+<!-- <div class="row d-none" id = "templete_planDetail">
 	<div class="col" style="background:#fcf0f0;">
 		<div class="row" style="position : sticky; top :0px;" >
 			<div class="col-3 planDetail_Day text-center" style=" font-size : 30px; font-weight:bold; color:white; background:#BB4465;">
@@ -818,7 +886,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	<div class="col place_thumbnailss">
 	
 	</div>
-</div>
+</div> -->
 
 	
 

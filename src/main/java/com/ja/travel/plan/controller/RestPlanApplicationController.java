@@ -71,7 +71,10 @@ public class RestPlanApplicationController {
         	Map<String, Object> map = new HashMap<>();
 
     	
-    	planService.registerPlace(plan_day_id, plan_city_id, plan_place_id);
+    	int aaa = planService.registerPlace(plan_day_id, plan_city_id, plan_place_id);
+    	
+    	
+    	map.put("check", aaa);
     	
     	return map;
     }

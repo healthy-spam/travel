@@ -340,5 +340,10 @@
 	
 	</update>
 	
+	<select id="getRouteList" resultType="com.ja.travel.dto.PlanRouteCityDto">
+	
+		SELECT * from plan_route_city WHERE plan_day_city_id=#{plan_day_city_id}
+		
+	</select>
 
 </mapper>
