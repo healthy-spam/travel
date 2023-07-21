@@ -34,7 +34,6 @@ public class TravelApplicationController {
 
 	@RequestMapping("travelRecruitmentProcess")
 	public String travelRecruitmentProcess(PlanningDto planningDto, HttpSession session) {
-		
 		travelApplicationService.completePlanning(planningDto, session);
 		
 		return "redirect:./planPage";

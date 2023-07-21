@@ -19,7 +19,9 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 	document.addEventListener("DOMContentLoaded", function() {
+	    var today = new Date(); // 오늘 날짜를 가져옵니다.
 		var startDatePicker = flatpickr("#startDate", {
+			minDate: today,
 			dateFormat : "Y-m-d",
 			locale : flatpickr.l10ns.ko, // 한국어 로케일을 설정
 			onChange : function(selectedDates, dateStr, instance) {
@@ -28,6 +30,7 @@
 		});
 
 		var endDatePicker = flatpickr("#endDate", {
+			minDate: today,
 			dateFormat : "Y-m-d",
 			locale : flatpickr.l10ns.ko, // 한국어 로케일을 설정
 			position : "below", // Force the position of the calendar to open below the input
@@ -143,10 +146,10 @@
 	                        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
 	                        var content = '<div style="background-color: white; border-radius: 15px; padding: 5px; width: 100%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); position: relative; font-weight: 700;">'
-                                + '<span style="background-color: #DB4465; border-radius: 50%; width: 30px; height: 30px; padding: 5px; display: inline-flex; align-items: center; justify-content: center;"><i class="bi bi-geo-alt-fill" style="font-size: 20px; color: white;"></i></span>'
-                                + ' ' + placeDto.plan_place_name
-                                + '<div style="position: absolute; bottom: -8px; left: 10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>'
-                                + '</div>';
+	                            + '<span style="background-color: #03c75a; border-radius: 50%; width: 30px; height: 30px; padding: 5px; display: inline-flex; align-items: center; justify-content: center;"><i class="bi bi-geo-alt-fill" style="font-size: 20px; color: white;"></i></span>'
+	                            + ' ' + placeDto.plan_place_name
+	                            + '<div style="position: absolute; bottom: -8px; left: 10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>'
+	                            + '</div>';
 
 	                        // CustomOverlay를 생성합니다.
 	                        var mainOverlay = new kakao.maps.CustomOverlay({
@@ -160,42 +163,8 @@
 	                        mainOverlay.setMap(map);
 
 	                        bounds.extend(coords);
-
-	                        // 주변 검색을 수행합니다.
-	                        var placesService = new kakao.maps.services.Places();
-	                        
-	                        // options 객체를 사용하여 검색 옵션을 설정합니다.
-	                        var options = {
-	                            location: coords,
-	                            radius: 500
-	                        };
-	                        
-	                        placesService.keywordSearch('명소', function(result, status) {
-	                            if (status === kakao.maps.services.Status.OK) {
-	                                for (var i = 0; i < result.length; i++) {
-	                                    var place = result[i];
-	                                    var placeCoords = new kakao.maps.LatLng(place.y, place.x);
-
-	                                    var overlayContent = '<div style="background-color: white; border-radius: 15px; padding: 5px; width: 100%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); position: relative; font-weight: 700;">'
-	                                        + '<span style="background-color: #E27283; border-radius: 50%; width: 30px; height: 30px; padding: 5px; display: inline-flex; align-items: center; justify-content: center;"><i class="bi bi-geo-alt-fill" style="font-size: 20px; color: white;"></i></span>'
-	                                        + ' ' + place.place_name
-	                                        + '<div style="position: absolute; bottom: -8px; left: 10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>'
-	                                        + '</div>';
-
-	                                    // 커스텀 오버레이를 생성하고 지도에 표시합니다.
-	                                    var placeOverlay = new kakao.maps.CustomOverlay({
-	                                        position: placeCoords,
-	                                        content: overlayContent,
-	                                        yAnchor: 1.5
-	                                    });
-	                                    placeOverlay.setMap(map);
-	                                }
-	                            }
-	                            resolve();
-	                        }, options);
-	                    } else {
-	                        resolve();
 	                    }
+	                    resolve();
 	                });
 	        });
 	    });
@@ -205,6 +174,7 @@
 	        map.setBounds(bounds);
 	    });
 	}
+
 </script>
 <style type="text/css">
 .col-12 {
@@ -267,7 +237,7 @@
 }
 
 .commit {
-	background-color: #DB4465;
+	background-color: #03c75a;
 	color: white;
 	border-radius: 1rem;
 	height: 2em;
@@ -309,7 +279,7 @@
 }
 
 i {
-    color: #DB4465;
+    color: #03c75a;
 }
 
 body {
@@ -366,7 +336,7 @@ body {
 						<div class="col mt-1 d-flex justify-content-between">
 							<button class="button" type="button" onclick="calc(-1)">-</button>
 							<span id="totalPeople">
-								<input class="form-control count" type="text" name="planning_member">
+								<input class="form-control count" type="text" value="1" name="planning_member" readonly>
 							</span>
 							<button class="button" type="button" onclick="calc(1)">+</button>
 						</div>
@@ -380,7 +350,7 @@ body {
 						</div>
 					</div>
 					<div class="row mt-5">
-						<div class="col d-grid mx-3">
+						<div class="col d-grid me-3">
 							<button class="button commit">모집완료</button>
 						</div>
 					</div>
