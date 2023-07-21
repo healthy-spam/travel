@@ -272,6 +272,12 @@ body {
 	color: white;
 }
 
+.navbar-brand:hover,
+.nav-link:hover,
+.nav-link:focus {
+	color: white;
+}
+
 .cardImg {
 	height: 15em;
 	width: 100%;
