@@ -19,6 +19,7 @@ pageEncoding="UTF-8"%>
     var marker; // 마커 변수
     var infowindow; // 인포윈도우 변수
     var markers = [];
+    let overlays = [];
     let polyline = null;
     
     
@@ -86,6 +87,12 @@ pageEncoding="UTF-8"%>
             markers[i].setMap(null);
         }
         markers = []; // 마커 배열 초기화
+        
+     	// 모든 오버레이 제거
+        for (let i = 0; i < overlays.length; i++) {
+            overlays[i].setMap(null);
+        }
+        overlays = []; // 오버레이 배열 초기화
         
         // 이전 폴리라인 제거
         if (polyline !== null) {
@@ -218,37 +225,33 @@ pageEncoding="UTF-8"%>
     }
 
     // 일정별 루트 명소들 이름
-     function createMarker(i, coords) {
+	function createMarker(i, coords) {
 	    var marker = new kakao.maps.Marker({
 	        map: map,
 	        position: coords
 	    });
 	
-	//    var content = '<div style="padding:5px; font-size: 11px; font-weight: bolder;">' +'<img style="width: 35px; height: 35px; border-radius: 50%;" src="/uploadFiles/mainImage/'+ myDayPlacePhoto[i] +'">'+' '+ myDayPlaceNames[i] + '</div>';
+	    var content = 
+	    	'<div style="padding:5px; font-size: 11px; font-weight: bolder; background-color: white; width: 145px; border-radius: 10px; position: relative; margin-bottom: 1px; margin-left: 61px;">' 
+	    	    +'<div style="display: flex; align-items: center;">'
+	    	        +'<img style="width: 30px; height: 30px; border-radius: 50%;" src="/uploadFiles/mainImage/'+ myDayPlacePhoto[i] +'">'
+	    	        +'<span style="font-size: 11px; margin-left: 10px;">'+ myDayPlaceNames[i] +'</span>' 
+	    	    +'</div>'
+	    	    +'<div style="position: absolute; bottom: -10px; left: 30px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>'
+	    	+'</div>';
+
 	
 	    // Create a custom overlay
 	    let overlay = new kakao.maps.CustomOverlay({
-	//        content: content,
+	        content: content,
 	        map: map,
-	        position: marker.getPosition()
-	    });
-	
-	    // Show overlay when mouseover
-	    kakao.maps.event.addListener(marker, 'mouseover', function() {
-	        overlay.setMap(map);
-	    });
-	
-	    // Hide overlay when mouseout
-	    kakao.maps.event.addListener(marker, 'mouseout', function() {
-	        overlay.setMap(null);
-	    });
+	        position: marker.getPosition(),
+	        yAnchor: 1.2
+	    });		
 	
 	    markers.push(marker);
-	} 
-
-
-
-
+	    overlays.push(overlay);
+	}
     
     function search2(keyword, index) {
         // 주소-좌표 변환 객체를 생성합니다

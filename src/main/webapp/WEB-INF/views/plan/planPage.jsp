@@ -267,12 +267,13 @@ function planSearch() {
             const response = JSON.parse(xhr.responseText);
 
             const planPublicList = document.getElementById("planPublicList");            
+			
+            const sessionUser = response.sessionuser;                        
             
             while (planPublicList.firstChild) {
                 planPublicList.removeChild(planPublicList.firstChild);
             }
-         
-            
+                     
             for(let plan of response.planSearchList) {
                 if(plan.planDto.plan_disclosure_status === '공개') {
                     const planCardBox = planCardBoxOriginal.cloneNode(true);
@@ -284,7 +285,16 @@ function planSearch() {
                     planCardBox.querySelector(".user-name").innerText = plan.userDto.user_nickname;
                     planCardBox.querySelector(".user-img").src = "/uploadFiles/profileImage/"+ plan.userDto.user_image;
                     planCardBox.querySelector(".readPlan").href = "./readPlanPage?id="+ plan.planDto.plan_id;
-                    planCardBox.querySelector(".copyPlan").href = "./copyPlanProcess?plan_id="+ plan.planDto.plan_id;
+                    //planCardBox.querySelector(".copyPlan").href = "./copyPlanProcess?plan_id="+ plan.planDto.plan_id;
+                    
+                    let copyPlanButton = planCardBox.querySelector(".copyPlan");
+                    
+                    if(sessionUser == null || plan.planDto.user_id === sessionUser.user_id) {
+                        copyPlanButton.classList.add("disabled");
+                        copyPlanButton.href = "#";
+                    } else {
+                        copyPlanButton.href = "./copyPlanProcess?plan_id="+ plan.planDto.plan_id;
+                    }
                     
                     const route_col = planCardBox.querySelector(".route_col");
                     const templateNode = planCardBox.querySelector("#templete_my_place").cloneNode(true);
@@ -813,9 +823,11 @@ window.addEventListener("DOMContentLoaded", () => {
                      <div class="col-12">
                         <div class="row">
                            <div class="col d-grid">
+                           	
                               <a class="btn copyPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #00b04f; font-weight: 600;" href="">
-                                 <i class="bi bi-bookmark" style="width: 1rem;"></i> 일정담기
+                                 <i class="bi bi-bookmark" style="width: 1rem;"></i> 일정담기                                 
                               </a>
+                              
                            </div>
                            <div class="col d-grid">
                               <a class="btn readPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #00b04f; font-weight: 600;" href="">

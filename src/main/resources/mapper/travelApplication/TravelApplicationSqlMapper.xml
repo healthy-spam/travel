@@ -275,7 +275,8 @@
 				#{user_id},
 				#{planning_id},
 				'',
-				'수락'
+				'수락',
+				SYSDATE
 			)
 	</insert>
 	
