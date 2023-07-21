@@ -22,6 +22,9 @@
             color: white;
         }
 
+		.card-mycrew {
+			min-height:300px;
+		}
         .crewinfo {
             font-size: 16px
         }
@@ -94,17 +97,7 @@
 
 </style>
 <script type="text/javascript">
-document.addEventListener("DOMContentLoaded", function (event) {
-    var opencrewhome = document.getElementById("opencrewhome");
-    opencrewhome.addEventListener("click", function () {
-        var crew_domain = document.getElementById("crew_domain").value;
-        window.open("/travel/crew/crewhome/" + crew_domain, "pop", "width=1350px,height=750px,location=no")
-    });
-});
 
-function gocrewpage(crewDomain) {
-	window.open("/travel/crew/crewhome/" + crewDomain, "pop", "width=1350px,height=750px,location=no")
-	}
 
 document.addEventListener("DOMContentLoaded", function(event) {
 var cardMyCrew = document.querySelector('.card-mycrew');
@@ -114,13 +107,6 @@ var cardMyCrewHeight = cardMyCrew.offsetHeight;
 cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
 });
 
-	document.addEventListener("DOMContentLoaded", function(event) {
-	    var opencrewhome = document.getElementById("opencrewhome");
-	    opencrewhome.addEventListener("click", function() {
-	        var crew_domain = document.getElementById("crew_domain").value;
-	        window.open("/travel/crew/crewhome/"+crew_domain, "pop", "width=1350px,height=750px,location=no")
-	    });
-	});
 
 	document.addEventListener("DOMContentLoaded", function() {
 	    var searchCrewInput = document.getElementById("searchCrew");
@@ -221,14 +207,16 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
 		
 		<div class="row">
 			<div class="col">
+				<div class="card mb-5">
 				<div class="row">
                     <div class="col-6">
-                    	<div class="card card-mycrew shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+                    	<div class="card card-mycrew shadow-sm p-3 bg-body-tertiary rounded">
 						<c:choose>
 							<c:when test="${empty crewDto}">
-
+								아직 가입한 크루가 없습니다.<br>
+								나에게 맞는 크루를 찾아보세요.
 							</c:when>
-							<c:when test="${!empty crewDto && !empty applied}">
+							<c:when test="${!empty crewDto && applied == null}">
 								<div class="card-body ">
 	                                <div class="row">
 	                                    <div class="col-3">
@@ -265,8 +253,7 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
 	                                    <div class="col">${myPoint }</div>
 	                                </div>
 	                                <div class="row mt-3">
-	                                    <input type="hidden" id="crew_domain" value="${crewDto.crew_domain }">
-	                                    <button class="btn form-control" id="opencrewhome">크루 홈 이동</button>
+	                                    <a href="/travel/crew/crewhome/${crewDto.crew_domain }"><button class="btn form-control" id="opencrewhome">크루 홈 이동</button></a>
 	                                </div>
 	                            </div>
 							</c:when>
@@ -306,10 +293,9 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
                                     <div class="col-4 text-secondary">나의 기여포인트</div>
                                     <div class="col">${myPoint }</div>
                                 </div>
-                                <div class="row mt-3">
-                                    <input type="hidden" id="crew_domain" value="${crewDto.crew_domain }">
-                                    <button class="btn form-control" id="opencrewhome">크루 홈 이동</button>
-                                </div>
+								<div class="row mt-3">
+	                            	<a href="/travel/crew/crewhome/${crewDto.crew_domain }"><button class="btn form-control" id="opencrewhome">크루 홈 이동</button></a>
+	                           	</div>
                             </div>
 							</c:otherwise>
 						</c:choose>
@@ -372,6 +358,7 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
                         </div>
                     </div>
 				</div>
+				</div>
 			</div>
 		</div>
 		
@@ -386,8 +373,10 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
 		</div>
 		<div class="row" id="crewlistarea">
 			<c:forEach var="crew" items="${crewList}" varStatus="status">
+			
 			<div class="col-6">
-                <div class="card crewlistcard  shadow-sm p-3 mb-3 bg-body-tertiary rounded" onclick="gocrewpage( '${crew.crew.crew_domain}')">
+				<a href="/travel/crew/crewhome/${crew.crew.crew_domain }">
+               		<div class="card crewlistcard  shadow-sm p-3 mb-3 bg-body-tertiary rounded">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-3">
@@ -421,6 +410,7 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
                         </div>
                     </div>
                 </div>
+                </a>
             </div>
 			</c:forEach>
 		</div>

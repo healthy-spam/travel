@@ -235,8 +235,8 @@
 		select crew_member_id from crew_board_like where crew_board_id = #{crew_board_id}
 	</select>
 	
-	<select id="getMyLikedBoardListByCrewMemberId" resultType="Integer">
-		select crew_board_id from crew_board_like where crew_member_id = #{crew_member_id}
+	<select id="getMyLikedBoardListByCrewMemberId" resultType="com.ja.travel.dto.CrewBoardDto">
+		select * from crew_board where crew_board_id = (select crew_board_id from crew_board_like where crew_member_id = #{crew_member_id})
 	</select>
 	
 	<delete id="dislikeboard">
@@ -261,7 +261,7 @@
 	</delete>
 	
 	<select id="getMyBoardListByCrewMemberId" resultType="com.ja.travel.dto.CrewBoardDto">
-		select * from crew_board where crew_member_id = #{crew_member_id} and crew_board_status != 'deleted'
+		select * from crew_board where crew_member_id = #{crew_member_id} and crew_domain = #{crew_domain} and crew_board_status != 'deleted'
 	</select>
 	
 	<select id="getMyCommentListByCrewMemberId" resultType="com.ja.travel.dto.CrewBoardCommentDto">
@@ -321,5 +321,9 @@
 	
 	<select id="getCrewBoardAttachedByCrewBoardId" resultType="com.ja.travel.dto.CrewBoardAttachedDto">
 		select * from crew_board_attached where crew_board_id = #{crew_board_id}
+	</select>
+	
+	<select id="getPostListByCrewDomainAndSearchWord" resultType="com.ja.travel.dto.CrewBoardDto">
+		select * from crew_board where crew_domain = #{crew_domain} and crew_board_content like '%' || #{searchword} || '%'
 	</select>
 </mapper>

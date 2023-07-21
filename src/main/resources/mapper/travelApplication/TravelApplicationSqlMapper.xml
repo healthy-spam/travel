@@ -205,8 +205,7 @@
 
 	<update id="refusalApplicationaStatusByUser">
 		UPDATE planning_application
-		SET planning_member_status
-		= '거절'
+		SET planning_member_status = '거절'
 		WHERE planning_id = ${planning_id}
 		AND user_id = ${user_id}
 	</update>
@@ -276,7 +275,8 @@
 				#{user_id},
 				#{planning_id},
 				'',
-				'수락'
+				'수락',
+				SYSDATE
 			)
 	</insert>
 	

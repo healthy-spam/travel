@@ -180,4 +180,48 @@ public class MainService {
 		
 		return mapList;
 	}
+
+	public PlanningApplicationDto updateApplicationaStatusByUser(PlanningApplicationDto planningApplicationDto) {
+		if (planningApplicationDto.getPlanning_member_status().equals("수락")) {
+			travelApplicationSqlMapper.acceptApplicationaStatusByUser(planningApplicationDto);
+		} else {
+			travelApplicationSqlMapper.refusalApplicationaStatusByUser(planningApplicationDto);
+		}
+		
+		return travelApplicationSqlMapper.getApplicationStatus(planningApplicationDto);
+	}
+
+	public Map<String, Object> passwordCheck(String user_pw, HttpSession session) {
+		UserDto user = (UserDto) session.getAttribute("sessionuser");
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		if (user != null) {
+			UserDto sessionUser = loginSqlMapper.selectById(user.getUser_id());
+			
+			if (user_pw.equals(sessionUser.getUser_pw())) {
+				map.put("ok", true);
+			} else {
+				map.put("no", false);
+			}
+		}
+		
+		return map;
+	}
+
+	public Map<String, Object> nicknameCheck(String nick) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		UserDto user = loginSqlMapper.isNickname(nick);
+		
+		if (user != null) {
+			map.put("no", false);
+		} else {
+			map.put("ok", true);
+		}
+		
+		return map;
+	}
+
+	public void updateNickname(UserDto sessionUser) {
+		loginSqlMapper.updateNickname(sessionUser);
+	}
 }

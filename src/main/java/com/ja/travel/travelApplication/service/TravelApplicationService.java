@@ -58,30 +58,10 @@ public class TravelApplicationService {
 			travelApplicationSqlMapper.insertPlanningApplicationParty(planningApplicationDto);
 		}
 	}
-	
-//	public Map<String, Object> updateApplicationaStatusByUser(PlanningApplicationDto planningApplicationDto,
-//			String value) {
-//		if (value.equals("수락")) {
-//			travelApplicationSqlMapper.acceptApplicationaStatusByUser(planningApplicationDto);
-//		} else {
-//			travelApplicationSqlMapper.refusalApplicationaStatusByUser(planningApplicationDto);
-//		}
-//	
-//		PlanningApplicationDto planningStatus = travelApplicationSqlMapper.getApplicationStatus(planningApplicationDto);
-//		PlanningDto planning = travelApplicationSqlMapper.getPlanningByPlanningId(planningStatus.getPlanning_id());
-//		List<PlanningApplicationDto> count = travelApplicationSqlMapper.getPlanningAcceptCountByPlanningId(planning.getPlanning_id());
-//	
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("planningStatus", planningStatus);
-//		map.put("planning", planning);
-//		map.put("planningAcceptCount", count);
-//	
-//		return map;
-//	}
 
 	public List<Map<String, Object>> getPlanningList(TravelApplicationRequestDto travelApplicationRequestDto) {
 		List<PlanningDto> planningList = travelApplicationSqlMapper.getPlanningList(travelApplicationRequestDto);
-
+		
 		List<Map<String, Object>> list = new ArrayList<>();
 
 		for (PlanningDto planning : planningList) {
@@ -91,6 +71,7 @@ public class TravelApplicationService {
 			PlanDto plan = planSqlMapper.selectById(planning.getPlan_id());
 			List<PlanDayDto> planDayList = travelApplicationSqlMapper.getPlanDayByPlanId(plan.getPlan_id());
 			List<PlanDto> recursiveList = travelApplicationSqlMapper.getRecursiveList(planning);
+			List<UserDto> planningApplicationList = travelApplicationSqlMapper.getPlanningAcceptCountByPlanningId(planning.getPlanning_id());
 			
 			List<Map<String, Object>> list2 = new ArrayList<>();
 			
@@ -109,6 +90,7 @@ public class TravelApplicationService {
 			map.put("plan", plan);
 			map.put("planning", planning);
 			map.put("planDay", planDayList.size());
+			map.put("planningApplicationList", planningApplicationList.size());
 
 			list.add(map);
 		}

@@ -245,14 +245,22 @@ font-size: 30px
 </head>
 
 <body>
+	<div class="container-fluid">
+		<div class="container">
+			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		</div>
+	</div>
+	
+		<div class="container-fluid">
+		<div class="container">
 	<div class="row">
-		<div class="col-2">
+		<div class="col-3">
 		<jsp:include page="../common/crewHomeNavi.jsp"></jsp:include>
 
 		</div>
 		<input type="hidden" id="user_id" value="${userDto.user_id }">
-		<div class="col-6 margin-left-col">
-			<div class="card mt-5" id="memberpost">
+		<div class="col-6">
+			<div class="card" id="memberpost">
 				<div class="container p-4 pb-3">
 					<div class="row">
 						<div class="col member1">
@@ -306,7 +314,9 @@ font-size: 30px
 				<div id="calendar"></div>
 			</div>
 		</div>
-	</div>	
+	</div>
+	</div>
+</div>	
 	
 	
 	
@@ -368,6 +378,7 @@ font-size: 30px
     </div>
   </div>
 </div>
+
 	<input type="hidden" value="${crewDto.crew_domain }" id = "crew_domain">
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.13.0/Sortable.min.js"></script>

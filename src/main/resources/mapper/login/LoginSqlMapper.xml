@@ -31,10 +31,21 @@
 		where user_id = #{user_id}
 	</select>
 	
+	<select id="isNickname" resultType="com.ja.travel.dto.UserDto">
+		select * from member
+		where user_nickname = #{user_nickname}
+	</select>
+ 	
  	<select id="getRestrictedUser" resultType="com.ja.travel.dto.MemberRestrictDto">
 		SELECT * FROM member_restrict
 		<![CDATA[
 		WHERE user_id = #{user_id} AND user_restrict_end_date > SYSDATE
 		]]>
 	</select>
+	
+	<update id="updateNickname">
+		UPDATE member
+		SET user_nickname = #{user_nickname}
+		WHERE user_id = #{user_id}
+	</update>
 </mapper>

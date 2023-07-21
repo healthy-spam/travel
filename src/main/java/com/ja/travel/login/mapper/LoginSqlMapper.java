@@ -18,4 +18,8 @@ public interface LoginSqlMapper {
 	public MemberRestrictDto getRestrictedUser(int user_id);
 
 	public void updateProfilePicByUserId(@Param("saveFileName") String saveFileName, @Param("user_id") int user_id); 
+	
+	public UserDto isNickname(String user_nickname);
+
+	public void updateNickname(UserDto sessionUser);
 }

@@ -102,6 +102,125 @@
 	        iconButton.classList.add('bi-envelope');
 	    }
 	}
+	
+	function confirm(value) {
+	    const values = value.split(','); // value를 쉼표 기준으로 분해하여 배열로 만듭니다.
+	    const status = values[0];
+	    const user_id = values[1];
+	    const planning_id = values[2];
+	    
+		const xhr = new XMLHttpRequest();
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				const response = JSON.parse(xhr.responseText);
+				
+				if (response != null) {
+					console.log(response);
+					
+					if (response.planning_member_status == '수락') {
+						const span = document.getElementById(response.user_id);
+						span.innerText = '수락';
+						span.style.backgroundColor = '#03c358';
+					} else {
+						const span = document.getElementById(response.user_id);
+						span.innerText = '거절';
+						span.style.backgroundColor = '#DC3545';
+					}
+				}
+			}
+		}
+
+		//post
+		xhr.open("post", "./confirm");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send("user_id=" + user_id + "&planning_id=" + planning_id + "&planning_member_status=" + status);
+	}
+</script>
+<script type="text/javascript">
+	var availableNick = false;
+	var nick;
+	
+	function cancel() {
+	    // 폼 내의 인풋 필드를 초기화합니다.
+	    document.getElementById('pwd').value = '';
+	    document.getElementById('nickname').value = '';
+	    
+	    // 각 폼의 디스플레이 속성을 'none'으로 설정해 숨깁니다.
+	    document.getElementById('nickChkForm').style.display = 'none';
+
+	    // 비밀번호 입력란을 다시 활성화 합니다.
+	    let pwd = document.getElementById('pwd');
+	    pwd.removeAttribute('disabled');
+	}
+	
+	function passwordCheck() {
+		const pwd = document.getElementById('pwd');
+		
+		const xhr = new XMLHttpRequest();
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				const response = JSON.parse(xhr.responseText);
+				
+				if (response.ok) {
+					alert('인증이 완료되었습니다.');
+					
+					var nickChkForm = document.getElementById('nickChkForm');
+					nickChkForm.style.display = 'block';
+					
+					pwd.setAttribute('disabled', 'true');
+				} else {
+					alert('잘못된 비밀번호입니다.');
+				}
+			}
+		}
+
+		xhr.open("post", "./passwordCheck");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send("pwd="+pwd.value);
+	}
+	
+	function nicknameCheck() {
+		nick = document.getElementById('nickname');
+		
+		const xhr = new XMLHttpRequest();
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				const response = JSON.parse(xhr.responseText);
+				
+				if (response.ok) {
+					alert('사용가능한 닉네임입니다.');
+					availableNick = true;
+				} else {
+					alert('존재하는 닉네임입니다.');
+					availableNick = false;
+				}
+			}
+		}
+
+		xhr.open("post", "./nicknameCheck");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send("nick="+nick.value);
+	}
+
+	function confirmNick() {
+		if (availableNick) {
+			const xhr = new XMLHttpRequest();
+
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4 && xhr.status == 200) {
+			        // 화면 새로고침
+			        location.reload();
+				}
+			}
+
+			xhr.open("post", "./confirmNick");
+			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhr.send("user_nickname=" + nick.value + "&user_id=" + ${sessionuser.user_id});	
+		}
+	}
 </script>
 <style type="text/css">
 body {
@@ -156,8 +275,8 @@ button {
 
 .thumb {
 	border-radius: 50%;
-	width: 1.8em;
-	height: 1.8em;
+	width: 1.5em;
+	height: 1.5em;
 	margin-right: 0.5em;
 }
 </style>
@@ -227,27 +346,73 @@ button {
 				<div class="row my-4">
 					<div class="col">
 						<div class="card-wrapper">
-							<div class="card-title">내프로필</div>
+							<div class="card-title">
+								내프로필
+							</div>
 							<div style="padding-left: 2em; padding-right: 1em;">
 								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;"> 
 										<i class="bi bi-person me-2"></i>
 										${sessionuser.user_nickname}
 									</span>
-									<button style="border: none;">수정</button>
+									<button style="border: none;" data-bs-toggle="modal" data-bs-target="#editProfile">수정</button>
 								</div>
 								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;"> 
 										<i class="bi bi-phone me-2"></i> 010-1234-5678
 									</span>
-									<button style="border: none;">수정</button>
 								</div>
 								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;">
 										<i class="bi bi-envelope me-2"></i>
 										${sessionuser.user_email}
 									</span>
-									<button style="border: none;">수정</button>
+								</div>
+								<div class="modal fade" id="editProfile" aria-hidden="true">
+									<div class="modal-dialog modal-dialog-centered">
+										<div class="modal-content">
+											<div class="modal-body">
+												<div class="container">
+													<div class="row">
+														<div class="col">
+															<span style="font-weight: bold; font-size: 1.5em;">${sessionuser.user_nickname}</span>
+															<span style="font-size: 1.5em; font-weight: 300;">님의 회원정보 중</span>
+															<span id="profileExplain" style="font-size: 1.5em; color: #03c75a; font-weight: 300;">닉네임</span>
+															<span style="font-size: 1.5em; font-weight: 300;">을 수정하기 위해 인증절차가 필요합니다.</span>
+															<hr style="font-weight: bold;">
+														</div>
+													</div>
+													<div class="row mb-2">
+														<div class="col">
+															<div class="input-group">
+																<input type="password" class="form-control" placeholder="현재 비밀번호를 입력해주세요" style="border: none;" id="pwd">
+																<button class="btn" type="button" onclick="passwordCheck()">확인</button>
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col mx-2">
+															<span style="font-size: 0.8em; color: lightgrey; margin: 2em 0;">트립스테이션 서비스의 변경/종료, 본인 작성 게시물 조치 등 대부분의 트립스테이션 안내에 사용합니다.</span>
+														</div>
+													</div>
+													<div class="row my-4" style="display: none;" id="nickChkForm">
+														<div class="col">
+															<div class="input-group">
+																<input type="text" class="form-control" placeholder="변경할 닉네임을 입력해주세요" style="border: none;" id="nickname">
+																<button class="btn" type="button" onclick="nicknameCheck()">중복체크</button>
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col d-flex justify-content-end">
+															<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal" onclick="cancel()">취소</button>
+															<button type="button" class="btn" style="background-color: #03c75a; color: white;" onclick="confirmNick()">확인</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -272,7 +437,7 @@ button {
 												</a>
 												<div>
 													<c:if test="${data.myPlanning.user_id == sessionuser.user_id}">
-														<button type="button" style="border: none; color: #999999; font-size: 0.9em;" data-bs-toggle="modal" data-bs-target="#appList">신청 리스트</button>
+														<button type="button" style="border: none; color: #03c75a; font-size: 0.9em;" data-bs-toggle="modal" data-bs-target="#appList">신청 리스트</button>
 													</c:if>
 													<fmt:parseDate var="parsedDate" value="${data.myPlanning.planning_end_date}" pattern="yyyy-MM-dd HH:mm:ss" />
 													<span style="font-size: 0.9em; font-weight: 400; color: #A3A3A3;">
@@ -305,18 +470,18 @@ button {
 																				<div class="col d-flex justify-content-center">
 																					<c:choose>
 																						<c:when test="${item.planningApp.planning_member_status == '신청'}">
-																							<span class="badge text-bg-secondary px-4 py-1 d-flex align-items-center" style="font-weight: 100;">신청</span>
+																							<span id="${item.user.user_id}" class="badge px-4 py-1 d-flex align-items-center" style="background-color: #6C757D; font-weight: 100;">신청</span>
 																						</c:when>
 																						<c:when test="${item.planningApp.planning_member_status == '수락'}">
-																							<span class="badge px-4 py-1 d-flex align-items-center" style="background-color: #03c358; font-weight: 100;">수락</span>
+																							<span id="${item.user.user_id}" class="badge px-4 py-1 d-flex align-items-center" style="background-color: #03c358; font-weight: 100;">수락</span>
 																						</c:when>
 																						<c:otherwise>
-																							<span class="badge text-bg-danger px-4 py-1 d-flex align-items-center" style="font-weight: 100;">거절</span>
+																							<span id="${item.user.user_id}" class="badge px-4 py-1 d-flex align-items-center" style="background-color: #DC3545; font-weight: 100;">거절</span>
 																						</c:otherwise>
 																					</c:choose>
 																				</div>
 																				<div class="col d-flex justify-content-center align-items-center">
-																					<img src="https://via.placeholder.com/50x50" class="thumb">
+																					<img src="/uploadFiles/profileImage/${item.user.user_image}" class="thumb">
 																					<span>
 																						${item.user.user_nickname}
 																						<a id="iconButton${item.user.user_id}" class="bi bi-envelope ms-1" style="color: black; cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapseExample${item.user.user_id}"></a>
@@ -326,14 +491,14 @@ button {
 																					<fmt:formatDate value="${item.planningApp.reg_date}" pattern="yyyy-MM-dd"/>
 																				</div>
 																				<div class="col d-flex justify-content-center">
-																					<button style="border: none; color: #03c75a;">수락</button>
-																					<button style="border: none; color: #ff4e4e;">거절</button>
+																					<button style="border: none; color: #03c75a;" onclick="confirm(this.value)" value="수락, ${item.planningApp.user_id}, ${item.planningApp.planning_id}">수락</button>
+																					<button style="border: none; color: #ff4e4e;" onclick="confirm(this.value)" value="거절, ${item.planningApp.user_id}, ${item.planningApp.planning_id}">거절</button>
 																				</div>
 																			</div>
 																			<div class="row">
 																				<div class="col-1"></div>
 																				<div class="col p-0">
-																					<div class="collapse pb-2" id="collapseExample${item.user.user_id}">
+																					<div class="collapse" id="collapseExample${item.user.user_id}">
 																						<div>${item.planningApp.planning_application_content}</div>
 																					</div>
 																				</div>

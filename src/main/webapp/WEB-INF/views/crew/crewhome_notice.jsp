@@ -434,26 +434,30 @@ strong#Createnewpost {
 </head>
 
 <body>
+	<div class="container-fluid">
+		<div class="container">
+			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<div class="container">
 	<div class="row">
-		<div class="col-2">
+		<div class="col-3">
 			<jsp:include page="../common/crewHomeNavi.jsp"></jsp:include>
 		</div>
-		<div class="col-6 margin-left-col">
+		<div class="col-6">
 			<!-- <div class="row"> -->
 			<!-- <div class="col-7"> -->
-			<div class="container main p-4">
-				<div class="row">
-					<div class="col-7">
-						<Strong>Hello Jon</Strong>
-						<p>Hurry up and do the course now!</p>
-					</div>
-					<div class="col">
-						<input type="text" class="form-control searchbar nonboarder"
+			<div class="container main px-4">
+				<div class="row mb-2">
+					<div class="col px-0">
+						<input type="text" class="form-control nonboarder"
 							placeholder="Search">
 					</div>
 				</div>
 				
-				<c:if test="${myGrade <= 2 }">
+				<c:if test="${myGrade <= 2 && crewMemberDto.crew_domain == crewDto.crew_domain}">
 				<div class="row">
 					<div class="card boardwrite" id="openBoardWrite">
 						<div class="row mx-2 mt-3">
@@ -581,7 +585,8 @@ strong#Createnewpost {
 			</div>
 		</div>
 	</div>
-
+</div>
+</div>
 	<!-- Modal -->
 
 	<div class="modal fade" id="boardWriteModal" tabindex="-1"
