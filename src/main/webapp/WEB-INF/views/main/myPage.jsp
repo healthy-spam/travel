@@ -141,6 +141,19 @@
 	var availableNick = false;
 	var nick;
 	
+	function cancel() {
+	    // 폼 내의 인풋 필드를 초기화합니다.
+	    document.getElementById('pwd').value = '';
+	    document.getElementById('nickname').value = '';
+	    
+	    // 각 폼의 디스플레이 속성을 'none'으로 설정해 숨깁니다.
+	    document.getElementById('nickChkForm').style.display = 'none';
+
+	    // 비밀번호 입력란을 다시 활성화 합니다.
+	    let pwd = document.getElementById('pwd');
+	    pwd.removeAttribute('disabled');
+	}
+	
 	function passwordCheck() {
 		const pwd = document.getElementById('pwd');
 		
@@ -153,7 +166,7 @@
 				if (response.ok) {
 					alert('인증이 완료되었습니다.');
 					
-					const nickChkForm = document.getElementById('nickChkForm');
+					var nickChkForm = document.getElementById('nickChkForm');
 					nickChkForm.style.display = 'block';
 					
 					pwd.setAttribute('disabled', 'true');
@@ -163,7 +176,6 @@
 			}
 		}
 
-		//post
 		xhr.open("post", "./passwordCheck");
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhr.send("pwd="+pwd.value);
@@ -188,12 +200,11 @@
 			}
 		}
 
-		//post
 		xhr.open("post", "./nicknameCheck");
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhr.send("nick="+nick.value);
 	}
-	
+
 	function confirmNick() {
 		if (availableNick) {
 			const xhr = new XMLHttpRequest();
@@ -205,7 +216,6 @@
 				}
 			}
 
-			//post
 			xhr.open("post", "./confirmNick");
 			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			xhr.send("user_nickname=" + nick.value + "&user_id=" + ${sessionuser.user_id});	
@@ -345,68 +355,64 @@ button {
 										<i class="bi bi-person me-2"></i>
 										${sessionuser.user_nickname}
 									</span>
-									<button style="border: none;" data-bs-toggle="modal" data-bs-target="#editNickname">수정</button>
-
-									<div class="modal fade" id="editNickname" aria-hidden="true">
-										<div class="modal-dialog modal-dialog-centered">
-											<div class="modal-content">
-												<div class="modal-body">
-													<div class="container">
-														<div class="row">
-															<div class="col">
-																<span style="font-weight: bold; font-size: 1.5em;">${sessionuser.user_nickname}</span>
-																<span style="font-size: 1.5em; font-weight: 300;">님의 회원정보 중</span>
-																<span style="font-size: 1.5em; color: #03c75a; font-weight: 300;">닉네임</span>
-																<span style="font-size: 1.5em; font-weight: 300;">을 수정하기 위해 인증절차가 필요합니다.</span>
-																<hr style="font-weight: bold;">
-															</div>
-														</div>
-														<div class="row mb-2">
-															<div class="col">
-																<div class="input-group">
-																	<input type="password" class="form-control" placeholder="현재 비밀번호를 입력해주세요" style="border: none;" id="pwd">
-																	<button class="btn" type="button" onclick="passwordCheck()">확인</button>
-																</div>
-															</div>
-														</div>
-														<div class="row">
-															<div class="col mx-2">
-																<span style="font-size: 0.8em; color: lightgrey; margin: 2em 0;">트립스테이션 서비스의 변경/종료, 본인 작성 게시물 조치 등 대부분의 트립스테이션 안내에 사용합니다.</span>
-															</div>
-														</div>
-														<div class="row my-4" style="display: none;"
-															id="nickChkForm">
-															<div class="col">
-																<div class="input-group">
-																	<input type="text" class="form-control" placeholder="변경할 닉네임을 입력해주세요" style="border: none;" id="nickname">
-																	<button class="btn" type="button" onclick="nicknameCheck()">중복체크</button>
-																</div>
-															</div>
-														</div>
-														<div class="row">
-															<div class="col d-flex justify-content-end">
-																<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal">취소</button>
-																<button type="button" class="btn" style="background-color: #03c75a; color: white;" onclick="confirmNick()">확인</button>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
+									<button style="border: none;" data-bs-toggle="modal" data-bs-target="#editProfile">수정</button>
 								</div>
 								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;"> 
 										<i class="bi bi-phone me-2"></i> 010-1234-5678
 									</span>
-									<button style="border: none;" data-bs-toggle="modal" data-bs-target="#editPhone">수정</button>
 								</div>
 								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;">
 										<i class="bi bi-envelope me-2"></i>
 										${sessionuser.user_email}
 									</span>
-									<button style="border: none;" data-bs-toggle="modal" data-bs-target="#editNickname">수정</button>
+								</div>
+								<div class="modal fade" id="editProfile" aria-hidden="true">
+									<div class="modal-dialog modal-dialog-centered">
+										<div class="modal-content">
+											<div class="modal-body">
+												<div class="container">
+													<div class="row">
+														<div class="col">
+															<span style="font-weight: bold; font-size: 1.5em;">${sessionuser.user_nickname}</span>
+															<span style="font-size: 1.5em; font-weight: 300;">님의 회원정보 중</span>
+															<span id="profileExplain" style="font-size: 1.5em; color: #03c75a; font-weight: 300;">닉네임</span>
+															<span style="font-size: 1.5em; font-weight: 300;">을 수정하기 위해 인증절차가 필요합니다.</span>
+															<hr style="font-weight: bold;">
+														</div>
+													</div>
+													<div class="row mb-2">
+														<div class="col">
+															<div class="input-group">
+																<input type="password" class="form-control" placeholder="현재 비밀번호를 입력해주세요" style="border: none;" id="pwd">
+																<button class="btn" type="button" onclick="passwordCheck()">확인</button>
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col mx-2">
+															<span style="font-size: 0.8em; color: lightgrey; margin: 2em 0;">트립스테이션 서비스의 변경/종료, 본인 작성 게시물 조치 등 대부분의 트립스테이션 안내에 사용합니다.</span>
+														</div>
+													</div>
+													<div class="row my-4" style="display: none;" id="nickChkForm">
+														<div class="col">
+															<div class="input-group">
+																<input type="text" class="form-control" placeholder="변경할 닉네임을 입력해주세요" style="border: none;" id="nickname">
+																<button class="btn" type="button" onclick="nicknameCheck()">중복체크</button>
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col d-flex justify-content-end">
+															<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal" onclick="cancel()">취소</button>
+															<button type="button" class="btn" style="background-color: #03c75a; color: white;" onclick="confirmNick()">확인</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
