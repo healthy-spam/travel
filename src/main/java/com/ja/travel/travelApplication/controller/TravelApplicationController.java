@@ -41,7 +41,7 @@ public class TravelApplicationController {
 	
 	@RequestMapping("travelApplicationDetailPage")
 	public String travelApplicationDetailPage(Model model, int planning_id) {
-		Map<String, Object> map = travelApplicationService.getPlaceByDayForPlan(planning_id);
+		Map<String, Object> map = travelApplicationService.getDetailPageInfo(planning_id);
 		
 		model.addAttribute("map", map);
 		
