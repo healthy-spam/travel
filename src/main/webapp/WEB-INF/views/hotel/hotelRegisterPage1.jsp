@@ -44,15 +44,20 @@
             </div>
         </div>
 
-        <div class="row align-items-center" style="padding-top: 200px;">
+        <div class="row" style="padding-top: 200px;">
             <div class="col"></div>
             <div class="col-auto pe-5 me-5">
                 <div class="row">
                     <div class="col">
-                        <span style="font-size: 50px; font-weight: 600;">간단하게</span>
+                        <span style="font-size: 50px; font-weight: 600;">
+                        	간단하게<br>
+                        	트립스테이션<br>
+                        	호스팅을 시작할 수<br>
+                        	있습니다
+                        </span>
                     </div>
                 </div>
-                <div class="row">
+               <!--  <div class="row">
                     <div class="col">
                         <span style="font-size: 50px; font-weight: 600;">트립스테이션</span>
                     </div>
@@ -66,7 +71,7 @@
                     <div class="col">
                         <span style="font-size: 50px; font-weight: 600;">있습니다</span>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="col-auto ps-5 ms-5">
                 <div class="row">

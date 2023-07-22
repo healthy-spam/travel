@@ -233,7 +233,7 @@ function sendHotelBasics() {
  	 */
  	
 	
-});
+
 
 </script>
 
@@ -481,7 +481,7 @@ function sendHotelBasics() {
                         </div>
                         <div class="row my-5">
                         	<div class="col">
-                        		<div id="map" style="width: 100%; height: 500px;"></div>
+                        		<div class="rounded " id="map" style="width: 100%; height: 300px;"></div>
                         	</div>
                         </div>
                     </div> 

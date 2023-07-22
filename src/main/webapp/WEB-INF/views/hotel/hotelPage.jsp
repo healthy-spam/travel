@@ -24,13 +24,12 @@
 </script>
 
 <style type="text/css">
-	.btn-gradient {
-		background: linear-gradient(to right, #db2566, #f2075a, #f5228c);
-	}
 	
+	/* 등록 버튼 박스 관련 스타일 */
 	.registerButton {
+	
+		/* 박스 모델 관련 스타일 */
 		border-radius: 25px; 
-		color: white; 
 		position: fixed; 
 		z-index: 9999; 
 		bottom: 5%; 
@@ -39,40 +38,103 @@
 		width: auto;
 		height: auto;
 		padding: 12px 20px;
-		background-image: linear-gradient(98deg,#03c75a,#49c6dd);
+		background-image: linear-gradient(98deg,#03c75a,#38a877);
+		
+		/* 폰트 관련 스타일 */
+		color: white; 
 		font-size: 0.9em;
 		font-weight: 600;
+		text-decoration: none;
 	}
-
+	
+	/* 등록 버튼 박스 호버 관련 스타일 */
 	.registerButton:hover {
-	   	background-image: linear-gradient(98deg,#07e86b,#57def7);
+	
+		/* 박스 모델 관련 스타일 */
+	   	background-image: linear-gradient(98deg,#1e9f58,#0e8a69);
+	   	
+	   	/* 폰트 관련 스타일 */
 	   	color: #f0f0f0;
 	}
 	
-	a {
-		text-decoration: none;
-	}
-	
-	a:hover {
-		text-decoration: none;
-		color: white;
-	}
-	
+	/* 카테고리 박스 관련 스타일 */
 	.categoryIcon {
+	
+		/* 박스 모델 관련 스타일 */
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		
+		/* 폰트 관련 스타일 */
+		text-decoration: none;
 	}
 	
+	/* 카테고리 박스 호버 관련 스타일 */
 	.categoryIcon:hover span {
+		
+		/* 폰트 관련 스타일 */
 		color: black;
 		font-weight: 800;
+		text-decoration: underline;
+		
 	}
 	
+	/* 카테고리 폰트 박스 관련 스타일 */
 	.categoryIconFont {
+		
+		/* 박스 모델 관련 스타일 */
+		padding-top: 0.5em;
+		
+		/* 폰트 관련 스타일 */
 		color: gray;
 		font-size: 0.8em;
-		padding-top: 0.5em;
+	}
+	
+	/* 제목 박스 관련 스타일 */
+	.titleBox {
+		/* 폰트 관련 스타일 */
+		font-weight: 600;
+		font-size: 0.9em;
+	}
+	
+	.reviewAvgCountBox {
+	
+		/* 폰트 관련 스타일 */
+		font-weight: 600;
+		font-size: 0.9em;
+	}
+	
+	.reviewCountBox {
+	
+		/* 폰트 관련 스타일 */
+		font-size: 0.9em;
+	}
+	
+	.reserveDateBox {
+		
+		/* 폰트 관련 스타일 */
+		font-size: 0.9em;
+		color: gray;
+	}
+	
+	.addressBox {
+	
+		/* 폰트 관련 스타일 */
+		font-size: 0.9em;
+		color: gray;
+	}
+	
+	.priceBox {
+	
+		/* 폰트 관련 스타일 */
+		font-size: 0.9em;
+		font-weight: 600;
+	}
+	
+	.dayBox {
+	
+		/* 폰트 관련 스타일 */
+		font-size: 0.9em;
 	}
 	
 	/*swiper 스타일입니다.*/
@@ -117,10 +179,12 @@
 </head>	
 <body>
 
-	<div class="container">
-		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-	</div>
-		<div class="row my-3 mx-5">
+	<div class="container-fluid">
+			<div class="container">
+				<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+			</div>
+	
+		<div class="row my-4 mx-5">
 			<div class="col">
 				<!-- 카테고리 스와이퍼입니다. -->
 				<div class="swiper">
@@ -255,60 +319,53 @@
 									<div class="col">
 										<div class="row align-items-center">
 											<div class="col-auto pb-0 m-0">
-												<span class="fw-bold" style="font-size: 14px;">${hotelList.hotelDto.hotel_title}</span>
+												<span class="titleBox">${hotelList.hotelDto.hotel_title}</span>
 											</div>
 											<c:choose>
 												<c:when test="${!empty hotelList.hotelReviewPointCount}">
 													<div class="col text-end">
-														<i class="bi bi-star-fill" style="color: #fcc203; font-size: 14px;"></i>
-														<span class="p-0 fw-bold" style="font-size: 14px;">${hotelList.hotelReviewPointCount}</span>
-														<span style="font-size: 14px;">(</span><span style="font-size: 14px;">${hotelList.hotelReviewCount}</span><span>)</span>
+														<i class="bi bi-star-fill" style="color: #fcc203; font-size: 0.9em;"></i>
+														<span class="p-0 reviewAvgCountBox">${hotelList.hotelReviewPointCount}</span>
+														<span class="reviewCountBox">(${hotelList.hotelReviewCount})</span>
 													</div>
 												</c:when>
 												<c:otherwise>
 													<div class="col text-end">
-														<i class="bi bi-star-fill" style="color: #b8b8b8; font-size: 14px;"></i>
-														<span style="font-size: 14px;" class="p-0 fw-bold">0.0</span>
+														<i class="bi bi-star-fill" style="color: #b8b8b8; font-size: 0.9em;"></i>
+														<span class="p-0 reviewAvgCountBox">0.0</span>
 													</div>
 												</c:otherwise>
 											</c:choose>
 										</div>
 										<div class="row">
-											<div class="col">
-												<div class="card-text p-0">
-													<span style="color: gray; font-size: 14px;">${hotelList.hotelCategoryDto.hotel_category_title}</span>
-												</div>
+											<div class="col-auto pe-0 reserveDateBox">
+												<span><fmt:formatDate value="${hotelList.hotelDto.hotel_reserve_start_date}" pattern="M월 dd일" /></span>
 											</div>
-										</div>
-										<div class="row">
-											<div class="col-auto pe-0">
-												<span style="color: gray; font-size: 14px;"><fmt:formatDate value="${hotelList.hotelDto.hotel_reserve_start_date}" pattern="MM월 dd일" /></span>
+											<div class="col-auto px-0 reserveDateBox">
+												<span>~</span>
 											</div>
-											<div class="col-auto px-0">
-												<span style="color: gray; font-size: 14px;">~</span>
-											</div>
-											<div class="col-auto ps-0">
-												<span style="color: gray; font-size: 14px;">
-												<fmt:formatDate value="${hotelList.hotelDto.hotel_reserve_end_date}" pattern="MM월 dd일" /></span>
+											<div class="col-auto ps-0 reserveDateBox">
+												<span>
+												<fmt:formatDate value="${hotelList.hotelDto.hotel_reserve_end_date}" pattern="M월 dd일" /></span>
 											</div>
 										</div>
 										<div class="row">
 											<div class="col">
-												<span style="color: gray; font-size: 14px;">${hotelList.hotelDto.hotel_address}</span>
+												<span class="addressBox">${hotelList.hotelDto.hotel_address}</span>
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-auto pe-0">
-												<span style="font-size: 14px; font-weight: bold;">\</span>
+											<div class="col-auto pe-0 priceBox">
+												<span>\</span>
 											</div>
-											<div class="col-auto px-0">
-												<span style="font-size: 14px; font-weight: bold;">${hotelList.hotelDto.hotel_price}</span>
+											<div class="col-auto px-0 priceBox">
+												<fmt:formatNumber pattern="#,###" value="${hotelList.hotelDto.hotel_price}" var="price"/>${price }
 											</div>
-											<div class="col-auto p-0">
-												<span style="font-size: 14px;">/</span>
+											<div class="col-auto p-0 dayBox">
+												<span>/</span>
 											</div>
-											<div class="col-auto p-0">
-												<span style="font-size: 14px;">박</span>
+											<div class="col-auto p-0 dayBox">
+												<span>박</span>
 											</div>
 										</div>
 									</div>
@@ -319,6 +376,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	
 	
 	
