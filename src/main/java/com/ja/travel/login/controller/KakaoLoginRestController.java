@@ -35,13 +35,15 @@ public class KakaoLoginRestController {
 
             // id, properties 및 kakao_account 정보 추출
             Long userId = (Long) userInfo.get("id");
-            Map<String, Object> properties = (Map<String, Object>) userInfo.get("properties");
-            Map<String, Object> kakaoAccount = (Map<String, Object>) userInfo.get("kakao_account");
+            
+            // properties 및 kakao_account 정보 추출
+            Map<String, Object> properties = (Map<String, Object>) userInfo.getOrDefault("properties", new HashMap<>());
+            Map<String, Object> kakaoAccount = (Map<String, Object>) userInfo.getOrDefault("kakao_account", new HashMap<>());
 
-            String nickname = (String) properties.get("nickname");
-            String birthday = (String) kakaoAccount.get("birthday");
-            String gender = (String) kakaoAccount.get("gender");
-            String ageRange = (String) kakaoAccount.get("age_range");
+            String nickname = (String) properties.getOrDefault("nickname", "");
+            String birthday = (String) kakaoAccount.getOrDefault("birthday", "");
+            String gender = (String) kakaoAccount.getOrDefault("gender", "");
+            String ageRange = (String) kakaoAccount.getOrDefault("age_range", "");
             
             System.out.println(userId);
             
