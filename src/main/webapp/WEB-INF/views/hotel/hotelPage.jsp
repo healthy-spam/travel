@@ -17,18 +17,41 @@
 <!-- Link Swiper's CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
-<script type="text/javascript">
+<!-- Initialize Swiper -->
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
 
+		var swiper = new Swiper('.swiper', {
+			slidesPerView : 14, /* 슬라이드 내부에 표시될 아이템 갯수입니다. */
+			direction : getDirection(),
+			navigation : {
+				nextEl : '.swiper-button-next',
+				prevEl : '.swiper-button-prev',
+			},
+			on : {
+				resize : function() {
+					swiper.changeDirection(getDirection());
+				},
+			},
+		});
+
+		function getDirection() {
+			var windowWidth = window.innerWidth;
+			var direction = window.innerWidth <= 760 ? 'vertical'
+					: 'horizontal';
+
+			return direction;
+		}
+	});
 </script>
 
 <style type="text/css">
 	
 	/* 등록 버튼 박스 관련 스타일 */
 	.registerButton {
-	
-		/* 박스 모델 관련 스타일 */
 		border-radius: 25px; 
 		position: fixed; 
 		z-index: 9999; 
@@ -40,7 +63,6 @@
 		padding: 12px 20px;
 		background-image: linear-gradient(98deg,#03c75a,#38a877);
 		
-		/* 폰트 관련 스타일 */
 		color: white; 
 		font-size: 0.9em;
 		font-weight: 600;
@@ -49,92 +71,81 @@
 	
 	/* 등록 버튼 박스 호버 관련 스타일 */
 	.registerButton:hover {
-	
-		/* 박스 모델 관련 스타일 */
 	   	background-image: linear-gradient(98deg,#1e9f58,#0e8a69);
 	   	
-	   	/* 폰트 관련 스타일 */
 	   	color: #f0f0f0;
 	}
 	
 	/* 카테고리 박스 관련 스타일 */
 	.categoryIcon {
-	
-		/* 박스 모델 관련 스타일 */
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		
-		/* 폰트 관련 스타일 */
 		text-decoration: none;
 	}
 	
 	/* 카테고리 박스 호버 관련 스타일 */
 	.categoryIcon:hover span {
-		
-		/* 폰트 관련 스타일 */
 		color: black;
 		font-weight: 800;
 		text-decoration: underline;
-		
 	}
 	
 	/* 카테고리 폰트 박스 관련 스타일 */
 	.categoryIconFont {
-		
-		/* 박스 모델 관련 스타일 */
 		padding-top: 0.5em;
 		
-		/* 폰트 관련 스타일 */
 		color: gray;
 		font-size: 0.8em;
 	}
 	
 	/* 제목 박스 관련 스타일 */
 	.titleBox {
-		/* 폰트 관련 스타일 */
 		font-weight: 600;
 		font-size: 0.9em;
 	}
 	
+	/* 리뷰 평균점수 관련 스타일 */
 	.reviewAvgCountBox {
-	
-		/* 폰트 관련 스타일 */
 		font-weight: 600;
 		font-size: 0.9em;
 	}
 	
+	/* 리뷰갯수 관련 스타일 */
 	.reviewCountBox {
-	
-		/* 폰트 관련 스타일 */
 		font-size: 0.9em;
 	}
 	
-	.reserveDateBox {
-		
-		/* 폰트 관련 스타일 */
+	/* 예약날짜 관련 스타일 */
+	.reserveDateBox {		
 		font-size: 0.9em;
 		color: gray;
 	}
 	
+	/* 주소 관련 스타일 */
 	.addressBox {
-	
-		/* 폰트 관련 스타일 */
 		font-size: 0.9em;
 		color: gray;
 	}
 	
+	/* 가격 관련 스타일 */
 	.priceBox {
-	
-		/* 폰트 관련 스타일 */
 		font-size: 0.9em;
 		font-weight: 600;
 	}
 	
+	/* 일자 관련 스타일 */
 	.dayBox {
-	
-		/* 폰트 관련 스타일 */
 		font-size: 0.9em;
+	}
+	
+	/* 이미지 관련 스타일 */
+	.imgBox {
+		width: 100%; 
+		height: 19em; 
+		object-fit: cover; 
+		border-radius: 10px;
 	}
 	
 	/*swiper 스타일입니다.*/
@@ -144,13 +155,13 @@
 	}
 	
 	.swiper-slide {
-	  text-align: center;
-	  font-size: 1em;
-	  font-weight: 600;  	
-	  background: #fff;
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
+	  	text-align: center;
+	  	font-size: 1em;
+	  	font-weight: 600;  	
+	  	background: #fff;
+	  	display: flex;
+	  	justify-content: center;
+	  	align-items: center;
 	}
 	
 	.swiper-button-next, .swiper-button-prev {
@@ -160,7 +171,7 @@
 	
 	/* 좌우 버튼 크기 조절하는 스타일입니다. */
 	:root {
-    --swiper-navigation-size: 1em;
+    	--swiper-navigation-size: 1em;
 	}
 
 @media (max-width: 760px) {
@@ -179,12 +190,12 @@
 </head>	
 <body>
 
-	<div class="container-fluid">
+	<div class="container">
 			<div class="container">
 				<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 			</div>
 	
-		<div class="row my-4 mx-5">
+		<div class="row mt-4">
 			<div class="col">
 				<!-- 카테고리 스와이퍼입니다. -->
 				<div class="swiper">
@@ -292,7 +303,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row mx-5">
+		<div class="row">
 			<div class="col">
 				<div class="row">
 					<div class="col text-center">
@@ -304,14 +315,14 @@
 						</c:if>
         			</div>
 				</div>
-				<div class="row mt-2 mb-5">
+				<div class="row mt-3 mb-5">
 					<c:forEach items="${hotelList}" var="hotelList" varStatus="status">
-						<div class="col-2">
+						<div class="col-3">
 							<div class="card" style="border: none;">
 								<div class="row">
 									<div class="col">
 										<a href="./hotelDetailPage?hotel_id=${hotelList.hotelDto.hotel_id}">
-											<img alt="" src="/uploadFiles/hotelMainImage/${hotelList.hotelDto.hotel_main_image}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+											<img class="imgBox" alt="" src="/uploadFiles/hotelMainImage/${hotelList.hotelDto.hotel_main_image}">
 										</a>
 									</div>
 								</div>
@@ -380,32 +391,7 @@
 	
 	
 	
-  <!-- Swiper JS -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-
-  <!-- Initialize Swiper -->
-  <script>
-    var swiper = new Swiper('.swiper', {
-      slidesPerView: 14, /* 슬라이드 내부에 표시될 아이템 갯수입니다. */
-      direction: getDirection(),
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      on: {
-        resize: function () {
-          swiper.changeDirection(getDirection());
-        },
-      },
-    });
-
-    function getDirection() {
-      var windowWidth = window.innerWidth;
-      var direction = window.innerWidth <= 760 ? 'vertical' : 'horizontal';
-
-      return direction;
-    }
-  </script>
+  
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"

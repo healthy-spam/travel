@@ -323,15 +323,16 @@
 
 <body>
     
-<div class="container-fluid">
+<div class="container">
+
 	<div class="container">
 		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 	</div>
-    <div class="row main">
-        <div class="col"></div>
-        <div class="col-7">
+	
+    <div class="row mt-4">
+        <div class="col">
 <!--숙소 제목 및 정보들입니다.-->        
-            <div class="row mt-4">
+            <div class="row">
                 <div class="col">
                     <span style="font-size: 25px; font-weight: 600;">${hotelMap.hotelDto.hotel_title }</span>
                 </div>
@@ -374,15 +375,15 @@
                 </div>
             </div>
 <!--이미지를 불러옵니다.-->            
-            <div class="row mb-5 ">
+            <div class="row mb-5">
                 <div class="col">
-                    <img src="/uploadFiles/hotelMainImage/${hotelMap.hotelDto.hotel_main_image }" alt="" style="width: 100%;">
+                    <img src="/uploadFiles/hotelMainImage/${hotelMap.hotelDto.hotel_main_image }" alt="" style="width: 100%; height: 38em;">
                 </div>
                 <div class="col">
                     <div class="row row-cols-2">
                     	<c:forEach items="${hotelImageDetailsDtoList}" var="list" begin="0" end="3">
-	                        <div class="col ps-0">
-	                            <img src="/uploadFiles/hotelDetailImages/${list.hotelImageDetailsDto.hotel_image_details_link }" alt="" style="width: 100%;">
+	                        <div class="col">
+	                            <img src="/uploadFiles/hotelDetailImages/${list.hotelImageDetailsDto.hotel_image_details_link }" alt="" style="width: 100%; height: 19em;">
 	                        </div>
                     	</c:forEach>             
                     </div>
@@ -390,7 +391,7 @@
             </div>
 <!--숙소 호스팅 관련 옵션 소개란입니다.-->            
             <div class="row">
-                <div class="col-7">
+                <div class="col">
                     <div class="row">
                         <div class="col-auto">
                             <div class="row">
@@ -502,7 +503,7 @@
                         </div>
                     </div>
                     <div class="row row-cols-2">
-                       	<c:forEach items="${hotelFacilityList}" var="hotelFacilityList" begin="0" end="5">
+                       	<c:forEach items="${hotelFacilityList}" var="hotelFacilityList" begin="0" end="7">
 	                        <div class="col py-2">
 	                            <div class="row align-items-center">
 	                                <div class="col-auto">
@@ -921,14 +922,13 @@
                 </div>
             </div>
         </div>
-
-        <div class="col"></div>
     </div>
+</div>
+<div class="container-fluid">
     <div class="row">
-        <div class="col" style="background-color: rgb(220, 220, 220); height: 400px;">
+        <div class="col" style="background-color: #ededed; height: 10em;">
             <div class="row">
-                <div class="col"></div>
-                <div class="col-7">
+                <div class="col">
                     <div class="row my-4">
                         <div class="col">
                             <span style="font-size: 14px; font-weight: bold;">트립스테이션 지원</span>
@@ -944,7 +944,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col"></div>
             </div>
         </div>
     </div>
