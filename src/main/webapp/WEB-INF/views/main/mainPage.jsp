@@ -132,7 +132,7 @@
 						icon2.className = 'bi bi-calendar-check';
 						icon2.style.marginRight = '0.5em';
 						icon2.style.color = '#999999';
-						icon3.className = 'titleIcon bi bi-diagram-3';
+						icon3.className = 'titleIcon bi bi-share';
 						icon3.innerText = response.list[i].recursiveList == null ? 0 : response.list[i].recursiveList;
 						img2.setAttribute('src', '/uploadFiles/profileImage/'+response.list[i].user.user_image);
 						img2.style.width = '1.8em';
@@ -339,7 +339,8 @@ body {
 }
 
 .titleIcon:before {
-	margin-right: 0.2em;
+	margin-right: 0.4em;
+	font-size: 0.95em;
 }
 </style>
 <title>메인 페이지</title>

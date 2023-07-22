@@ -63,4 +63,6 @@ public interface TravelApplicationSqlMapper {
 	public void insertMessage(PlanningChatDto planningChatDto);
 	
 	public List<PlanDto> getRecursiveList(PlanningDto planningDto);
+	
+	public List<PlanningDto> getLatestPlanningList(int planning_id);
 }

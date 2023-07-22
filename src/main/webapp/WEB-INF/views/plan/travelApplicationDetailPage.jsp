@@ -884,13 +884,35 @@ body {
 										</div>
 									</div>
 								</div>
-								<div class="row" style="margin: 20px 0;">
+								<div class="row" style="margin: 1em 0;">
 									<div class="col p-0">
 										<hr>
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-12 mb-3 comment-info d-flex justify-content-between">
+									<div class="col-12 d-flex justify-content-start align-items-center" style="font-size: ">
+										<i class="bi bi-link me-1 fs-5 mb-2"></i>
+										<h5>관련 플래너</h5>
+									</div>
+									<c:forEach items="${map.list2}" var="data">
+										<div class="col-2">
+											<div>
+												<a href="./travelApplicationDetailPage?planning_id=${data.planning.planning_id}">
+													<img class="img-fluid" src="/uploadFiles/${data.plan2.plan_thumbnail}" style="border-radius: 0.375rem;">
+												</a>
+												<div class="text-truncate" style="font-weight: 700; margin-top: 0.2em;">${data.planning.planning_title}</div>
+												<div class="text-truncate" style="font-size: 0.7em;">${data.planning.planning_content}</div>
+											</div>
+										</div>
+									</c:forEach>
+								</div>
+								<div class="row" style="margin: 1em 0;">
+									<div class="col p-0">
+										<hr>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12 mb-1 comment-info d-flex justify-content-between">
 										<span class="board-info"></span>
 										<a href="../main" style="color: #999999; text-decoration: none;">목록</a>
 									</div>

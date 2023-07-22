@@ -4,6 +4,15 @@
 
 <mapper namespace="com.ja.travel.travelApplication.mapper.TravelApplicationSqlMapper">
 
+	<select id="getLatestPlanningList" resultType="com.ja.travel.dto.PlanningDto">
+		<![CDATA[
+		SELECT planning.*, rownum FROM planning
+        WHERE planning_id != #{planning_id}
+		AND rownum <= 6
+		ORDER BY planning_id DESC
+		]]>
+	</select>
+	
 	<select id="getLikeByCommentIdAndUserId" resultType="com.ja.travel.dto.PlanningCommentLove">
 		SELECT * FROM planning_comment_love
 		WHERE planning_comment_id = #{planning_comment_id}

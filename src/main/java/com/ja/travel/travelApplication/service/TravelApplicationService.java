@@ -128,13 +128,13 @@ public class TravelApplicationService {
 		planningDto.setUser_id(getSessionUserInfo(session).getUser_id());
 		planningDto.setPlanning_id(travelApplicationSqlMapper.createPlanningPK());
 		
-		System.out.println(planningDto);
 		travelApplicationSqlMapper.insertPlanningData(planningDto);
 		travelApplicationSqlMapper.insertMyInfoWhenRecruting(planningDto);
 		travelApplicationSqlMapper.updateToRecruiting(planningDto);
 	}
 
-	public Map<String, Object> getPlaceByDayForPlan(int planning_id) {
+	public Map<String, Object> getDetailPageInfo(int planning_id) {
+		List<PlanningDto> planningList = travelApplicationSqlMapper.getLatestPlanningList(planning_id);
 		PlanDto plan = travelApplicationSqlMapper.getPlanByPlanningId(planning_id);
 		UserDto user = travelApplicationSqlMapper.getUserByPlanningId(planning_id);
 		List<PlanDayDto> planDayList = travelApplicationSqlMapper.getPlanDayByPlanId(plan.getPlan_id());
@@ -143,7 +143,19 @@ public class TravelApplicationService {
 		int planDayListSize = planDayList.size();
 
 		List<Map<String, Object>> list = new ArrayList<>();
+		List<Map<String, Object>> list2 = new ArrayList<>();
 
+		for (PlanningDto planning : planningList) {
+			Map<String, Object> map = new HashMap<>();
+			
+			PlanDto plan2 = travelApplicationSqlMapper.getPlanByPlanningId(planning.getPlanning_id());
+			
+			map.put("planning", planning);
+			map.put("plan2", plan2);
+			
+			list2.add(map);
+		}
+		
 		for (PlanDayDto planDay : planDayList) {
 			List<PlanPlaceDto> placeList = travelApplicationSqlMapper.getPlaceByPlanId(planDay);
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -160,8 +172,9 @@ public class TravelApplicationService {
 		resultMap.put("user", user);
 		resultMap.put("planDayListSize", planDayListSize);
 		resultMap.put("planningDto", planningDto);
-		resultMap.put("list", list);
 		resultMap.put("plan", plan);
+		resultMap.put("list2", list2);
+		resultMap.put("list", list);
 		
 		return resultMap;
 	}

@@ -39,7 +39,7 @@ public class RestTravelApplicationController {
 
 	@RequestMapping("planByDate")
 	public Map<String, Object> planByDate(int planning_id) {
-		Map<String, Object> map = travelApplicationService.getPlaceByDayForPlan(planning_id);
+		Map<String, Object> map = travelApplicationService.getDetailPageInfo(planning_id);
 
 		return map;
 	}

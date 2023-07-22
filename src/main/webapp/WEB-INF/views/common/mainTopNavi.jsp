@@ -5,7 +5,7 @@
 <div class="row fw-bold">
 	<div class="col">
 		<nav class="navbar navbar-expand-lg bg-body-tertiary">
-			<div class="container-fluid">
+			<div class="container-fluid p-0">
 				<span class="fw-bold navbar-brand mb-0 h1" style="font-size: 30px; font-weight: 700;"> TripStation</span>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
