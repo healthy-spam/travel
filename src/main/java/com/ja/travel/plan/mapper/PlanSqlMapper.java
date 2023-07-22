@@ -133,6 +133,8 @@ public interface PlanSqlMapper {
 
 	public void updateDays(PlanDayDto firstCheck);
 
+	public List<PlanRouteCityDto> getRouteList(int plan_day_city_id);
+
 	
 
 

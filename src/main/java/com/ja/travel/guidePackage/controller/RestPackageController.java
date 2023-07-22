@@ -143,4 +143,16 @@ public class RestPackageController {
 	return map;
 	}
 
+@RequestMapping("getCoupon")
+	public Map<String,Object> getCoupon(int user_id){
+	
+		
+		
+		Map<String, Object> map = packageService.getMyCoupon(user_id);
+
+		
+		
+	return map;
+	}
+
 }

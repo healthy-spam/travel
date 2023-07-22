@@ -402,14 +402,25 @@ public class PlanService {
 
 	// 일정별 명소 선택시 동시 입력 서비스 시작
 	
-	public void registerPlace(int planDayId, int planCityId, int planPlaceId) {
+	public int registerPlace(int planDayId, int planCityId, int planPlaceId) {
 
 		int planDayCityId = 0;
 
 		//같은 일자에 같은 도시가 있는지 확인 
 		PlanDayCityDto planDayCityDto = planSqlMapper.getPlanDayCityByCityIdAndDayId(planDayId, planCityId); 
-
+		
 		if (planDayCityDto != null) {
+			
+			List<PlanRouteCityDto> planRouteCityDto = planSqlMapper.getRouteList(planDayCityDto.getPlan_day_city_id());
+		
+			for(PlanRouteCityDto places : planRouteCityDto) {
+				
+				if(places.getPlan_place_id() == planPlaceId) {
+					
+					return 1;
+				}
+			}
+			
 			planDayCityId = planDayCityDto.getPlan_day_city_id();
 		} else {
 			planSqlMapper.insertPlanDayCity(planDayId, planCityId);
@@ -419,6 +430,8 @@ public class PlanService {
 
 
 		planSqlMapper.insertPlanRouteCity(planPlaceId, planDayCityId);
+		
+		return 0;
 	
 		
 	}

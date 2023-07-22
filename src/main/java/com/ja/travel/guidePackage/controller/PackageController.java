@@ -1,6 +1,7 @@
 package com.ja.travel.guidePackage.controller;
 
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -51,13 +52,17 @@ public class PackageController {
 	}
 
 	@RequestMapping("guideApplicationDetailPage")
-	public String guideApplicationDetailPage(int guide_planning_id, Model model) {
+	public String guideApplicationDetailPage(int guide_planning_id, Model model, HttpSession session) {
 
 		
 
 		Map<String, Object> map = packageService.getPlaceByDayForPlan(guide_planning_id);
-
+		
+		UserDto sessionuser = (UserDto) session.getAttribute("sessionuser");
+		
+		model.addAttribute("sessionuser", sessionuser);
 		model.addAttribute("map", map);
+	
 		model.addAttribute("guide_planning_id", guide_planning_id);
 		return "package/guideApplicationDetailPage";
 	}

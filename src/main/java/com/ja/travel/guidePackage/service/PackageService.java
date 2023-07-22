@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ja.travel.dto.CouponDto;
 import com.ja.travel.dto.GuideDto;
 import com.ja.travel.dto.GuidePlanPaymentDto;
 import com.ja.travel.dto.GuidePlanningApplicationDto;
@@ -18,6 +19,7 @@ import com.ja.travel.dto.PlanCityDto;
 import com.ja.travel.dto.PlanDayDto;
 import com.ja.travel.dto.PlanDto;
 import com.ja.travel.dto.PlanPlaceDto;
+import com.ja.travel.dto.UserCouponDto;
 import com.ja.travel.dto.UserDto;
 import com.ja.travel.guidePackage.mapper.PackageSqlMapper;
 import com.ja.travel.login.mapper.LoginSqlMapper;
@@ -151,6 +153,10 @@ public class PackageService {
 		GuideDto guide = packageSqlMapper.getGuideInfoByGuidePlanningId(guidePlanningDto.getGuide_id());
 		int planDayListSize = planDayList.size();
 
+		
+		
+		
+		
 		List<Map<String, Object>> list = new ArrayList<>();
 		
 		for (PlanDayDto planDay : planDayList) {
@@ -175,6 +181,7 @@ public class PackageService {
 		}
 
 		Map<String, Object> resultMap = new HashMap<>();
+
 
 		resultMap.put("user", user);
 		resultMap.put("planDayListSize", planDayListSize);
@@ -230,6 +237,33 @@ public class PackageService {
 		
 		return map;
 		
+	}
+
+	public Map<String, Object> getMyCoupon(int user_id) {
+		
+		List<Map<String, Object>> list = new ArrayList<>();
+		
+		List<UserCouponDto> myCoupon = packageSqlMapper.getMyCouponList(user_id);
+		
+		for(UserCouponDto userCouponDto :myCoupon ) {
+			
+			Map<String,Object> mapp = new HashMap<>();
+			
+			int couponId = userCouponDto.getCoupon_id();
+			
+			CouponDto couponDto = packageSqlMapper.getCouponInfo(couponId);
+		
+			mapp.put("couponDto", couponDto);
+			
+			list.add(mapp);
+			
+		}
+
+		Map<String,Object> map = new HashMap<>();
+		
+		map.put("list",list);
+		
+		return map;
 	}
 
 }

@@ -7,18 +7,50 @@ pageEncoding="UTF-8"%>
 <head>
 <meta charset="UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<link rel="stylesheet"	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <title>Insert title here</title>
 <style>
 	#naviBack {
 		background-color:#474747;
 		color:white;
+		height: 100vh;
+	}
+	
+	#naviTS {
+		font-size : 150%;		
+	}
+	
+	#icon1 {
+		font-size : 150%;
+		cursor: pointer;
+	}
+	
+	.naviIcon {
+		font-size : 150%;		
+		color:#ebebeb;
+	}
+	
+	.naviIconText {
+		font-size : 150%;
+		font-weight: bold;
+		color:#ebebeb;
+				
+	}	
+	
+	#smallCategory:hover {
+		background-color:#303030;
+	}
+	
+	.smallCategory {
+		font-size : 120%;
+		color:#ebebeb;
 	}
 </style>
 </head>
 <body>
 <div class="container-fluid">
-		<div class="row gx-5">
-			<div class="col-md-2" id="naviBack">
+		<div class="row">
+			<div class="col-2" id="naviBack">
 				<jsp:include page="../common/leftNavi.jsp"></jsp:include>
 			</div>
 			<div class="col-md-9 offset-md-1">

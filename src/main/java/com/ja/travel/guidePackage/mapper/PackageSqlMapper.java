@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.ja.travel.dto.CouponDto;
 import com.ja.travel.dto.GuideDto;
 import com.ja.travel.dto.GuidePlanPaymentDto;
 import com.ja.travel.dto.GuidePlanningApplicationDto;
@@ -12,6 +13,7 @@ import com.ja.travel.dto.PlanCityDto;
 import com.ja.travel.dto.PlanDayDto;
 import com.ja.travel.dto.PlanDto;
 import com.ja.travel.dto.PlanPlaceDto;
+import com.ja.travel.dto.UserCouponDto;
 import com.ja.travel.dto.UserDto;
 
 public interface PackageSqlMapper {
@@ -70,6 +72,10 @@ public interface PackageSqlMapper {
 	public void insertGuidePay(GuidePlanPaymentDto guidePlanPaymentDto);
 
 	public GuideDto getGuideInfoByGuidePlanningId(int guide_id);
+
+	public List<UserCouponDto> getMyCouponList(int user_id);
+
+	public CouponDto getCouponInfo(int couponId);
 
 	
 

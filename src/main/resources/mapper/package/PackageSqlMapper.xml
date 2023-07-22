@@ -277,7 +277,17 @@ resultType="int">
 
 </select>
 
+<select id="getMyCouponList" resultType="com.ja.travel.dto.UserCouponDto">
 
+	SELECT * FROM user_coupon WHERE user_id = #{user_id}
+
+</select>
+
+<select id="getCouponInfo" resultType="com.ja.travel.dto.CouponDto">
+	
+	SELECT * FROM coupon WHERE coupon_id=#{couponId}
+
+</select>
 
 	
 </mapper>
