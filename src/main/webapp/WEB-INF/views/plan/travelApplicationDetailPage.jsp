@@ -23,6 +23,22 @@
 		}
 	}
 	
+	function userInfo() {
+		var birthdateStr = '${map.user.user_birth}';
+		console.log(birthdateStr);
+		var birthdate = new Date(birthdateStr);
+		var now = new Date();
+
+		var age = now.getFullYear() - birthdate.getFullYear();
+		var ageGroup = Math.floor(age / 10) * 10;
+
+		var ageGroupStr = ageGroup + '대';
+		var genderStr = '${map.user.user_gender}' === 'M' ? '남자' : '여자';
+
+		var userProfile = document.getElementById('user-profile');
+		userProfile.textContent = ageGroupStr + ' · ' + genderStr;
+	}
+	
 	function createCommentFunc() {
 		var comment = document.querySelector('.comment');
 		
@@ -213,6 +229,7 @@
 		getAddresList();
 		getCommentList();
 		getCompanyList();
+		userInfo();
 		
 		var isDown = false;
 		var startX;
@@ -941,7 +958,7 @@ body {
 											</div>
 											<div class="row">
 												<div class="col">
-													<div id="user-profile">20대 · 남성</div>
+													<div id="user-profile"></div>
 												</div>
 											</div>
 										</div>
