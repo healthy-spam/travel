@@ -26,8 +26,7 @@
 
                 xhr.onreadystatechange = function() {
                    if (xhr.readyState == 4 && xhr.status == 200) {
-                      const response = JSON.parse(xhr.responseText);
-	
+                	   
                       // 로그인 후 페이지로 리다이렉트
                       window.location.href = './main';
                    }

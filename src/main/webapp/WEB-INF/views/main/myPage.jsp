@@ -359,7 +359,8 @@ button {
 								</div>
 								<div class="d-flex justify-content-between my-2">
 									<span style="font-size: 1.1em;"> 
-										<i class="bi bi-phone me-2"></i> 010-1234-5678
+										<i class="bi bi-phone me-2"></i>
+										${sessionuser.user_phone}
 									</span>
 								</div>
 								<div class="d-flex justify-content-between my-2">

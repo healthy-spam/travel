@@ -1,5 +1,7 @@
 package com.ja.travel.login.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,4 +24,7 @@ public interface LoginSqlMapper {
 	public UserDto isNickname(String user_nickname);
 
 	public void updateNickname(UserDto sessionUser);
+
+	// 카카오 로그인
+	public void kakaoRegister(Map<String, Object> userData);
 }

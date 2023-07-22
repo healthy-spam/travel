@@ -4,7 +4,8 @@
 
 <mapper namespace="com.ja.travel.login.mapper.LoginSqlMapper">
 	<insert id="register">
-		insert into member values(
+		insert into member values
+		(
 			member_seq.nextval,
 			#{user_email},
 			#{user_pw},
@@ -48,4 +49,23 @@
 		SET user_nickname = #{user_nickname}
 		WHERE user_id = #{user_id}
 	</update>
+	
+	<insert id="kakaoRegister">
+		INSERT INTO member
+		(
+			user_id,
+			user_email,
+			user_pw,
+			user_nickname,
+			user_reg_date
+		)
+		VALUES
+		(
+			member_seq.nextval,
+			#{user_id},
+			#{user_id},
+			'카카오 유저' || kakao_member_seq.nextval,
+			SYSDATE
+		)
+	</insert>
 </mapper>

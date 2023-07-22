@@ -1,7 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script type="text/javascript">
+	// SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해야 합니다.
+	document.addEventListener("DOMContentLoaded", function() {
+		Kakao.init('93ae12d4c0f00044228cbd5b5f2f588b'); // 여기에 JavaScript 키를 붙여넣으세요.
+	
+	    // SDK 초기화 여부를 판단합니다.
+		console.log(Kakao.isInitialized());
+	});
+	
+    function logout() {
+        Kakao.Auth.logout(function() {
+            console.log('로그아웃이 완료되었습니다.');
+            // 로그아웃이 완료되면 서버 측 로그아웃 URL로 리다이렉트
+            location.href = '/travel/logoutProcess';
+        });
+    }
+</script>
 <div class="row fw-bold">
 	<div class="col px-0">
 		<nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -34,7 +51,7 @@
 										<li><a class="dropdown-item" href="/travel/crew/main">크루페이지</a></li>
 										<li><a class="dropdown-item" href="/travel/allCouponPage">쿠폰</a></li>
 										<li><a class="dropdown-item" href="/travel/messageGot">쪽지</a></li>
-										<li><a class="dropdown-item" href="/travel/logoutProcess">로그아웃</a></li>
+										<li><a class="dropdown-item" href="javascript:logout();">로그아웃</a></li>
 									</ul>
 								</li>
 							</ul>

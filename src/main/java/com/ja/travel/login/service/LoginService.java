@@ -3,14 +3,21 @@ package com.ja.travel.login.service;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ja.travel.admin.mapper.AdminSqlMapper;
@@ -114,4 +121,41 @@ public class LoginService {
 		return "redirect:/main";
 	}
 
+	public void kakaoRegister(Map<String, String> payload, HttpSession session) {
+		try {
+			String accessToken = payload.get("access_token");
+
+			// Kakao 사용자 정보 API URL
+			String apiUrl = "https://kapi.kakao.com/v2/user/me";
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "Bearer " + accessToken);
+
+			HttpEntity<?> entity = new HttpEntity<>(headers);
+
+			RestTemplate restTemplate = new RestTemplate();
+			ResponseEntity<Map> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, Map.class);
+
+			if (response.getStatusCodeValue() == 200) {
+				Map<String, Object> userInfo = response.getBody();
+
+				// id, properties 및 kakao_account 정보 추출
+				Long userId = (Long) userInfo.get("id");
+
+				// 결과 Map 생성
+				Map<String, Object> result = new HashMap<>();
+				result.put("user_id", userId);
+				
+				UserDto userDto = loginSqlMapper.getUserDtoByIdandPw(userId.toString(), userId.toString());
+				
+				if (userDto == null) {
+					loginSqlMapper.kakaoRegister(result);
+				} else {
+					session.setAttribute("sessionuser", userDto);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
