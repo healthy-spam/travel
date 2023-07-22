@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="row fw-bold">
-	<div class="col">
+	<div class="col px-0">
 		<nav class="navbar navbar-expand-lg bg-body-tertiary">
 			<div class="container-fluid p-0">
 				<span class="fw-bold navbar-brand mb-0 h1" style="font-size: 30px; font-weight: 700;"> TripStation</span>

@@ -84,8 +84,6 @@ public class HotelController {
 
 	@RequestMapping("hotelPage")
 	public String hotelPage(Model model, String sortType) {
-		
-		System.out.println(sortType);
 
 		List<Map<String, Object>> hotelList = hotelService.selectAllHotelList(sortType);
 
