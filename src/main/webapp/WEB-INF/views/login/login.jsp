@@ -43,7 +43,8 @@
             },
             fail: function(err) {
                 console.log(err);
-            }
+            },
+            throughTalk: false // 동의 거부 시 매번 동의를 물어보는 옵션 추가
         });
     }
 </script>

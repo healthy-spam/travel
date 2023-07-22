@@ -24,16 +24,16 @@
 	}
 	
 	function userInfo() {
-		var birthdateStr = '${map.user.user_birth}';
-		console.log(birthdateStr);
-		var birthdate = new Date(birthdateStr);
+		var birthdateStr = '${map.user.user_birth}'.replace('KST', 'GMT');
+		var birthdateMs = Date.parse(birthdateStr);
+		var birthdate = new Date(birthdateMs);
 		var now = new Date();
 
 		var age = now.getFullYear() - birthdate.getFullYear();
 		var ageGroup = Math.floor(age / 10) * 10;
 
 		var ageGroupStr = ageGroup + '대';
-		var genderStr = '${map.user.user_gender}' === 'M' ? '남자' : '여자';
+		var genderStr = '${map.user.user_gender}' === 'M' ? '남자' : '${map.user.user_gender}' === 'F' ? '여자' : '미공개';
 
 		var userProfile = document.getElementById('user-profile');
 		userProfile.textContent = ageGroupStr + ' · ' + genderStr;
