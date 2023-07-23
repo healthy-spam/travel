@@ -46,6 +46,7 @@
 
 <select id="selectAllApply" resultType="com.ja.travel.dto.GuideApplyDto">
 	SELECT * FROM guide_apply
+	ORDER BY guide_apply_date DESC
 </select>
 
 <select id="selectGuideApplyById" resultType="com.ja.travel.dto.GuideApplyDto">

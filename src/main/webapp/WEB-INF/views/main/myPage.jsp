@@ -290,7 +290,15 @@ button {
 				<div class="row">
 					<div class="col">
 						<div class="d-flex justify-content-center align-items-center" style="height: 9em; position: relative;">
-							<img class="image-container" src="/uploadFiles/profileImage/${sessionuser.user_image}">
+							<c:choose>
+								<c:when test="${sessionuser.user_image == null}">
+<!-- 									임시 이미지 -->
+									<img class="image-container" src="/travel/resources/img/logo.png">
+								</c:when>
+								<c:otherwise>
+									<img class="image-container" src="/uploadFiles/profileImage/${sessionuser.user_image}">
+								</c:otherwise>
+							</c:choose>
 							<div class="icon-wrapper">
 								<label for="fileInput" class="fileInput d-flex justify-content-center align-items-center">
 									<i class="bi bi-pencil-fill" style="color: white; font-size: 0.7em;"></i>

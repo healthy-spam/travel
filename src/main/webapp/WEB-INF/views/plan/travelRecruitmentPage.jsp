@@ -17,6 +17,17 @@
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=93ae12d4c0f00044228cbd5b5f2f588b&libraries=services,clusterer,drawing"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+	function searchAddress() {
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	            var addr = data.address; // 주소값
+	            
+                document.getElementById("startPoint").value = addr; 
+	        }
+	    }).open();	
+	}
+</script>
 <script type="text/javascript">
 	document.addEventListener("DOMContentLoaded", function() {
 	    var today = new Date(); // 오늘 날짜를 가져옵니다.
@@ -289,8 +300,6 @@ body {
 <title>파티 모집 페이지</title>
 </head>
 <body>
-	
-
 	<div class="container">
 		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 		
@@ -310,7 +319,7 @@ body {
 							<i class="bi bi-compass"></i> 모집 위치
 						</div>
 						<div class="col mt-1">
-							<input class="form-control start-point" type="text" name="planning_start_point" placeholder="ex) 위치 or 주소">
+							<input id="startPoint" class="form-control start-point" type="text" name="planning_start_point" placeholder="ex) 위치 or 주소" onclick="searchAddress()" readonly>
 						</div>
 					</div>
 					<div class="row mt-5">

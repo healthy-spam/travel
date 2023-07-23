@@ -196,8 +196,10 @@ h1 {
 											</div>
 										</div>
 										<div class="d-grid">
-											<button type="button" class="btn-kakao btn-primary"
-												onclick="kakaoLogin()">카카오 로그인</button>
+											<button type="button" class="btn-kakao btn-primary" onclick="kakaoLogin()">
+												<i class="bi bi-chat-fill text-black fs-5"></i>
+												카카오 간편 로그인
+											</button>
 										</div>
 										<div class="row mt-4">
 											<div class="col custom-link">
