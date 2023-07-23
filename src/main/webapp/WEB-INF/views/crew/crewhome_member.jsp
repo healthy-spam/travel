@@ -166,8 +166,13 @@ body {
 	padding: 20px;
 }
 
+.textcolourdefault {
+	color: #888888;
+}
+
 #crewmember {
-        background-color: #17b75e;
+	background-color: #17b75e;
+	color:white;
 }
 
 .margin-left-col {

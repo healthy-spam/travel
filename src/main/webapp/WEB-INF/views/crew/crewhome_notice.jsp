@@ -14,7 +14,8 @@
 	rel="stylesheet"
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <title>Insert title here</title>
 
 
@@ -251,7 +252,7 @@ body {
 }
 
 .commentwritedate {
-	font-size:12px;
+	font-size: 12px;
 }
 
 .sidebar {
@@ -289,7 +290,6 @@ strong#Createnewpost {
 
 .postwriter {
 	font-size: 17px;
-	
 }
 
 .postregdate {
@@ -329,58 +329,59 @@ strong#Createnewpost {
 	max-height: 350px;
 }
 
-  .imageContainer {
-    display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-  }
+.imageContainer {
+	display: flex;
+	overflow-x: auto;
+	white-space: nowrap;
+	-webkit-overflow-scrolling: touch;
+}
 
-  .imageItem {
-    position: relative;
-    flex: 0 0 auto;
-    margin-right: 10px;
-  }
+.imageItem {
+	position: relative;
+	flex: 0 0 auto;
+	margin-right: 10px;
+}
 
-  .imageItem img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 5px;
-  }
+.imageItem img {
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+	border-radius: 5px;
+}
 
-  .deleteButton {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border: none;
-    border-radius: 50%;
-    padding: 5px;
-    font-size: 12px;
-    cursor: pointer;
-  }
-  .preview-item {
-  position: relative;
-  display: inline-block;
+.deleteButton {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background-color: rgba(255, 255, 255, 0.8);
+	border: none;
+	border-radius: 50%;
+	padding: 5px;
+	font-size: 12px;
+	cursor: pointer;
+}
+
+.preview-item {
+	position: relative;
+	display: inline-block;
 }
 
 .preview-image {
-  max-width: 200px;
-  max-height: 200px;
-  margin: 5px;
+	max-width: 200px;
+	max-height: 200px;
+	margin: 5px;
 }
 
 .delete-button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  padding: 2px 5px;
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	padding: 2px 5px;
+	background-color: red;
+	color: white;
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
 }
 
 .commentwriter {
@@ -388,44 +389,69 @@ strong#Createnewpost {
 	font-weight: bold;
 }
 
+/* Scrollbar 커스터마이징 */
+::-webkit-scrollbar {
+	width: 8px;
+}
 
-          /* Scrollbar 커스터마이징 */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background-color: #f1f1f1;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background-color: #888;
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background-color: #555;
-        }
-        
-        .commentlist{
-        	display:none;
-        }
-        
-        .nocomment {
-        	font-size: 15px;
-        }
-        
-        .commentcard {
-        	background-color:gainsboro;
-        }
-        
-        #crewnotice {
-        background-color: #17b75e;
-        }
-        
-        .vs {
-        	font-size:14px;
-        }
+::-webkit-scrollbar-track {
+	background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #888;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: #555;
+}
+
+.commentlist {
+	display: none;
+}
+
+.nocomment {
+	font-size: 15px;
+}
+
+.commentcard {
+	background-color: gainsboro;
+}
+
+.textcolourdefault {
+	color: #888888;
+}
+
+#crewnotice {
+	background-color: #17b75e;
+	color:white;
+}
+
+.vs {
+	font-size: 14px;
+}
+
+.maintopnavi {
+	background-color: #f2f2f2;
+}
+
+.aa {
+	margin-top: 75px;
+	overflow: scroll;
+}
+
+.crewsidenavi {
+	position:fixed;
+	width: 208px;
+    padding-bottom: 20px;
+    margin-right: 18px;
+}
+
+.crewsidebar {
+	background-color : white; 
+	border-radius: 5px;
+}
 </style>
 
 
@@ -435,158 +461,165 @@ strong#Createnewpost {
 
 <body>
 	<div class="container-fluid">
-		<div class="container">
+		<div class="container fixed-top top-navi maintopnavi">
 			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 		</div>
-	</div>
-	
-	<div class="container-fluid">
-		<div class="container">
-	<div class="row">
-		<div class="col-3">
-			<jsp:include page="../common/crewHomeNavi.jsp"></jsp:include>
-		</div>
-		<div class="col-6">
-			<!-- <div class="row"> -->
-			<!-- <div class="col-7"> -->
-			<div class="container main px-4">
-				<div class="row mb-2">
-					<div class="col px-0">
-						<input type="text" class="form-control nonboarder"
-							placeholder="Search">
-					</div>
-				</div>
-				
-				<c:if test="${myGrade <= 2 && crewMemberDto.crew_domain == crewDto.crew_domain}">
-				<div class="row">
-					<div class="card boardwrite" id="openBoardWrite">
-						<div class="row mx-2 mt-3">
-							<div class="col-auto">
-								<Strong id="Createnewpost">공지 작성하기</Strong>
-							</div>
-							<div class="col text-end">
-								<i class="bi bi-three-dots"></i>
-							</div>
-						</div>
-						<div class="row m-3" id="postwriteform">
-							<textarea class="form-control postwritearea nonboarder"
-								placeholder="Type a text" id="boardcontent"
-								style="height: 100px"></textarea>
-						</div>
-						<div class="row mx-3 mb-3">
-							<div class="col-auto">
-								<i class="bi bi-images"></i>
-							</div>
-							<div class="col-auto">
-								<i class="bi bi-folder-plus"></i>
-							</div>
-							<div class="col text-end">
-								<button class="btn btn-success btn-sm">Publish</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				</c:if>
 
-				<div class="row">
-					<!--여기서부터 jsp c:foreach 반복-->
-					<c:choose>
-						<c:when test="${!empty noticepost }">
-												<c:forEach var="list" items="${noticepost}" varStatus="status">
-						<div class="card boardlist mt-3 p-2 pb-3">
-							<div class="row mx-2 ">
-								<div
-									class="col-auto d-flex justify-content-center align-items-center">
-									<img src="/uploadFiles/profileImage/${list.userDto.user_image }" alt="" width="45"
-										height="45" class="rounded-circle">
-								</div>
-								<div class="col-auto">
-									<div class="row mt-3">
+		<div class="container aa">
+			<div class="row">
+				<div class="col-3">
+					<aside id="info" style="transform: none;">
+						<div id="infoInner" data-viewname="DBandCoverItemView" class="infoInner -sticky" style="position: relative; overflow: visible;">
+							<jsp:include page="../common/crewHomeNavi.jsp"></jsp:include>
+						</div>
+					</aside>
+				</div>
+				<div class="col-6">
+					<!-- <div class="row"> -->
+					<!-- <div class="col-7"> -->
+					<div class="container main px-4">
+						<div class="row mb-2">
+							<div class="col px-0">
+								<input type="text" class="form-control nonboarder"
+									placeholder="Search">
+							</div>
+						</div>
+
+						<c:if
+							test="${myGrade <= 2 && crewMemberDto.crew_domain == crewDto.crew_domain}">
+							<div class="row">
+								<div class="card boardwrite" id="openBoardWrite">
+									<div class="row mx-2 mt-3">
 										<div class="col-auto">
-											<Strong class="postwriter">${list.userDto.user_nickname }</Strong>
+											<Strong id="Createnewpost">공지 작성하기</Strong>
+										</div>
+										<div class="col text-end">
+											<i class="bi bi-three-dots"></i>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-auto  pt-1">
-											<p class="postregdate">
-												<fmt:formatDate value="${list.crewBoardDto.crew_board_reg_date }"
-													pattern="yyyy-MM-dd HH:mm" var="regdate" />
-												${regdate }
-											</p>
+									<div class="row m-3" id="postwriteform">
+										<textarea class="form-control postwritearea nonboarder"
+											placeholder="Type a text" id="boardcontent"
+											style="height: 100px"></textarea>
+									</div>
+									<div class="row mx-3 mb-3">
+										<div class="col-auto">
+											<i class="bi bi-images"></i>
 										</div>
-										<div class="col ps-0 pb-3">
-											<c:choose>
-												<c:when test="${list.crewBoardDto.crew_board_visibility == 'public' }">
-													<i class="bi bi-globe-americas vs"></i>
-												</c:when>
-												<c:otherwise>
-													<i class="bi bi-people-fill vs"></i>
-												</c:otherwise>
-											</c:choose>
+										<div class="col-auto">
+											<i class="bi bi-folder-plus"></i>
+										</div>
+										<div class="col text-end">
+											<button class="btn btn-success btn-sm">Publish</button>
 										</div>
 									</div>
 								</div>
-								<div class="col text-end mt-3">
-									<i class="bi bi-three-dots"  data-bs-toggle="dropdown"></i>
-									<ul class="dropdown-menu">
-										<li class="dropdown-item" id="commentmodify">수정2</li>
-										<li class="dropdown-item" onclick="deleteboard('${list.crewBoardDto.crew_board_id}')">삭제</li>
-									</ul>
-								</div>
 							</div>
-							<div class="row m-2" id="getboarddetails">
-								<h5>${list.crewBoardDto.crew_board_title }</h5>
-								<p class="postcontent">${list.crewBoardDto.crew_board_content }</p>
-							</div>
-							
-							<!--  <div class="row mx-2 mb-3">
+						</c:if>
+
+						<div class="row">
+							<!--여기서부터 jsp c:foreach 반복-->
+							<c:choose>
+								<c:when test="${!empty noticepost }">
+									<c:forEach var="list" items="${noticepost}" varStatus="status">
+										<div class="card boardlist mt-3 p-2 pb-3">
+											<div class="row mx-2 ">
+												<div
+													class="col-auto d-flex justify-content-center align-items-center">
+													<img
+														src="/uploadFiles/profileImage/${list.userDto.user_image }"
+														alt="" width="45" height="45" class="rounded-circle">
+												</div>
+												<div class="col-auto">
+													<div class="row mt-3">
+														<div class="col-auto">
+															<Strong class="postwriter">${list.userDto.user_nickname }</Strong>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-auto  pt-1">
+															<p class="postregdate">
+																<fmt:formatDate
+																	value="${list.crewBoardDto.crew_board_reg_date }"
+																	pattern="yyyy-MM-dd HH:mm" var="regdate" />
+																${regdate }
+															</p>
+														</div>
+														<div class="col ps-0 pb-3">
+															<c:choose>
+																<c:when
+																	test="${list.crewBoardDto.crew_board_visibility == 'public' }">
+																	<i class="bi bi-globe-americas vs"></i>
+																</c:when>
+																<c:otherwise>
+																	<i class="bi bi-people-fill vs"></i>
+																</c:otherwise>
+															</c:choose>
+														</div>
+													</div>
+												</div>
+												<div class="col text-end mt-3">
+													<i class="bi bi-three-dots" data-bs-toggle="dropdown"></i>
+													<ul class="dropdown-menu">
+														<li class="dropdown-item" id="commentmodify">수정2</li>
+														<li class="dropdown-item"
+															onclick="deleteboard('${list.crewBoardDto.crew_board_id}')">삭제</li>
+													</ul>
+												</div>
+											</div>
+											<div class="row m-2" id="getboarddetails">
+												<h5>${list.crewBoardDto.crew_board_title }</h5>
+												<p class="postcontent">${list.crewBoardDto.crew_board_content }</p>
+											</div>
+
+											<!--  <div class="row mx-2 mb-3">
 								<img src="https://github.com/mdo.png" height="500px">
 							</div>-->
-							
-							<div class="row mx-2">
-								<div class="col-auto">
-									<c:choose>
-										<c:when test="${empty list.liked }">
-											<i class="bi bi-suit-heart"
-												onclick="likeboard('${crewMemberDto.crew_member_id}', '${list.crewBoardDto.crew_board_id }', '${list.crewBoardDto.crew_member_id }')"> ${list.boardlikecount }</i>
-										</c:when>
-										<c:otherwise>
-											<i class="bi bi-suit-heart-fill"
-												onclick="dislikeboard('${crewMemberDto.crew_member_id}', '${list.crewBoardDto.crew_board_id }', '${list.crewBoardDto.crew_member_id }')"> ${list.boardlikecount }</i>
-										</c:otherwise>
-									</c:choose>
 
-								</div>
-								<div class="col text-end">
-									<i class="bi bi-bookmark-plus"></i>
-								</div>
-							</div>
+											<div class="row mx-2">
+												<div class="col-auto">
+													<c:choose>
+														<c:when test="${empty list.liked }">
+															<i class="bi bi-suit-heart"
+																onclick="likeboard('${crewMemberDto.crew_member_id}', '${list.crewBoardDto.crew_board_id }', '${list.crewBoardDto.crew_member_id }')">
+																${list.boardlikecount }</i>
+														</c:when>
+														<c:otherwise>
+															<i class="bi bi-suit-heart-fill"
+																onclick="dislikeboard('${crewMemberDto.crew_member_id}', '${list.crewBoardDto.crew_board_id }', '${list.crewBoardDto.crew_member_id }')">
+																${list.boardlikecount }</i>
+														</c:otherwise>
+													</c:choose>
+
+												</div>
+												<div class="col text-end">
+													<i class="bi bi-bookmark-plus"></i>
+												</div>
+											</div>
+										</div>
+
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									<div class="row mt-5">
+										<div class="col text-center mt-5">등록된 공지가 없습니다.</div>
+									</div>
+								</c:otherwise>
+							</c:choose>
+
+							<!--반복 끝-->
+
 						</div>
-						
-					</c:forEach>
-						</c:when>
-						<c:otherwise>
-							<div class="row mt-5">
-								<div class="col text-center mt-5">
-									등록된 공지가 없습니다.
-								</div>
-							</div>
-						</c:otherwise>
-					</c:choose>
-
-					<!--반복 끝-->
-
+					</div>
+				</div>
+				<div class="col sideend">
+					<div class="card calendarcard">
+						<div id="calendar"></div>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col sideend">
-			<div class="card calendarcard">
-				<div id="calendar"></div>
-			</div>
-		</div>
 	</div>
-</div>
-</div>
 	<!-- Modal -->
 
 	<div class="modal fade" id="boardWriteModal" tabindex="-1"
@@ -604,8 +637,8 @@ strong#Createnewpost {
 					<div class="row profile">
 						<div
 							class="col-auto d-flex justify-content-center align-items-center">
-							<img src="/uploadFiles/profileImage/${userDto.user_image }" alt="" width="45"
-								height="45" class="rounded-circle">
+							<img src="/uploadFiles/profileImage/${userDto.user_image }"
+								alt="" width="45" height="45" class="rounded-circle">
 						</div>
 						<div class="col-auto">
 							<div class="row">
@@ -615,7 +648,8 @@ strong#Createnewpost {
 							</div>
 							<div class="row">
 								<div class="col-auto">
-									<select class="form-select form-select-sm" id="crew_board_visibility">
+									<select class="form-select form-select-sm"
+										id="crew_board_visibility">
 										<option selected value="public">전체공개</option>
 										<option value="crewonly">크루공개</option>
 									</select>
@@ -623,7 +657,7 @@ strong#Createnewpost {
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="row writeform">
 						<div class="col">
 							<div class="form-check form-switch"></div>
@@ -632,31 +666,33 @@ strong#Createnewpost {
 					</div>
 					<div>
 						<input type="text" class="form-control" name="crew_board_title"
-							id="crew_board_title" placeholder="제목을 입력해주세요">
-							<br>
+							id="crew_board_title" placeholder="제목을 입력해주세요"> <br>
 						<textarea class="form-control" placeholder="오늘도 힘찬 하루를!"
 							name="crew_board_content" id="crew_board_content"
 							style="height: 150px" required></textarea>
 					</div>
 					<hr>
-					<i class="bi bi-images txt"> <input type="file" id="image-upload" multiple>클릭해 사진을 추가해보세요!</i>
-					
+					<i class="bi bi-images txt"> <input type="file"
+						id="image-upload" multiple>클릭해 사진을 추가해보세요!
+					</i>
+
 					<div id="preview-container" class="sortable-container"></div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-primary" onclick="boardwrite()">등록</button>
+					<button type="submit" class="btn btn-primary"
+						onclick="boardwrite()">등록</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- modal end -->
-	
-	
-	
-		<!--Modify Detail Modal -->
+
+
+
+	<!--Modify Detail Modal -->
 
 	<div class="modal fade" id="boardDetailModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -664,128 +700,131 @@ strong#Createnewpost {
 			class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
-					
+
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body mx-5">
 
-		<div class="row  mt-5 pt-5 title" id="boardDetailTitle">
-			<strong>제목입니당</strong>
-		</div>
-		<div class="row  mt-5">
-			<div class="col" id="boardDetailWriter">
-			작성자
-			<strong>
-			작성자입니당
-			</strong>
-			</div>
-			<div class="col text-end">
-				작성일자
-				<strong>
-					날짜입니당
-				</strong>
-			</div>
-		</div>
-		<div class="row text-end">
-			<c:choose>
-				<c:when test="${userDto.user_id == sessionuser.user_id }">
-				    <div class="col">
-				        <div class="row justify-content-end">
-				            <div class="col-auto">
-				                <i class="bi bi-pencil icon-button" onclick="modifyboard()" title="modify"></i>
-				            </div>
-				            <div class="col-auto">
-				                <i class="bi bi-trash3 icon-button" onclick="deleteboard('${crewBoardDto.crew_board_id}')" title="remove"></i>
-				            </div>
-				        </div>
-				    </div>
-				</c:when>
-				<c:otherwise>
-				</c:otherwise>
-			</c:choose>
-		</div>
-		<div class="row mb-3">
-			<div class="card my-3 py-3">
-				<div class="content m-4">
-					${crewBoardDto.crew_board_content }
-				</div>
-			</div>
-		</div>
-		<div class="row title2">
-			<strong>댓글</strong>
-		</div>
-		<div class="row  mt-3">
-			<div class="card mb-5">
-				<div class="row m-2 mt-3">
-					<textarea placeholder="댓글 내용을 입력하세요." class="textarea_input input_txt form-control" style="height: 100px;" name="board_comment_content" id="comment"></textarea>
-				</div>
-				<div class="row m-2">
-					<div class="col text-end">
-						<button id="writecomment" class="btn btn-success writecomment">작성하기</button>
+					<div class="row  mt-5 pt-5 title" id="boardDetailTitle">
+						<strong>제목입니당</strong>
 					</div>
-				</div>
-			</div>
-		</div>
-		<div id="commentlist">
-		<c:forEach var="comment" items="${commentlist}">
-		
-			<div class="row ">
-				<div class="col commentWriter">
-					<Strong>${comment.commentWriter.user_nickname }</Strong>
-				</div>
-				<div class="col text-end">
-					<c:choose>
-						<c:when test="${comment.commentWriter.user_id == sessionuser.user_id }">
-							<div class="row justify-content-end">
-				            	<div class="col-auto">
-									<i class="bi bi-pencil icon-button" onclick="modifyboard('${comment.crewBoardCommentDto.board_comment_id}')" title="modify"></i>
+					<div class="row  mt-5">
+						<div class="col" id="boardDetailWriter">
+							작성자 <strong> 작성자입니당 </strong>
+						</div>
+						<div class="col text-end">
+							작성일자 <strong> 날짜입니당 </strong>
+						</div>
+					</div>
+					<div class="row text-end">
+						<c:choose>
+							<c:when test="${userDto.user_id == sessionuser.user_id }">
+								<div class="col">
+									<div class="row justify-content-end">
+										<div class="col-auto">
+											<i class="bi bi-pencil icon-button" onclick="modifyboard()"
+												title="modify"></i>
+										</div>
+										<div class="col-auto">
+											<i class="bi bi-trash3 icon-button"
+												onclick="deleteboard('${crewBoardDto.crew_board_id}')"
+												title="remove"></i>
+										</div>
+									</div>
 								</div>
-				            	<div class="col-auto">
-									<i class="bi bi-trash3 icon-button" title="remove" onclick="deletecomment('${comment.crewBoardCommentDto.board_comment_id}')"></i>
+							</c:when>
+							<c:otherwise>
+							</c:otherwise>
+						</c:choose>
+					</div>
+					<div class="row mb-3">
+						<div class="card my-3 py-3">
+							<div class="content m-4">${crewBoardDto.crew_board_content }
+							</div>
+						</div>
+					</div>
+					<div class="row title2">
+						<strong>댓글</strong>
+					</div>
+					<div class="row  mt-3">
+						<div class="card mb-5">
+							<div class="row m-2 mt-3">
+								<textarea placeholder="댓글 내용을 입력하세요."
+									class="textarea_input input_txt form-control"
+									style="height: 100px;" name="board_comment_content"
+									id="comment"></textarea>
+							</div>
+							<div class="row m-2">
+								<div class="col text-end">
+									<button id="writecomment" class="btn btn-success writecomment">작성하기</button>
 								</div>
-				        	</div>
-						</c:when>
-						<c:otherwise>
-						</c:otherwise>
-					</c:choose>
+							</div>
+						</div>
+					</div>
+					<div id="commentlist">
+						<c:forEach var="comment" items="${commentlist}">
 
-				</div>
-			</div>
-			<div class="row mt-3">
-				<div class="comment">${comment.crewBoardCommentDto.crew_comment }</div>
-			</div>
-			<div class="row mt-3">
-				<div class="col">
-					<Strong>
-						<fmt:formatDate value="${comment.crewBoardCommentDto.crew_comment_date }" pattern="yyyy-MM-dd HH:mm" var="formattedDate" />
-						${formattedDate }
-					</Strong>
-				</div>
-				<div class="col text-end">
-					
-				</div>
-			</div>
-			<div class="row mt-3">
-				<hr>
-			</div>
-			
-		</c:forEach>
-		</div>
-		
-		
+							<div class="row ">
+								<div class="col commentWriter">
+									<Strong>${comment.commentWriter.user_nickname }</Strong>
+								</div>
+								<div class="col text-end">
+									<c:choose>
+										<c:when
+											test="${comment.commentWriter.user_id == sessionuser.user_id }">
+											<div class="row justify-content-end">
+												<div class="col-auto">
+													<i class="bi bi-pencil icon-button"
+														onclick="modifyboard('${comment.crewBoardCommentDto.board_comment_id}')"
+														title="modify"></i>
+												</div>
+												<div class="col-auto">
+													<i class="bi bi-trash3 icon-button" title="remove"
+														onclick="deletecomment('${comment.crewBoardCommentDto.board_comment_id}')"></i>
+												</div>
+											</div>
+										</c:when>
+										<c:otherwise>
+										</c:otherwise>
+									</c:choose>
+
+								</div>
+							</div>
+							<div class="row mt-3">
+								<div class="comment">${comment.crewBoardCommentDto.crew_comment }</div>
+							</div>
+							<div class="row mt-3">
+								<div class="col">
+									<Strong> <fmt:formatDate
+											value="${comment.crewBoardCommentDto.crew_comment_date }"
+											pattern="yyyy-MM-dd HH:mm" var="formattedDate" />
+										${formattedDate }
+									</Strong>
+								</div>
+								<div class="col text-end"></div>
+							</div>
+							<div class="row mt-3">
+								<hr>
+							</div>
+
+						</c:forEach>
+					</div>
+
+
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- modal end -->
-	
-	
-	
-	
-	
-	
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.13.0/Sortable.min.js"></script>
+
+
+
+
+
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.13.0/Sortable.min.js"></script>
 
 
 	<script

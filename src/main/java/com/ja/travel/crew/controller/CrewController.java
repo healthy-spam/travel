@@ -99,8 +99,8 @@ public class CrewController {
 	}
 	
 	@RequestMapping("/requestcrew")
-	public String joinrequest(CrewMemberDto crewMemberDto) {
-		return crewService.joinrequest(crewMemberDto);
+	public void joinrequest(CrewMemberDto crewMemberDto, HttpSession session) {
+		crewService.joinrequest(crewMemberDto, session);
 	}
 	
 	@RequestMapping("/crewboard/write")

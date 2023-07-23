@@ -14,7 +14,8 @@
 	rel="stylesheet"
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <title>Insert title here</title>
 
 
@@ -248,18 +249,71 @@ function commentdelete(board_comment_id) {
     }
 }
 </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var joincrew = document.getElementById("joincrew");
+            joincrew.addEventListener("click", function () {
+                bootstrap.Modal.getOrCreateInstance("#joincrewmodal").show();
+            });
+            
+            
+            document.getElementById("joincrewrequest").addEventListener("click", function () {
+                if(!document.getElementById("flexCheckDefault").checked) {
+                    alert("크루 개인정보보호정책에 동의해주세요.");return;
+                }
+                if(document.getElementById("crew_join_request_intro").value == null) {
+                    alert("소개를 작성해주세요");return;
+                }
+                var crew_domain = "${crewDto.crew_domain}";
+                var crew_desc = document.getElementById("crew_join_request_intro").value;
+
+				console.log(crew_domain);
+				console.log(crew_desc);
+                
+                var formData = new FormData();
+                formData.append("crew_domain",crew_domain);
+                formData.append("crew_join_request_intro", crew_desc);
+
+                // AJAX 요청 보내기
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/travel/crew/requestcrew', true);
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    // 요청이 성공적으로 완료되었을 때 처리할 로직
+                    alert("가입 신청이 완료되었습니다.<br>리더가 승인하면 크루에 가입됩니다.");
+                    bootstrap.Modal.getOrCreateInstance("#joincrewmodal").hide();
+                    location.reload();
+                    console.log(xhr.responseText);
+                    }
+                };
+
+                xhr.send(formData);
+
+            });
+
+            
+            
+            
+            
+        });
+
+
+
+    </script>
 <style>
 body {
 	background-color: #f2f2f2;
 	overflow-x: hidden;
 }
 
-.sidebar{
+.sidebar {
 	position: fixed;
 }
 
 .commentwritedate {
-	font-size:12px;
+	font-size: 12px;
 }
 
 .sidebar {
@@ -270,7 +324,6 @@ body {
 	margin-left: 5vw;
 	/* Adjust this value to match the width of the fixed sidebar */
 }
-
 
 .icon {
 	height: 30px;
@@ -283,7 +336,6 @@ strong#Createnewpost {
 
 .postwriter {
 	font-size: 17px;
-	
 }
 
 .postregdate {
@@ -323,58 +375,59 @@ strong#Createnewpost {
 	max-height: 350px;
 }
 
-  .imageContainer {
-    display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-  }
+.imageContainer {
+	display: flex;
+	overflow-x: auto;
+	white-space: nowrap;
+	-webkit-overflow-scrolling: touch;
+}
 
-  .imageItem {
-    position: relative;
-    flex: 0 0 auto;
-    margin-right: 10px;
-  }
+.imageItem {
+	position: relative;
+	flex: 0 0 auto;
+	margin-right: 10px;
+}
 
-  .imageItem img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 5px;
-  }
+.imageItem img {
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+	border-radius: 5px;
+}
 
-  .deleteButton {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border: none;
-    border-radius: 50%;
-    padding: 5px;
-    font-size: 12px;
-    cursor: pointer;
-  }
-  .preview-item {
-  position: relative;
-  display: inline-block;
+.deleteButton {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background-color: rgba(255, 255, 255, 0.8);
+	border: none;
+	border-radius: 50%;
+	padding: 5px;
+	font-size: 12px;
+	cursor: pointer;
+}
+
+.preview-item {
+	position: relative;
+	display: inline-block;
 }
 
 .preview-image {
-  max-width: 200px;
-  max-height: 200px;
-  margin: 5px;
+	max-width: 200px;
+	max-height: 200px;
+	margin: 5px;
 }
 
 .delete-button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  padding: 2px 5px;
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	padding: 2px 5px;
+	background-color: red;
+	color: white;
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
 }
 
 .commentwriter {
@@ -382,44 +435,76 @@ strong#Createnewpost {
 	font-weight: bold;
 }
 
+.text88 {
+	color: #888888;
+}
+.textwhite {
+	color: white;
+}
 
-          /* Scrollbar 커스터마이징 */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background-color: #f1f1f1;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background-color: #888;
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background-color: #555;
-        }
-        
-        .commentlist{
-        	display:none;
-        }
-        
-        .nocomment {
-        	font-size: 15px;
-        }
-        
-        .commentcard {
-        	background-color:gainsboro;
-        }
-        
-        #crewmain {
-        background-color: #17b75e;
-        }
-        
-        .vs {
-        	font-size:14px;
-        }
+/* Scrollbar 커스터마이징 */
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #888;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: #555;
+}
+
+.commentlist {
+	display: none;
+}
+
+.nocomment {
+	font-size: 15px;
+}
+
+.commentcard {
+	background-color: gainsboro;
+}
+
+.textcolourdefault {
+	color: #888888;
+}
+
+#crewmain {
+	background-color: #17b75e;
+		color:white;
+}
+
+.vs {
+	font-size: 14px;
+}
+
+.maintopnavi {
+	background-color: #f2f2f2;
+}
+
+.aa {
+	margin-top: 75px;
+	overflow: scroll;
+}
+
+.crewsidenavi {
+	position:fixed;
+	width: 208px;
+    padding-bottom: 20px;
+    margin-right: 18px;
+}
+
+.crewsidebar {
+	background-color : white; 
+	border-radius: 5px;
+}
 </style>
 
 
@@ -428,22 +513,25 @@ strong#Createnewpost {
 </head>
 
 <body>
-	<div class="container-fluid">
-		<div class="container">
+
+	<div class="container-fluid ">
+		<div class="container fixed-top top-navi maintopnavi">
 			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 		</div>
-	</div>
-	
-	<div class="container-fluid">
-		<div class="container">
-	<div class="row">
-		<div class="col-3">
-			<jsp:include page="../common/crewHomeNavi.jsp"></jsp:include>
-		</div>
-		<div class="col-6">
+		<div class="container aa">
+			<div class="row">
+				<div class="col-3">
+					<aside id="info" style="transform: none;">
+						<div id="infoInner" data-viewname="DBandCoverItemView" class="infoInner -sticky" style="position: relative; overflow: visible;">
+							<jsp:include page="../common/crewHomeNavi.jsp"></jsp:include>
+						</div>
+					</aside>
+				</div>
+			
+				<div class="col-6">
 
-			<div class="container main px-4">
-				<!-- <div class="row mb-3">
+					<div class="container main px-4">
+						<!-- <div class="row mb-3">
 
 							<div class="col text-center">
 								<button class="btn btn-outline-success">게시글</button>
@@ -458,230 +546,251 @@ strong#Createnewpost {
 								<button class="btn btn-outline-success">설정</button>
 							</div>
 				</div> -->
-			
-				<div class="row mb-2">
-					<div class="col px-0">
-						<input type="text" class="form-control nonboarder"
-							placeholder="Search">
-					</div>
-				</div>
-				<div class="row">
-					<div class="card boardwrite" id="openBoardWrite">
-						<div class="row mx-2 mt-3">
-							<div class="col-auto">
-								<Strong id="Createnewpost">게시글 작성하기</Strong>
-							</div>
-							<div class="col text-end">
-								<i class="bi bi-three-dots"></i>
-							</div>
-						</div>
-						<div class="row m-3" id="postwriteform">
-							<textarea class="form-control postwritearea nonboarder"
-								placeholder="Type a text" id="boardcontent"
-								style="height: 100px"></textarea>
-						</div>
-						<div class="row mx-3 mb-3">
-							<div class="col-auto">
-								<i class="bi bi-images"></i>
-							</div>
-							<div class="col-auto">
-								<i class="bi bi-folder-plus"></i>
-							</div>
-							<div class="col text-end">
-								<button class="btn btn-success btn-sm">Publish</button>
-							</div>
-						</div>
-					</div>
-				</div>
 
-
-				<div class="row">
-					<c:choose>
-						<c:when test="${!empty list }">
-												<c:forEach var="list" items="${list}" varStatus="status">
-						<div class="card boardlist mt-3 p-2 pb-3">
-							<div class="row mx-2 ">
-								<div
-									class="col-auto d-flex justify-content-center align-items-center">
-									<img src="/uploadFiles/profileImage/${list.userDto.user_image }" alt="" width="45"
-										height="45" class="rounded-circle">
-								</div>
-								<div class="col-auto">
-									<div class="row mt-3">
-										<div class="col-auto">
-											<Strong class="postwriter">${list.userDto.user_nickname }</Strong>
-										</div>
+						<div class="row mb-2">
+							<div class="col px-0">
+								<input type="text" class="form-control nonboarder"
+									placeholder="Search">
+							</div>
+						</div>
+						<div class="row">
+							<div class="card boardwrite" id="openBoardWrite">
+								<div class="row mx-2 mt-3">
+									<div class="col-auto">
+										<Strong id="Createnewpost">게시글 작성하기</Strong>
 									</div>
-									<div class="row">
-										<div class="col-auto pt-1">
-											<p class="postregdate">
-												<fmt:formatDate value="${list.c.crew_board_reg_date }"
-													pattern="yyyy-MM-dd HH:mm" var="regdate" />
-												${regdate }
-											</p>
+									<div class="col text-end">
+										<i class="bi bi-three-dots"></i>
+									</div>
+								</div>
+								<div class="row m-3" id="postwriteform">
+									<textarea class="form-control postwritearea nonboarder"
+										placeholder="Type a text" id="boardcontent"
+										style="height: 100px"></textarea>
+								</div>
+								<div class="row mx-3 mb-3">
+									<div class="col-auto">
+										<i class="bi bi-images"></i>
+									</div>
+									<div class="col-auto">
+										<i class="bi bi-folder-plus"></i>
+									</div>
+									<div class="col text-end">
+										<button class="btn btn-success btn-sm">Publish</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="row">
+							<c:choose>
+								<c:when test="${!empty list }">
+									<c:forEach var="list" items="${list}" varStatus="status">
+										<div class="card boardlist mt-3 p-2 pb-3">
+											<div class="row mx-2 ">
+												<div
+													class="col-auto d-flex justify-content-center align-items-center">
+													<img
+														src="/uploadFiles/profileImage/${list.userDto.user_image }"
+														alt="" width="45" height="45" class="rounded-circle">
+												</div>
+												<div class="col-auto">
+													<div class="row mt-3">
+														<div class="col-auto">
+															<Strong class="postwriter">${list.userDto.user_nickname }</Strong>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-auto pt-1">
+															<p class="postregdate">
+																<fmt:formatDate value="${list.c.crew_board_reg_date }"
+																	pattern="yyyy-MM-dd HH:mm" var="regdate" />
+																${regdate }
+															</p>
+														</div>
+														<div class="col ps-0 pb-3">
+															<c:choose>
+																<c:when
+																	test="${list.c.crew_board_visibility == 'public' }">
+																	<i class="bi bi-globe-americas vs"></i>
+																</c:when>
+																<c:otherwise>
+																	<i class="bi bi-people-fill vs"></i>
+																</c:otherwise>
+															</c:choose>
+														</div>
+													</div>
+												</div>
+												<div class="col text-end mt-3">
+													<i class="bi bi-three-dots" data-bs-toggle="dropdown"></i>
+													<ul class="dropdown-menu">
+														<li class="dropdown-item" id="commentmodify">수정2</li>
+														<li class="dropdown-item"
+															onclick="deleteboard('${list.c.crew_board_id}')">삭제</li>
+													</ul>
+												</div>
+											</div>
+											<div class="row m-2" id="getboarddetails">
+												<h5>${list.c.crew_board_title }</h5>
+												<p class="postcontent">${list.c.crew_board_content }</p>
+											</div>
+
+											<div class="row mx-2 mb-3">
+												<c:if test="${!empty list.files }">
+													<div id="carouselExample" class="carousel slide">
+														<div class="carousel-inner">
+															<c:forEach var="photos" items="${list.files}"
+																varStatus="status">
+																<c:if test="${status.index == 0}">
+																	<div class="carousel-item active">
+																		<img
+																			src="/uploadFiles/crewFiles/crewboard/${photos.crew_board_id}/${photos.crew_board_attached}"
+																			class="d-block w-100"
+																			alt="${photos.crew_board_original_attached}">
+																	</div>
+																</c:if>
+																<c:if test="${status.index != 0}">
+																	<div class="carousel-item">
+																		<img
+																			src="/uploadFiles/crewFiles/crewboard/${photos.crew_board_id}/${photos.crew_board_attached}"
+																			class="d-block w-100"
+																			alt="${photos.crew_board_original_attached}">
+																	</div>
+																</c:if>
+															</c:forEach>
+														</div>
+														<button class="carousel-control-prev" type="button"
+															data-bs-target="#carouselExample" data-bs-slide="prev">
+															<span class="carousel-control-prev-icon"
+																aria-hidden="true"></span> <span class="visually-hidden">Previous</span>
+														</button>
+														<button class="carousel-control-next" type="button"
+															data-bs-target="#carouselExample" data-bs-slide="next">
+															<span class="carousel-control-next-icon"
+																aria-hidden="true"></span> <span class="visually-hidden">Next</span>
+														</button>
+													</div>
+												</c:if>
+
+											</div>
+
+											<div class="row mx-2">
+												<div class="col-auto">
+													<c:choose>
+														<c:when test="${empty list.liked }">
+															<i class="bi bi-suit-heart"
+																onclick="likeboard('${crewMemberDto.crew_member_id}', '${list.c.crew_board_id }', '${list.c.crew_member_id }')">
+																${list.boardlikecount }</i>
+														</c:when>
+														<c:otherwise>
+															<i class="bi bi-suit-heart-fill"
+																onclick="dislikeboard('${crewMemberDto.crew_member_id}', '${list.c.crew_board_id }', '${list.c.crew_member_id }')">
+																${list.boardlikecount }</i>
+														</c:otherwise>
+													</c:choose>
+
+												</div>
+												<div class="col-auto">
+													<i class="bi bi-chat-left-text"
+														onclick="getcommentlist('${list.c.crew_board_content}')">
+														${list.boardcommentcount }</i>
+												</div>
+												<div class="col text-end">
+													<i class="bi bi-bookmark-plus"></i>
+												</div>
+											</div>
 										</div>
-										<div class="col ps-0 pb-3">
+										<div class="commentlist card p-2" style="display: block;">
+											<div class="row p-2">
+												<div class="col pe-0">
+													<input placeholder="댓글 내용을 입력하세요."
+														class="postwritearea nonboarder form-control"
+														name="board_comment_content" id="comment-${status.index}">
+												</div>
+												<div class="col-auto px-3 pt-1">
+													<i class="bi bi-send "
+														onclick="writecomment('${list.c.crew_board_id}', '${status.index}')"></i>
+												</div>
+											</div>
 											<c:choose>
-												<c:when test="${list.c.crew_board_visibility == 'public' }">
-													<i class="bi bi-globe-americas vs"></i>
+												<c:when test="${list.boardcommentcount != 0 }">
+													<c:forEach var="comment" items="${list.commentlist}">
+														<div class="row m-2">
+															<div class="col-auto px-0">
+																<img
+																	src="/uploadFiles/profileImage/${comment.commentWriter.user_image }"
+																	width="35" height="35" class="rounded-circle ">
+															</div>
+															<div class="col me-4">
+																<div class="card commentcard  p-2 ">
+																	<div class="row ">
+																		<div class="col commentwriter">
+																			${comment.commentWriter.user_nickname }</div>
+																	</div>
+																	<div class="row ">
+																		<div class="col commentcontent">
+																			${comment.crewBoardCommentDto.crew_comment }</div>
+																	</div>
+
+																</div>
+																<div class="row">
+																	<div class="col commentwritedate mt-1">
+																		<fmt:formatDate
+																			value="${comment.crewBoardCommentDto.crew_comment_date }"
+																			pattern="yyyy-MM-dd HH:mm" var="formattedDate" />
+																		${formattedDate }
+																	</div>
+																	<div class="col text-end">
+																		<c:if
+																			test="${comment.crewBoardCommentDto.crew_member_id == crewMemberDto.crew_member_id }">
+																			<i class="bi bi-three-dots" data-bs-toggle="dropdown"></i>
+																			<ul class="dropdown-menu">
+																				<li class="dropdown-item" id="commentmodify">수정</li>
+																				<li class="dropdown-item"
+																					onclick="commentdelete('${comment.crewBoardCommentDto.board_comment_id}')">삭제</li>
+																			</ul>
+																		</c:if>
+																	</div>
+																</div>
+															</div>
+														</div>
+
+													</c:forEach>
 												</c:when>
 												<c:otherwise>
-													<i class="bi bi-people-fill vs"></i>
+													<div class="row py-5">
+														<div class="col text-center nocomment">등록된 댓글이 없습니다.
+														</div>
+													</div>
 												</c:otherwise>
 											</c:choose>
 										</div>
-									</div>
-								</div>
-								<div class="col text-end mt-3">
-									<i class="bi bi-three-dots"  data-bs-toggle="dropdown"></i>
-									<ul class="dropdown-menu">
-										<li class="dropdown-item" id="commentmodify">수정2</li>
-										<li class="dropdown-item" onclick="deleteboard('${list.c.crew_board_id}')">삭제</li>
-									</ul>
-								</div>
-							</div>
-							<div class="row m-2" id="getboarddetails">
-								<h5>${list.c.crew_board_title }</h5>
-								<p class="postcontent">${list.c.crew_board_content }</p>
-							</div>
-							
-							<div class="row mx-2 mb-3">
-								<c:if test="${!empty list.files }">
-								<div id="carouselExample" class="carousel slide">
-									<div class="carousel-inner">
-									<c:forEach var="photos" items="${list.files}" varStatus="status">
-									  <c:if test="${status.index == 0}">
-									    <div class="carousel-item active">
-									      <img src="/uploadFiles/crewFiles/crewboard/${photos.crew_board_id}/${photos.crew_board_attached}" class="d-block w-100" alt="${photos.crew_board_original_attached}">
-									    </div>
-									  </c:if>
-									  <c:if test="${status.index != 0}">
-									    <div class="carousel-item">
-									      <img src="/uploadFiles/crewFiles/crewboard/${photos.crew_board_id}/${photos.crew_board_attached}" class="d-block w-100" alt="${photos.crew_board_original_attached}">
-									    </div>
-									  </c:if>
-									</c:forEach>
-										</div>
-										  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-										    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-										    <span class="visually-hidden">Previous</span>
-										  </button>
-										  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-										    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-										    <span class="visually-hidden">Next</span>
-										  </button>
-									</div>
-								</c:if>
-								
-							</div>
-							
-							<div class="row mx-2">
-								<div class="col-auto">
-									<c:choose>
-										<c:when test="${empty list.liked }">
-											<i class="bi bi-suit-heart"
-												onclick="likeboard('${crewMemberDto.crew_member_id}', '${list.c.crew_board_id }', '${list.c.crew_member_id }')"> ${list.boardlikecount }</i>
-										</c:when>
-										<c:otherwise>
-											<i class="bi bi-suit-heart-fill"
-												onclick="dislikeboard('${crewMemberDto.crew_member_id}', '${list.c.crew_board_id }', '${list.c.crew_member_id }')"> ${list.boardlikecount }</i>
-										</c:otherwise>
-									</c:choose>
-
-								</div>
-								<div class="col-auto">
-									<i class="bi bi-chat-left-text" onclick="getcommentlist('${list.c.crew_board_content}')"> ${list.boardcommentcount }</i>
-								</div>
-								<div class="col text-end">
-									<i class="bi bi-bookmark-plus"></i>
-								</div>
-							</div>
-						</div>
-						<div class="commentlist card p-2" style="display: block;">
-							<div class="row p-2">
-								<div class="col pe-0">
-									<input placeholder="댓글 내용을 입력하세요." class="postwritearea nonboarder form-control" name="board_comment_content"  id="comment-${status.index}">
-								</div>
-								<div class="col-auto px-3 pt-1">
-									<i class="bi bi-send " onclick="writecomment('${list.c.crew_board_id}', '${status.index}')"></i>
-								</div>
-							</div>
-							<c:choose>
-								<c:when test="${list.boardcommentcount != 0 }">
-									<c:forEach var="comment" items="${list.commentlist}">
-										<div class="row m-2">
-											<div class="col-auto px-0">
-												<img
-													src="/uploadFiles/profileImage/${comment.commentWriter.user_image }"
-													width="35" height="35" class="rounded-circle ">
-											</div>
-											<div class="col me-4">
-												<div class="card commentcard  p-2 ">
-													<div class="row ">
-														<div class="col commentwriter">
-															${comment.commentWriter.user_nickname }</div>
-													</div>
-													<div class="row ">
-														<div class="col commentcontent">
-															${comment.crewBoardCommentDto.crew_comment }</div>
-													</div>
-													
-												</div>
-												<div class="row">
-														<div class="col commentwritedate mt-1">
-															<fmt:formatDate
-																value="${comment.crewBoardCommentDto.crew_comment_date }"
-																pattern="yyyy-MM-dd HH:mm" var="formattedDate" />
-															${formattedDate }
-														</div>
-														<div class="col text-end">
-															<c:if test="${comment.crewBoardCommentDto.crew_member_id == crewMemberDto.crew_member_id }">
-															<i class="bi bi-three-dots" data-bs-toggle="dropdown"></i>
-															  <ul class="dropdown-menu">
-															    <li class="dropdown-item" id="commentmodify">수정</li>
-															    <li class="dropdown-item" onclick="commentdelete('${comment.crewBoardCommentDto.board_comment_id}')">삭제</li>
-															  </ul>
-															</c:if>
-														</div>
-												</div>
-											</div>
-										</div>
-
 									</c:forEach>
 								</c:when>
 								<c:otherwise>
-								<div class="row py-5">
-									<div class="col text-center nocomment">
-										등록된 댓글이 없습니다.
+									<div class="row mt-5">
+										<div class="col text-center mt-5">등록된 게시글이 없습니다.</div>
 									</div>
-								</div>
 								</c:otherwise>
 							</c:choose>
+
+							<!--반복 끝-->
+
 						</div>
-					</c:forEach>
-						</c:when>
-						<c:otherwise>
-							<div class="row mt-5">
-								<div class="col text-center mt-5">
-									등록된 게시글이 없습니다.
-								</div>
-							</div>
-						</c:otherwise>
-					</c:choose>
-
-					<!--반복 끝-->
-
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="card calendarcard">
+						<div id="calendar"></div>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-3">
-			<div class="card calendarcard">
-				<div id="calendar"></div>
-			</div>
-		</div>
 	</div>
-</div>
-</div>
+	</div>
+	>
+	<div class="container-fluid aa"></div>
 	<!-- Modal -->
 
 	<div class="modal fade" id="boardWriteModal" tabindex="-1"
@@ -699,8 +808,8 @@ strong#Createnewpost {
 					<div class="row profile">
 						<div
 							class="col-auto d-flex justify-content-center align-items-center">
-							<img src="/uploadFiles/profileImage/${userDto.user_image }" alt="" width="45"
-								height="45" class="rounded-circle">
+							<img src="/uploadFiles/profileImage/${userDto.user_image }"
+								alt="" width="45" height="45" class="rounded-circle">
 						</div>
 						<div class="col-auto">
 							<div class="row">
@@ -710,7 +819,8 @@ strong#Createnewpost {
 							</div>
 							<div class="row">
 								<div class="col-auto">
-									<select class="form-select form-select-sm" id="crew_board_visibility">
+									<select class="form-select form-select-sm"
+										id="crew_board_visibility">
 										<option selected value="public">전체공개</option>
 										<option value="crewonly">크루공개</option>
 									</select>
@@ -718,7 +828,7 @@ strong#Createnewpost {
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="row writeform">
 						<div class="col">
 							<div class="form-check form-switch"></div>
@@ -727,32 +837,32 @@ strong#Createnewpost {
 					</div>
 					<div>
 						<input type="text" class="form-control" name="crew_board_title"
-							id="crew_board_title" placeholder="제목을 입력해주세요">
-							<br>
+							id="crew_board_title" placeholder="제목을 입력해주세요"> <br>
 						<textarea class="form-control" placeholder="오늘도 힘찬 하루를!"
 							name="crew_board_content" id="crew_board_content"
 							style="height: 150px" required></textarea>
 					</div>
 					<hr>
-<form id="uploadForm" enctype="multipart/form-data">
-  <input type="file" name="image-upload" id="image-upload" multiple>
+					<form id="uploadForm" enctype="multipart/form-data">
+						<input type="file" name="image-upload" id="image-upload" multiple>
 					</form>
 					<div id="preview-container" class="sortable-container"></div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-primary" onclick="boardwrite()">작성</button>
+					<button type="submit" class="btn btn-primary"
+						onclick="boardwrite()">작성</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- modal end -->
-	
-	
-	
-		<!--Modify Detail Modal -->
+
+
+
+	<!--Modify Detail Modal -->
 
 	<div class="modal fade" id="boardDetailModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -760,128 +870,201 @@ strong#Createnewpost {
 			class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
-					
+
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body mx-5">
 
-		<div class="row  mt-5 pt-5 title" id="boardDetailTitle">
-			<strong>제목입니당</strong>
-		</div>
-		<div class="row  mt-5">
-			<div class="col" id="boardDetailWriter">
-			작성자
-			<strong>
-			작성자입니당
-			</strong>
-			</div>
-			<div class="col text-end">
-				작성일자
-				<strong>
-					날짜입니당
-				</strong>
-			</div>
-		</div>
-		<div class="row text-end">
-			<c:choose>
-				<c:when test="${userDto.user_id == sessionuser.user_id }">
-				    <div class="col">
-				        <div class="row justify-content-end">
-				            <div class="col-auto">
-				                <i class="bi bi-pencil icon-button" onclick="modifyboard()" title="modify"></i>
-				            </div>
-				            <div class="col-auto">
-				                <i class="bi bi-trash3 icon-button" onclick="deleteboard('${crewBoardDto.crew_board_id}')" title="remove"></i>
-				            </div>
-				        </div>
-				    </div>
-				</c:when>
-				<c:otherwise>
-				</c:otherwise>
-			</c:choose>
-		</div>
-		<div class="row mb-3">
-			<div class="card my-3 py-3">
-				<div class="content m-4">
-					${crewBoardDto.crew_board_content }
-				</div>
-			</div>
-		</div>
-		<div class="row title2">
-			<strong>댓글</strong>
-		</div>
-		<div class="row  mt-3">
-			<div class="card mb-5">
-				<div class="row m-2 mt-3">
-					<textarea placeholder="댓글 내용을 입력하세요." class="textarea_input input_txt form-control" style="height: 100px;" name="board_comment_content" id="comment"></textarea>
-				</div>
-				<div class="row m-2">
-					<div class="col text-end">
-						<button id="writecomment" class="btn btn-success writecomment">작성하기</button>
+					<div class="row  mt-5 pt-5 title" id="boardDetailTitle">
+						<strong>제목입니당</strong>
 					</div>
-				</div>
-			</div>
-		</div>
-		<div id="commentlist">
-		<c:forEach var="comment" items="${commentlist}">
-		
-			<div class="row ">
-				<div class="col commentWriter">
-					<Strong>${comment.commentWriter.user_nickname }</Strong>
-				</div>
-				<div class="col text-end">
-					<c:choose>
-						<c:when test="${comment.commentWriter.user_id == sessionuser.user_id }">
-							<div class="row justify-content-end">
-				            	<div class="col-auto">
-									<i class="bi bi-pencil icon-button" onclick="modifyboard('${comment.crewBoardCommentDto.board_comment_id}')" title="modify"></i>
+					<div class="row  mt-5">
+						<div class="col" id="boardDetailWriter">
+							작성자 <strong> 작성자입니당 </strong>
+						</div>
+						<div class="col text-end">
+							작성일자 <strong> 날짜입니당 </strong>
+						</div>
+					</div>
+					<div class="row text-end">
+						<c:choose>
+							<c:when test="${userDto.user_id == sessionuser.user_id }">
+								<div class="col">
+									<div class="row justify-content-end">
+										<div class="col-auto">
+											<i class="bi bi-pencil icon-button" onclick="modifyboard()"
+												title="modify"></i>
+										</div>
+										<div class="col-auto">
+											<i class="bi bi-trash3 icon-button"
+												onclick="deleteboard('${crewBoardDto.crew_board_id}')"
+												title="remove"></i>
+										</div>
+									</div>
 								</div>
-				            	<div class="col-auto">
-									<i class="bi bi-trash3 icon-button" title="remove" onclick="deletecomment('${comment.crewBoardCommentDto.board_comment_id}')"></i>
+							</c:when>
+							<c:otherwise>
+							</c:otherwise>
+						</c:choose>
+					</div>
+					<div class="row mb-3">
+						<div class="card my-3 py-3">
+							<div class="content m-4">${crewBoardDto.crew_board_content }
+							</div>
+						</div>
+					</div>
+					<div class="row title2">
+						<strong>댓글</strong>
+					</div>
+					<div class="row  mt-3">
+						<div class="card mb-5">
+							<div class="row m-2 mt-3">
+								<textarea placeholder="댓글 내용을 입력하세요."
+									class="textarea_input input_txt form-control"
+									style="height: 100px;" name="board_comment_content"
+									id="comment"></textarea>
+							</div>
+							<div class="row m-2">
+								<div class="col text-end">
+									<button id="writecomment" class="btn btn-success writecomment">작성하기</button>
 								</div>
-				        	</div>
-						</c:when>
-						<c:otherwise>
-						</c:otherwise>
-					</c:choose>
+							</div>
+						</div>
+					</div>
+					<div id="commentlist">
+						<c:forEach var="comment" items="${commentlist}">
 
-				</div>
-			</div>
-			<div class="row mt-3">
-				<div class="comment">${comment.crewBoardCommentDto.crew_comment }</div>
-			</div>
-			<div class="row mt-3">
-				<div class="col">
-					<Strong>
-						<fmt:formatDate value="${comment.crewBoardCommentDto.crew_comment_date }" pattern="yyyy-MM-dd HH:mm" var="formattedDate" />
-						${formattedDate }
-					</Strong>
-				</div>
-				<div class="col text-end">
-					
-				</div>
-			</div>
-			<div class="row mt-3">
-				<hr>
-			</div>
-			
-		</c:forEach>
-		</div>
-		
-		
+							<div class="row ">
+								<div class="col commentWriter">
+									<Strong>${comment.commentWriter.user_nickname }</Strong>
+								</div>
+								<div class="col text-end">
+									<c:choose>
+										<c:when
+											test="${comment.commentWriter.user_id == sessionuser.user_id }">
+											<div class="row justify-content-end">
+												<div class="col-auto">
+													<i class="bi bi-pencil icon-button"
+														onclick="modifyboard('${comment.crewBoardCommentDto.board_comment_id}')"
+														title="modify"></i>
+												</div>
+												<div class="col-auto">
+													<i class="bi bi-trash3 icon-button" title="remove"
+														onclick="deletecomment('${comment.crewBoardCommentDto.board_comment_id}')"></i>
+												</div>
+											</div>
+										</c:when>
+										<c:otherwise>
+										</c:otherwise>
+									</c:choose>
+
+								</div>
+							</div>
+							<div class="row mt-3">
+								<div class="comment">${comment.crewBoardCommentDto.crew_comment }</div>
+							</div>
+							<div class="row mt-3">
+								<div class="col">
+									<Strong> <fmt:formatDate
+											value="${comment.crewBoardCommentDto.crew_comment_date }"
+											pattern="yyyy-MM-dd HH:mm" var="formattedDate" />
+										${formattedDate }
+									</Strong>
+								</div>
+								<div class="col text-end"></div>
+							</div>
+							<div class="row mt-3">
+								<hr>
+							</div>
+
+						</c:forEach>
+					</div>
+
+
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- modal end -->
-	
-	
-	
-	
-	
-	
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.13.0/Sortable.min.js"></script>
+
+    <!-- Modal -->
+
+	<div class="modal fade" id="joincrewmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header" style="display: block;">
+					<div class="row">
+						<div class="col-auto">
+							<div class="row">
+								<div class="col">
+									<h1 class="modal-title fs-5" id="joincrewmodal_crewname">${crewDto.crew_name}</h1>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<div class="text-secondary"> 크루 가입을 위한 정보를 입력해주세요.</div>
+								</div>
+							</div>
+						</div>
+						<div class="col text-end">
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col" id="joincrewmodal_crewdesc">
+							${crewDto.crew_desc}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+					        <div class="input-group">
+                                <textarea placeholder="크루에게 본인을 소개하세요!" class="textarea_input input_txt form-control" style="height: 60px;" id="crew_join_request_intro"></textarea>
+					        </div>
+                            <p class="txt">
+                                입력한 내용이 크루 운영진에게 전달됩니다.
+                            </p>
+					    </div>
+					</div>
+					<div class="row">
+					    <div class="col-auto">
+					        <div class="input_title mt-1">
+					            <strong class="tit">정책 동의<span class="mandatory">*</span></strong>
+					        </div>
+					    </div>
+					    <div class="col text-end">
+					    	<a href="#" class="ms-auto">자세히보기</a>
+					    </div>
+					</div>
+					<div class="row">
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    크루 개인정보보호정책에 동의합니다.
+                                </label>
+                            </div>
+                        </div>					
+					</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">취소</button>
+					<button class="btn btn-primary" id="joincrewrequest">신청</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- modal end -->
+
+
+
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.13.0/Sortable.min.js"></script>
 
 
 	<script

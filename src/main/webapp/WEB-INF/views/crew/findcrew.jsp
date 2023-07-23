@@ -49,6 +49,7 @@
 
         .card-notitable {
             padding: 0;
+            overflow-x: hidden;
             overflow-y: scroll;
         }
 
@@ -57,6 +58,10 @@
         top: 0;
         background-color: #fff;
         z-index: 1;
+        }
+        
+        .bi-bell {
+        	
         }
 
           /* Scrollbar 커스터마이징 */
@@ -94,18 +99,15 @@
             height: 160px;
             
         }
+        .card-mycrew {
+        	height: 200px;
+        }
+        .card-notitable {
+        	height: 300px;
+        }
 
 </style>
 <script type="text/javascript">
-
-
-document.addEventListener("DOMContentLoaded", function(event) {
-var cardMyCrew = document.querySelector('.card-mycrew');
-var cardNotitable = document.querySelector('.card-notitable');
-
-var cardMyCrewHeight = cardMyCrew.offsetHeight;
-cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
-});
 
 
 	document.addEventListener("DOMContentLoaded", function() {
@@ -210,11 +212,23 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
 				<div class="card mb-5">
 				<div class="row">
                     <div class="col-6">
-                    	<div class="card card-mycrew shadow-sm p-3 bg-body-tertiary rounded">
+                    	<div class="card card-mycrew shadow-sm bg-body-tertiary rounded">
 						<c:choose>
 							<c:when test="${empty crewDto}">
-								아직 가입한 크루가 없습니다.<br>
-								나에게 맞는 크루를 찾아보세요.
+								<div class="card-body">
+									<div class="row ">
+										<div class="col py-3" style="font-size:20px">
+											아직 가입한 크루가 없습니다.<br>
+											나에게 맞는 크루를 찾아보세요.
+										</div>
+									</div>
+									<div class="row">
+										<div class="col text-end pt-3">
+											또는 <a href="/travel/crew/createcrew">크루만들기</a>
+										</div>
+									</div>
+									
+								</div>
 							</c:when>
 							<c:when test="${!empty crewDto && applied == null}">
 								<div class="card-body ">
@@ -242,7 +256,10 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
 	                                </div>
 	                                <div class="row">
 	                                    <div class="col-4 text-secondary">가입일자</div>
-	                                    <div class="col">2023.07.13.</div>
+	                                    <div class="col"><fmt:formatDate
+																			value="${crewMemberDto.crew_member_log_date }"
+																			pattern="yyyy.MM.dd." var="formattedDate" />
+																		${formattedDate }</div>
 	                                </div>
 	                                <div class="row">
 	                                    <div class="col-4 text-secondary">나의 직위</div>
@@ -259,6 +276,12 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
 							</c:when>
 							<c:otherwise>
                             <div class="card-body ">
+                            	<div class="row">
+                            		<div class="col">
+                            			현재 가입신청 중입니다.
+                            		</div>
+                            	</div>
+                            	<hr>
                                 <div class="row">
                                     <div class="col-3">
                                         <img src="/uploadFiles/crewFiles/crewthumbnail/${crewDto.crew_thumbnail }" width="100px" height="100px">
@@ -270,29 +293,25 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
                                         <div class="row">
                                             ${crewDto.crew_desc }
                                         </div>
+                                        <div class="row">
+		                                    <div class="col-4 text-secondary px-0">크루마스터</div>
+		                                    <div class="col">${master }</div>
+		                                </div>
+		                                <div class="row">
+		                                    <div class="col-4 px-0 text-secondary">인원수</div>
+		                                    <div class="col">${crewamount } / 20</div>
+		                                </div>
+		                                <div class="row">
+		                                    <div class="col-4 px-0 text-secondary">가입신청일자</div>
+		                                    <div class="col">
+			                                    <fmt:formatDate value="${applied.crew_member_request_date }" pattern="yyyy.MM.dd" var="formattedDate" />
+													${formattedDate }
+											</div>
+                                		</div>
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="row">
-                                    <div class="col-4 text-secondary">크루마스터</div>
-                                    <div class="col">${master }</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4 text-secondary">인원수</div>
-                                    <div class="col">${crewamount } / 20</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4 text-secondary">가입일자</div>
-                                    <div class="col">2023.07.13.</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4 text-secondary">나의 직위</div>
-                                    <div class="col">${myGrade }</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4 text-secondary">나의 기여포인트</div>
-                                    <div class="col">${myPoint }</div>
-                                </div>
+
 								<div class="row mt-3">
 	                            	<a href="/travel/crew/crewhome/${crewDto.crew_domain }"><button class="btn form-control" id="opencrewhome">크루 홈 이동</button></a>
 	                           	</div>
@@ -302,59 +321,69 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
 						</div>
 					</div>
 					<div class="col">
-                        <div class="card card-notitable  shadow-sm mb-5 bg-body-tertiary rounded">
+                        <div class="card card-notitable  shadow-sm bg-body-tertiary rounded">
+                        	<div class="row sticky-header py-2">
+                        		<div class="col-auto">
+                        			<i class="bi bi-bell"> 알림</i>
+                        		</div>
+                        		<div class="col text-end">
+                        			자세히보기
+                        		</div>
+                        	</div>
+                        	
+                        	<c:choose>
+                        		<c:when test="${!empty notifications }">
+                        			                        			<div class="row">
+                        		<div class="col-auto">
+                        			<img src="/uploadFiles/crewFiles/crewthumbnail/hangyodon.png" width="35px" height="35px" class="rounded-circle">
+                        		</div>
+                        		<div class="col">
+                        			<div class="row">
+                        				멍테일 님이 회원님의 게시글에 댓글을 남겼습니다.
+                        			</div>
+                        			<div class="row">
+                        				2023-07-13
+                        			</div>
+                        		</div>
+                        		<hr>
+                        	</div>
 
-                            <table class="table">
-                                <thead class="sticky-header">
-                                    <tr>
-                                        <th colspan="2"><i class="bi bi-bell"></i> 알림</th>
-                                        <th class="text-end">자세히보기</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="ps-5">
-                                    <tr>
-                                        <td class="pe-0"><img src="/uploadFiles/crewFiles/crewthumbnail/bowwow.png" width="35px" height="35px" class="rounded-circle"></td>
-                                        <td class="ps-0 pt-3">멍테일 님이 회원님의 게시글에 댓글을 남겼습니다.</td>
-                                        <td class="ps-0 pt-3">2023-07-13</td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td class="pe-0"><img src="/uploadFiles/crewFiles/crewthumbnail/bowwow.png" width="35px" height="35px" class="rounded-circle"></td>
-                                        <td class="ps-0 pt-3">멍테일 님이 회원님의 게시글에 좋아요를 눌렀습니다.</td>
-                                        <td class="ps-0 pt-3">2023-07-13</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-0"><img src="/uploadFiles/crewFiles/crewthumbnail/bowwow.png" width="35px" height="35px" class="rounded-circle"></td>
-                                        <td class="ps-0 pt-3">멍테일 님이 회원님의 게시글에 좋아요를 눌렀습니다.</td>
-                                        <td class="ps-0 pt-3">2023-07-13</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-0"><img src="/uploadFiles/crewFiles/crewthumbnail/bowwow.png" width="35px" height="35px" class="rounded-circle"></td>
-                                        <td class="ps-0 pt-3">멍테일 님이 회원님의 게시글에 좋아요를 눌렀습니다.</td>
-                                        <td class="ps-0 pt-3">2023-07-13</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-0"><img src="/uploadFiles/crewFiles/crewthumbnail/bowwow.png" width="35px" height="35px" class="rounded-circle"></td>
-                                        <td class="ps-0 pt-3">멍테일 님이 회원님의 게시글에 좋아요를 눌렀습니다.</td>
-                                        <td class="ps-0 pt-3">2023-07-13</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-0"><img src="/uploadFiles/crewFiles/crewthumbnail/bowwow.png" width="35px" height="35px" class="rounded-circle"></td>
-                                        <td class="ps-0 pt-3">멍테일 님이 회원님의 게시글에 좋아요를 눌렀습니다.</td>
-                                        <td class="ps-0 pt-3">2023-07-13</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-0"><img src="/uploadFiles/crewFiles/crewthumbnail/bowwow.png" width="35px" height="35px" class="rounded-circle"></td>
-                                        <td class="ps-0 pt-3">멍테일 님이 회원님의 게시글에 좋아요를 눌렀습니다.</td>
-                                        <td class="ps-0 pt-3">2023-07-13</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-0"><img src="/uploadFiles/crewFiles/crewthumbnail/banbanchicken.png" width="35px" height="35px" class="rounded-circle"></td>
-                                        <td class="ps-0 pt-3">크루 가입이 완료되었습니다.</td>
-                                        <td class="ps-0 pt-3">2023-07-13</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+
+                        	
+                        	                        	<div class="row">
+                        		<div class="col-auto">
+                        			<img src="/uploadFiles/crewFiles/crewthumbnail/bowwow.png" width="35px" height="35px" class="rounded-circle">
+                        		</div>
+                        		<div class="col">
+                        			<div class="row">
+                        				멍테일 님이 회원님의 게시글에 댓글을 남겼습니다.
+                        			</div>
+                        			<div class="row">
+                        				2023-07-13
+                        			</div>
+                        		</div>
+                        		<hr>
+                        	</div>
+                        	
+                        	                        	<div class="row">
+                        		<div class="col-auto">
+                        			<img src="/uploadFiles/crewFiles/crewthumbnail/bowwow.png" width="35px" height="35px" class="rounded-circle">
+                        		</div>
+                        		<div class="col">
+                        			<div class="row">
+                        				멍테일 님이 회원님의 게시글에 댓글을 남겼습니다.
+                        			</div>
+                        			<div class="row">
+                        				2023-07-13
+                        			</div>
+                        		</div>
+                        		<hr>
+                        	</div>
+                        		</c:when>
+                        		<c:otherwise>
+                        		알림이 없습니다.
+                        		</c:otherwise>
+                        	</c:choose>
                         </div>
                     </div>
 				</div>
@@ -394,16 +423,6 @@ cardNotitable.style.maxHeight = cardMyCrewHeight + 'px';
                                         인원수 <em class="crewmembercount">${crew.crewppl } / 20</em>
                                     </div>
                                     <div class="col text-end">
-                                        <c:choose>
-                            		<c:when test="${empty crewDto }">
-                            		<form method="Post" action="/travel/crew/join/${crew.crew.crew_domain}">
-                            			<input type="hidden" value="${crew.crew.crew_id }" name="crew_id">
-                            			<button type="submit" class="btn btn-sm text-white"> 가입하기</button>
-                            		</form>
-                            		</c:when>
-                            		<c:otherwise>
-                            		</c:otherwise>
-                            	</c:choose>
                                     </div>
                                 </div>
                             </div>
