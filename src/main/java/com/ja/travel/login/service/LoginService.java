@@ -150,6 +150,7 @@ public class LoginService {
 				
 				if (userDto == null) {
 					loginSqlMapper.kakaoRegister(result);
+					session.setAttribute("sessionuser", userDto);
 				} else {
 					session.setAttribute("sessionuser", userDto);
 				}
