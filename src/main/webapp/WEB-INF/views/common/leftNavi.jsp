@@ -27,7 +27,7 @@ pageEncoding="UTF-8"%>
 									type="button" onclick="location.href='./adminLoginPage'">로그인</button>
 					</c:when>
 					<c:otherwise>
-					<div class="col-3 my-auto" id="icon1">
+					<div class="col-3 my-auto icon1">
 						<i class="bi bi-box-arrow-up-right" onclick = "location.href='./adminLogoutProcess'"></i>		
 					</div>
 					</c:otherwise>
@@ -48,15 +48,15 @@ pageEncoding="UTF-8"%>
 			    지역관리
 			    </div>
 			  </div>
-			    <div class="row border-1 border-top  border-secondary">
+			    <div class="row border-1 border-top border-secondary smallCategory">
 			    	<div class="col-2">&nbsp;</div>
-				    <div class="col-10 ps-0 smallCategory" id="smallCategory">
+				    <div class="col-10 ps-0">
 					    <a class="nav-link" href="../admin/registedCityPage">지역정보</a>
 				   </div>
 				</div>	 
-				<div class="row border-1 border-bottom border-secondary">
+				<div class="row border-1 border-bottom border-secondary smallCategory">
 				   <div class="col-2">&nbsp;</div>
-				    <div class="col-10 ps-0 smallCategory" id="smallCategory">
+				    <div class="col-10 ps-0">
 					    <a class="nav-link" href="../admin/registCityPage">지역추가</a>
 				   </div>
 				</div> 
@@ -69,9 +69,9 @@ pageEncoding="UTF-8"%>
 			    	고객승인
 			    </div>
 			  </div>
-			    <div class="row border-1 border-top border-bottom  border-secondary">
+			    <div class="row border-1 border-top border-bottom  border-secondary smallCategory">
 				    <div class="col-2">&nbsp;</div>
-				    <div class="col-10 ps-0 smallCategory" id="smallCategory">
+				    <div class="col-10 ps-0">
 				    	<a class="nav-link" href="./guideApplyPage">가이드승인</a>
 			   		</div>
 				</div>	 
@@ -85,16 +85,16 @@ pageEncoding="UTF-8"%>
 			    신고관리
 			    </div>
 			  </div>
-			    <div class="row border-1 border-top border-secondary">
+			    <div class="row border-1 border-top border-secondary smallCategory">
 				   <div class="col-2">&nbsp;</div>
-				    <div class="col-10 ps-0 smallCategory" id="smallCategory">
+				    <div class="col-10 ps-0">
 					    <a class="nav-link" href="./guideReportPage">가이드 신고</a>
 				   </div>
 				</div>	 
 
-				<div class="row border-1 border-bottom border-secondary">
+				<div class="row border-1 border-bottom border-secondary smallCategory">
 				   <div class="col-2">&nbsp;</div>
-				    <div class="col-10 ps-0 smallCategory" id="smallCategory">
+				    <div class="col-10 ps-0">
 					    <a class="nav-link" href="./userReportPage">유저 신고</a>
 				   </div>
 				</div>  
@@ -110,15 +110,15 @@ pageEncoding="UTF-8"%>
 			    쿠폰관리
 			    </div>
 			  </div>
-			    <div class="row border-1 border-top border-secondary">
+			    <div class="row border-1 border-top border-secondary smallCategory">
 				   <div class="col-2">&nbsp;</div>
-				   <div class="col-10 ps-0 smallCategory" id="smallCategory">
+				   <div class="col-10 ps-0">
 					    <a class="nav-link" href="./registedCouponPage">쿠폰 정보</a>
 				   </div>
 				</div>	 
-				<div class="row row border-1 border-bottom border-secondary">
+				<div class="row row border-1 border-bottom border-secondary smallCategory">
 				   <div class="col-2">&nbsp;</div>
-				    <div class="col-10 ps-0 smallCategory" id="smallCategory">
+				    <div class="col-10 ps-0">
 					    <a class="nav-link" href="./registCouponPage">쿠폰 등록</a>
 				   </div>
 				</div>   

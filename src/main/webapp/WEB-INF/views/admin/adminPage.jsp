@@ -11,7 +11,7 @@ pageEncoding="UTF-8"%>
 <title>Insert title here</title>
 <style>
 	#naviBack {
-		background-color:#474747;
+		background-color:black;
 		color:white;
 		height: 100vh;
 	}
@@ -20,9 +20,10 @@ pageEncoding="UTF-8"%>
 		font-size : 150%;		
 	}
 	
-	#icon1 {
+	.icon1 {
 		font-size : 150%;
 		cursor: pointer;
+		color: white;
 	}
 	
 	.naviIcon {
@@ -37,7 +38,7 @@ pageEncoding="UTF-8"%>
 				
 	}	
 	
-	#smallCategory:hover {
+	.smallCategory:hover {
 		background-color:#303030;
 	}
 	
@@ -53,7 +54,7 @@ pageEncoding="UTF-8"%>
 			<div class="col-2" id="naviBack">
 				<jsp:include page="../common/leftNavi.jsp"></jsp:include>
 			</div>
-			<div class="col-md-9 offset-md-1">
+			<div class="col-8 mx-auto">
 				<div class="row d-flex justify-content-center h1 mt-5">
 					관리자 페이지입니다.
 				</div>

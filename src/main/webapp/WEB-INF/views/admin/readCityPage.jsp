@@ -18,7 +18,9 @@ pageEncoding="UTF-8"%>
 			<c:if test="${!empty sessionUser}">
 			<div class="col-9">
 				<div class="row d-flex justify-content-center h1 mt-5">
+					<div class="col">
 					지역 상세페이지
+					</div>
 				</div>
 				<div class="row mt-5">
 				<form action="updateCityProcess" method="post">
