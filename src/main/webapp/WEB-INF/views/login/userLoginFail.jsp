@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 <%@ page session="false" %>
 <!DOCTYPE html>
 <html>
@@ -27,41 +28,7 @@
             color: #ffffff; /* 흰색으로 설정 */
         }
     </style>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script type="text/javascript">
-    
-    var endDate = new Date('${memberRestrictDto.user_restrict_end_date}');
-    
-    function formatDate(date, format) {
-    	  var year = date.getFullYear();
-    	  var month = ('0' + (date.getMonth() + 1)).slice(-2);
-    	  var day = ('0' + date.getDate()).slice(-2);
-    	  var hours = ('0' + date.getHours()).slice(-2);
-    	  var minutes = ('0' + date.getMinutes()).slice(-2);
-    	  var seconds = ('0' + date.getSeconds()).slice(-2);
-    	  
-    	  format = format.replace('yyyy', year);
-    	  format = format.replace('MM', month);
-    	  format = format.replace('dd', day);
-    	  format = format.replace('hh', hours);
-    	  format = format.replace('mm', minutes);
-    	  format = format.replace('ss', seconds);
-
-    	  return format;
-    	}
-    
-	var endDateFormatted = formatDate(endDate, 'yyyy-MM-dd hh:mm:ss');
-
-    console.log(endDate);
-    console.log('${memberRestrictDto.user_restrict_end_date}');
-    function loginFail(){
-        swal('회원님의 계정은 신고로 인해 ' + endDateFormatted + '까지 이용이 정지되었습니다.', ' sdsds', 'warning');
-    }
-    
-    document.addEventListener("DOMContentLoaded", function(){
-    	loginFail();
-    });
-    </script>
+   
 </head>
 <body>
 
@@ -69,8 +36,9 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="alert alert-secondary" role="alert">
-			  회원님의 계정은 신고로 인해 "${memberRestrictDto.user_restrict_end_date}"까지
-			  이용이 정지되었습니다.
+			  회원님의 계정은 신고로 인해 "<fmt:formatDate value="${memberRestrictDto.user_restrict_end_date}" pattern="yyyy-MM-dd hh:mm:ss" />"까지
+			  이용이 정지되었습니다.<br><br>
+			  관리자의 메시지: ${memberRestrictDto.user_restrict_reason}
 			</div>
         </div>
     </div>
