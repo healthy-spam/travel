@@ -18,9 +18,13 @@
 <title>메인 페이지</title>
 <style>
         #opencrewhome {
-            background-color: #17b75e;
+           	background-image: linear-gradient(98deg,#03c75a,#38a877);
             color: white;
         }
+       #opencrewhome:hover {
+		   	background-image: linear-gradient(98deg,#1e9f58,#0e8a69);
+		   	color: #f0f0f0;
+		}
 
 		.card-mycrew {
 			min-height:300px;

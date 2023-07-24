@@ -10,8 +10,10 @@ import org.apache.ibatis.annotations.Param;
 import com.ja.travel.dto.CrewBoardAttachedDto;
 import com.ja.travel.dto.CrewBoardCommentDto;
 import com.ja.travel.dto.CrewBoardDto;
+import com.ja.travel.dto.CrewChatDto;
 import com.ja.travel.dto.CrewDto;
 import com.ja.travel.dto.CrewMemberDto;
+import com.ja.travel.dto.CrewMemberPointDto;
 import com.ja.travel.dto.UserDto;
 import com.ja.travel.dto.UserNotificationDto;
 
@@ -141,6 +143,12 @@ public interface CrewMapper {
 	public List<UserNotificationDto> getmynoticebyuserid(int user_id);
 
 	public void cancelmycrewrequestbyuserid(int user_id);
+
+	public void addPoint(CrewMemberPointDto cp);
+
+	public List<CrewChatDto> getchatbycrewdomain(String crew_domain);
+
+	public void sendchat(CrewChatDto crewChatDto);
 
 	
 }
