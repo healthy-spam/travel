@@ -19,10 +19,12 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ja.travel.dto.GuidePlanningApplicationDto;
+import com.ja.travel.dto.GuidePlanningComment;
 import com.ja.travel.dto.UserDto;
 import com.ja.travel.guidePackage.service.PackageService;
 
@@ -55,7 +57,9 @@ public class RestPackageController {
 		if (sessionUser != null) {
 			map.put("sessionUser", sessionUser);
 		}
-
+		
+		
+		
 		map.put("totalCount", totalCount);
 		map.put("list", list);
 
@@ -153,6 +157,48 @@ public class RestPackageController {
 		
 		
 	return map;
+	}
+
+	@RequestMapping("createInitComment")
+	public Map<String, Object> createInitComment(@ModelAttribute GuidePlanningComment guidePlanningComment, HttpSession session) {
+		
+		
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		
+		packageService.createInitComment(guidePlanningComment, sessionUser);
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("ok", "ok");
+		
+		return map;
+	}
+	
+	@RequestMapping("getCommentList")
+	public Map<String, Object> getCommentList(int guide_planning_id, HttpSession session) {
+		
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		
+		List<Map<String, Object>> list = packageService.getCommentList(guide_planning_id, sessionUser);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("list", list);
+		
+		return map;
+	}
+	
+	@RequestMapping("addLike")
+	public Map<String, Object> addLike(int guide_planning_comment_id, HttpSession session) {
+		
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		
+		packageService.addLike(guide_planning_comment_id, sessionUser);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("ok", "ok");
+		
+		return map;
 	}
 
 }

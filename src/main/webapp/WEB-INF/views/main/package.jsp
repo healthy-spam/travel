@@ -177,11 +177,21 @@
                   var overlay = document.createElement('div');
                   overlay.classList.add('overlay');
                   imageWrapper.appendChild(overlay);
+                  
+                  if(response.list[i].packageMember >= response.list[i].guidePlanning.guide_planning_member){
+                	  var overlayText2 = document.createElement('div');
+                      overlayText2.classList.add('overlayText2', 'p-2');
+                      overlayText2.innerText = '모집 완료';
+                      overlay.appendChild(overlayText2);
+                  }else{
+                	  
+                	  var overlayText = document.createElement('div');
+                      overlayText.classList.add('overlayText', 'p-2');
+                      overlayText.innerText = '모집중 · ' + response.list[i].guidePlanning.guide_planning_member + '명';
+                      overlay.appendChild(overlayText);
+                  }
 
-                  var overlayText = document.createElement('div');
-                  overlayText.classList.add('overlayText', 'p-2');
-                  overlayText.innerText = '모집중 · ' + response.list[i].guidePlanning.guide_planning_member + '명';
-                  overlay.appendChild(overlayText);
+                  
 
                   var cardBody = document.createElement('div');
                   cardBody.classList.add('card-body');
@@ -427,6 +437,11 @@ h3 {
 
 .overlayText {
    color: #10ed05;
+   font-size: 16px;
+}
+
+.overlayText2 {
+   color: red;
    font-size: 16px;
 }
 
