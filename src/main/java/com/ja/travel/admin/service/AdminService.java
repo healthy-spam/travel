@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -159,8 +157,9 @@ public class AdminService {
 	}
 	
 	public Map<String, Object> getUserReport(int id) {
-		
 		Map<String, Object> map = new HashMap<>();
+		
+		List<UserReportDto> list = adminSqlMapper.getUserReportDtoListByUserReportId(id);
 		UserReportDto userReportDto = adminSqlMapper.getUserReportDtoByUserReportId(id);
 		int reportedUserId = userReportDto.getReported_user_id();
 		UserDto reportedUserDto = adminSqlMapper.getUserDtoByReportedUserId(reportedUserId);
@@ -168,6 +167,7 @@ public class AdminService {
 		map.put("userReportDto", userReportDto);
 		map.put("reportedUserDto",reportedUserDto);
 		map.put("memberRestrictDto", memberRestrictDto);
+		map.put("list", list);
 		
 		return map;
 		
@@ -311,5 +311,48 @@ public class AdminService {
 		}
 		adminSqlMapper.updateCoupon(couponDto);
 		
+	}
+	
+	public void userReport(UserReportDto userReport, MultipartFile[] reportImages) {
+		if (reportImages != null) {
+
+			for (MultipartFile multipartFile : reportImages) {
+
+				if (multipartFile.isEmpty()) {
+					continue;
+				}
+
+				String rootFolder = "C:/uploadFiles/reportImages/";
+
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
+				String today = sdf.format(new Date());
+
+				File targetFolder = new File(rootFolder + today);
+
+				if (!targetFolder.exists()) {
+					targetFolder.mkdirs();
+				}
+
+				String fileName = UUID.randomUUID().toString();
+
+				fileName += "_" + System.currentTimeMillis();
+
+				String originalFileName = multipartFile.getOriginalFilename();
+
+				String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+
+				String saveFileName = today + "/" + fileName + ext;
+
+				try {
+					multipartFile.transferTo(new File(rootFolder + saveFileName));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				userReport.setUser_report_attached(saveFileName);
+				adminSqlMapper.insertUserReport(userReport);
+			}
+		}
 	}
 }

@@ -63,12 +63,4 @@ public class TravelApplicationController {
 
 		return "redirect:/main";
 	}
-	
-	@RequestMapping("userReport")
-	public String userReport(UserReportDto userReport, MultipartFile[] reportImages, HttpServletRequest request) {
-		travelApplicationService.userReport(userReport, reportImages);
-		
-		String referer = request.getHeader("Referer");
-		return "redirect:" + referer;
-	}
 }

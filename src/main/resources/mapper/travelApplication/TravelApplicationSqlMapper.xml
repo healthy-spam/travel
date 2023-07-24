@@ -319,20 +319,4 @@
 		WHERE planning_comment_id = #{planning_comment_id}
 		AND user_id = #{user_id}
 	</delete>
-	
-	<insert id="insertUserReport">
-		INSERT INTO user_report
-		VALUES
-			(
-				user_report_seq.nextval,
-				'',
-				#{user_id},
-				#{reported_user_id},
-				'미처리',
-				SYSDATE,
-				#{user_report_desc},
-				'',
-				#{user_report_attached}
-			)
-	</insert>
 </mapper>

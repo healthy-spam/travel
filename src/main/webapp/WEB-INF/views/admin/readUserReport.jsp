@@ -110,7 +110,9 @@ pageEncoding="UTF-8"%>
 							  		없음
 							  	</c:when>
 							  	<c:otherwise>
-							    	${map.userReportDto.user_report_attached}
+							    	<c:forEach items="${map.list}" var="data">
+							    		<img src="/uploadFiles/reportImages/${data.user_report_attached}">
+							    	</c:forEach>
 							    </c:otherwise>
 							  </c:choose>
 							</div>

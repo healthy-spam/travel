@@ -80,7 +80,6 @@ pageEncoding="UTF-8"%>
 					<table class="table table-sm h-75">
 					  <thead class="table-secondary">
 					    <tr>
-					      <th scope="col"></th>
 					      <th scope="col">신고자</th>
 					      <th scope="col">신고 대상</th>
 					      <th scope="col">세부 내용</th>
@@ -91,9 +90,8 @@ pageEncoding="UTF-8"%>
 					  <c:forEach var="list" items="${list}">
 					  <tbody>
 					    <tr>
-					      <th scope="row">${list.userReportDto.user_report_id}</th>
-					      <td>${list.reportingUserDto.user_email}</td>
-					      <td>${list.reportedUserDto.user_email}</td>
+					      <td>${list.reportingUserDto.user_nickname}</td>
+					      <td>${list.reportedUserDto.user_nickname}</td>
 					      <td><a href="./readUserReport?id=${list.userReportDto.user_report_id}">보기</a></td>
 					      <td>${list.userReportDto.user_report_status}</td>
 					      <td><fmt:formatDate value="${list.userReportDto.user_report_reg_date}" pattern="yyyy-MM-dd" /></td>

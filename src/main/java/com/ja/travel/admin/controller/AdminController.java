@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import com.ja.travel.dto.GuideDto;
 import com.ja.travel.dto.GuideRestrictDto;
 import com.ja.travel.dto.MemberRestrictDto;
 import com.ja.travel.dto.PlanCityDto;
+import com.ja.travel.dto.UserReportDto;
 
 
 @Controller
@@ -357,6 +359,14 @@ public class AdminController {
 	
 		return "redirect:../admin/registedCouponPage";
 		
+	}
+	
+	@RequestMapping("userReport")
+	public String userReport(UserReportDto userReport, MultipartFile[] reportImages, HttpServletRequest request) {
+		adminService.userReport(userReport, reportImages);
+		
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
 	}
 	
 }
