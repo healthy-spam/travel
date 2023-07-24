@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ja.travel.admin.service.AdminService;
@@ -183,7 +184,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping("restrictUserProcess")
-	public String restrictUserProcess(HttpSession session ,MemberRestrictDto params, String user_report_status) {
+	public String restrictUserProcess(HttpSession session ,MemberRestrictDto params, @RequestParam("user_report_status") String user_report_status) {
 		
 		AdminDto sessionUser = (AdminDto) session.getAttribute("sessionUser");
 		params.setAdmin_id(sessionUser.getAdmin_id());

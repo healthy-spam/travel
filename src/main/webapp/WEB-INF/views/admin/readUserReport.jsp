@@ -91,22 +91,7 @@ pageEncoding="UTF-8"%>
 						  	${map.reportedUserDto.user_email}
 						  </div>
 						</div>
-						<div class="row">  
-						  <div class="col-sm-2">
-						  	플랜 계획 번호
-						  </div>
-						  <div class="col-sm-10">
-						  	${map.userReportDto.planning_id}
-						  </div>
-						</div>
-						<div class="row">
-						  <div class="col-sm-2">
-						  	신고 유형
-						  </div>
-						  <div class="col-sm-10">
-						    ${map.userReportDto.user_report_type}
-						  </div>
-						</div>
+
 						<div class="row">  
 						  <div class="col-sm-2">
 						  	상세 설명
@@ -121,7 +106,7 @@ pageEncoding="UTF-8"%>
 						  </div>
 						  <div class="col-sm-10">
 							  <c:choose>
-							  	<c:when test="${map.userReportDto.user_report_attached}">
+							  	<c:when test="${empty map.userReportDto.user_report_attached}">
 							  		없음
 							  	</c:when>
 							  	<c:otherwise>
@@ -187,6 +172,7 @@ pageEncoding="UTF-8"%>
 					<div class="col mt-3 text-center">
 						<input type="hidden" value="${map.userReportDto.user_report_id}" name="user_report_id">
 						<input type="hidden" value="${map.userReportDto.reported_user_id}" name="user_id">
+						<input type="hidden" value="로그인 제한" name="user_report_status">						
 						<span>
 							<button class="btn btn-secondary" type="submit">제한</button>
 						</span>
