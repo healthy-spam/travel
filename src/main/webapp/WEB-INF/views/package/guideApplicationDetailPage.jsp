@@ -725,6 +725,43 @@ function planningDay() {
 		 
 		
  */
+ 
+ var commentList;
+ 
+ function createCommentFunc() {
+		var comment = document.querySelector('.comment');
+		
+		const xhr = new XMLHttpRequest();
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				const response = JSON.parse(xhr.responseText);
+				// js 작업//
+				
+				if (response.ok != null) {
+					comment.value = '';
+					getCommentList();
+				}
+			}
+		}
+
+		//post
+		xhr.open("post", "./createInitComment");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		var params = "guide_planning_id=" + guidePlanningId + "&user_comment=" + encodeURIComponent(comment.value);
+		xhr.send(params);
+	}
+ 
+ function formatDate(date) {
+		var yyyy = date.getFullYear();
+		var MM = ('0' + (date.getMonth() + 1)).slice(-2); // Months are zero based
+		var dd = ('0' + date.getDate()).slice(-2);
+		var hh = ('0' + date.getHours()).slice(-2);
+		var mm = ('0' + date.getMinutes()).slice(-2);
+
+		return yyyy + '/' + MM + '/' + dd + ' ' + hh + ':' + mm;
+	}
+ 
  function getCommentList() {
 
 		const xhr = new XMLHttpRequest();
@@ -736,6 +773,8 @@ function planningDay() {
 				if (commentList) {
 					commentList.innerHTML = '';	
 				}
+				
+		
 				
 				if (response.list != null) {
 					var boardInfo = document.querySelector('.board-info');
@@ -843,8 +882,15 @@ function planningDay() {
 		//post
 		xhr.open("post", "./addLike");
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhr.send("guide_comment_id="+guide_comment_id);
+		xhr.send("guide_planning_comment_id="+guide_comment_id);
 
+	}
+	
+	function loginCheck() {
+		var sessionUser = '${sessionuser}';
+		if (sessionUser == '') {
+			location.href = '../login';
+		}
 	}
 
  
@@ -884,7 +930,13 @@ document.addEventListener("DOMContentLoaded", function() {
 }
 
 
- 
+ .user-thumbnail {
+	border-radius: 50%;
+	border: 2px solid #03c75a;
+	margin-right: 10px;
+	width: 50px;
+	height: 50px;
+}
 
 
 .startDateBack {
@@ -988,6 +1040,45 @@ document.addEventListener("DOMContentLoaded", function() {
 	cursor: pointer;
 }
 
+.comment-wrapper {
+	position: relative;
+}
+
+.comment::placeholder {
+	font-size: 0.8em;
+	color: lightgrey;
+}
+
+.comment-info {
+	font-size: 0.8em;
+	color: #999999;
+}
+
+.comment-button {
+	position: absolute;
+	top: 8px;
+	right: 20px;
+	border: none;
+	color: #03c75a;
+}
+
+.comment-reply {
+	border: none;
+	font-size: 0.8em;
+	padding: 0;
+	color: #999999;
+}
+
+.comment-love {
+	font-size: 0.8em;
+	color: #999999;
+}
+
+.bi-heart,
+.bi-heart-fill {
+	margin-left: 0.5em;
+	font-size: 0.9em;
+}
 
 </style>
 
@@ -1216,6 +1307,16 @@ document.addEventListener("DOMContentLoaded", function() {
 						</div>			
 					</div>
 				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 mb-1 comment-info d-flex justify-content-between">
+				<span class="board-info"></span>
+				<a href="../main" style="color: #999999; text-decoration: none;">목록</a>
+			</div>
+			<div class="col mb-3 comment-wrapper" onclick="loginCheck()">
+				<input class="form-control comment p-2" type="text" placeholder="댓글을 입력해주세요.">
+				<button class="comment-button" type="button" onclick="createCommentFunc()">작성</button>
 			</div>
 		</div>
 		<div class="row">
