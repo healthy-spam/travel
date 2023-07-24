@@ -290,7 +290,7 @@ public class TravelApplicationService {
 					continue;
 				}
 
-				String rootFolder = "C:/uploadFiles/hotelDetailImages/";
+				String rootFolder = "C:/uploadFiles/reportImages/";
 
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
