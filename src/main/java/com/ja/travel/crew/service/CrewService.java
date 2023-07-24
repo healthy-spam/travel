@@ -49,6 +49,10 @@ public class CrewService {
 			model.addAttribute("myPoint", crewMapper.getMyPointByCrewMemberId(crewMemberDto.getCrew_member_id())== null ? 0 : crewMapper.getMyPointByCrewMemberId(crewMemberDto.getCrew_member_id()));
 			model.addAttribute("crewThumbnail", crewDto.getCrew_thumbnail());
 			model.addAttribute("crewMemberDto", crewMemberDto);
+			
+			//알림 가져오기
+			List<UserNotificationDto> notice = crewMapper.getmynoticebyuserid(userDto.getUser_id());
+			model.addAttribute("notice", notice);
 		} catch (Exception e) { 
 			try { //가입신청한 멤버일 경우
 				CrewMemberDto crewMemberDto = crewMapper.getAppliedMemberInfo(userDto.getUser_id());
@@ -61,8 +65,18 @@ public class CrewService {
 				model.addAttribute("master", crewMapper.getUserNameById(crewDto.getMaster_id()));
 				model.addAttribute("applied", crewMemberDto);
 				
+				//알림 가져오기
+				List<UserNotificationDto> notice = crewMapper.getmynoticebyuserid(userDto.getUser_id());
+				model.addAttribute("notice", notice);
+				
 			} catch (Exception e2) {
 				// TODO: handle exception
+				try {
+					List<UserNotificationDto> notice = crewMapper.getmynoticebyuserid(userDto.getUser_id());
+					model.addAttribute("notice", notice);
+				} catch (Exception e3) {
+					// TODO: handle exception
+				}
 			}
 			
 		}
@@ -124,7 +138,7 @@ public class CrewService {
 		crewMemberDto.setCrew_join_status("member");
 		crewMapper.createcrew(crewDto);
 		crewMapper.addcrewmember(crewMemberDto);
-		sendnotification(userDto.getUser_id(), "/travel/crew/crewhome/"+crewDto.getCrew_domain(), "["+crewDto.getCrew_name()+ "] 크루 생성이 완료되었습니다.");
+		
 		}
 
 	public Map<String, Object> crewMainResources(String crew_domain, HttpSession session) {
@@ -183,7 +197,47 @@ public class CrewService {
 		bb.put("list", ss);
 		return bb;
 	}
+	
+	public List<Map<String, Object>> getPublicBoardList(String crew_domain, UserDto userDto) {
+		List<CrewBoardDto> publicpostlist = crewMapper.getAllPublicPostByCrewDomain(crew_domain);
+		List<Map<String, Object>> list = new ArrayList<>();
+		for(CrewBoardDto post : publicpostlist) {
+			Map< String, Object> map = new HashMap<String, Object>();
+			UserDto userDto2 = crewMapper.getUserDtoByCrewMemberId(post.getCrew_member_id()); //게시글 작성자 닉네임
+			List<Integer> boardlikelist = crewMapper.getBoardLikeListByCrewBoardId(post.getCrew_board_id()); //해당 게시글에 좋아요 누른 crew_member_id 리스트
+
+			List<CrewBoardAttachedDto> files = crewMapper.getCrewBoardAttachedByCrewBoardId(post.getCrew_board_id());
+			if(files!=null) {
+				map.put("files", files);
+			}
+			
+			map.put("boardlikecount", boardlikelist.size());
+			map.put("userDto", userDto2);
+			map.put("c", post);
+			
+			List<CrewBoardCommentDto> commentlist = crewMapper.getAllCommentByCrewBoardId(post.getCrew_board_id());
+			List<Map<String, Object>> arr = new ArrayList<>();
+			
+			try {
+				for(CrewBoardCommentDto c : commentlist) {
+					UserDto commentWriter = crewMapper.getUserDtoByCrewMemberId(c.getCrew_member_id());
+					Map<String, Object> commentdetails = new HashMap<String, Object>();
+					commentdetails.put("crewBoardCommentDto", c);
+					commentdetails.put("commentWriter", commentWriter);
+					arr.add(commentdetails);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			map.put("commentlist", arr);
 		
+
+			map.put("boardcommentcount", commentlist.size());
+			list.add(map);
+		}
+		return list;
+	}
+	
 	//게시글 불러오는 함수@######################!#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	public List<Map<String, Object>> getBoardList(String crew_domain, UserDto userDto) {
 		List<CrewBoardDto> allpostlist = crewMapper.getAllPostByCrewDomain(crew_domain); //게시글 전체 불러오기
@@ -269,14 +323,15 @@ public class CrewService {
 			model.addAttribute("mypostlist", getmypostlist);
 			List<CrewBoardDto> getmylikedpostlist = crewMapper.getMyLikedBoardListByCrewMemberId(crewMember.getCrew_member_id());
 			model.addAttribute("mylikelist", getmylikedpostlist);
+			model.addAttribute("list", getBoardList(crew_domain, userDto));
 
 		} catch (Exception e) { //크루원 아님
 			System.out.println("오류뜸!!");
 			CrewMemberDto appliedMember = crewMapper.getAppliedMemberInfo(userDto.getUser_id());
 			model.addAttribute("applied", appliedMember);
+			model.addAttribute("list", getPublicBoardList(crew_domain, userDto));
 		}
 		
-		model.addAttribute("list", getBoardList(crew_domain, userDto));
 		model.addAttribute("crewDto", crewDto);
 		model.addAttribute("userDto", userDto);
 		return "crew/crewhome";
@@ -323,8 +378,16 @@ public class CrewService {
 		crewMemberDto.setUser_id(userDto.getUser_id());
 		crewMemberDto.setCrew_join_status("applied");
 		crewMemberDto.setCrew_member_grade_default_id(4);
+		CrewDto crewDto = crewMapper.getCrewDtoByCrewDomain(crewMemberDto.getCrew_domain());
 		crewMapper.addcrewmember(crewMemberDto);
-		sendnotification(userDto.getUser_id(), "/travel/crew/crewhome/"+crewMemberDto.getCrew_domain(),"["+crewMemberDto.getCrew_domain()+ "] 크루 가입신청이 완료되었습니다.");
+		sendnotification(userDto.getUser_id(), "/uploadFiles/crewFiles/crewthumbnail/"+crewDto.getCrew_thumbnail(),"/travel/crew/crewhome/"+crewMemberDto.getCrew_domain(),"["+crewMemberDto.getCrew_domain()+ "] 크루 가입신청이 완료되었습니다.");
+		sendnotification(crewMapper.getCrewDtoByCrewDomain(crewMemberDto.getCrew_domain()).getMaster_id(),"/uploadFiles/crewFiles/crewthumbnail/"+crewDto.getCrew_thumbnail(),"/travel/crew/crewhome/"+crewMemberDto.getCrew_domain(),"["+crewDto.getCrew_name()+ "] 새로운 가입 신청이 있습니다." );
+	}
+	
+	public void cancelrequest(String crew_domain, HttpSession session) {
+		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
+		crewMapper.cancelmycrewrequestbyuserid(userDto.getUser_id());
+		sendnotification(userDto.getUser_id(), "/uploadFiles/crewFiles/crewthumbnail/"+crewMapper.getCrewDtoByCrewDomain(crew_domain).getCrew_thumbnail(),"/travel/crew/crewhome/"+crew_domain,"["+crewMapper.getCrewDtoByCrewDomain(crew_domain).getCrew_name()+ "] 크루 가입신청이 취소되었습니다.");
 	}
 
 	public void boardwrite(Map<String, String> aa, HttpSession session) {
@@ -360,8 +423,11 @@ public class CrewService {
 	}
 
 	public String crewmembers(String crew_domain, Model model) {
+		CrewDto crewDto = crewMapper.getCrewDtoByCrewDomain(crew_domain);
+		model.addAttribute("masterName", crewMapper.getUserNameById(crewDto.getMaster_id()));
+		model.addAttribute("membersize", Integer.toString(crewMapper.getCrewMemberListByCrewDomain(crew_domain).size()));
 		model.addAttribute("applied", getappliedlist(crewMapper.getAllCrewRequestByCrewDomain(crew_domain)));
-		model.addAttribute("crewDto", crewMapper.getCrewDtoByCrewDomain(crew_domain));
+		model.addAttribute("crewDto", crewDto);
 		model.addAttribute("crewsize", getappliedlist(crewMapper.getAllCrewRequestByCrewDomain(crew_domain)).size());
 		return "crew/crewmemberlist";
 	}
@@ -369,8 +435,11 @@ public class CrewService {
 	public List<Map<String, Object>> requestaccept(List<Integer> crew_member_id) {
 		String crew_domain = crewMapper.getCrewDomainByCrewMemberId(crew_member_id.get(0));
 		crewMapper.requestaccept(crew_member_id);
+		for(Integer c : crew_member_id) {
+			sendnotification(crewMapper.getUserDtoByCrewMemberId(c).getUser_id(), "/uploadFiles/profileImage/"+crewMapper.getUserDtoByCrewMemberId(c).getUser_image(),"/travel/crew/crewhome/"+crew_domain,"["+crewMapper.getCrewDtoByCrewDomain(crew_domain).getCrew_name()+ "] 크루 가입이 완료되었습니다. 지금 크루 홈을 방문해 새로운 소식을 확인해보세요!");
+		}
 		List<CrewMemberDto> list1 = crewMapper.getAllCrewRequestByCrewDomain(crew_domain);
-		sendnotification(crewMapper.getUserDtoByCrewMemberId(crew_member_id.get(0)).getUser_id(), "redirect:/travel/crew/crewhome/"+crew_domain,"["+crewMapper.getCrewDtoByCrewDomain(crew_domain).getCrew_name()+ "] 크루 가입이 완료되었어요. 지금 크루 홈을 방문해 새로운 소식을 확인해보세요!");
+		
 		return getappliedlist(list1);
 	}
 	
@@ -439,12 +508,20 @@ public class CrewService {
 	public List<Map<String, Object>> writecomment(Map<String, Object> crewBoardCommentDto, HttpSession session) {
 		String crew_comment = crewBoardCommentDto.get("crew_comment").toString();		
 		int crew_board_id =  Integer.parseInt((String) crewBoardCommentDto.get("crew_board_id"));
-		int crew_member_id = crewMapper.getCrewMemberDtoByUserId(( (UserDto) session.getAttribute("sessionuser") ).getUser_id()).getCrew_member_id();
+		UserDto userDto2 =  (UserDto) session.getAttribute("sessionuser");
+		int crew_member_id = crewMapper.getCrewMemberDtoByUserId(userDto2.getUser_id()).getCrew_member_id();
 		CrewBoardCommentDto a = new CrewBoardCommentDto();
 		a.setCrew_board_id(crew_board_id);
 		a.setCrew_member_id(crew_member_id);
 		a.setCrew_comment(crew_comment);
-		crewMapper.writecomment(a);	
+		crewMapper.writecomment(a);
+		
+		UserDto userDto = crewMapper.getUserDtoByCrewMemberId(crewMapper.getCrewBoardDtoByCrewBoardId(crew_board_id).getCrew_member_id());
+		
+		sendnotification(userDto.getUser_id(), 
+				"/uploadFiles/profileImage/"+userDto.getUser_image(),
+				"/travel/crew/crewhome/"+crewMapper.getCrewDomainByCrewBoardId(crew_board_id),
+				"["+crewMapper.getCrewDtoByCrewDomain(crewMapper.getCrewDomainByCrewBoardId(crew_board_id)).getCrew_name()+ "] "+userDto2.getUser_nickname()+" 님이 본인의 게시글에 좋아요를 누르셨습니다.");
 		return getcommentlist(crew_board_id);
 	}
 
@@ -510,6 +587,7 @@ public class CrewService {
 		UserDto userDto = crewMapper.getUserDtoByCrewMemberId(crew_member_id);
 		
 		sendnotification(crewMapper.getUserDtoByCrewMemberId(crewMapper.getCrewBoardDtoByCrewBoardId(crew_board_id).getCrew_member_id()).getUser_id(), 
+				"/uploadFiles/profileImage/"+userDto.getUser_image(),
 				"redirect:/travel/crew/crewhome/"+crew_domain+"/"+Integer.toString(crew_board_id),
 				"["+crewMapper.getCrewDtoByCrewDomain(crew_domain).getCrew_name()+ "] "+userDto.getUser_nickname()+" 님이 본인의 게시글에 좋아요를 누르셨습니다.");
 		
@@ -525,9 +603,10 @@ public class CrewService {
 	
 	
 	//알림 보내기 메소드!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!~~~~~~~~~~~~~~~~~~~~~~~~~~#######################
-	public void sendnotification(int user_id, String user_notification_link, String user_notification_content) {
+	public void sendnotification(int user_id, String sender_image, String user_notification_link, String user_notification_content) {
 		UserNotificationDto userNotificationDto = new UserNotificationDto();
 		userNotificationDto.setUser_id(user_id);
+		userNotificationDto.setSender_image(sender_image);
 		userNotificationDto.setUser_notification_link(user_notification_link);
 		userNotificationDto.setUser_notification_content(user_notification_content);
 		crewMapper.sendnotification(userNotificationDto);
@@ -539,7 +618,10 @@ public class CrewService {
 	}
 
 	public String crewclosecheck(String crew_domain, Model model) {
-		model.addAttribute("crewDto", crewMapper.getCrewDtoByCrewDomain(crew_domain));
+		CrewDto crewDto = crewMapper.getCrewDtoByCrewDomain(crew_domain);
+		model.addAttribute("masterName", crewMapper.getUserNameById(crewDto.getMaster_id()));
+		model.addAttribute("membersize", Integer.toString(crewMapper.getCrewMemberListByCrewDomain(crew_domain).size()));
+		model.addAttribute("crewDto", crewDto);
 		try {
 			Date date = crewMapper.getCrewCloseDateByCrewDomain(crew_domain);
 			model.addAttribute("regdate", date);
@@ -567,10 +649,14 @@ public class CrewService {
 
 	public String wholeMemberManage(String crew_domain, Model model) {
 		List<CrewMemberDto> getmembers = crewMapper.getCrewMemberListByCrewDomain(crew_domain);
+		CrewDto crewDto = crewMapper.getCrewDtoByCrewDomain(crew_domain);
+		model.addAttribute("crewDto", crewDto);
 		List<Map<String, Object>> memberlist = getAllMembers(getmembers);
 		model.addAttribute("member", memberlist);
 		model.addAttribute("crewsize", memberlist.size());
 		model.addAttribute("crewDto", crewMapper.getCrewDtoByCrewDomain(crew_domain));
+		model.addAttribute("masterName", crewMapper.getUserNameById(crewDto.getMaster_id()));
+		model.addAttribute("membersize", Integer.toString(crewMapper.getCrewMemberListByCrewDomain(crew_domain).size()));
 		return "crew/ManageWholeMember";
 	}
 	
@@ -581,7 +667,9 @@ public class CrewService {
 			userDto.setUser_address(null);
 			userDto.setUser_phone(null);
 			Map<String, Object> map = new HashMap<String, Object>();
-//			map.put("postcount", crewMapper.getMyBoardListByCrewMemberId(mem.getCrew_member_id()).size());
+			map.put("grade", crewMapper.getGradeNameByGradeId(mem.getCrew_member_grade_default_id()));
+			map.put("Point", crewMapper.getMyPointByCrewMemberId(mem.getCrew_member_id())== null ? 0 : crewMapper.getMyPointByCrewMemberId(mem.getCrew_member_id()));
+			map.put("postcount", crewMapper.getMyBoardListByCrewMemberId(mem).size());
 			map.put("commentcount", crewMapper.getMyCommentListByCrewMemberId(mem.getCrew_member_id()).size());
 			map.put("userDto", userDto);
 			map.put("crewMemberDto", mem);
@@ -655,7 +743,7 @@ public class CrewService {
 	public void uploadcrewphoto(MultipartFile photo, HttpSession session) {
 
 			UserDto userDto = (UserDto) session.getAttribute("sessionuser");
-			String crew_domain = crewMapper.getCrewDomainByMasterId(userDto.getUser_id());
+			CrewDto crewDto = crewMapper.getCrewDtoByUserId(userDto.getUser_id());
 			
 			System.out.println("파일명: " + photo.getOriginalFilename());
 			
@@ -668,7 +756,7 @@ public class CrewService {
 			}
 			
 			// 저장 파일명 만들기.
-			String fileName = crew_domain;
+			String fileName = crewDto.getCrew_domain();
 
 			
 			// 확장자 추출
@@ -685,7 +773,8 @@ public class CrewService {
 				e.printStackTrace();
 			}
 			String crew_thumbnail = saveFileName;
-			crewMapper.addCrewThumbnailByCrewDomain(crew_thumbnail, crew_domain);
+			crewMapper.addCrewThumbnailByCrewDomain(crew_thumbnail, crewDto.getCrew_domain());
+			sendnotification(userDto.getUser_id(), "uploadFiles/crewFiles/crewthumbnail/"+crew_thumbnail, "/travel/crew/crewhome/"+crewDto.getCrew_domain(), "["+crewDto.getCrew_name()+ "] 크루 생성이 완료되었습니다.");
 		}
 
 
@@ -700,10 +789,13 @@ public class CrewService {
 		model.addAttribute("masterName", crewMapper.getUserNameById(crewDto.getMaster_id()));
 		model.addAttribute("membersize", Integer.toString(memberlist.size()));
 		
+		if(userDto.getUser_id() == crewDto.getMaster_id() ) {
+			model.addAttribute("masterm", userDto);
+		}
 		
 		List<Map<String, Object>> aa = getAllMembers(memberlist);
 		
-		if(crewMemberDto==null) { //크루회원 아님
+		if(crewMemberDto==null || !crewDto.getCrew_domain().equals(crewMemberDto.getCrew_domain())) { //크루회원 아님
 			model.addAttribute("memberList", aa);
 		} else {
 			model.addAttribute("crewMemberDto", crewMemberDto);
@@ -750,32 +842,87 @@ public class CrewService {
 
 	public String notice(String crew_domain, Model model, HttpSession session) {
 		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
-
-		List<Map<String, Object>> nnn = postmethod(crewMapper.getAllNoticeByCrewDomain(crew_domain));
-		for(Map<String, Object> nn : nnn) {
-			CrewBoardDto b = (CrewBoardDto) nn.get("crewBoardDto");
-			
-			List<Integer> boardlikelist = crewMapper.getBoardLikeListByCrewBoardId(b.getCrew_board_id()); //해당 게시글에 좋아요 누른 crew_member_id 리스트
-			Map<String, Object> map = new HashMap<>();
-			for(int L:boardlikelist) {
-				if(L == b.getCrew_member_id()) { // 좋아요 crew_member_id list에 본인 id가 있을 시
-					map.put("liked", "dd"); //c태그에서 empty값 확인용
-					break;
+		CrewDto crewDto = crewMapper.getCrewDtoByCrewDomain(crew_domain);
+		try {
+			CrewMemberDto crewMemberDto = crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id());
+			if(crewMemberDto.getCrew_domain().equals(crew_domain)) {
+				List<Map<String, Object>> nnn = postmethod(crewMapper.getAllNoticeByCrewDomain(crew_domain));
+				for(Map<String, Object> nn : nnn) {
+					CrewBoardDto b = (CrewBoardDto) nn.get("crewBoardDto");
+					
+					List<Integer> boardlikelist = crewMapper.getBoardLikeListByCrewBoardId(b.getCrew_board_id()); //해당 게시글에 좋아요 누른 crew_member_id 리스트
+					Map<String, Object> map = new HashMap<>();
+					for(int L:boardlikelist) {
+						if(L == b.getCrew_member_id()) { // 좋아요 crew_member_id list에 본인 id가 있을 시
+							map.put("liked", "dd"); //c태그에서 empty값 확인용
+							break;
+						}
+					}
+					
+					if(boardlikelist.size() == 0) {
+						map.put("boardlikecount", "0");
+					} else {
+						map.put("boardlikecount", Integer.toString(boardlikelist.size()));
+					}
+					
 				}
-			}
-			
-			if(boardlikelist.size() == 0) {
-				map.put("boardlikecount", "0");
+				model.addAttribute("myGrade", crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id()).getCrew_member_grade_default_id());
+				model.addAttribute("noticepost", nnn);
 			} else {
-				map.put("boardlikecount", Integer.toString(boardlikelist.size()));
+				List<Map<String, Object>> nnn = postmethod(crewMapper.getAllPublicNoticeByCrewDomain(crew_domain));
+				for(Map<String, Object> nn : nnn) {
+					CrewBoardDto b = (CrewBoardDto) nn.get("crewBoardDto");
+					
+					List<Integer> boardlikelist = crewMapper.getBoardLikeListByCrewBoardId(b.getCrew_board_id()); //해당 게시글에 좋아요 누른 crew_member_id 리스트
+					Map<String, Object> map = new HashMap<>();
+					for(int L:boardlikelist) {
+						if(L == b.getCrew_member_id()) { // 좋아요 crew_member_id list에 본인 id가 있을 시
+							map.put("liked", "dd"); //c태그에서 empty값 확인용
+							break;
+						}
+					}
+					
+					if(boardlikelist.size() == 0) {
+						map.put("boardlikecount", "0");
+					} else {
+						map.put("boardlikecount", Integer.toString(boardlikelist.size()));
+					}
+					
+				}
+				
+				model.addAttribute("noticepost", nnn);
+			}
+
+
+		} catch (Exception e) {
+			List<Map<String, Object>> nnn = postmethod(crewMapper.getAllPublicNoticeByCrewDomain(crew_domain));
+			for(Map<String, Object> nn : nnn) {
+				CrewBoardDto b = (CrewBoardDto) nn.get("crewBoardDto");
+				
+				List<Integer> boardlikelist = crewMapper.getBoardLikeListByCrewBoardId(b.getCrew_board_id()); //해당 게시글에 좋아요 누른 crew_member_id 리스트
+				Map<String, Object> map = new HashMap<>();
+				for(int L:boardlikelist) {
+					if(L == b.getCrew_member_id()) { // 좋아요 crew_member_id list에 본인 id가 있을 시
+						map.put("liked", "dd"); //c태그에서 empty값 확인용
+						break;
+					}
+				}
+				
+				if(boardlikelist.size() == 0) {
+					map.put("boardlikecount", "0");
+				} else {
+					map.put("boardlikecount", Integer.toString(boardlikelist.size()));
+				}
+				
 			}
 			
+			model.addAttribute("noticepost", nnn);
 		}
 		
-		model.addAttribute("noticepost", nnn);
+
 		model.addAttribute("userDto", userDto);
-		model.addAttribute("crewMemberDto", crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id()));
-		model.addAttribute("myGrade", crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id()).getCrew_member_grade_default_id());
+		model.addAttribute("masterName", crewMapper.getUserDtoByUserId(crewDto.getMaster_id()).getUser_nickname());
+		model.addAttribute("membersize", crewMapper.getCrewMemberListByCrewDomain(crew_domain).size());
 		model.addAttribute("crewDto", crewMapper.getCrewDtoByCrewDomain(crew_domain));
 		return "crew/crewhome_notice";
 	}
@@ -835,5 +982,8 @@ public class CrewService {
 			order++;
 		}
 	}
+
+
+
 		
 }

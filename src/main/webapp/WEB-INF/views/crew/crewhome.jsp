@@ -249,7 +249,35 @@ function commentdelete(board_comment_id) {
     }
 }
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function (event) {
+    var joincrew = document.getElementById("cancelapply");
+    joincrew.addEventListener("click", function () {
+    	bootstrap.Modal.getOrCreateInstance("#cancelapplymodal").show();
+    })
+    document.getElementById("cancelmycrewapply").addEventListener("click", function () {
+    	var crew_domain = "${crewDto.crew_domain}";
+        var formData = new FormData();
+        formData.append("crew_domain",crew_domain);
+        
+        // AJAX 요청 보내기
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/travel/crew/cancelrequest', true);
 
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            // 요청이 성공적으로 완료되었을 때 처리할 로직
+            alert("신청이 취소되었습니다.");
+            bootstrap.Modal.getOrCreateInstance("#cancelapply").hide();
+            location.reload();
+            console.log(xhr.responseText);
+            }
+        };
+
+        xhr.send(formData);
+    })
+})
+</script>
     <script>
         document.addEventListener("DOMContentLoaded", function (event) {
             var joincrew = document.getElementById("joincrew");
@@ -531,22 +559,6 @@ strong#Createnewpost {
 				<div class="col-6">
 
 					<div class="container main px-4">
-						<!-- <div class="row mb-3">
-
-							<div class="col text-center">
-								<button class="btn btn-outline-success">게시글</button>
-							</div>
-							<div class="col text-center">
-								<button class="btn btn-outline-success">일정</button>
-							</div>
-							<div class="col text-center">
-								<button class="btn btn-outline-success">멤버</button>
-							</div>
-							<div class="col text-center">
-								<button class="btn btn-outline-success">설정</button>
-							</div>
-				</div> -->
-
 						<div class="row mb-2">
 							<div class="col px-0">
 								<input type="text" class="form-control nonboarder"
@@ -554,6 +566,7 @@ strong#Createnewpost {
 							</div>
 						</div>
 						<div class="row">
+						<c:if test="${!empty crewMemberDto }">
 							<div class="card boardwrite" id="openBoardWrite">
 								<div class="row mx-2 mt-3">
 									<div class="col-auto">
@@ -580,8 +593,9 @@ strong#Createnewpost {
 									</div>
 								</div>
 							</div>
+							</c:if>
 						</div>
-
+						
 
 						<div class="row">
 							<c:choose>
@@ -987,6 +1001,30 @@ strong#Createnewpost {
 		</div>
 	</div>
 	<!-- modal end -->
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="cancelapplymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">가입신청 중인 상태입니다.</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        신청을 취소하시겠습니까?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
+        <button type="button" class="btn btn-primary" id="cancelmycrewapply">신청취소</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
     <!-- Modal -->
 

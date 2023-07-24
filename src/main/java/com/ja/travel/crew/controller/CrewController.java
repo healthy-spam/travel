@@ -103,6 +103,11 @@ public class CrewController {
 		crewService.joinrequest(crewMemberDto, session);
 	}
 	
+	@RequestMapping("/cancelrequest")
+	public void cancelrequest(String crew_domain, HttpSession session) {
+		crewService.cancelrequest(crew_domain, session);
+	}
+	
 	@RequestMapping("/crewboard/write")
 	public @ResponseBody void boardwrite(@RequestBody Map<String, String> crewBoardDto, HttpSession session) {
 		crewService.boardwrite(crewBoardDto, session);
@@ -199,4 +204,5 @@ public class CrewController {
 	public String notice(@PathVariable("crew_domain") String crew_domain, Model model, HttpSession session) {
 		return crewService.notice(crew_domain, model, session);
 	}
+	
 }

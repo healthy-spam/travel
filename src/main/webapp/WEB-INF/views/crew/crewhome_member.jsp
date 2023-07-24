@@ -271,6 +271,11 @@ font-size: 30px
 						<div class="col member1">
 							<span>멤버 <em class="member2">${membersize } / 20</em></span>
 						</div>
+						<div class="col text-end">
+						<c:if test="${!empty masterm }">
+							<a href="/travel/crew/crewsetting/joinrequest/${crewDto.crew_domain }"><button class="btn btn-success-outline btn-sm">가입 신청 관리</button></a>
+						</c:if>
+						</div>
 					</div>
 					<div class="row mt-3">
 						<div class="col">

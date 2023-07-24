@@ -17,8 +17,8 @@
 
 <title>메인 페이지</title>
 <style>
-        .btn {
-            background-color: #DB4465;
+        #opencrewhome {
+            background-color: #17b75e;
             color: white;
         }
 
@@ -97,14 +97,38 @@
 
         .crewlistcard {
             height: 160px;
-            
+            transition: transform 0.3s ease; /* 변화가 일어날 때 애니메이션 효과를 주기 위한 CSS transition 속성 */
         }
+        .crewlistcard:hover {
+		  /* 마우스 커서를 올렸을 때의 스타일 지정 (애니메이션 효과를 추가할 부분) */
+		  transform: scale(1.02); /* 카드 크기를 약간 확대하여 애니메이션 효과를 줍니다. */
+		}
         .card-mycrew {
-        	height: 200px;
+        	height: 361px;
         }
         .card-notitable {
-        	height: 300px;
+        	height: 361px;
         }
+        
+        .bi-bell {
+        	font-style: normal;
+        }
+        a:hover {
+		  color: inherit; /* 링크 텍스트의 색상을 부모 요소로부터 상속 받습니다. */
+		  text-decoration: none; /* 텍스트에 밑줄을 제거합니다. */
+		}
+        
+		a {
+		  color: inherit; /* 링크 텍스트의 색상을 부모 요소로부터 상속 받습니다. */
+		  text-decoration: none; /* 텍스트에 밑줄을 제거합니다. */
+		}
+		.noti {
+			transition: transform 0.3s ease; /* 변화가 일어날 때 애니메이션 효과를 주기 위한 CSS transition 속성 */
+		}
+		.noti:hover {
+			/* 마우스 커서를 올렸을 때의 스타일 지정 (애니메이션 효과를 추가할 부분) */
+		  transform: scale(1.01); /* 카드 크기를 약간 확대하여 애니메이션 효과를 줍니다. */
+		}
 
 </style>
 <script type="text/javascript">
@@ -322,66 +346,47 @@
 					</div>
 					<div class="col">
                         <div class="card card-notitable  shadow-sm bg-body-tertiary rounded">
-                        	<div class="row sticky-header py-2">
-                        		<div class="col-auto">
+                        	<div class="row sticky-header pt-2">
+                        		<div class="col-auto ms-2">
                         			<i class="bi bi-bell"> 알림</i>
                         		</div>
-                        		<div class="col text-end">
+                        		<div class="col text-end me-2">
                         			자세히보기
                         		</div>
                         	</div>
+                        	<hr>
                         	
                         	<c:choose>
-                        		<c:when test="${!empty notifications }">
-                        			                        			<div class="row">
-                        		<div class="col-auto">
-                        			<img src="/uploadFiles/crewFiles/crewthumbnail/hangyodon.png" width="35px" height="35px" class="rounded-circle">
-                        		</div>
-                        		<div class="col">
-                        			<div class="row">
-                        				멍테일 님이 회원님의 게시글에 댓글을 남겼습니다.
-                        			</div>
-                        			<div class="row">
-                        				2023-07-13
-                        			</div>
-                        		</div>
-                        		<hr>
-                        	</div>
+                        		<c:when test="${!empty notice }">
+                        		
+	                        		<c:forEach var="notifications" items="${notice}" varStatus="status">
+	                        			<a href="${notifications.user_notification_link }">
+	                        				<div class="row noti">
+			                        			<div class="col-auto ms-2" >
+			                        				<img src="${notifications.sender_image }" width="40px" height="40px" class="rounded-circle">
+			                        			</div>
+			                        			<div class="col">
+			                        				<div class="row">
+			                        					${notifications.user_notification_content }
+			                        				</div>
+			                        				<div class="row text-secondary">
+				                        				<fmt:formatDate value="${notifications.user_notification_date }" pattern="yyyy.MM.dd HH:mm" var="user_notification_date" />
+													${user_notification_date }
+			                        				</div>
+			                        			</div>
+		                        			
+		                        			</div>
+		                        			<hr>
+		                        		</a>
+		                        	</c:forEach>
 
-
-                        	
-                        	                        	<div class="row">
-                        		<div class="col-auto">
-                        			<img src="/uploadFiles/crewFiles/crewthumbnail/bowwow.png" width="35px" height="35px" class="rounded-circle">
-                        		</div>
-                        		<div class="col">
-                        			<div class="row">
-                        				멍테일 님이 회원님의 게시글에 댓글을 남겼습니다.
-                        			</div>
-                        			<div class="row">
-                        				2023-07-13
-                        			</div>
-                        		</div>
-                        		<hr>
-                        	</div>
-                        	
-                        	                        	<div class="row">
-                        		<div class="col-auto">
-                        			<img src="/uploadFiles/crewFiles/crewthumbnail/bowwow.png" width="35px" height="35px" class="rounded-circle">
-                        		</div>
-                        		<div class="col">
-                        			<div class="row">
-                        				멍테일 님이 회원님의 게시글에 댓글을 남겼습니다.
-                        			</div>
-                        			<div class="row">
-                        				2023-07-13
-                        			</div>
-                        		</div>
-                        		<hr>
-                        	</div>
                         		</c:when>
                         		<c:otherwise>
-                        		알림이 없습니다.
+                        		<div class="row pt-5">
+                        			<div class="col text-center">
+                        				알림이 없습니다.
+                        			</div>
+                        		</div>
                         		</c:otherwise>
                         	</c:choose>
                         </div>
@@ -405,7 +410,7 @@
 			
 			<div class="col-6">
 				<a href="/travel/crew/crewhome/${crew.crew.crew_domain }">
-               		<div class="card crewlistcard  shadow-sm p-3 mb-3 bg-body-tertiary rounded">
+               		<div class="card crewlistcard  shadow-sm p-3 mb-3 bg-body-tertiary rounded" >
                     <div class="card-body">
                         <div class="row">
                             <div class="col-3">

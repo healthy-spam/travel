@@ -137,5 +137,10 @@ public interface CrewMapper {
 	public List<CrewBoardAttachedDto> getCrewBoardAttachedByCrewBoardId(int crew_board_id);
 
 	public List<CrewBoardDto> getPostListByCrewDomainAndSearchWord(@Param("crew_domain") String crew_domain, @Param("searchWord") String searchWord);
+
+	public List<UserNotificationDto> getmynoticebyuserid(int user_id);
+
+	public void cancelmycrewrequestbyuserid(int user_id);
+
 	
 }

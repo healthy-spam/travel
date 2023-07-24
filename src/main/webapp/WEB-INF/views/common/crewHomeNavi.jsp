@@ -29,7 +29,7 @@
 					<a href="/travel/crew/crewhome/${applied.crew_domain }"><button class="btn btn-success form-control">내크루가기</button></a>
 				</c:when>
 				<c:when test="${!empty applied && applied.crew_domain == crewDto.crew_domain}">
-					<button class="btn btn-success form-control">가입신청중</button>
+					<button class="btn btn-success form-control" id="cancelapply">가입신청중</button>
 				</c:when>
 				<c:otherwise>
 					<button class="btn btn-success form-control" id="joincrew">가입하기</button>
