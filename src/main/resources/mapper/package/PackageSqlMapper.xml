@@ -289,5 +289,63 @@ resultType="int">
 
 </select>
 
+
+
+<select id="getTotalLike" resultType="int">
+		SELECT COUNT(*) FROM guide_planning_comment_love
+		WHERE guide_planning_comment_id = #{guide_planning_comment_id}
+</select>
+	
+<select id="getCommentList" resultType="com.ja.travel.dto.GuidePlanningComment">
+		SELECT * FROM guide_planning_comment
+		WHERE guide_planning_id = #{guide_planning_id}
+		ORDER BY guide_planning_comment_id DESC
+</select>
+
+	<insert id="createInitComment">
+		INSERT INTO
+			guide_planning_comment
+		VALUES
+		(
+			guide_planning_comment_seq.nextval,
+			'',
+			#{guide_planning_id},
+			#{user_id},
+			#{user_comment},
+			SYSDATE
+		)
+	</insert>
+	
+	<insert id="addLike">
+		INSERT INTO
+			guide_planning_comment_love
+		VALUES
+		(
+			guide_planning_co_love_seq.nextval,
+			#{guide_planning_comment_id},
+			#{user_id}
+		)
+	</insert>
+	
+	<delete id="deleteLike">
+		DELETE FROM guide_planning_comment_love
+		WHERE guide_planning_comment_id = #{guide_planning_comment_id}
+		AND user_id = #{user_id}
+	</delete>
+	
+<select id="getLikeByCommentIdAndUserId" resultType="com.ja.travel.dto.GuidePlanningCommentLove">
+		SELECT * FROM guide_planning_comment_love
+		WHERE guide_planning_comment_id = #{guide_planning_comment_id}
+		AND user_id = #{user_id}
+	</select>
+
+	<select id="getUserOfCommentByPlanningId" resultType="com.ja.travel.dto.UserDto">
+		SELECT * FROM guide_planning_comment
+		INNER JOIN member ON guide_planning_comment.user_id = member.user_id
+		WHERE guide_planning_comment_id = #{guide_planning_comment_id}
+	</select>
+	
+
+
 	
 </mapper>

@@ -8,6 +8,8 @@ import com.ja.travel.dto.CouponDto;
 import com.ja.travel.dto.GuideDto;
 import com.ja.travel.dto.GuidePlanPaymentDto;
 import com.ja.travel.dto.GuidePlanningApplicationDto;
+import com.ja.travel.dto.GuidePlanningComment;
+import com.ja.travel.dto.GuidePlanningCommentLove;
 import com.ja.travel.dto.GuidePlanningDto;
 import com.ja.travel.dto.PlanCityDto;
 import com.ja.travel.dto.PlanDayDto;
@@ -76,6 +78,22 @@ public interface PackageSqlMapper {
 	public List<UserCouponDto> getMyCouponList(int user_id);
 
 	public CouponDto getCouponInfo(int couponId);
+	
+	//////////////////
+
+	public void createInitComment(GuidePlanningComment guidePlanningComment);
+
+	public GuidePlanningCommentLove getLikeByCommentIdAndUserId(GuidePlanningCommentLove guidePlanningCommentLove);
+
+	public void deleteLike(GuidePlanningCommentLove guidePlanningCommentLove);
+
+	public void addLike(GuidePlanningCommentLove guidePlanningCommentLove);
+
+	public List<GuidePlanningComment> getCommentList(int guide_planning_id);
+
+	public UserDto getUserOfCommentByPlanningId(int guide_planning_comment_id);
+
+	public int getTotalLike(int guide_planning_comment_id);
 
 	
 

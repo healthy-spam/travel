@@ -17,25 +17,32 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <title>플랜 참가 신청 페이지</title>
 <script type="text/javascript"
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=99e2d84aee0718d5faa9b9e1821fca6b&libraries=services"></script>
-
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=99e2d84aee0718d5faa9b9e1821fca6b&libraries=services,drawing,clusterer"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 
 var map1;
 var marker1;
 var infowindow1;
 var coords1;
-
-// map2와 관련된 변수들
 var map2;
 var marker2;
 var infowindow2;
 var coords2;
 var startPoint = '${map.guidePlanningDto.guide_planning_start_point}'; // 최초 모집장소
-
 var user_id = '${sessionuser.user_id}';
-
 var couponDiscountValue = 0;
+var linePath = [];
+var linePath2 = [
+    new kakao.maps.LatLng(33.452344169439975, 126.56878163224233),
+    new kakao.maps.LatLng(33.452739313807456, 126.5709308145358),
+    new kakao.maps.LatLng(33.45178067090639, 126.5726886938753) 
+];
+
+
+
+let placeThumbnail2;
+let placeThumbnail3;
 
 
 const guidePlanningId = new URLSearchParams(location.search).get("guide_planning_id");
@@ -60,7 +67,7 @@ function pay(partner_order_id, partner_user_id, item_name, total_amount) {
              var box = response.next_redirect_pc_url;
              window.open(box);
          } else {
-             console.error('Request failed:', xhr.status);
+             
          }
      }
  }
@@ -73,6 +80,12 @@ function pay(partner_order_id, partner_user_id, item_name, total_amount) {
           "&total_amount=" + encodeURIComponent(total_amount));
 }
 
+function full(){
+
+	swal('모집 인원 초과', ' ', 'warning'); 
+	
+}
+
 
 function packageIn(guidePlanningId){
    	
@@ -82,17 +95,20 @@ function packageIn(guidePlanningId){
 			if(xhr.readyState == 4 && xhr.status == 200){
 				const response = JSON.parse(xhr.responseText);
 				
+					var partner_order_id = response.partner_order_id;
+					var partner_user_id = response.userId;
+					var item_name = response.item_name;
+					var total_amount0 = response.total_amount;
+					
+					var total_amount = total_amount0 - couponDiscountValue;
+					
 				
-				var partner_order_id = response.partner_order_id;
-				var partner_user_id = response.userId;
-				var item_name = response.item_name;
-				var total_amount0 = response.total_amount;
+					
+					pay(partner_order_id,partner_user_id, item_name, total_amount);
+					
 				
-				var total_amount = total_amount0 - couponDiscountValue;
 				
-				console.log(partner_order_id);
 				
-				pay(partner_order_id,partner_user_id, item_name, total_amount);
 				
 			}
 		}
@@ -119,11 +135,12 @@ function initMap1() {
 function initMap2() {
 	var container = document.getElementById('map2');
 	var options = {
-		center: new kakao.maps.LatLng(33.450701, 126.570667),
-		level: 3
+		center: new kakao.maps.LatLng(36.3415, 127.3894),
+		level: 13
 	};
 
 	map2 = new kakao.maps.Map(container, options);
+	
 }
 
 function showPlace(item) {
@@ -176,6 +193,8 @@ function showStart() {
 
 
 
+
+
 function search(keyword) {
 	var geocoder = new kakao.maps.services.Geocoder();
 
@@ -210,7 +229,45 @@ function search(keyword) {
 	});
 }
 
-// search2 함수 수정
+
+function mapLine(keyword){
+	var geocoder = new kakao.maps.services.Geocoder();
+	
+	geocoder.addressSearch(keyword, function(result, status) {
+		if (status === kakao.maps.services.Status.OK) {
+			
+			linePath.push(new kakao.maps.LatLng(result[0].y, result[0].x))
+			/* const spots = new kakao.maps.LatLng(result[0].y, result[0].x);
+			
+			console.log(spots);
+			
+			linePath.push(spots); */
+			
+			
+			
+		}
+	});
+	
+}
+
+function Line(){
+	
+	var polyline = new kakao.maps.Polyline({
+	    path: linePath2, // 선을 구성하는 좌표배열 입니다
+	    strokeWeight: 5, // 선의 두께 입니다
+	    strokeColor: '#FFAE00', // 선의 색깔입니다
+	    strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+	    strokeStyle: 'solid' // 선의 스타일입니다
+	});
+	
+
+
+	polyline.setMap(map2);
+	
+	
+}
+
+
 function search2(keyword) {
 	var geocoder = new kakao.maps.services.Geocoder();
 
@@ -333,6 +390,8 @@ function planningDay() {
                         const col1 = document.createElement("div");
                         col1.classList.add("col");
                         row1.appendChild(col1);
+                        
+                        let placePhoto;
 
 	                    for (place of data.placeList) {
 	                        const row2 = document.createElement("div");
@@ -371,6 +430,7 @@ function planningDay() {
 	                        address.classList.add("address");
 	                        address.setAttribute("type", "hidden");
 	                        address.value = place.planPlace.plan_place_address;
+	                        mapLine(place.planPlace.plan_place_address);
 	                        
 	                        content.style.fontSize = "20px";
 	                        content.style.fontWeight = "bold";
@@ -406,36 +466,55 @@ function planningDay() {
 	                        row3.appendChild(col4);
 	                        
 	                        
-
+	                       
+	                        
 	                        const placeThumbnail = document.createElement("img");
 	                        placeThumbnail.classList.add("place_thumbnail");
 	                        placeThumbnail.src = "/uploadFiles/mainImage/" + place.planPlace.plan_place_photo;
 	                        placeThumbnail.style.width = "90px";
 	                        placeThumbnail.style.height = "90px";
 	                        placeThumbnail.style.borderRadius = "50%";
+	                        
+	                        placePhoto = place.planPlace.plan_place_photo;
+
+	                        // placePhoto 값을 활용하여 이미지 경로를 설정하고, placeThumbnail2와 placeThumbnail3 값을 할당합니다.
+	                        if (placeThumbnail2 === undefined) {
+	                            placeThumbnail2 = placePhoto;
+	                        } else if (placeThumbnail3 === undefined) {
+	                            placeThumbnail3 = placePhoto;
+	                        }
+	                        
+	                        
+	                       
+	                        
+	                        
+	                        
 
 	                        const placeContent = document.createElement("p");
 	                        placeContent.classList.add("place_content");
 	                        placeContent.innerText = place.planPlace.plan_place_content;
-
 	                        
-
-		                     // placeThumbnail과 placeContent를 컨테이너에 추가합니다.
-		                     col3.appendChild(placeThumbnail);
-		                     col4.appendChild(placeContent);
-	
-		                    
+		                     
+		                    col3.appendChild(placeThumbnail);
+		                    col4.appendChild(placeContent);
+		                                     
 
 	                       
 	                    }
-
-
-	                    aaa.appendChild(cardBody);
+	         
+	                   aaa.appendChild(cardBody);
 
 	                    // 최종적으로 planDetail에 추가
 	                    planDetail.appendChild(aaa);
 	                    showCard(0);
+	                    
+	                    
+	                    
 	                }
+	                
+	                placeThumbnail();
+	                
+
 	            }
 	        }
 	    };
@@ -444,6 +523,29 @@ function planningDay() {
 	    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	    xhr.send("guide_planning_id=" + guidePlanningId);
 	} 
+	 
+	 
+	 function placeThumbnail(){
+		 
+		 console.log(placeThumbnail2);
+		 console.log(placeThumbnail3);
+		 
+		 const aaa = document.querySelector(".aaa");
+		 const bbb = document.querySelector(".bbb");
+		 
+		 const placeThumbnails1 = document.createElement("img");
+		 placeThumbnails1.classList.add("packageThumbnail2");
+         placeThumbnails1.src = "/uploadFiles/mainImage/" + placeThumbnail2;
+        
+         
+         const placeThumbnails2 = document.createElement("img");
+         placeThumbnails2.classList.add("packageThumbnail3");
+         placeThumbnails2.src = "/uploadFiles/mainImage/" + placeThumbnail3;
+        
+		 aaa.appendChild(placeThumbnails1);
+		
+		 bbb.appendChild(placeThumbnails2);
+	 }
 	 
 	 let currentCardIndex = 0;
 
@@ -540,6 +642,8 @@ function planningDay() {
 			planPrice.innerText = addThousandSeparator(discountPay) + '원'
 		
 		}
+	 
+	 
 		 /* function info() {
 			
             const planDetail = document.getElementById("planDetail");
@@ -621,16 +725,145 @@ function planningDay() {
 		 
 		
  */
+ function getCommentList() {
+
+		const xhr = new XMLHttpRequest();
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				const response = JSON.parse(xhr.responseText);
+				
+				if (commentList) {
+					commentList.innerHTML = '';	
+				}
+				
+				if (response.list != null) {
+					var boardInfo = document.querySelector('.board-info');
+					var regDate = new Date('${map.guidePlanningDto.guide_planning_reg_date}');
+					var boardRegDate = formatDate(regDate);
+					var replyInputCol = null;
+					
+					boardInfo.innerText = boardRegDate + ' · 댓글 ' + response.list.length;
+					
+					for (let i in response.list) {
+						
+						console.log(response.list[i]);
+						commentList = document.querySelector('.comment-list');
+						
+						var date = new Date(response.list[i].guidePlanningComment.reg_date);
+						var formattedDate = formatDate(date);
+						
+					    // Row div
+					    const rowDiv = document.createElement('div');
+					    rowDiv.classList.add('row', 'mb-4');
+					    rowDiv.style.fontFamily = "'Noto Sans KR', sans-serif";
+
+					    // Col-1 div
+					    const col1Div = document.createElement('div');
+					    col1Div.classList.add('col-1');
+					    const img = document.createElement('img');
+					    img.classList.add('user-thumbnail');
+					    img.alt = "썸네일";
+					    img.src = '/uploadFiles/profileImage/'+response.list[i].user.user_image;
+					    col1Div.appendChild(img);
+					    
+					    // Col div
+					    const colDiv = document.createElement('div');
+					    colDiv.classList.add('col', 'p-0', 'mb-2');
+					    const p1 = document.createElement('p');
+					    p1.classList.add('m-0');
+					    p1.innerText = response.list[i].user.user_nickname;
+					    const p2 = document.createElement('p');
+					    p2.classList.add('mb-2');
+					    p2.innerText = formattedDate;
+					    p2.style.fontSize = '0.7em';
+					    p2.style.color = '#999999';
+					    colDiv.appendChild(p1);
+					    colDiv.appendChild(p2);
+
+					    // Col-12 div
+					    const col12Div = document.createElement('div');
+					    col12Div.classList.add('col-12');
+					    const div = document.createElement('div');
+					    div.innerText = response.list[i].guidePlanningComment.user_comment;
+					    col12Div.appendChild(div);
+					    
+					    // Another col-12 div
+					    const anotherCol12Div = document.createElement('div');
+					    anotherCol12Div.classList.add('col-12', 'mt-1');
+					    
+					    
+					    var heartIcon = document.createElement("i");
+					    heartIcon.className = response.list[i].isLove == 'ok' ? 'bi, bi-heart-fill text-danger' : 'bi, bi-heart'; 
+					    heartIcon.onclick = function() {
+							loginCheck();
+							
+							addLike(response.list[i].guidePlanningComment.guide_planning_comment_id);	
+						}
+					    const span = document.createElement('span');
+					    span.classList.add('comment-love');
+					    span.innerHTML = '좋아요 ' + response.list[i].totalLike + '개';
+					    span.appendChild(heartIcon);
+					    
+					    anotherCol12Div.appendChild(span);
+
+					    // Append all children to the row div
+					    rowDiv.appendChild(col1Div);
+					    rowDiv.appendChild(colDiv);
+					    rowDiv.appendChild(col12Div);
+					    rowDiv.appendChild(anotherCol12Div);
+					    commentList.appendChild(rowDiv);
+					}
+				}
+			}
+		}
+		
+		//post
+		xhr.open("post", "./getCommentList");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send("guide_planning_id="+guidePlanningId);
+	}
+	
+	function addLike(guide_comment_id) {
+	
+
+	
+	const xhr = new XMLHttpRequest();
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				const response = JSON.parse(xhr.responseText);
+				
+				if (response.ok != null) {
+					getCommentList();
+				}
+			}
+		}
+		
+		//post
+		xhr.open("post", "./addLike");
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send("guide_comment_id="+guide_comment_id);
+
+	}
+
+ 
+ 
 	
 document.addEventListener("DOMContentLoaded", function() {
-	  planningDay();
-	  info();
-	  showStart()
-	  planprice();
-	  initMap1();
+		planningDay();
+		info();
+		showStart()
+		planprice();
+		initMap1();
 		initMap2();
 		showCoupon();
+		getCommentList();
+		 Line();
+
 	});
+ 
+
 
 </script>
 <style>
@@ -703,6 +936,11 @@ document.addEventListener("DOMContentLoaded", function() {
 }
 
 .packageThumbnail2 {
+	width: 100%;
+	height: 240px;
+}
+
+.packageThumbnail3 {
 	width: 100%;
 	height: 240px;
 }
@@ -786,19 +1024,14 @@ document.addEventListener("DOMContentLoaded", function() {
 					</div>
 					<div class="col-4">
 						<div class="row mb-4">
-							<div class="col">
+							<div class="col aaa">
 
-								<img src="/uploadFiles/${map.planDto.plan_thumbnail }"
-									class="packageThumbnail2">
 
 							</div>
 
 						</div>
 						<div class="row">
-							<div class="col">
-
-								<img src="/uploadFiles/${map.planDto.plan_thumbnail }"
-									class="packageThumbnail2">
+							<div class="col bbb">
 
 							</div>
 						</div>
@@ -840,8 +1073,17 @@ document.addEventListener("DOMContentLoaded", function() {
 				        <td>${map.guidePlanningDto.guide_planning_start_point}</td>
 				    </tr>
 				    <tr>
-				        <th><i class="bi bi-person-check-fill"></i> 모집인원</th>
-				        <td>${map.packageMember}/${map.guidePlanningDto.guide_planning_member }</td>
+				        <th><i class="bi bi-person-check-fill member1"></i> 모집인원</th>
+				        <td>
+				        <c:choose>
+				        	<c:when test="${map.packageMember>=map.guidePlanningDto.guide_planning_member}">
+				        		모집 완료
+				        	</c:when>
+				        	<c:otherwise>
+				        		${map.packageMember}/${map.guidePlanningDto.guide_planning_member }
+				        	</c:otherwise>
+				        </c:choose>
+				        </td>
 				    </tr>
 				</table>
 			</div>
@@ -872,18 +1114,31 @@ document.addEventListener("DOMContentLoaded", function() {
 						
 					</div>
 				</div>
-				<div class="row mt-3 mb-2">
+				<div class="row mt-3">
+					<div class="col-1">
+					</div>
 					<select class="col form-select myCoupon" aria-label="Default select example">
 					  
 					</select>
+					<div class="col-1">
+					</div>
 				
 			
 				</div>
-				<div class="row mt-5 mb-5 ">
+				<div class="row mt-4 mb-5 ">
 					<div class="col-3"></div>
 					<div class="col-6 payButton ">
-						<a class="btn pay-button d-grid" role="button" onclick="packageIn(guidePlanningId)"
+						 <c:choose>
+				        	<c:when test="${map.packageMember>=map.guidePlanningDto.guide_planning_member}">
+				        		<a class="btn pay-button d-grid" role="button" onclick="full()"
+	   						 style="font-size: 15px; font-weight: bold; background-color: gray; color: white;">모집 완료</a>
+				        	</c:when>
+				        	<c:otherwise>
+				        		<a class="btn pay-button d-grid" role="button" onclick="packageIn(guidePlanningId)"
 	   						 style="font-size: 30px; font-weight: bold; background-color: #03c75a; color: white;">결제</a>
+				        	</c:otherwise>
+				        </c:choose>
+						
 					</div>
 					<div class="col-3"></div>
 				</div>
@@ -919,17 +1174,22 @@ document.addEventListener("DOMContentLoaded", function() {
 				<div class="row">
 					<div class="col-6">
 						<div class="row "  >
+								<div class="col-1"></div>
 								<div class="col">
 									<i class="bi-flag-fill"></i>
 									<span>모집 장소 : </span>
 									<span style="font-weight: bold;">${map.guidePlanningDto.guide_planning_start_point}</span>
 								</div>
+								<div class="col-1"></div>
 							</div>
 							<div class="row mt-3" >
+								<div class="col-1"></div>
 								<div class="col">
 									<div class="map1 shadow" id="map1" style="width: 100%; height: 300px;">
-									</div>						
-								</div>
+									</div>		
+								</div>				
+								<div class="col-1"></div>
+								
 							</div>
 						<div class="row mt-5"  >
 							<div class="col-1 d-flex align-items-center ">
@@ -959,6 +1219,9 @@ document.addEventListener("DOMContentLoaded", function() {
 			</div>
 		</div>
 		<div class="row">
+			<div class="col comment-list"></div>
+		</div>
+		<div class="row">
 			<div class="col">
 			       
 			       -footer-                              
@@ -971,55 +1234,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 	
 	
-<!-- <div class="row d-none" id = "templete_planDetail">
-	<div class="col" style="background:#fcf0f0;">
-		<div class="row" style="position : sticky; top :0px;" >
-			<div class="col-3 planDetail_Day text-center" style=" font-size : 30px; font-weight:bold; color:white; background:#BB4465;">
-					
-			</div>
-			<div class="col-9 planDetail_Date" style=" font-size : 30px; font-weight:bold; border-bottom:1px solid gray; background:white;">
-				
-			</div>
-		</div>
-		<div class="row">
-			<div class="col planDetail_place">
-			
-			</div>
-		</div>
-	</div>
-</div>		
-	
-	
-	
-<div class="row mt-5 mb-3 d-none" id="templete_place">
-	<div class="col">
-		<div class="row mt-3 mb-3">
-			<div class="col place_name" style="font-size : 20px; font-weight:bold;">
-			
-			</div>
-			
-		</div>
-		<div class="row mt-3">
-			<div class="col-1">
-			
-			</div>
-			<div class="col-3">
-				<img class="place_thumbnail" src="" style="width:100px; height:100px; border-radius: 50px;" >
-			
-			</div>
-			<div class="col place_content">
-			
-			</div>
-		</div>
 
-	</div>
-</div>
-
-<div class="row d-none" id="templete_place_thumbnail">
-	<div class="col place_thumbnailss">
-	
-	</div>
-</div> -->
 
 	
 

@@ -14,11 +14,15 @@ import com.ja.travel.dto.CouponDto;
 import com.ja.travel.dto.GuideDto;
 import com.ja.travel.dto.GuidePlanPaymentDto;
 import com.ja.travel.dto.GuidePlanningApplicationDto;
+import com.ja.travel.dto.GuidePlanningComment;
+import com.ja.travel.dto.GuidePlanningCommentLove;
 import com.ja.travel.dto.GuidePlanningDto;
 import com.ja.travel.dto.PlanCityDto;
 import com.ja.travel.dto.PlanDayDto;
 import com.ja.travel.dto.PlanDto;
 import com.ja.travel.dto.PlanPlaceDto;
+import com.ja.travel.dto.PlanningComment;
+import com.ja.travel.dto.PlanningCommentLove;
 import com.ja.travel.dto.UserCouponDto;
 import com.ja.travel.dto.UserDto;
 import com.ja.travel.guidePackage.mapper.PackageSqlMapper;
@@ -83,6 +87,8 @@ public class PackageService {
 		if (user != null) {
 			user_id = user.getUser_id();
 		}
+		
+		
 
 		List<GuidePlanningDto> guidePlanningList = packageSqlMapper.getGuidePlanningList(pageNum, searchType,
 				searchWord, user_id);
@@ -99,13 +105,18 @@ public class PackageService {
 					.getGuidePlanningAcceptCountByGuidePlanningId(guidePlanning.getGuide_planning_id());
 			PlanDto plan = planSqlMapper.selectById(guidePlanning.getPlan_id());
 			List<PlanDayDto> planDayList = planSqlMapper.getPlanDayByplan_id(plan);
-
+			
+			List<GuidePlanningApplicationDto> count = packageSqlMapper
+					.getGuidePlanningAcceptCountByGuidePlanningId(guidePlanning.getGuide_planning_id());
+			
+			int packageMember = count.size() - 1;
+			
 			map.put("user", userOfPlanning);
 			map.put("guidePlanning", guidePlanning);
 			map.put("guidePlanningAcceptCount", guidePlanningAppList);
 			map.put("plan", plan);
 			map.put("planDay", planDayList.size());
-
+			map.put("packageMember", packageMember);
 			list.add(map);
 		}
 
@@ -140,6 +151,8 @@ public class PackageService {
 
 		return map;
 	}
+	
+	
 
 	public Map<String, Object> getPlaceByDayForPlan(int guide_planning_id) {
 		List<GuidePlanningApplicationDto> count = packageSqlMapper
@@ -172,17 +185,21 @@ public class PackageService {
 				placeMap.put("planPlace", planPlaceDto);
 				placeMap.put("planCityName", planCityName);
 				placeListWithCity.add(placeMap);
+				
 			}
+			
 			map.put("placeList", placeListWithCity);
 			map.put("planDay", planDay);
 			list.add(map);
 			
 
 		}
+		
+		
 
 		Map<String, Object> resultMap = new HashMap<>();
 
-
+		
 		resultMap.put("user", user);
 		resultMap.put("planDayListSize", planDayListSize);
 		resultMap.put("guidePlanningDto", guidePlanningDto);
@@ -265,5 +282,75 @@ public class PackageService {
 		
 		return map;
 	}
+
+	public void createInitComment(GuidePlanningComment guidePlanningComment, UserDto sessionUser) {
+		guidePlanningComment.setUser_id(sessionUser.getUser_id());
+		
+		packageSqlMapper.createInitComment(guidePlanningComment);
+		
+		
+	}
+
+	public List<Map<String, Object>> getCommentList(int guide_planning_id, UserDto sessionUser) {
+		
+		List<GuidePlanningComment> guidePlanningCommentList = packageSqlMapper.getCommentList(guide_planning_id);
+		
+		
+		List<Map<String, Object>> list = new ArrayList<>();
+		
+		for (GuidePlanningComment guidePlanningComment : guidePlanningCommentList) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			
+			if (sessionUser != null) {
+				GuidePlanningCommentLove guidePlanningCommentLove = new GuidePlanningCommentLove();
+				guidePlanningCommentLove.setGuide_planning_comment_id(guidePlanningComment.getGuide_planning_comment_id());
+				guidePlanningCommentLove.setUser_id(sessionUser.getUser_id());
+				
+				GuidePlanningCommentLove guidePlanningLove = packageSqlMapper.getLikeByCommentIdAndUserId(guidePlanningCommentLove);
+				
+				if (guidePlanningLove != null) {
+					map.put("isLove", "ok");
+				} else {
+					map.put("isLove", "no");
+				}	
+			}
+			
+			UserDto user = packageSqlMapper.getUserOfCommentByPlanningId(guidePlanningComment.getGuide_planning_comment_id());
+			int totalLike = packageSqlMapper.getTotalLike(guidePlanningComment.getGuide_planning_comment_id());
+			
+			if (totalLike == 0) {
+				map.put("totalLike", 0);
+			}
+			
+			map.put("guidePlanningComment", guidePlanningComment);
+			map.put("user", user);
+			map.put("totalLike", totalLike);
+			
+			list.add(map);
+		}
+		
+		return list;
+		
+		
+	}
+
+	public void addLike(int guide_planning_comment_id, UserDto sessionUser) {
+
+		
+		GuidePlanningCommentLove guidePlanningCommentLove = new GuidePlanningCommentLove();
+		guidePlanningCommentLove.setGuide_planning_comment_id(guide_planning_comment_id);
+		guidePlanningCommentLove.setUser_id(sessionUser.getUser_id());
+		
+		GuidePlanningCommentLove GuidePlanningLove = packageSqlMapper.getLikeByCommentIdAndUserId(guidePlanningCommentLove);
+		
+		if (GuidePlanningLove != null) {
+			packageSqlMapper.deleteLike(guidePlanningCommentLove);
+		} else {
+			packageSqlMapper.addLike(guidePlanningCommentLove);
+		}
+		
+	}
+
+	
 
 }
