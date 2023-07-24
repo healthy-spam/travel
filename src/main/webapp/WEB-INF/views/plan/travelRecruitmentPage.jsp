@@ -18,15 +18,19 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=93ae12d4c0f00044228cbd5b5f2f588b&libraries=services,clusterer,drawing"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-	function searchAddress() {
-	    new daum.Postcode({
-	        oncomplete: function(data) {
-	            var addr = data.address; // 주소값
-	            
-                document.getElementById("startPoint").value = addr; 
-	        }
-	    }).open();	
-	}
+function searchAddress() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            var addr = data.address; // 주소값
+            document.getElementById("startPoint").value = addr;
+        },
+        width: '100%',
+        height: '100%',
+    }).open({
+        left: (window.screen.width - 470) / 2,
+        top: (window.screen.height - 630) / 2,
+    });
+}
 </script>
 <script type="text/javascript">
 	document.addEventListener("DOMContentLoaded", function() {
