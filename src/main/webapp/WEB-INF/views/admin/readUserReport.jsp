@@ -7,137 +7,254 @@ pageEncoding="UTF-8"%>
 <head>
 <meta charset="UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<link rel="stylesheet"	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@100;300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <title>Insert title here</title>
+<style>
+
+	body {
+		font-family: 'Nanum Gothic', sans-serif;
+		font-family: 'Noto Sans KR', sans-serif;		
+	}
+	
+	#naviBack {
+		background-color:black;
+		color:white;
+		height: 100vh;
+	}
+	
+	#naviTS {
+		font-size : 150%;		
+	}
+	
+	.icon1 {
+		font-size : 150%;
+		cursor: pointer;
+		color: white;
+	}
+	
+	.naviIcon {
+		font-size : 150%;		
+		color:#ebebeb;
+	}
+	
+	.naviIconText {
+		font-size : 150%;
+		font-weight: bold;
+		color:#ebebeb;
+				
+	}	
+	
+	.smallCategory:hover {
+		background-color:#303030;
+	}
+	
+	.smallCategory {
+		font-size : 120%;
+		color:#ebebeb;
+	}
+	
+	.pageTitle {
+		font-weight:bold;
+		font-size: 25px;
+	}
+	.b {
+		font-weight:bold;
+		font-size: 17px;
+	}
+</style>
 </head>
 <body>
-<div class="container">
+<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-2  mt-3 ">
+			<div class="col-2" id="naviBack">
 				<jsp:include page="../common/leftNavi.jsp"></jsp:include>
 			</div>
 			<c:if test="${!empty sessionUser}">
-			<div class="col-md-9 offset-md-1">
+			<div class="col-8 mx-auto">
+				<div class="row mt-5 pageTitle border-dark-subtle border-bottom border-2">
+					<div class="col">
+						회원 신고 내역
+					</div>
+				</div>
 				<c:choose>
 				<c:when test="${map.userReportDto.user_report_status eq '미처리'}">
-				<div class="row mt-5">
-					<h3>신고 상세 페이지</h3>
-				</div>
 				<div class="row d-flex justify-content-center mt-5">
-					<dl class="row">
-					  <dt class="col-sm-2">신고 대상</dt>
-					  <dd class="col-sm-10">${map.reportedUserDto.user_email}
-					  </dd>
-					  
-					  <dt class="col-sm-2">플랜 계획 번호</dt>
-					  <dd class="col-sm-10">${map.userReportDto.planning_id}
-					  </dd>
-					
-					  <dt class="col-sm-2">신고 유형</dt>
-					  <dd class="col-sm-10">
-					    <p>${map.userReportDto.user_report_type}</p>
-					  </dd>
-					  
-					  <dt class="col-sm-2">상세 설명</dt>
-					  <dd class="col-sm-10">
-					    <p>${map.userReportDto.user_report_desc}</p>
-					  </dd>
-					  
-					  <dt class="col-sm-2">첨부 파일</dt>
-					  <dd class="col-sm-10">
-					    <p>${map.userReportDto.user_report_attached}</p>
-					  </dd>
-					</dl>
+					<div class="col">
+						<div class="row">
+						  <div class="col-sm-2">
+						  	신고 대상
+						  </div>
+						  <div class="col-sm-10">
+						  	${map.reportedUserDto.user_email}
+						  </div>
+						</div>
+						<div class="row">  
+						  <div class="col-sm-2">
+						  	플랜 계획 번호
+						  </div>
+						  <div class="col-sm-10">
+						  	${map.userReportDto.planning_id}
+						  </div>
+						</div>
+						<div class="row">
+						  <div class="col-sm-2">
+						  	신고 유형
+						  </div>
+						  <div class="col-sm-10">
+						    ${map.userReportDto.user_report_type}
+						  </div>
+						</div>
+						<div class="row">  
+						  <div class="col-sm-2">
+						  	상세 설명
+						  </div>
+						  <div class="col-sm-10">
+						    ${map.userReportDto.user_report_desc}
+						  </div>
+						</div>
+						<div class="row">  
+						  <div class="col-sm-2">
+						  	첨부 파일
+						  </div>
+						  <div class="col-sm-10">
+							  <c:choose>
+							  	<c:when test="${map.userReportDto.user_report_attached}">
+							  		없음
+							  	</c:when>
+							  	<c:otherwise>
+							    	${map.userReportDto.user_report_attached}
+							    </c:otherwise>
+							  </c:choose>
+							</div>
+						</div>						
+					</div>		
+				</div>
+				<form method="post" action="restrictUserProcess">
+				<div class="row mt-3">
+					<div class="col mb-3">					 
+					  <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="user_restrict_reason" placeholder="제한 사유"></textarea>
+					</div>
 				</div>
 				<div class="row">
-				<form  method="post" action="restrictUserProcess">
-					<div class="mb-3">
-					  <label for="exampleFormControlTextarea1" class="form-label">제한 사유</label>
-					  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="user_restrict_reason"></textarea>
+					<div class="col mb-3">
+						로그인 제한
 					</div>
-					<div class="mb-3">
-					  <label for="exampleFormControlTextarea1" class="form-label">제한 방식</label>
+				</div>				
+				<div class="row ms-1">
+					<div class="col">
+						<div class="row">
+							<div class="col form-check">
+							  <input class="form-check-input" type="radio" name="user_restrict_duration" id="flexRadioDefault1" value="3">
+							  <label class="form-check-label" for="flexRadioDefault1">
+							    3
+							  </label>
+							  일
+							</div>
+						</div>
+						<div class="row">
+							<div class="col form-check">
+							  <input class="form-check-input" type="radio" name="user_restrict_duration" id="flexRadioDefault2" value="7" >
+							  <label class="form-check-label" for="flexRadioDefault2">
+							    7
+							  </label>
+							  일
+							</div>
+						</div>
+						<div class="row">
+							<div class="col form-check">
+							  <input class="form-check-input" type="radio" name="user_restrict_duration" id="flexRadioDefault2" value="15">
+							  <label class="form-check-label" for="flexRadioDefault2">
+							    15
+							  </label>
+							  일
+							</div>
+						</div>
+						<div class="row">
+							<div class="col form-check">
+							  <input class="form-check-input" type="radio" name="user_restrict_duration" id="flexRadioDefault2" value="30">
+							  <label class="form-check-label" for="flexRadioDefault2">
+							    30
+							  </label>
+							  일
+							</div>
+						</div>
 					</div>
-					<div class="mb-3">
-					  <select class="form-select" aria-label="Default select example" name = "user_report_status">
-					  <option value="로그인 제한" selected>로그인 제한</option>
-					  <option value="1">One</option>
-					  <option value="2">Two</option>
-					  <option value="3">Three</option>
-					</select>
-					</div>
-					
-					<div class="form-check">
-					  <input class="form-check-input" type="radio" name="user_restrict_duration" id="flexRadioDefault1" value="3">
-					  <label class="form-check-label" for="flexRadioDefault1">
-					    3
-					  </label>
-					  일
-					</div>
-					<div class="form-check">
-					  <input class="form-check-input" type="radio" name="user_restrict_duration" id="flexRadioDefault2" value="7" >
-					  <label class="form-check-label" for="flexRadioDefault2">
-					    7
-					  </label>
-					  일
-					  </div>
-					  <div class="form-check">
-					  <input class="form-check-input" type="radio" name="user_restrict_duration" id="flexRadioDefault2" value="15">
-					  <label class="form-check-label" for="flexRadioDefault2">
-					    15
-					  </label>
-					  일
-					</div>
-					  <div class="form-check">
-					  <input class="form-check-input" type="radio" name="user_restrict_duration" id="flexRadioDefault2" value="30">
-					  <label class="form-check-label" for="flexRadioDefault2">
-					    30
-					  </label>
-					  일
-					</div>
-					<div class="mt-3">
+				</div>
+				<div class="row">
+					<div class="col mt-3 text-center">
 						<input type="hidden" value="${map.userReportDto.user_report_id}" name="user_report_id">
 						<input type="hidden" value="${map.userReportDto.reported_user_id}" name="user_id">
-						<button class="btn btn-primary" type="submit">제한</button>
-						<button type="button" class="btn btn-primary" onclick = "location.href='./userReportPage'">뒤로가기</button>
+						<span>
+							<button class="btn btn-secondary" type="submit">제한</button>
+						</span>
+						<span>
+							<button type="button" class="btn btn-secondary" onclick = "location.href='./userReportPage'">뒤로가기</button>
+						</span>
 					</div>
-				</form>
 				</div>
+				</form>
 				</c:when>
 				
 				<c:otherwise>
-					<div class="row mt-5">
-					<h3>${map.reportedUserDto.user_email}님의 제한 상세정보</h3>
+					<div class="row ps-1">
+						<div class="col">
+							${map.reportedUserDto.user_email}님의 제한 상세정보
+						</div>
 				</div>
 				<div class="row d-flex justify-content-center mt-5">
-					<dl class="row">
-					  <dt class="col-sm-2">제한 방식</dt>
-					  <dd class="col-sm-10">${map.userReportDto.user_report_status}</dd>
-					
-					  <dt class="col-sm-2">총 제한일</dt>
-					  <dd class="col-sm-10">
-					    <p>${map.memberRestrictDto.user_restrict_duration}</p>
-					  </dd>
-					  
-					  <dt class="col-sm-2">제한 일자</dt>
-					  <dd class="col-sm-10">
-					    <p><fmt:formatDate value="${map.memberRestrictDto.user_restrict_start_date}" pattern="yyyy-MM-dd" /></p>
-					  </dd>
-					  
-					  <dt class="col-sm-2">해제 예정일</dt>
-					  <dd class="col-sm-10">
-					    <p><fmt:formatDate value="${map.memberRestrictDto.user_restrict_end_date}" pattern="yyyy-MM-dd" /></p>
-					  </dd>
-					  
-						<dt class="col-sm-2">제한 이유</dt>
-					  <dd class="col-sm-10">
-					    <p>${map.memberRestrictDto.user_restrict_reason}</p>
-					  </dd>
-					  
-					</dl>
-					
-					
+					<div class="col">
+						<div class="row">
+							<div class="col-sm-2">
+								제한 방식
+							</div>
+							<div class="col-sm-10">
+								로그인 제한
+							</div>
+						<div class="row">							
+							<div class="col-sm-2">
+								총 제한일
+							</div>
+							<div class="col-sm-10">
+								${map.memberRestrictDto.user_restrict_duration}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-2">
+								제한 일자
+							</div>
+							<div class="col-sm-10">
+								<fmt:formatDate value="${map.memberRestrictDto.user_restrict_start_date}" pattern="yyyy-MM-dd" />
+							</div>
+						</div>
+						<div class="row">	  
+							<div class="col-sm-2">
+								해제 예정일
+							</div>
+							<div class="col-sm-10">
+								<fmt:formatDate value="${map.memberRestrictDto.user_restrict_end_date}" pattern="yyyy-MM-dd" />
+							</div>
+						</div>
+						<div class="row">	  
+							<div class="col-sm-2">
+								제한 이유
+							</div>
+							<div class="col-sm-10">
+								${map.memberRestrictDto.user_restrict_reason}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col text-center">
+								<span>
+									<button type="button" class="btn btn-secondary" onclick = "location.href='./userReportPage'">뒤로가기</button>
+								</span>
+							</div>
+						</div>	  												
+					</div>
 				</div>
-					<button type="button" class="btn btn-primary" onclick = "location.href='./userReportPage'">뒤로가기</button>
+				</div>
 				</c:otherwise>
 				</c:choose>
 			</div>

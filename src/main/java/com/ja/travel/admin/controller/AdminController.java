@@ -176,19 +176,19 @@ public class AdminController {
 	
 	@RequestMapping("readUserReport")
 	public String userReportPage(int id, Model model) {
-		
+		System.out.println("id=" + id);
 		Map<String, Object> map = adminService.getUserReport(id);
 		model.addAttribute("map", map);
 		return "admin/readUserReport";
 	}
 	
 	@RequestMapping("restrictUserProcess")
-	public String restrictUserProcess(HttpSession session ,MemberRestrictDto params, String user_report_status) {
+	public String restrictUserProcess(HttpSession session ,MemberRestrictDto params) {
 		
 		AdminDto sessionUser = (AdminDto) session.getAttribute("sessionUser");
 		params.setAdmin_id(sessionUser.getAdmin_id());
 		System.out.println(params.getAdmin_id());
-		adminService.restrictUser(params, user_report_status);
+		adminService.restrictUser(params);
 		
 		return "redirect:../admin/userReportPage";
 	}

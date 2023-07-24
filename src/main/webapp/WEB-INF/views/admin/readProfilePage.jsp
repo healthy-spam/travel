@@ -194,7 +194,7 @@ pageEncoding="UTF-8"%>
 						<div class="row mt-3">
 							<div class="col text-center">
 								<span>
-									<button type="button" class="btn btn-sm btn-secondary" onclick = "location.href='./guideApplyPage'">뒤로가기</button>
+									<button type="button" class="btn btn-secondary" onclick = "location.href='./guideApplyPage'">뒤로가기</button>
 								</span>							
 							</div>
 						</div>
@@ -250,10 +250,10 @@ pageEncoding="UTF-8"%>
 								${map.guideApplyDto.guide_apply_message}
 							</div>
 						</div>
-						<div class="row mt-3">
+						<div class="row mt-5">
 							<div class="col text-center">
 								<span>
-									<button type="button" class="btn btn-sm btn-secondary" onclick = "location.href='./guideApplyPage'">뒤로가기</button>
+									<button type="button" class="btn btn-secondary" onclick = "location.href='./guideApplyPage'">뒤로가기</button>
 								</span>									
 							</div>
 						</div>
