@@ -16,7 +16,8 @@ pageEncoding="UTF-8"%>
 
 	body {
 		font-family: 'Nanum Gothic', sans-serif;
-		font-family: 'Noto Sans KR', sans-serif;		
+		font-family: 'Noto Sans KR', sans-serif;
+		
 	}
 
 	#naviBack {
