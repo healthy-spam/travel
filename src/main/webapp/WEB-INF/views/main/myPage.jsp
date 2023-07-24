@@ -293,7 +293,7 @@ button {
 							<c:choose>
 								<c:when test="${sessionuser.user_image == null}">
 <!-- 									임시 이미지 -->
-									<img class="image-container" src="/travel/resources/img/logo.png">
+									<img class="image-container" src="/travel/resources/img/icon.png">
 								</c:when>
 								<c:otherwise>
 									<img class="image-container" src="/uploadFiles/profileImage/${sessionuser.user_image}">

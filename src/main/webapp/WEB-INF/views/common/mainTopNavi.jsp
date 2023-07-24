@@ -44,8 +44,18 @@
 					<c:choose>
 						<c:when test="${!empty sessionuser}">
 							<ul class="navbar-nav">
+								<li class="d-flex align-items-center">
+									<c:choose>
+										<c:when test="${sessionuser.user_image != null}">
+											<img alt="썸네일" src="/uploadFiles/profileImage/${sessionuser.user_image}" style="width: 2em; height: 2em; border-radius: 50%;">
+										</c:when>
+										<c:otherwise>
+											<img alt="썸네일" src="/travel/resources/img/icon.png" style="width: 2em; height: 2em; border-radius: 50%;">
+										</c:otherwise>
+									</c:choose>
+								</li>
 								<li class="nav-item dropdown">
-									<a class="nav-link dropdown-toggle me-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false""> ${sessionuser.user_nickname} </a>
+									<a class="nav-link dropdown-toggle me-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ${sessionuser.user_nickname} </a>
 									<ul class="dropdown-menu" aria-labelledby="userDropdown">
 										<li><a class="dropdown-item" href="/travel/myPage">마이페이지</a></li>
 										<li><a class="dropdown-item" href="/travel/crew/main">크루페이지</a></li>
