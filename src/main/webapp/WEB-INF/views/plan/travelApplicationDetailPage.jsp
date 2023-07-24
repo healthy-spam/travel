@@ -13,6 +13,50 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=93ae12d4c0f00044228cbd5b5f2f588b&libraries=services,clusterer,drawing"></script>
 <script type="text/javascript">
+function showReportImg() {
+    document.getElementById("imageUpload").addEventListener('change', function(event) {
+        // clear previous images
+        var previewContainer = document.getElementById('previewImages');
+        previewContainer.innerHTML = '';
+
+        for(let i = 0; i < event.target.files.length; i++) {
+            let reader = new FileReader();
+            reader.onload = function(e){
+                let imgContainer = document.createElement('div');
+                imgContainer.style.position = 'relative';
+                imgContainer.style.display = 'inline-block';
+                imgContainer.style.marginRight = '10px';
+
+                let img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.width = '100px';
+                img.style.height = '100px';
+                img.style.borderRadius = '0.375rem';
+                imgContainer.appendChild(img);
+
+                let removeBtn = document.createElement('button');
+                removeBtn.innerText = 'x';
+                removeBtn.style.border = 'none';
+                removeBtn.style.backgroundColor = 'transparent';
+                removeBtn.style.position = 'absolute';
+                removeBtn.style.top = '-0.4em';
+                removeBtn.style.right = '-0.2em';
+                removeBtn.onclick = function() {
+                    previewContainer.removeChild(imgContainer);
+                };
+                imgContainer.appendChild(removeBtn);
+
+                previewContainer.appendChild(imgContainer);
+            };
+            reader.readAsDataURL(event.target.files[i]);
+        }
+
+        // Make previewImages visible
+        previewContainer.style.display = 'flex';
+    });
+}
+</script>
+<script type="text/javascript">
 	var commentList;
 	var planning_id = '${map.planningDto.planning_id}';
 	
@@ -103,6 +147,40 @@
 					    img.classList.add('user-thumbnail');
 					    img.alt = "썸네일";
 					    img.src = '/uploadFiles/profileImage/'+response.list[i].user.user_image;
+					    img.setAttribute('data-bs-toggle', 'dropdown');
+
+					    if (response.list[i].user.user_id != '${sessionuser.user_id}') {
+					    	const dropdownMenu = document.createElement('div');
+						    dropdownMenu.classList.add('dropdown-menu');
+
+						    // add elements to the dropdownMenu as you need
+						    const dropdownItem1 = document.createElement('a');
+						    dropdownItem1.classList.add('dropdown-item');
+						    dropdownItem1.innerText = '신고하기';
+						    dropdownMenu.appendChild(dropdownItem1);
+						    
+						    dropdownItem1.addEventListener('click', function(e) {
+						        e.preventDefault();
+
+						        // 클로저에 현재 사용자 객체를 저장
+						        var currentUser = response.list[i].user;
+
+						        var myModalEl = document.getElementById('reportModal');
+						        var myModal = new bootstrap.Modal(myModalEl, {});
+
+						        // 모달이 보여질 때 currentUser 객체를 사용
+						        myModalEl.addEventListener('shown.bs.modal', function () {
+						            // 히든 인풋 필드의 값을 currentUser.user_id로 설정
+						            document.getElementById('reportedUserId').value = currentUser.user_id;
+						        });
+
+						        myModal.show();
+						    });
+						    
+						    col1Div.style.cursor = 'pointer';
+						    col1Div.appendChild(dropdownMenu);
+					    }
+					    
 					    col1Div.appendChild(img);
 					    
 					    // Col div
@@ -130,7 +208,6 @@
 					    const anotherCol12Div = document.createElement('div');
 					    anotherCol12Div.classList.add('col-12', 'mt-1');
 					    
-					    
 					    var heartIcon = document.createElement("i");
 					    heartIcon.className = response.list[i].isLove == 'ok' ? 'bi, bi-heart-fill text-danger' : 'bi, bi-heart'; 
 					    heartIcon.onclick = function() {
@@ -144,7 +221,7 @@
 					    span.appendChild(heartIcon);
 					    
 					    anotherCol12Div.appendChild(span);
-
+					    
 					    // Append all children to the row div
 					    rowDiv.appendChild(col1Div);
 					    rowDiv.appendChild(colDiv);
@@ -230,6 +307,7 @@
 		getCommentList();
 		getCompanyList();
 		userInfo();
+		showReportImg();
 		
 		var isDown = false;
 		var startX;
@@ -803,7 +881,6 @@ body {
 .schedule-list li:last-child img {
 	margin-right: 0;
 }
-
 </style>
 <title>모집 디테일 페이지</title>
 </head>
@@ -1026,6 +1103,56 @@ body {
 		</div>
 	</div>
 
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+					<div class="modal-dialog  modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="reportModalLabel">신고하기</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="container">
+									<div class="row">
+										<div class="col">
+											<form action="./userReport?user_id=${sessionuser.user_id}" method="post" enctype="multipart/form-data">
+												<!-- 신고 대상자의 아이디를 담을 hidden input field 추가 -->
+												<input type="hidden" id="reportedUserId" name="reported_user_id">
+												
+												<div class="row">
+													<div class="col">
+														<div class="form-floating">
+															<textarea class="form-control" placeholder="#" id="floatingTextarea2" name="user_report_desc" style="height: 15em; resize: none;"></textarea>
+															<label for="floatingTextarea2" style="font-size: 0.9em;">신고사유를 적어주세요. 허위 신고시 불이익이 있을 수 있습니다.</label>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col d-flex justify-content-end mt-2">
+														<input class="form-control" type="file" id="imageUpload" name="reportImages" accept="image/*" multiple>
+													</div>
+													<div class="col-12">
+														<div id="previewImages" style="display: none; overflow-x: auto; margin: 0.5em 0 0.5em 0; padding: 0.5em;"></div>
+													</div>
+												</div>
+												<div class="row mt-2">
+													<div class="col d-flex justify-content-end">
+														<button class="btn" style="background-color: #03c75a; color: white;" onclick="report()">신고 제출</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<jsp:include page="../common/bottomNavi.jsp"></jsp:include>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

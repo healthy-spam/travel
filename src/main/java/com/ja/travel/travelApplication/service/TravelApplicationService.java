@@ -1,15 +1,21 @@
 package com.ja.travel.travelApplication.service;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ja.travel.dto.HotelImageDetailsDto;
 import com.ja.travel.dto.PlanDayDto;
 import com.ja.travel.dto.PlanDto;
 import com.ja.travel.dto.PlanPlaceDto;
@@ -20,6 +26,7 @@ import com.ja.travel.dto.PlanningCommentLove;
 import com.ja.travel.dto.PlanningDto;
 import com.ja.travel.dto.TravelApplicationRequestDto;
 import com.ja.travel.dto.UserDto;
+import com.ja.travel.dto.UserReportDto;
 import com.ja.travel.login.mapper.LoginSqlMapper;
 import com.ja.travel.plan.mapper.PlanSqlMapper;
 import com.ja.travel.planPlace.mapper.PlanPlaceSqlMapper;
@@ -272,5 +279,48 @@ public class TravelApplicationService {
 		}
 		
 		return list;
+	}
+
+	public void userReport(UserReportDto userReport, MultipartFile[] reportImages) {
+		if (reportImages != null) {
+
+			for (MultipartFile multipartFile : reportImages) {
+
+				if (multipartFile.isEmpty()) {
+					continue;
+				}
+
+				String rootFolder = "C:/uploadFiles/hotelDetailImages/";
+
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
+				String today = sdf.format(new Date());
+
+				File targetFolder = new File(rootFolder + today);
+
+				if (!targetFolder.exists()) {
+					targetFolder.mkdirs();
+				}
+
+				String fileName = UUID.randomUUID().toString();
+
+				fileName += "_" + System.currentTimeMillis();
+
+				String originalFileName = multipartFile.getOriginalFilename();
+
+				String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+
+				String saveFileName = today + "/" + fileName + ext;
+
+				try {
+					multipartFile.transferTo(new File(rootFolder + saveFileName));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				userReport.setUser_report_attached(saveFileName);
+				travelApplicationSqlMapper.insertUserReport(userReport);
+			}
+		}
 	}
 }

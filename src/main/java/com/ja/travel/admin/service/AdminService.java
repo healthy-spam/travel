@@ -143,9 +143,11 @@ public class AdminService {
 			Map<String, Object> map = new HashMap<>();
 			int userId = userReportDto.getUser_id();
 			UserDto reportingUserDto = adminSqlMapper.getUserDtoByUserId(userId);
+			System.out.println(reportingUserDto.getUser_id());
 			int reportedUserId = userReportDto.getReported_user_id();
 			UserDto reportedUserDto = adminSqlMapper.getUserDtoByReportedUserId(reportedUserId);
-			
+			System.out.println(reportedUserId);
+			System.out.println(reportedUserDto.getUser_email());
 			map.put("userReportDto", userReportDto);
 			map.put("reportingUserDto", reportingUserDto);
 			map.put("reportedUserDto", reportedUserDto);

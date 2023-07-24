@@ -103,6 +103,7 @@
 
 <select id="getUserReportList" resultType="com.ja.travel.dto.UserReportDto">
 	SELECT * FROM user_report
+	ORDER BY user_report_reg_date DESC
 </select>
 
 <select id="getUserDtoByReportedUserId" resultType="com.ja.travel.dto.UserDto">
