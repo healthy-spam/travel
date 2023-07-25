@@ -25,12 +25,10 @@ function submitModal(){
    
     // 플래너 제목, 설명, 썸네일, 공개 여부 값 가져오기
     const planTitle = document.getElementById('plan_title').value;
-    const planContent = document.getElementById('plan_content').value;
     const planThumbnail = document.getElementById('plan_thumbnail').files[0];
     
     // FormData에 값 추가
     formData.append('plan_title', planTitle);
-    formData.append('plan_content', planContent);
     formData.append('img', planThumbnail);
 
     const xhr = new XMLHttpRequest();
@@ -85,20 +83,24 @@ function createModal() {
     // 모달 헤더 생성
     var modalHeaderDiv = document.createElement('div');
     modalHeaderDiv.classList.add('modal-header');
-
+    modalHeaderDiv.style.backgroundColor= '#03c75a';
+    
     // 모달 제목 생성
     var modalTitleH1 = document.createElement('h1');
     modalTitleH1.classList.add('modal-title');
     modalTitleH1.classList.add('fs-5');
     modalTitleH1.id = 'dynamicModalLabel';
     modalTitleH1.innerText = 'MAKE MY PLAN';
+    modalTitleH1.style.fontWeight = 'bolder';
+    modalTitleH1.style.color = 'white';
 
     // 모달 닫기 버튼 생성
     var closeButton = document.createElement('button');
     closeButton.type = 'button';
-    closeButton.classList.add('btn-close');
+    closeButton.classList.add('btn', 'bi', 'bi-x-lg');
     closeButton.setAttribute('data-bs-dismiss', 'modal');
     closeButton.setAttribute('aria-label', 'Close');
+    closeButton.style.color = 'white';
     closeButton.setAttribute('onclick', 'removeModal()');
 
     // 모달 바디 생성
@@ -123,11 +125,11 @@ function createModal() {
    //플랜 제목
     var row0 = document.createElement('div');
     row0.classList.add('row');
-    row0.classList.add('mt');
+    row0.classList.add('mt-1');
     col1Div.appendChild(row0);
 
     var row0Col1 = document.createElement('div');
-    row0Col1.classList.add('col');
+    row0Col1.classList.add('col-7');
     row0.appendChild(row0Col1);
 
     var row0Col1Icon = document.createElement('i');
@@ -135,47 +137,29 @@ function createModal() {
     row0Col1Icon.classList.add('bi-check-circle');
     row0Col1Icon.classList.add('me-1');
     row0Col1.appendChild(row0Col1Icon);
-
+   
+    var row0Col1IconSpan = document.createElement('span')
+    row0Col1IconSpan.innerText = ' 플랜 제목'
+    row0Col1IconSpan.style.fontStyle = 'normal'; // 기울임체 해제 // 글꼴을 보통으로 설정    
+    row0Col1IconSpan.style.fontWeight = 'bolder';
+    row0Col1Icon.appendChild(row0Col1IconSpan);
+    
     var row0Col1Span = document.createElement('input');
     row0Col1Span.setAttribute('type', 'text');
     row0Col1Span.setAttribute('id', 'plan_title');
-    row0Col1Span.setAttribute('class', 'form-control rounded shadow-sm');
+    row0Col1Span.setAttribute('class', 'mt-2 form-control rounded shadow-sm');
     row0Col1Span.setAttribute('name', 'plan_title');
-    row0Col1Span.setAttribute('placeholder', '플랜 제목');
+    row0Col1Span.setAttribute('placeholder', '설레이는 서울여행!');
     row0Col1.appendChild(row0Col1Span);
 
-    //플랜 설명
-    var row1 = document.createElement('div');
-    row1.classList.add('row');
-    row1.classList.add('mt-4');
-    col1Div.appendChild(row1);
-
-    var row1Col1 = document.createElement('div');
-    row1Col1.classList.add('col');
-    row1.appendChild(row1Col1);
-
-    var row1Col1Icon = document.createElement('i');
-    row1Col1Icon.classList.add('bi');
-    row1Col1Icon.classList.add('bi-check-circle');
-    row1Col1Icon.classList.add('me-1');
-    row1Col1.appendChild(row1Col1Icon);
-
-    var row1Col1Span = document.createElement('textarea');
-    row1Col1Span.setAttribute('class', 'form-control rounded shadow-sm');
-    row1Col1Span.setAttribute('id', 'plan_content');
-    row1Col1Span.setAttribute('name', 'plan_content');
-    row1Col1Span.setAttribute('placeholder', '간단한 플랜 설명');
-    row1Col1Span.setAttribute('value','plan_content');
-    row1Col1.appendChild(row1Col1Span);
-
-    // 썸네일
+    // 플랜 대표 이미지
     var row2 = document.createElement('div');
     row2.classList.add('row');
-    row2.classList.add('mt-4');
+    row2.classList.add('mt-3');
     col1Div.appendChild(row2);
 
     var row2Col1 = document.createElement('div');
-    row2Col1.classList.add('col');
+    row2Col1.classList.add('col-12');
     row2.appendChild(row2Col1);
 
     var row2Col1Icon = document.createElement('i');
@@ -184,42 +168,123 @@ function createModal() {
     row2Col1Icon.classList.add('me-1');
     row2Col1.appendChild(row2Col1Icon);
     
-    var row2Col1IconSpan = document.createElement('span')
-    row2Col1IconSpan.innerText = '플랜 썸네일'
+    var row2Col1IconSpan = document.createElement('span');
+    row2Col1IconSpan.innerText = ' 플랜 대표 이미지';
     row2Col1IconSpan.style.fontStyle = 'normal'; // 기울임체 해제 // 글꼴을 보통으로 설정
-    row2Col1IconSpan.style.opacity = '0.75';
-    row2Col1Icon.appendChild(row2Col1IconSpan);
-    
-    var row2Col1Div = document.createElement('div');
-    row2Col1Div.classList.add('mt-2');
-    row2Col1Icon.appendChild(row2Col1Div);
-    
+    row2Col1IconSpan.style.fontWeight = 'bolder';
+    row2Col1Icon.appendChild(row2Col1IconSpan);           
 
-    var row2Col1Span = document.createElement('input');
-    row2Col1Span.setAttribute('type', 'file');
-    row2Col1Span.setAttribute('class', 'form-control-file rounded shadow-sm ');
-    row2Col1Span.setAttribute ('name', 'img');
-    row2Col1Span.setAttribute ('id', 'plan_thumbnail');
-   
-    row2Col1Span.setAttribute('accept', 'image/*');
-    row2Col1.appendChild(row2Col1Span);
+    // 파일 최대 크기 (MB)
+    var MAX_FILE_SIZE_MB = 10;  
+    
+    // 이미지 미리보기 div 생성
+    var imageContainer = document.createElement('div');
+    imageContainer.classList.add('text-center', 'd-flex', 'p-2', 'col', 'mt-3');
+    imageContainer.style.width = '745px';
+    imageContainer.style.height = '260px';
+    imageContainer.style.border = '1px dashed gray';    
+    imageContainer.style.borderRadius = '19px';
+    imageContainer.style.display = 'flex';
+    imageContainer.style.justifyContent = 'center';
+    imageContainer.style.alignItems = 'center';
+    imageContainer.style.color = '#03c75a';
+    //imageContainer.style.fontWeight = 'bolder';
+    imageContainer.style.fontSize = '20px';
+    imageContainer.innerText = '사진을 업로드하려면 클릭하거나 드래그 앤 드롭하세요.';
+    row2Col1.appendChild(imageContainer);
+    
+    
+    //3 row2Col1Span 이걸 fileInput 이걸로 바꿈 
+    var fileInput = document.createElement('input');
+    fileInput.setAttribute('type', 'file');
+    fileInput.setAttribute('class', 'form-control-file rounded shadow-sm');
+    fileInput.setAttribute ('name', 'img');
+    fileInput.setAttribute ('id', 'plan_thumbnail');
+    fileInput.setAttribute('accept', 'image/*');
+    fileInput.style.display = 'none'; // 3
+    
+    row2Col1.appendChild(fileInput);
+    
+    //3 클릭 이벤트
+    imageContainer.addEventListener('click', function () {
+        fileInput.click();
+    });
+    
+   //3 드래그 앤 드롭 이벤트
+    imageContainer.addEventListener('dragover', function (event) {
+        event.stopPropagation();
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+    });
+
+    imageContainer.addEventListener('drop', function (event) {
+        event.stopPropagation();
+        event.preventDefault();
+        var files = event.dataTransfer.files;
+        handleFileSelect(files);
+    });
+
+    fileInput.addEventListener('change', function () {
+        handleFileSelect(fileInput.files);
+    });
+    
+    function handleFileSelect(files) {
+        if (!files.length) {
+            alert('No file selected!');
+            return;
+        }
+
+        var file = files[0];
+
+        if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+            alert('File is too big! Maximum size is ' + MAX_FILE_SIZE_MB + 'MB.');
+            return;
+        }
+
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            var img = document.createElement('img');
+            img.src = reader.result;
+            img.style.width = '306px';            
+            img.style.height = '250px';
+            img.style.objectFit = 'cover';
+            imageContainer.innerHTML = '';
+            imageContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    var row3 = document.createElement('div');
+    row3.classList.add('row');
+    row3.classList.add('mt-3');
+    col1Div.appendChild(row3);
+    
+    var row3Col3 = document.createElement('div');
+    row3Col3.classList.add('col');    
+    row3.appendChild(row3Col3);
+    
+    var row3Col2 = document.createElement('div');
+    row3Col2.classList.add('col', 'd-grid');
+    row3.appendChild(row3Col2);
+    
+    var row3Col4 = document.createElement('div');
+    row3Col4.classList.add('col');    
+    row3.appendChild(row3Col4);
     
    //등록 버튼
    var submitButton = document.createElement('button');
    submitButton.type = 'submit';
    submitButton.classList.add('btn');
    submitButton.classList.add('btn-primary');
-   submitButton.style.position = 'absolute';
-   submitButton.style.bottom = '10px';
-   submitButton.style.right = '10px';
-   submitButton.style.background = 'navy';
+   submitButton.style.background = '#03c75a';
    submitButton.style.color = 'white';
    submitButton.style.textDecoration = 'none';
    submitButton.style.border = 'none';
-   submitButton.innerText = '등록';
+   submitButton.style.fontWeight = 'bolder';
+   submitButton.innerText = '플래너 시작하기';
    submitButton.setAttribute('onclick', 'submitModal()');
-   col1Div.appendChild(submitButton);
-   
+   row3Col2.appendChild(submitButton);
+
     // 모달 요소 구성
     modalHeaderDiv.appendChild(modalTitleH1);
     modalHeaderDiv.appendChild(closeButton);
@@ -267,7 +332,7 @@ function planSearch() {
             const response = JSON.parse(xhr.responseText);
 
             const planPublicList = document.getElementById("planPublicList");            
-			
+         
             const sessionUser = response.sessionuser;                        
             
             while (planPublicList.firstChild) {
@@ -284,6 +349,38 @@ function planSearch() {
                     //planCardBox.querySelector(".plan-content").innerText = plan.planDto.plan_content;
                     planCardBox.querySelector(".user-name").innerText = plan.userDto.user_nickname;
                     planCardBox.querySelector(".user-img").src = "/uploadFiles/profileImage/"+ plan.userDto.user_image;
+                    
+                    var gender = plan.userDto.user_gender;
+                    
+                    if (gender === 'M') {
+                        planCardBox.querySelector(".user-gender").innerText = '남성';
+                    } else if (gender === 'F') {
+                        planCardBox.querySelector(".user-gender").innerText = '여성';
+                    } else {
+                        planCardBox.querySelector(".user-gender").innerText = '비공개';
+                    }
+               
+                    let birthDate = new Date(plan.userDto.user_birth);
+                    let birthYear = birthDate.getFullYear();
+                    let currentYear = new Date().getFullYear();
+                    let age = currentYear - birthYear;
+
+                    let ageGroup;
+                    if (age < 20) {
+                        ageGroup = "10대";
+                    } else if (age < 30) {
+                        ageGroup = "20대";
+                    } else if (age < 40) {
+                        ageGroup = "30대";
+                    } else if (age < 50) {
+                        ageGroup = "40대";
+                    } else {
+                        ageGroup = "50대 이상";
+                    }
+
+                    planCardBox.querySelector(".user-age").innerText = ageGroup;
+
+                    
                     planCardBox.querySelector(".readPlan").href = "./readPlanPage?id="+ plan.planDto.plan_id;
                     //planCardBox.querySelector(".copyPlan").href = "./copyPlanProcess?plan_id="+ plan.planDto.plan_id;
                     
@@ -293,8 +390,26 @@ function planSearch() {
                         copyPlanButton.classList.add("disabled");
                         copyPlanButton.href = "#";
                     } else {
-                        copyPlanButton.href = "./copyPlanProcess?plan_id="+ plan.planDto.plan_id;
+                        copyPlanButton.addEventListener('click', function(e) {
+                            e.preventDefault(); // prevent the default action
+                            
+                            const xhr = new XMLHttpRequest();
+                            xhr.open("POST", "./copyPlanProcess?plan_id=" + plan.planDto.plan_id);
+                            xhr.onreadystatechange = function () {
+                                if (this.readyState === 4 && this.status === 200) {
+                                    const response = JSON.parse(this.responseText);
+                                    window.location.href = response.redirect;
+
+                                    // Update the count in the UI
+                                    //const countElement = planCardBox.querySelector(".plan-copy-count");
+                                    //const currentCount = parseInt(countElement.innerText, 10);
+                                    //countElement.innerText = currentCount + 1;
+                                }
+                            }
+                            xhr.send();
+                        });
                     }
+
                     
                     const route_col = planCardBox.querySelector(".route_col");
                     const templateNode = planCardBox.querySelector("#templete_my_place").cloneNode(true);
@@ -306,13 +421,13 @@ function planSearch() {
                     
                     planPublicList.appendChild(planCardBox);
                     
-                	// 각 플랜 카드에 버튼 컨테이너 추가                                                            
-					loadDay(plan.planDto.plan_id, buttonsContainer, route_col, templateNode).then((totalDays) => {
-                   	 
-						planCardBox.querySelector(".plan-total-days").innerText = totalDays + "일";
-                   	 
-                       	setDayButtonEvents(buttonsContainer);
-                   	});
+                   // 각 플랜 카드에 버튼 컨테이너 추가                                                            
+               loadDay(plan.planDto.plan_id, buttonsContainer, route_col, templateNode).then((totalDays) => {
+                       
+                  planCardBox.querySelector(".plan-total-days").innerText = totalDays + "일";
+                       
+                          setDayButtonEvents(buttonsContainer);
+                      });
                 }
             }
         }
@@ -346,7 +461,7 @@ function loadDay(planId, buttonsContainer, route_col, templateNode) {
                     newButton.textContent = 'Day' + dayDto.plan_day;
 
                     newButton.addEventListener('click', function() {
-                    	loadMyList(dayDto.plan_day_id, route_col, templateNode);
+                       loadMyList(dayDto.plan_day_id, route_col, templateNode);
                     });
 
                     buttonsContainer.appendChild(newButton);
@@ -470,35 +585,35 @@ function setDayButtonEvents(buttonsContainer) {
 
 
 function setScrollEvents(scrollableDiv) {
-	   var pos = { left: 0, x: 0 };
+      var pos = { left: 0, x: 0 };
 
-	   scrollableDiv.addEventListener('mousedown', function(e) {
-	      e.preventDefault();
-	      pos = { left: scrollableDiv.scrollLeft, x: e.clientX };
-	      scrollableDiv.style.cursor = 'grabbing';
-	      scrollableDiv.style.userSelect = 'none';
+      scrollableDiv.addEventListener('mousedown', function(e) {
+         e.preventDefault();
+         pos = { left: scrollableDiv.scrollLeft, x: e.clientX };
+         scrollableDiv.style.cursor = 'grabbing';
+         scrollableDiv.style.userSelect = 'none';
 
-	      scrollableDiv.addEventListener('mousemove', moveScroll);
-	   });
+         scrollableDiv.addEventListener('mousemove', moveScroll);
+      });
 
-	   scrollableDiv.addEventListener('mouseup', stopScroll);
-	   scrollableDiv.addEventListener('mouseout', stopScroll);
+      scrollableDiv.addEventListener('mouseup', stopScroll);
+      scrollableDiv.addEventListener('mouseout', stopScroll);
 
-	   function moveScroll(e) {
-	      e.preventDefault();
-	      if (pos) {
-	         var dx = e.clientX - pos.x;
-	         scrollableDiv.scrollLeft = pos.left - dx;
-	      }
-	   }
+      function moveScroll(e) {
+         e.preventDefault();
+         if (pos) {
+            var dx = e.clientX - pos.x;
+            scrollableDiv.scrollLeft = pos.left - dx;
+         }
+      }
 
-	   function stopScroll() {
-	      scrollableDiv.style.cursor = 'grab';
-	      scrollableDiv.style.removeProperty('user-select');
-	      scrollableDiv.removeEventListener('mousemove', moveScroll);
-	      pos = null;
-	   }
-	}
+      function stopScroll() {
+         scrollableDiv.style.cursor = 'grab';
+         scrollableDiv.style.removeProperty('user-select');
+         scrollableDiv.removeEventListener('mousemove', moveScroll);
+         pos = null;
+      }
+   }
 
 //Day버튼 끝
 
@@ -556,8 +671,8 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     
     .imgText {
-	   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-	}
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+   }
     
     .scrollable-div {
        overflow: hidden; /* 스크롤을 숨깁니다 */
@@ -580,14 +695,14 @@ window.addEventListener("DOMContentLoaded", () => {
    .my-button {
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
-	}
-	
-	
-	
-	.my-button:active {
-	    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-	    transform: translateY(0px);
-	}
+   }
+   
+   
+   
+   .my-button:active {
+       box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+       transform: translateY(0px);
+   }
 </style>
 
 </head>
@@ -598,88 +713,88 @@ window.addEventListener("DOMContentLoaded", () => {
       <jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
     
     <div class="row">
-    	<div class="col-12">
-    		      
-			<div class="row-auto mt-3" style="background-image: url('/travel/resources/img/plan7rere.jpeg'); background-size: 100%; min-height: 400px; width: auto; background-repeat: no-repeat; border-radius: 13px">
+       <div class="col-12">
+                
+         <div class="row-auto mt-3" style="background-image: url('/travel/resources/img/plan7rere.jpeg'); background-size: 100%; min-height: 400px; width: auto; background-repeat: no-repeat; border-radius: 13px">
             
-            	<div class="col-3">&nbsp;</div>   
+               <div class="col-3">&nbsp;</div>   
                         
-	            <div class="col">
-	   
-	               <div class="row planTitle">
-	               
-	                  <div class="col-1">&nbsp;</div>
-	                  
-	                  <div class="col">	                    
-	                     
-	                     <div class="row">
-	                        &nbsp;
-	                     </div>
-	                     <div class="row">
-	                        &nbsp;
-	                     </div>
-	                      <div class="row">
-	                        &nbsp;
-	                     </div>
-	                     
-	                     <div class="row">
-	                        <div class="col">
-	                           <h2 class="imgText mb-0" style="font-weight: bolder; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">여행의 시작</h2>
-	                        </div>
-	                     </div>
-	                     
-	                     <div class="row mt-0">
-	                     	<div class="col">
-	                     		<h2 class="imgText" style="font-weight: bolder; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">TripStation</h2>		
-	                     	</div>
-	                     </div>
-	                     <div class="row mt-3">
-	                        <div class="col">
-	                           <h3 class="m-0" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">다른 여행자들과 공유한 일정을 참조하거나</h3>
-	                        </div>
-	                     </div>
-	                     <div class="row">
-	                        <div class="col">
-	                           <h3 class="" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">당신만의 특별한 여행 계획을 세우세요.</h3>
-	                        </div>
-	                     </div>	                     	                    
-	                     
-	                  </div>
-	                  
-	                  <div class="col">
-	                  	<div class="row">&nbsp;</div>
-	                  	<div class="row">&nbsp;</div>
-	                  	<div class="row">&nbsp;</div>
-	                  	<div class="row">&nbsp;</div>
-	                  	<div class="row">&nbsp;</div>
-	                  	<div class="row">&nbsp;</div>
-	                  	<div class="row">&nbsp;</div>
-	                  	<div class="row">&nbsp;</div>
-	                  	<div class="row">&nbsp;</div>
-	                  	<div class="row">&nbsp;</div>
-	                  	<div class="row">&nbsp;</div>
-	                  	
-	                  	 <div class="row">
-	                        <div class="col-4">&nbsp;</div>
-	                        <div class="col">         
-	                           <a class="btn btn-lg d-grid align-items-center my-button" onclick="showModal();" style="border-radius: 18px; background: #03c75a; font-size: 20px; color: white; font-weight: bolder; border: 0px;">플래너 작성하기</a>         
-	                        </div>	                        
-	                        <div class="col-2">&nbsp;</div>
-	                     </div>
-	                     <div class="row">&nbsp;</div>
-	                  </div>
-	                  
-	               </div>                        
-	                     
-	            </div>
+               <div class="col">
+      
+                  <div class="row planTitle">
+                  
+                     <div class="col-1">&nbsp;</div>
+                     
+                     <div class="col">                       
+                        
+                        <div class="row">
+                           &nbsp;
+                        </div>
+                        <div class="row">
+                           &nbsp;
+                        </div>
+                         <div class="row">
+                           &nbsp;
+                        </div>
+                        
+                        <div class="row">
+                           <div class="col">
+                              <h2 class="imgText mb-0" style="font-weight: bolder; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">여행의 시작</h2>
+                           </div>
+                        </div>
+                        
+                        <div class="row mt-0">
+                           <div class="col">
+                              <h2 class="imgText" style="font-weight: bolder; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">TripStation</h2>      
+                           </div>
+                        </div>
+                        <div class="row mt-3">
+                           <div class="col">
+                              <h3 class="m-0" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">다른 여행자들과 공유한 일정을 참조하거나</h3>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col">
+                              <h3 class="" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">당신만의 특별한 여행 계획을 세우세요.</h3>
+                           </div>
+                        </div>                                               
+                        
+                     </div>
+                     
+                     <div class="col">
+                        <div class="row">&nbsp;</div>
+                        <div class="row">&nbsp;</div>
+                        <div class="row">&nbsp;</div>
+                        <div class="row">&nbsp;</div>
+                        <div class="row">&nbsp;</div>
+                        <div class="row">&nbsp;</div>
+                        <div class="row">&nbsp;</div>
+                        <div class="row">&nbsp;</div>
+                        <div class="row">&nbsp;</div>
+                        <div class="row">&nbsp;</div>
+                        <div class="row">&nbsp;</div>
+                        
+                         <div class="row">
+                           <div class="col-4">&nbsp;</div>
+                           <div class="col">         
+                              <a class="btn btn-lg d-grid align-items-center my-button" onclick="showModal();" style="border-radius: 18px; background: #03c75a; font-size: 20px; color: white; font-weight: bolder; border: 0px;">플래너 작성하기</a>         
+                           </div>                           
+                           <div class="col-2">&nbsp;</div>
+                        </div>
+                        <div class="row">&nbsp;</div>
+                     </div>
+                     
+                  </div>                        
+                        
+               </div>
    
-            	<div class="col-3">&nbsp;</div>
+               <div class="col-3">&nbsp;</div>
    
-			</div>
-		</div>
-	</div>
+         </div>
+      </div>
+   </div>
           
-	<div class="row mt-3">
+   <div class="row mt-3">
           
           <div class="col-4">
              <div class="input-group border" style="border-radius: 7px;">
@@ -704,77 +819,78 @@ window.addEventListener("DOMContentLoaded", () => {
           
       </div>
    
-	<div class="row mt-2" id="planPublicList">
+   <div class="row mt-2" id="planPublicList">
          
          <div class="col-3 mt-2 m-0" id="planCardBox">
                
             <div class="card h-100 shadow-lg" style="border-radius: 15px; border: none; "  onclick="" >
             
-				<div class="flex-row mt-3 border shadow" style="border-radius: 10px; position: absolute; top: 5px; left: 50%; transform: translate(-50%, 0%); width: 90%; background-color: white;">						              
-												
-						<div class="flex-col m-1" style="  ">
-							<div class="row text-center align-items-center">
-								
-								<!-- <div class="col-1">&nbsp;</div> -->
-								
-								<div class="col-2">
-									<img class="user-img border-danger-subtle " src="" style="width: 2rem; height: 2rem; border-radius: 50%;"/>
-								</div>
-								
-								<div class="col-4">
-									<div class="row">
-										<div class="col text-center">
-											<span class="user-name text-break" style="font-size: 13px; font-weight: bolder; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; color: #000;">기훈</span>                        
-										</div>
-									</div>
-									<div class="row">
-										<div class="col text-center" style="line-height: 15px;">
-											<span class="user-age " style="font-size: 12px; color: #007aff; font-weight: 600; ">20대 남</span>                        
-										</div>
-									</div>
-								</div>
+            <div class="flex-row mt-3 border shadow" style="border-radius: 10px; position: absolute; top: 5px; left: 50%; transform: translate(-50%, 0%); width: 90%; background-color: white;">                                
+                                    
+                  <div class="flex-col m-1" style="  ">
+                     <div class="row text-center align-items-center">
+                        
+                        <!-- <div class="col-1">&nbsp;</div> -->
+                        
+                        <div class="col-2">
+                           <img class="user-img border-danger-subtle " src="" style="width: 2rem; height: 2rem; border-radius: 50%;"/>
+                        </div>
+                        
+                        <div class="col-4">
+                           <div class="row">
+                              <div class="col text-center">
+                                 <span class="user-name text-break" style="font-size: 13px; font-weight: bolder; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; color: #000;">기훈</span>                        
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col text-center" style="line-height: 15px;">
+                                 <span class="user-age " style="font-size: 12px; color: #007aff; font-weight: 600; ">20대</span>
+                                 <span class="user-gender " style="font-size: 12px; color: #007aff; font-weight: 600; ">남성</span>                        
+                              </div>
+                           </div>
+                        </div>
 
-								<div class="col-1 d-flex align-items-center justify-content-center">ㅣ</div>
-								
-								<div class="col-1 d-flex align-items-center justify-content-center">
-									<i class="bi bi-calendar d-flex align-items-center justify-content-center" style="color: #9a9a9a;"></i>
-								</div>																										
-											
-								<div class="col-4 ps-0">
-									<div class="row">
-										<div class="col" style="font-size: 12px;">
-											<span class="" style="font-weight: bolder; color: #9a9a9a;">여행기간</span>                        
-											<span class="plan-total-days" style="color: #00b04f; font-weight: bolder; ">12일</span>                        
-										</div>																						
-									</div>
-								</div>
-															
-							</div>
-						</div>												
+                        <div class="col-1 d-flex align-items-center justify-content-center">ㅣ</div>
+                        
+                        <div class="col-1 d-flex align-items-center justify-content-center">
+                           <i class="bi bi-calendar d-flex align-items-center justify-content-center" style="color: #9a9a9a;"></i>
+                        </div>                                                                              
+                                 
+                        <div class="col-4 ps-0">
+                           <div class="row">
+                              <div class="col" style="font-size: 12px;">
+                                 <span class="" style="font-weight: bolder; color: #9a9a9a;">여행기간</span>                        
+                                 <span class="plan-total-days" style="color: #00b04f; font-weight: bolder; ">12일</span>                        
+                              </div>                                                                  
+                           </div>
+                        </div>
+                                             
+                     </div>
+                  </div>                                    
 
-				</div>
+            </div>
                            
                   <div class="row">
-                  	<div class="col">
-						<img src="" class="card-img-top plan-thumbnail img-fluid" style=" width: 450px; height: 250px;">                  	
-                  	</div>
+                     <div class="col">
+                  <img src="" class="card-img-top plan-thumbnail img-fluid" style=" width: 450px; height: 250px;">                     
+                     </div>
                   </div>                                
                
                <div class="card-body pt-2">
                
-					<div class="row mt-1 align-items-center">
-						<div class="col-8">
-	                        <p class="h5 plan-title m-0" style="font-weight: bold; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
-	                        
-	                        </p>                
-						</div>
-						<div class="col text-end pe-0">
-							<i class="bi bi-bookmark-fill" style="width: 4rem; color: #007aff;"></i>
-						</div>
-						<div class="col ps-0 align-items-center">
-							<span style="font-size: 15px; font-weight: bolder;">1125</span>
-						</div>
-					</div>                                    
+               <div class="row mt-1 align-items-center">
+                  <div class="col-8">
+                           <p class="h5 plan-title m-0" style="font-weight: bold; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
+                           
+                           </p>                
+                  </div>
+                  <div class="col text-end pe-0">
+                     <i class="bi bi-bookmark-fill" style="width: 4rem; color: #007aff;"></i>
+                  </div>
+                  <div class="col ps-0 align-items-center">
+                     <span class="plan-copy-count" style="font-size: 15px; font-weight: bolder;">0</span>
+                  </div>
+               </div>                                    
                         
                   <div class="row mt-3">               
                      <div class="col-12">
@@ -808,9 +924,9 @@ window.addEventListener("DOMContentLoaded", () => {
                                     </div>
                                  </div>
                                  <div class="row mt-1">
-                                 	<a class="readPlace" href="" style="text-decoration: none;">
-                                 	<span class="" style="color: #ffa800; font-size: 12px; font-weight: bolder;">자세히보기</span>
-                                 	</a>
+                                    <a class="readPlace" href="" style="text-decoration: none;">
+                                    <span class="" style="color: #ffa800; font-size: 12px; font-weight: bolder;">자세히보기</span>
+                                    </a>
                                  </div>
                               </div>
                            </div>
@@ -819,21 +935,24 @@ window.addEventListener("DOMContentLoaded", () => {
                      </div>
                   </div>
                         
-					<div class="row mt-3">
+               <div class="row mt-3">
                      <div class="col-12">
                         <div class="row">
                            <div class="col d-grid">
-                           	
+                              
                               <a class="btn copyPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #00b04f; font-weight: 600;" href="">
                                  <i class="bi bi-bookmark" style="width: 1rem;"></i> 일정담기                                 
                               </a>
                               
                            </div>
                            <div class="col d-grid">
+                           
                               <a class="btn readPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #00b04f; font-weight: 600;" href="">
                                  <i class="bi bi-list-ul" style="width: 1rem;"></i> 상세보기
                               </a>
+                              
                            </div>
+                           
                         </div>
                      </div>
                   </div>
@@ -844,26 +963,10 @@ window.addEventListener("DOMContentLoaded", () => {
          </div>
             
       </div>
-	
-	<div class="row mt-4">
-		<div class="col-12 text-center">
-			<div class="row">
-				<div class="col">
-					<hr>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col text-start">		
-					<span>© 2023 TripStation. All rights reserved.</span>
-				</div>
-				<div class="col text-end">
-					<span></span>
-				</div>
-			</div>
-		</div>
-	</div>      
-	
+   
 </div>
+
+<jsp:include page="../common/bottomNavi.jsp"></jsp:include>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
