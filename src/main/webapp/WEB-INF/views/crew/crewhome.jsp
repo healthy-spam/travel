@@ -19,28 +19,28 @@
 <title>Insert title here</title>
 
 <script>
-document.addEventListener("DOMContentLoaded",function() {
-document.getElementById("sendchat").addEventListener("click",function() {
-	var crew_chat_text = document.getElementById("chatcontent").value;
+	document.addEventListener("DOMContentLoaded",function() {
+	document.getElementById("sendchat").addEventListener("click",function() {
+		var crew_chat_text = document.getElementById("chatcontent").value;
+		
+		var formData = new FormData();
+		formData.append('crew_chat_text', crew_chat_text);
+		
+		// AJAX 요청 보내기
+		const xhr = new XMLHttpRequest();
 	
-	var formData = new FormData();
-	formData.append('crew_chat_text', crew_chat_text);
-	
-	// AJAX 요청 보내기
-	  const xhr = new XMLHttpRequest();
-	  xhr.open('POST', '/travel/crew/sendchat', true);
-
-	  xhr.onreadystatechange = function() {
-	    if (xhr.readyState == 4 && xhr.status === 200) {
-	      console.log("새로고침 ㅠㅠ")
-	      
-	      console.log(xhr.responseText);
-	    }
-	  };
-
-	  xhr.send(formData);
-})
-})
+		xhr.onreadystatechange = function()  {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				location.reload();
+				
+				console.log(xhr.responseText);
+				}
+			};
+		  
+		  xhr.open('POST', '/travel/crew/sendchat', true);
+		  xhr.send(formData);
+	})
+	})
 </script>
 
 <script>
