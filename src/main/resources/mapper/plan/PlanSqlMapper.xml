@@ -233,7 +233,8 @@
       UPDATE plan
       SET 
       plan_title = #{plan_title},      
-      plan_thumbnail = #{plan_thumbnail}      
+      plan_thumbnail = #{plan_thumbnail},
+      plan_disclosure_status = #{plan_disclosure_status}      
       WHERE plan_id = #{plan_id}
    </update>
 

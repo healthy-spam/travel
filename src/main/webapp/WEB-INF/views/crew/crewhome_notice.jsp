@@ -20,6 +20,30 @@
 
 
 
+<script>
+	document.addEventListener("DOMContentLoaded",function() {
+	document.getElementById("sendchat").addEventListener("click",function() {
+		var crew_chat_text = document.getElementById("chatcontent").value;
+		
+		var formData = new FormData();
+		formData.append('crew_chat_text', crew_chat_text);
+		
+		// AJAX 요청 보내기
+		const xhr = new XMLHttpRequest();
+	
+		xhr.onreadystatechange = function()  {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				location.reload();
+				
+				console.log(xhr.responseText);
+				}
+			};
+		  
+		  xhr.open('POST', '/travel/crew/sendchat', true);
+		  xhr.send(formData);
+	})
+	})
+</script>
 
 <script>
 	function boardwrite() {
@@ -452,6 +476,31 @@ strong#Createnewpost {
 	background-color : white; 
 	border-radius: 5px;
 }
+
+.calendarcard {
+	position: fixed;
+	background-color: white;
+	width: 350px;
+	height:  500px;
+}
+
+.chatcard {
+	background-color: grey;
+}
+
+.chatarea {
+	height: 80%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.chatcard {
+	background-color: grey;
+}
+
+.writercard {
+	background-color: green;
+}
 </style>
 
 
@@ -467,7 +516,7 @@ strong#Createnewpost {
 
 		<div class="container aa">
 			<div class="row">
-				<div class="col-3">
+				<div class="col-3 px-0">
 					<aside id="info" style="transform: none;">
 						<div id="infoInner" data-viewname="DBandCoverItemView" class="infoInner -sticky" style="position: relative; overflow: visible;">
 							<jsp:include page="../common/crewHomeNavi.jsp"></jsp:include>
@@ -612,9 +661,79 @@ strong#Createnewpost {
 						</div>
 					</div>
 				</div>
-				<div class="col sideend">
+				<div class="col-3 ps-4">
 					<div class="card calendarcard">
-						<div id="calendar"></div>
+						<div class="row mx-1 sticky-header">
+							<div class="col p-2">
+								크루 전체 채팅
+							</div>
+						</div>
+						<div class="card chatarea">
+							<c:forEach var="chat" items="${chatlist}">
+								<c:choose>
+									<c:when test="${chat.sender.user_id != userDto.user_id }">
+										<div class="row">
+											<div class="col-auto pt-3 ps-4 pe-1">
+												<img src="/uploadFiles/profileImage/${chat.sender.user_image }" width="40px" height="40px" class="rounded-circle">
+											</div>
+											<div class="col">
+												<div class="row">
+													<div class="col">
+														${chat.sender.user_nickname }
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-auto">
+														<div class="card chatcard p-1">
+															${chat.chatDto.crew_chat_text }
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col">
+														<fmt:formatDate value="${chat.chatDto.crew_chat_date }" pattern="MM.dd HH:mm" var="crew_chat_date" />
+															${crew_chat_date }
+													</div>
+												</div>
+											</div>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="row">
+											<div class="col me-2">
+												<div class="row">
+													<div class="col">
+													</div>
+													<div class="col-auto text-end">
+														<div class="card writercard p-1">
+															${chat.chatDto.crew_chat_text }
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col text-end">
+														<fmt:formatDate value="${chat.chatDto.crew_chat_date }" pattern="MM.dd HH:mm" var="crew_chat_date" />
+															${crew_chat_date }
+													</div>
+												</div>
+											</div>
+										</div>
+		
+									</c:otherwise>
+								</c:choose>
+	
+							</c:forEach>
+						</div>
+						<div class="chatwrittingarea">
+							<div class="row sticky-header">
+								<div class="col-9 ms-4 px-0">
+									<input type="text" class="form-control" id="chatcontent">
+								</div>
+								<div class="col-auto ps-0">
+									<button class="btn btn-sm btn-success-outline" id="sendchat">send</button>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -133,6 +133,8 @@ public class TravelApplicationService {
 
 	public void completePlanning(PlanningDto planningDto, HttpSession session) {
 		planningDto.setUser_id(getSessionUserInfo(session).getUser_id());
+		String text = planningDto.getPlanning_content().replace("\n", "<br />");
+		planningDto.setPlanning_content(text);
 		planningDto.setPlanning_id(travelApplicationSqlMapper.createPlanningPK());
 		
 		travelApplicationSqlMapper.insertPlanningData(planningDto);

@@ -630,7 +630,7 @@ public class CrewService {
 		
 		sendnotification(crewMapper.getUserDtoByCrewMemberId(crewMapper.getCrewBoardDtoByCrewBoardId(crew_board_id).getCrew_member_id()).getUser_id(), 
 				"/uploadFiles/profileImage/"+userDto.getUser_image(),
-				"redirect:/travel/crew/crewhome/"+crew_domain+"/"+Integer.toString(crew_board_id),
+				"/travel/crew/crewhome/"+crew_domain+"/"+Integer.toString(crew_board_id),
 				"["+crewMapper.getCrewDtoByCrewDomain(crew_domain).getCrew_name()+ "] "+userDto.getUser_nickname()+" 님이 본인의 게시글을 좋아합니다.");
 		
 		return getBoardList(crew_domain, userDto);
@@ -816,7 +816,7 @@ public class CrewService {
 			}
 			String crew_thumbnail = saveFileName;
 			crewMapper.addCrewThumbnailByCrewDomain(crew_thumbnail, crewDto.getCrew_domain());
-			sendnotification(userDto.getUser_id(), "uploadFiles/crewFiles/crewthumbnail/"+crew_thumbnail, "/travel/crew/crewhome/"+crewDto.getCrew_domain(), "["+crewDto.getCrew_name()+ "] 크루 생성이 완료되었습니다.");
+			sendnotification(userDto.getUser_id(), "/uploadFiles/crewFiles/crewthumbnail/"+crew_thumbnail, "/travel/crew/crewhome/"+crewDto.getCrew_domain(), "["+crewDto.getCrew_name()+ "] 크루 생성이 완료되었습니다.");
 		}
 
 
@@ -841,6 +841,20 @@ public class CrewService {
 			model.addAttribute("memberList", aa);
 		} else {
 			model.addAttribute("crewMemberDto", crewMemberDto);
+			
+			List<CrewChatDto> chat = crewMapper.getchatbycrewdomain(crewDto.getCrew_domain());
+			System.out.println(chat.size());
+			List<Map<String, Object>> chatlist = new ArrayList<Map<String,Object>>();
+			for(CrewChatDto c : chat) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("chatDto", c);
+				map.put("sender", crewMapper.getUserDtoByCrewMemberId(c.getCrew_member_id()));
+				chatlist.add(map);
+			}
+			
+			model.addAttribute("chatlist", chatlist);
+			model.addAttribute("userDto", userDto);
+			
 			Iterator<Map<String, Object>> itr = aa.iterator();
 			Map<String, Object> ddd = new HashMap<String, Object>();
 			while (itr.hasNext()) {
@@ -887,6 +901,20 @@ public class CrewService {
 		CrewDto crewDto = crewMapper.getCrewDtoByCrewDomain(crew_domain);
 		try {
 			CrewMemberDto crewMemberDto = crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id());
+			
+			List<CrewChatDto> chat = crewMapper.getchatbycrewdomain(crewDto.getCrew_domain());
+			System.out.println(chat.size());
+			List<Map<String, Object>> chatlist = new ArrayList<Map<String,Object>>();
+			for(CrewChatDto c : chat) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("chatDto", c);
+				map.put("sender", crewMapper.getUserDtoByCrewMemberId(c.getCrew_member_id()));
+				chatlist.add(map);
+			}
+			
+			model.addAttribute("chatlist", chatlist);
+			
+			model.addAttribute("crewMemberDto", crewMemberDto);
 			if(crewMemberDto.getCrew_domain().equals(crew_domain)) {
 				List<Map<String, Object>> nnn = postmethod(crewMapper.getAllNoticeByCrewDomain(crew_domain));
 				for(Map<String, Object> nn : nnn) {
@@ -1038,6 +1066,21 @@ public class CrewService {
 
 	public String calendar(String crew_domain, Model model, HttpSession session) {
 		CrewDto crewDto = crewMapper.getCrewDtoByCrewDomain(crew_domain);
+		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
+		
+		List<CrewChatDto> chat = crewMapper.getchatbycrewdomain(crewDto.getCrew_domain());
+		System.out.println(chat.size());
+		List<Map<String, Object>> chatlist = new ArrayList<Map<String,Object>>();
+		for(CrewChatDto c : chat) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("chatDto", c);
+			map.put("sender", crewMapper.getUserDtoByCrewMemberId(c.getCrew_member_id()));
+			chatlist.add(map);
+		}
+		
+		model.addAttribute("chatlist", chatlist);
+		model.addAttribute("userDto", userDto);
+		
 		model.addAttribute("masterName", crewMapper.getUserNameById(crewDto.getMaster_id()));
 		model.addAttribute("membersize", Integer.toString(crewMapper.getCrewMemberListByCrewDomain(crew_domain).size()));
 		model.addAttribute("crewDto", crewDto);
