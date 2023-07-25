@@ -58,7 +58,6 @@
 									<a class="nav-link dropdown-toggle me-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ${sessionuser.user_nickname} </a>
 									<ul class="dropdown-menu" aria-labelledby="userDropdown">
 										<li><a class="dropdown-item" href="/travel/myPage">마이페이지</a></li>
-										<li><a class="dropdown-item" href="/travel/crew/main">크루페이지</a></li>
 										<li><a class="dropdown-item" href="/travel/allCouponPage">쿠폰</a></li>
 										<li><a class="dropdown-item" href="/travel/messageGot">쪽지</a></li>
 										<li><a class="dropdown-item" href="javascript:logout();">로그아웃</a></li>
