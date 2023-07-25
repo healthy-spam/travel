@@ -585,7 +585,7 @@ strong#Createnewpost {
 		</div>
 		<div class="container aa">
 			<div class="row">
-				<div class="col-3">
+				<div class="col-3 px-0">
 					<aside id="info" style="transform: none;">
 						<div id="infoInner" data-viewname="DBandCoverItemView" class="infoInner -sticky" style="position: relative; overflow: visible;">
 							<jsp:include page="../common/crewHomeNavi.jsp"></jsp:include>
