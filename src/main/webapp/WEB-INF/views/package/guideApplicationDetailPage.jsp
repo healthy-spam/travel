@@ -778,11 +778,10 @@ function planningDay() {
 				
 				if (response.list != null) {
 					var boardInfo = document.querySelector('.board-info');
-					var regDate = new Date('${map.guidePlanningDto.guide_planning_reg_date}');
-					var boardRegDate = formatDate(regDate);
+					
 					var replyInputCol = null;
 					
-					boardInfo.innerText = boardRegDate + ' · 댓글 ' + response.list.length;
+					boardInfo.innerText =  '  댓글 ' + response.list.length;
 					
 					for (let i in response.list) {
 						
@@ -1309,18 +1308,30 @@ document.addEventListener("DOMContentLoaded", function() {
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-12 mb-1 comment-info d-flex justify-content-between">
-				<span class="board-info"></span>
-				<a href="../main" style="color: #999999; text-decoration: none;">목록</a>
+			<div class="row mt-5 mb-5">
+				
+				<div class="col" style="border-top : solid 3px 	#ededed;">
+				
+				</div>
+				
 			</div>
-			<div class="col mb-3 comment-wrapper" onclick="loginCheck()">
-				<input class="form-control comment p-2" type="text" placeholder="댓글을 입력해주세요.">
-				<button class="comment-button" type="button" onclick="createCommentFunc()">작성</button>
+		<div class="row mt-5">
+			<div class="col-2"></div>
+			<div class="col">
+				<div class="row">
+					<div class="col-12 mb-1 comment-info d-flex justify-content-between">
+						<span class="board-info"></span>
+					</div>
+					<div class="col mb-3 comment-wrapper" onclick="loginCheck()">
+						<input class="form-control comment p-2" type="text" placeholder="댓글을 입력해주세요.">
+						<button class="comment-button" style = "background:white; font-size:15px;font-weight:bold;"type="button" onclick="createCommentFunc()">작성</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col comment-list"></div>
+				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col comment-list"></div>
+			<div class="col-2"></div>
 		</div>
 		<div class="row">
 			<div class="col">
