@@ -129,7 +129,7 @@ function createModal() {
     col1Div.appendChild(row0);
 
     var row0Col1 = document.createElement('div');
-    row0Col1.classList.add('col-7');
+    row0Col1.classList.add('col-9');
     row0.appendChild(row0Col1);
 
     var row0Col1Icon = document.createElement('i');
