@@ -630,7 +630,7 @@ public class CrewService {
 		
 		sendnotification(crewMapper.getUserDtoByCrewMemberId(crewMapper.getCrewBoardDtoByCrewBoardId(crew_board_id).getCrew_member_id()).getUser_id(), 
 				"/uploadFiles/profileImage/"+userDto.getUser_image(),
-				"redirect:/travel/crew/crewhome/"+crew_domain+"/"+Integer.toString(crew_board_id),
+				"/travel/crew/crewhome/"+crew_domain+"/"+Integer.toString(crew_board_id),
 				"["+crewMapper.getCrewDtoByCrewDomain(crew_domain).getCrew_name()+ "] "+userDto.getUser_nickname()+" 님이 본인의 게시글을 좋아합니다.");
 		
 		return getBoardList(crew_domain, userDto);
@@ -816,7 +816,7 @@ public class CrewService {
 			}
 			String crew_thumbnail = saveFileName;
 			crewMapper.addCrewThumbnailByCrewDomain(crew_thumbnail, crewDto.getCrew_domain());
-			sendnotification(userDto.getUser_id(), "uploadFiles/crewFiles/crewthumbnail/"+crew_thumbnail, "/travel/crew/crewhome/"+crewDto.getCrew_domain(), "["+crewDto.getCrew_name()+ "] 크루 생성이 완료되었습니다.");
+			sendnotification(userDto.getUser_id(), "/uploadFiles/crewFiles/crewthumbnail/"+crew_thumbnail, "/travel/crew/crewhome/"+crewDto.getCrew_domain(), "["+crewDto.getCrew_name()+ "] 크루 생성이 완료되었습니다.");
 		}
 
 

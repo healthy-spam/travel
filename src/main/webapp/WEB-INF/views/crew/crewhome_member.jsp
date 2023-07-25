@@ -19,9 +19,10 @@
 
 
 <script>
-function getProfile(user_image, user_nickname,crew_member_log_date, user_id) {
+function getProfile(user_nickname, user_id, user_image, crew_member_log_date) {
 	var profilemodal = bootstrap.Modal.getOrCreateInstance("#profilemodal");
 
+	console.log("ddd")
 	console.log(crew_member_log_date)
 	console.log(user_id)
 	
@@ -48,9 +49,8 @@ function getProfile(user_image, user_nickname,crew_member_log_date, user_id) {
 	document.getElementById("modalprofilejoindate").innerHTML = `<span>since \${year}.\${month}.\${day}.`;
 	
 	
-	if(user_id != user_image.split(".")[0]) {
+
 		document.getElementById("postlistanddm").innerHTML = `
-		<a href="\${user_id}">
 	  		<div class="col text-end pe-0 ps-5" id="getallpostofmember">
 				<div class="row text-center">
 					<div class="col">
@@ -63,9 +63,9 @@ function getProfile(user_image, user_nickname,crew_member_log_date, user_id) {
 					</div>
 				</div>
 			</div>
-			</a>
 			<div class="col-6 pe-5 ps-0">
-				<div class="row text-center ">
+				<div class="card"  id="sendmessage" style="border-style: hidden;">
+					<div class="row text-center ">
 					<div class="col">
 						<i class="bi bi-envelope-plus modalsettingicons"></i>
 					</div>
@@ -75,14 +75,19 @@ function getProfile(user_image, user_nickname,crew_member_log_date, user_id) {
 						쪽지 보내기
 					</div>
 				</div>
+				</div>
 
 			</div>
 		`;
-	}
+
 	
 	profilemodal.show();
-	
-}
+
+    // Register the event listener inside the getProfile function
+    document.getElementById("sendmessage").addEventListener("click", function () {
+      console.log("ddd");
+    });
+	}
 </script>
 
 <script>
@@ -295,7 +300,7 @@ font-size: 30px
 					<div class="row">
 						<div class="col-auto">
 							<span>
-								<img src="/uploadFiles/profileImage/${memberList.userDto.user_image }" width="45" height="45" class="rounded-circle" onclick="getProfile('${memberList.userDto.user_image }', '${memberList.userDto.user_nickname }', '${memberList.crewMemberDto.crew_member_log_date }','${memberList.userDto.user_id }')">
+								<img src="/uploadFiles/profileImage/${memberList.userDto.user_image }" width="45" height="45" class="rounded-circle" onclick="getProfile('${memberList.userDto.user_nickname }', '${memberList.userDto.user_id }', '${memberList.userDto.user_image }', '${memberList.crewMemberDto.crew_member_log_date }')">
 							</span>
 						</div>
 						<div class="col-auto member3 ps-1 pt-2">
@@ -307,7 +312,7 @@ font-size: 30px
 						<div class="col text-end">
 							<i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
 							<ul class="dropdown-menu">
-								<li class="dropdown-item" onclick="getProfile('${memberList.userDto.user_image }', '${memberList.userDto.user_nickname }', '${memberList.crewMemberDto.crew_member_log_date }','${memberList.userDto.user_id }')">프로필 보기</li>
+								<li class="dropdown-item" onclick="getProfile('${memberList.userDto.user_nickname }', '${memberList.userDto.user_id }', '${memberList.userDto.user_image }', '${memberList.crewMemberDto.crew_member_log_date }')">프로필 보기</li>
 								<li class="dropdown-item" onclick="commentdelete('${comment.crewBoardCommentDto.board_comment_id}')">쪽지 보내기</li>
 							</ul>
 						</div>
@@ -341,22 +346,23 @@ font-size: 30px
         <div class="container">
         	<div class="row">
         		<div class="col text-center" id="modalprofileimage">
+        			${user_image }
         		</div>
         	</div>
         	<div class="row mt-4">
         		<div class="col text-center member4" id="modalprofilename">
-        			<span>한교동</span>
+        			<span>${user_nickname }</span>
         		</div>
         	</div>
         	<div class="row">
         		<div class="col text-center text-secondary" id="modalprofilejoindate">
         			<span>since 
-        			${user_nickname }</span>
+        			${crew_member_log_date }</span>
         		</div>
         	</div>
         </div>
       </div>
-		<div class="row m-4 postlistanddm">
+		<div class="row m-4" id="postlistanddm">
       		<div class="col text-end pe-0 ps-5" id="getallpostofmember">
       			<div class="row text-center">
       				<div class="col">
