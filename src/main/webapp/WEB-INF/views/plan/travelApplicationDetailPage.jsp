@@ -183,6 +183,24 @@ function showReportImg() {
 						        myModal.show();
 						    });
 						    
+						    dropdownItem2.addEventListener('click', function(e) {
+						        e.preventDefault();
+
+						        // 클로저에 현재 사용자 객체를 저장
+						        var currentUser = response.list[i].user;
+
+						        var myModalEl = document.getElementById('noteModal');
+						        var myModal = new bootstrap.Modal(myModalEl, {});
+
+						        // 모달이 보여질 때 currentUser 객체를 사용
+						        myModalEl.addEventListener('shown.bs.modal', function () {
+						            // 히든 인풋 필드의 값을 currentUser.user_id로 설정
+						            document.getElementById('notedUserNickname').value = currentUser.user_nickname;
+						        });
+
+						        myModal.show();
+						    });
+						    
 						    col1Div.style.cursor = 'pointer';
 						    col1Div.appendChild(dropdownMenu);
 					    }
@@ -1145,7 +1163,52 @@ body {
 												</div>
 												<div class="row mt-2">
 													<div class="col d-flex justify-content-end">
-														<button class="btn" style="background-color: #03c75a; color: white;" onclick="report()">신고 제출</button>
+														<button type="submit" class="btn" style="background-color: #03c75a; color: white;" >신고 제출</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+					<div class="modal-dialog  modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="noteModalLabel">쪽지보내기</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="container">
+									<div class="row">
+										<div class="col">
+											<form action="/travel/sendMessageProcess?user_id=${sessionuser.user_id}" method="post">
+												<!-- 신고 대상자의 아이디를 담을 hidden input field 추가 -->
+												<input type="hidden" id="notedUserNickname" name="user_nickname">
+
+												<div class="row mb-2">
+													<div class="col">
+														<input name="message_title" class="form-control" type="text" placeholder="제목">
+													</div>
+												</div>
+												<div class="row">
+													<div class="col">
+														<div class="form-floating">
+															<textarea class="form-control" placeholder="#" id="floatingTextarea3" name="message_content" style="height: 15em; resize: none;"></textarea>
+															<label for="floatingTextarea3" style="font-size: 0.9em;">스팸성 쪽지는 제재 사유가 될 수 있습니다.</label>
+														</div>
+													</div>
+												</div>
+												<div class="row mt-2">
+													<div class="col d-flex justify-content-end">
+														<button class="btn" style="background-color: #03c75a; color: white;" type="submit">보내기</button>
 													</div>
 												</div>
 											</form>
@@ -1160,9 +1223,6 @@ body {
 		</div>
 	</div>
 	<jsp:include page="../common/bottomNavi.jsp"></jsp:include>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

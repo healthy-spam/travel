@@ -63,4 +63,6 @@ public class TravelApplicationController {
 
 		return "redirect:/main";
 	}
+	
+	
 }
