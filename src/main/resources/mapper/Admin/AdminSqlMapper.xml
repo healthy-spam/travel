@@ -102,8 +102,15 @@
 
 
 <select id="getUserReportList" resultType="com.ja.travel.dto.UserReportDto">
-	SELECT * FROM user_report
-	ORDER BY user_report_reg_date DESC
+	SELECT *
+	FROM (
+	  SELECT user_report.*,
+			ROW_NUMBER() OVER (PARTITION BY user_id, reported_user_id, user_report_reg_date 
+			ORDER BY user_report_id DESC) rn
+	  FROM user_report
+	)
+	WHERE rn = 1
+	ORDER BY user_report_id DESC
 </select>
 
 <select id="getUserDtoByReportedUserId" resultType="com.ja.travel.dto.UserDto">
@@ -114,6 +121,17 @@
 <select id="getUserReportDtoByUserReportId" resultType="com.ja.travel.dto.UserReportDto">
 	SELECT * FROM user_report
 	WHERE user_report_id = #{user_report_id}
+</select>
+
+<select id="getUserReportDtoListByUserReportId" resultType="com.ja.travel.dto.UserReportDto">
+	SELECT *
+	FROM user_report
+	WHERE user_report_reg_date = (
+	  SELECT user_report_reg_date
+	  FROM user_report
+	  WHERE user_report_id =#{id} 
+	)
+	ORDER BY user_id, reported_user_id, user_report_id DESC
 </select>
 
 <select id="createUserRestrictPk" resultType="int">
@@ -239,5 +257,21 @@
 		coupon_amount = #{coupon_amount}
 	WHERE coupon_id = #{coupon_id}
 </update>
+
+<insert id="insertUserReport">
+	INSERT INTO user_report
+	VALUES
+		(
+			user_report_seq.nextval,
+			'',
+			#{user_id},
+			#{reported_user_id},
+			'미처리',
+			SYSDATE,
+			#{user_report_desc},
+			'',
+			#{user_report_attached}
+		)
+</insert>
 
 </mapper>

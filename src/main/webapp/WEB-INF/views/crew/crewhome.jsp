@@ -18,8 +18,30 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <title>Insert title here</title>
 
+<script>
+document.addEventListener("DOMContentLoaded",function() {
+document.getElementById("sendchat").addEventListener("click",function() {
+	var crew_chat_text = document.getElementById("chatcontent").value;
+	
+	var formData = new FormData();
+	formData.append('crew_chat_text', crew_chat_text);
+	
+	// AJAX 요청 보내기
+	  const xhr = new XMLHttpRequest();
+	  xhr.open('POST', '/travel/crew/sendchat', true);
 
+	  xhr.onreadystatechange = function() {
+	    if (xhr.readyState == 4 && xhr.status === 200) {
+	      console.log("새로고침 ㅠㅠ")
+	      
+	      console.log(xhr.responseText);
+	    }
+	  };
 
+	  xhr.send(formData);
+})
+})
+</script>
 
 <script>
 	function boardwrite() {
@@ -249,7 +271,35 @@ function commentdelete(board_comment_id) {
     }
 }
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function (event) {
+    var joincrew = document.getElementById("cancelapply");
+    joincrew.addEventListener("click", function () {
+    	bootstrap.Modal.getOrCreateInstance("#cancelapplymodal").show();
+    })
+    document.getElementById("cancelmycrewapply").addEventListener("click", function () {
+    	var crew_domain = "${crewDto.crew_domain}";
+        var formData = new FormData();
+        formData.append("crew_domain",crew_domain);
+        
+        // AJAX 요청 보내기
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/travel/crew/cancelrequest', true);
 
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            // 요청이 성공적으로 완료되었을 때 처리할 로직
+            alert("신청이 취소되었습니다.");
+            bootstrap.Modal.getOrCreateInstance("#cancelapply").hide();
+            location.reload();
+            console.log(xhr.responseText);
+            }
+        };
+
+        xhr.send(formData);
+    })
+})
+</script>
     <script>
         document.addEventListener("DOMContentLoaded", function (event) {
             var joincrew = document.getElementById("joincrew");
@@ -366,13 +416,6 @@ strong#Createnewpost {
 
 .sideend {
 	margin: 20px;
-}
-
-#calendar {
-	position: fixed;
-	background-color: white;
-	max-width: 350px;
-	max-height: 350px;
 }
 
 .imageContainer {
@@ -505,6 +548,28 @@ strong#Createnewpost {
 	background-color : white; 
 	border-radius: 5px;
 }
+
+
+.calendarcard {
+	position: fixed;
+	background-color: white;
+	width: 350px;
+	height:  500px;
+}
+
+.chatcard {
+	background-color: grey;
+}
+
+.writercard {
+	background-color: green;
+}
+
+.chatarea {
+	height: 80%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
 </style>
 
 
@@ -531,22 +596,6 @@ strong#Createnewpost {
 				<div class="col-6">
 
 					<div class="container main px-4">
-						<!-- <div class="row mb-3">
-
-							<div class="col text-center">
-								<button class="btn btn-outline-success">게시글</button>
-							</div>
-							<div class="col text-center">
-								<button class="btn btn-outline-success">일정</button>
-							</div>
-							<div class="col text-center">
-								<button class="btn btn-outline-success">멤버</button>
-							</div>
-							<div class="col text-center">
-								<button class="btn btn-outline-success">설정</button>
-							</div>
-				</div> -->
-
 						<div class="row mb-2">
 							<div class="col px-0">
 								<input type="text" class="form-control nonboarder"
@@ -554,6 +603,7 @@ strong#Createnewpost {
 							</div>
 						</div>
 						<div class="row">
+						<c:if test="${!empty crewMemberDto }">
 							<div class="card boardwrite" id="openBoardWrite">
 								<div class="row mx-2 mt-3">
 									<div class="col-auto">
@@ -580,8 +630,9 @@ strong#Createnewpost {
 									</div>
 								</div>
 							</div>
+							</c:if>
 						</div>
-
+						
 
 						<div class="row">
 							<c:choose>
@@ -780,16 +831,86 @@ strong#Createnewpost {
 						</div>
 					</div>
 				</div>
-				<div class="col-3">
+				<div class="col-3 ps-4">
 					<div class="card calendarcard">
-						<div id="calendar"></div>
+						<div class="row mx-1 sticky-header">
+							<div class="col p-2">
+								크루 전체 채팅
+							</div>
+						</div>
+						<div class="card chatarea">
+							<c:forEach var="chat" items="${chatlist}">
+								<c:choose>
+									<c:when test="${chat.sender.user_id != userDto.user_id }">
+										<div class="row">
+											<div class="col-auto pt-3 ps-4 pe-1">
+												<img src="/uploadFiles/profileImage/${chat.sender.user_image }" width="40px" height="40px" class="rounded-circle">
+											</div>
+											<div class="col">
+												<div class="row">
+													<div class="col">
+														${chat.sender.user_nickname }
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-auto">
+														<div class="card chatcard p-1">
+															${chat.chatDto.crew_chat_text }
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col">
+														<fmt:formatDate value="${chat.chatDto.crew_chat_date }" pattern="MM.dd HH:mm" var="crew_chat_date" />
+															${crew_chat_date }
+													</div>
+												</div>
+											</div>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="row">
+											<div class="col me-2">
+												<div class="row">
+													<div class="col">
+													</div>
+													<div class="col-auto text-end">
+														<div class="card writercard p-1">
+															${chat.chatDto.crew_chat_text }
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col text-end">
+														<fmt:formatDate value="${chat.chatDto.crew_chat_date }" pattern="MM.dd HH:mm" var="crew_chat_date" />
+															${crew_chat_date }
+													</div>
+												</div>
+											</div>
+										</div>
+		
+									</c:otherwise>
+								</c:choose>
+	
+							</c:forEach>
+						</div>
+						<div class="chatwrittingarea">
+							<div class="row sticky-header">
+								<div class="col-9 ms-4 px-0">
+									<input type="text" class="form-control" id="chatcontent">
+								</div>
+								<div class="col-auto ps-0">
+									<button class="btn btn-sm btn-success-outline" id="sendchat">send</button>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	</div>
-	>
+	
+	
 	<div class="container-fluid aa"></div>
 	<!-- Modal -->
 
@@ -851,7 +972,7 @@ strong#Createnewpost {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-primary"
+					<button type="submit" class="btn btn-success"
 						onclick="boardwrite()">작성</button>
 				</div>
 			</div>
@@ -859,8 +980,6 @@ strong#Createnewpost {
 	</div>
 
 	<!-- modal end -->
-
-
 
 	<!--Modify Detail Modal -->
 
@@ -988,6 +1107,30 @@ strong#Createnewpost {
 	</div>
 	<!-- modal end -->
 
+
+
+<!-- Modal -->
+<div class="modal fade" id="cancelapplymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">가입신청 중인 상태입니다.</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        신청을 취소하시겠습니까?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
+        <button type="button" class="btn btn-success" id="cancelmycrewapply">신청취소</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
     <!-- Modal -->
 
 	<div class="modal fade" id="joincrewmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1052,7 +1195,7 @@ strong#Createnewpost {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
-					<button class="btn btn-primary" id="joincrewrequest">신청</button>
+					<button class="btn btn-success" id="joincrewrequest">신청</button>
 				</div>
 			</div>
 		</div>

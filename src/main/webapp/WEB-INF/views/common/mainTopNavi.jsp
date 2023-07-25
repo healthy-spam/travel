@@ -37,7 +37,7 @@
 							</ul>
 						</li>
 						<li class="nav-item"><a class="nav-link" href="/travel/plan/planPage">플래너</a></li>
-						<li class="nav-item"><a class="nav-link" href="#" role="button">크루</a></li>
+						<li class="nav-item"><a class="nav-link" href="/travel/crew/main" role="button">크루</a></li>
 						<li class="nav-item"><a class="nav-link" href="/travel/hotel/hotelPage" role="button">숙소</a></li>
 						<li class="nav-item"><a class="nav-link" href="/travel/planPlace/placePage">플레이스</a></li>
 					</ul>

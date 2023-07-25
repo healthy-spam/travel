@@ -280,47 +280,4 @@ public class TravelApplicationService {
 		
 		return list;
 	}
-
-	public void userReport(UserReportDto userReport, MultipartFile[] reportImages) {
-		if (reportImages != null) {
-
-			for (MultipartFile multipartFile : reportImages) {
-
-				if (multipartFile.isEmpty()) {
-					continue;
-				}
-
-				String rootFolder = "C:/uploadFiles/reportImages/";
-
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-
-				String today = sdf.format(new Date());
-
-				File targetFolder = new File(rootFolder + today);
-
-				if (!targetFolder.exists()) {
-					targetFolder.mkdirs();
-				}
-
-				String fileName = UUID.randomUUID().toString();
-
-				fileName += "_" + System.currentTimeMillis();
-
-				String originalFileName = multipartFile.getOriginalFilename();
-
-				String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
-
-				String saveFileName = today + "/" + fileName + ext;
-
-				try {
-					multipartFile.transferTo(new File(rootFolder + saveFileName));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				userReport.setUser_report_attached(saveFileName);
-				travelApplicationSqlMapper.insertUserReport(userReport);
-			}
-		}
-	}
 }

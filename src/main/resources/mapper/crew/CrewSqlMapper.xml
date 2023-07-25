@@ -11,7 +11,8 @@
 			#{user_notification_content},
 			#{user_notification_link},
 			sysdate,
-			'N'
+			'N',
+			#{sender_image}
 		)
 	</insert>
 
@@ -131,7 +132,7 @@
 	</select>
 	
 	<select id="getAllPublicPostByCrewDomain" resultType="com.ja.travel.dto.CrewBoardDto">
-		select * from crew_board where crew_domain=#{crew_domain} and crew_board_visibility = 'public' and crew_board_status != 'deleted'  order by crew_board_id desc
+		select * from crew_board where crew_domain=#{crew_domain} and crew_board_visibility = 'public' and crew_board_status != 'deleted' and crew_board_notice = 'N' order by crew_board_id desc
 	</select>
 	
 	<select id="getAllPublicNoticeByCrewDomain" resultType="com.ja.travel.dto.CrewBoardDto">
@@ -326,4 +327,36 @@
 	<select id="getPostListByCrewDomainAndSearchWord" resultType="com.ja.travel.dto.CrewBoardDto">
 		select * from crew_board where crew_domain = #{crew_domain} and crew_board_content like '%' || #{searchword} || '%'
 	</select>
+	
+	<select id="getmynoticebyuserid" resultType="com.ja.travel.dto.UserNotificationDto">
+		select * from user_notification where user_id = #{user_id} order by user_notification_read desc, user_notification_id desc
+	</select>
+	
+	<delete id="cancelmycrewrequestbyuserid">
+		delete from crew_member where user_id = #{user_id} and crew_join_status = 'applied'
+	</delete>
+	
+	<insert id="addPoint">
+		insert into crew_member_point values (
+			crew_member_point_seq.nextval,
+			#{crew_member_id},
+			#{crew_member_point_reason},
+			#{crew_member_point_change},
+			sysdate
+		)
+	</insert>
+	
+	<select id="getchatbycrewdomain" resultType="com.ja.travel.dto.CrewChatDto">
+		select * from crew_chat where crew_domain = #{crew_domain}
+	</select>
+	
+	<insert id="sendchat">
+		insert into crew_chat values (
+		    crew_chat_seq.nextval,
+		    #{crew_member_id},
+		    #{crew_domain},
+		    #{crew_chat_text},
+		     sysdate
+		)
+	</insert>
 </mapper>

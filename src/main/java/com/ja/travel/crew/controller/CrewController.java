@@ -30,6 +30,7 @@ import com.ja.travel.crew.mapper.CrewMapper;
 import com.ja.travel.crew.service.CrewService;
 import com.ja.travel.dto.CrewBoardCommentDto;
 import com.ja.travel.dto.CrewBoardDto;
+import com.ja.travel.dto.CrewChatDto;
 import com.ja.travel.dto.CrewDto;
 import com.ja.travel.dto.CrewMemberDto;
 import com.ja.travel.dto.UserDto;
@@ -101,6 +102,11 @@ public class CrewController {
 	@RequestMapping("/requestcrew")
 	public void joinrequest(CrewMemberDto crewMemberDto, HttpSession session) {
 		crewService.joinrequest(crewMemberDto, session);
+	}
+	
+	@RequestMapping("/cancelrequest")
+	public void cancelrequest(String crew_domain, HttpSession session) {
+		crewService.cancelrequest(crew_domain, session);
 	}
 	
 	@RequestMapping("/crewboard/write")
@@ -198,5 +204,16 @@ public class CrewController {
 	@RequestMapping("/crewhome/{crew_domain}/notice")
 	public String notice(@PathVariable("crew_domain") String crew_domain, Model model, HttpSession session) {
 		return crewService.notice(crew_domain, model, session);
+	}
+	
+	@RequestMapping("/sendchat")
+	public void sendchat(@RequestParam("crew_chat_text") String crew_chat_text, HttpSession session) {
+		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
+		crewService.sendchat(crew_chat_text, userDto);
+	}
+	
+	@RequestMapping("/crewhome/{crew_domain}/calendar")
+	public String calendar(@PathVariable("crew_domain") String crew_domain, Model model, HttpSession session) {
+		return crewService.calendar(crew_domain, model, session);
 	}
 }

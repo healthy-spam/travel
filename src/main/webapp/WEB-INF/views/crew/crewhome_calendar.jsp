@@ -16,8 +16,68 @@
 	crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <title>Insert title here</title>
-<script src="/travel/resources/js/crew/crewmemberlist.js"></script>
 
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      locale: 'ko', // set Korean language
+      headerToolbar: {
+        start: "",
+        center: "prev title next",
+        end: 'dayGridMonth,dayGridWeek,dayGridDay'
+      },
+      selectable: true,
+      droppable: true,
+      editable: true,
+      events: [
+        // Use JSTL forEach to generate events dynamically
+        <c:forEach items="${calinderList}" var="calinder">
+          {
+            title: '${calinder.title}',
+            content: '${calinder.content}',
+            start: '<fmt:formatDate value="${calinder.regDate}" pattern="yyyy-MM-dd" />',
+            end: '<fmt:formatDate value="${calinder.endDate}" pattern="yyyy-MM-dd" />',
+            extendedProps: {
+              id: '${calinder.id}'
+            }
+          },
+        </c:forEach>
+      ],
+      eventRender: function(info) {
+        info.el.querySelector('.fc-event-title').textContent = info.event.title;
+      },
+      eventClick: function(arg) {
+        var event = arg.event;
+        var title = event.title;
+        var content = event.extendedProps.content;
+        var id = event.extendedProps.id;
+
+        var url;
+        if (id) {
+        	  url = 'calinderdetail?id=' + encodeURIComponent(id);
+        	} 
+		if(!id){
+			url ='calinderregistForm'
+		}
+
+        var winWidth = 600;
+        var winHeight = 400;
+        OpenWindow(url, 'Window Title', winWidth, winHeight);
+
+        function OpenWindow(urlStr, winTitle, winWidth, winHeight) {
+          var winLeft = (screen.width - winWidth) / 2;
+          var winTop = (screen.height - winHeight) / 2;
+          var win = window.open(urlStr, winTitle, "scrollbars=yes,width=" + winWidth + ",height=" + winHeight + ",top=" + winTop + ",left=" + winLeft + ",resizable=yes");
+          win.focus();
+        }
+      }
+    });
+    calendar.render();
+  });
+</script>
 
 <style>
 body {
@@ -48,7 +108,7 @@ body {
 	color: #888888;
 }
 
-#joinrequest {
+#crewcalendar {
 	background-color: #17b75e;
 	color:white;
 }
@@ -138,100 +198,20 @@ font-size: 30px
 		<div class="container">
 	<div class="row">
 		<div class="col-3">
-		<jsp:include page="../common/crewSettingNavi.jsp"></jsp:include>
+		<jsp:include page="../common/crewHomeNavi.jsp"></jsp:include>
 
 		</div>
-		<div class="col">
-			<div class="card card1">
-				<div class="incard m-3 mx-5">
-					<div class="row mt-3">
-						<div class="title">
-							<strong>가입 신청 관리</strong>
-						</div>
-						<div>
-							<p class="txt">우리 크루에 가입을 신청한 사람입니다. 가입을 승인하거나, 거절할 수 있습니다.</p>
-						<hr>
-						</div>
-					</div>
-					<div class="row mt-3">
-						<div class="col-auto">
-							<label for="memberSearch" class="col-form-label">멤버 검색</label>
-						</div>
-						<div class="col">
-							<div class="input-group mb-3">
-								<input type="text" id="appliedSearch" class="form-control" placeholder="닉네임이나 아이디 입력" aria-label="멤버 검색" aria-describedby="button-addon2">
-								<button class="btn btn-success" id="button-addon2" onclick="searchapply()">검색</button>
-							</div>
-						</div>
-					</div>
-					
-					<div class="row mt-3">
-						<div class="subtitle">
-							<p><Strong>가입 승인 대기자 ${crewsize }</Strong>명</p>
-						</div>
-						<div class="membertable">
-							<table class="table table-sm table-hover">
-								<thead class="table-light">
-									<tr>
-										<th scope="col">
-										    <input class="form-check-input checkboxes" type="checkbox" id="checkAll" onclick="checkall()">
-										</th>
-										<th scope="col">닉네임(아이디)</th>
-										<th scope="col">가입신청일</th>
-										<th scope="col">생년월일</th>
-										<th scope="col">성별</th>
-										<th scope="col">가입답변</th>
-									</tr>
-								</thead>
-								<tbody class="table-group-divider" id="inner">
-									<c:forEach var="member" items="${applied}" varStatus="status">
-										<tr>
-											<th scope="row">
-												<input class="form-check-input checkboxes" type="checkbox" id="checkbox${member.crewMemberDto.crew_member_id}">
-											</th>
-											<td>${member.userDto.user_nickname }(${member.userDto.user_email })</td>
-											<td>
-												<fmt:formatDate value="${member.crewMemberDto.crew_member_request_date}" pattern="yyyy.MM.dd.HH:mm" var="formattedDate" />
-												${formattedDate}
-											</td>
-											<td>
-												<fmt:formatDate value="${member.userDto.user_birth}" pattern="yyyy.MM.dd." var="birth" />
-												${birth}
-											</td>
-											<td>
-												<c:choose>
-													<c:when test="${member.userDto.user_gender == 'M' }">
-														남
-													</c:when>
-													<c:when test="${member.userDto.user_gender == 'F' }">
-														여
-													</c:when>
-													<c:otherwise>
-														알 수 없음
-													</c:otherwise>
-												</c:choose>
-											</td>
-											<td>
-												${member.crewMemberDto.crew_join_request_intro }
-											</td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-						</div>
-						<div class="row setting">
-							<div class="col-auto">
-								<strong>선택 멤버를</strong>
-							</div>
-							<div class="col">
-								<button class="btn btn-sm btn-success mb-1" onclick="acceptSelectedMembers()">가입 수락</button>
-								<button class="btn btn-sm btn-success mb-1" onclick="declineSelectedMembers()">가입 거절</button>
-							</div>
-						</div>
-					</div>
-				</div>
+		<input type="hidden" id="user_id" value="${userDto.user_id }">
+		<div class="col-6">
+			<div class="card" id="memberpost">
+				<div id="calendar"></div>				
 			</div>
 				
+		</div>
+		<div class="col sideend">
+			<div class="card calendarcard">
+				<div id="calendar"></div>
+			</div>
 		</div>
 	</div>
 	</div>

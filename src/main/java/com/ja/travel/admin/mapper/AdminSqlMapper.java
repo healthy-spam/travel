@@ -56,6 +56,8 @@ public interface AdminSqlMapper {
 	
 	public List<UserReportDto> getUserReportList();
 	
+	public List<UserReportDto> getUserReportDtoListByUserReportId(int id);
+	
 	public UserReportDto getUserReportDtoByUserReportId(int id);
 	
 	public UserDto getUserDtoByReportedUserId(int reportedUserId);
@@ -93,4 +95,7 @@ public interface AdminSqlMapper {
 	public CouponDto getCouponByCouponId(int id);
 
 	public void updateCoupon(CouponDto couponDto);
+	
+	// 유저 리포트
+	public void insertUserReport(UserReportDto userReport);
 }

@@ -153,10 +153,16 @@ function showReportImg() {
 					    	const dropdownMenu = document.createElement('div');
 						    dropdownMenu.classList.add('dropdown-menu');
 
-						    // add elements to the dropdownMenu as you need
+						    // 드랍다운 메뉴 엘리먼트 추가
 						    const dropdownItem1 = document.createElement('a');
 						    dropdownItem1.classList.add('dropdown-item');
 						    dropdownItem1.innerText = '신고하기';
+						    
+						    const dropdownItem2 = document.createElement('a');
+						    dropdownItem2.classList.add('dropdown-item');
+						    dropdownItem2.innerText = '쪽지보내기';
+						    
+						    dropdownMenu.appendChild(dropdownItem2);
 						    dropdownMenu.appendChild(dropdownItem1);
 						    
 						    dropdownItem1.addEventListener('click', function(e) {
@@ -1117,7 +1123,7 @@ body {
 								<div class="container">
 									<div class="row">
 										<div class="col">
-											<form action="./userReport?user_id=${sessionuser.user_id}" method="post" enctype="multipart/form-data">
+											<form action="/travel/admin/userReport?user_id=${sessionuser.user_id}" method="post" enctype="multipart/form-data">
 												<!-- 신고 대상자의 아이디를 담을 hidden input field 추가 -->
 												<input type="hidden" id="reportedUserId" name="reported_user_id">
 												

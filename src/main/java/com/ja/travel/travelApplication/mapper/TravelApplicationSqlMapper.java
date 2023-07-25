@@ -67,7 +67,4 @@ public interface TravelApplicationSqlMapper {
 	
 	public List<PlanningDto> getLatestPlanningList(int planning_id);
 
-	
-	// 유저 리포트 - admin단으로 옮길 예정
-	public void insertUserReport(UserReportDto userReport);
 }
