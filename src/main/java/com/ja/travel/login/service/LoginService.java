@@ -37,7 +37,6 @@ public class LoginService {
 
 	public void register(UserDto userDto, MultipartFile profileImage) {
 		loginSqlMapper.register(userDto);
-		updateProfile(userDto, profileImage);
 	}
 
 	public void updateProfile(UserDto userDto, MultipartFile profileImage) {
