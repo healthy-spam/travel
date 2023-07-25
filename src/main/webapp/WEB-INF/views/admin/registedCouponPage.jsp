@@ -80,14 +80,14 @@ pageEncoding="UTF-8"%>
 					<table class="table h-75 w-100">
 					  <thead class="table-secondary">
 					    <tr>
-					      <th scope="col" class="col-1"></th>
-					      <th scope="col" class="col-1">쿠폰 명</th>
-					      <th scope="col" class="col-1">수량</th>
-					      <th scope="col" class="col-2">쿠폰 공지</th>
-					      <th scope="col" class="col-2">발급 기간</th>
-					      <th scope="col" class="col-1">사용 종료일</th>
-					      <th scope="col" class="col-1">수정</th>
-					      <th scope="col" class="col-1">삭제</th>
+					      <th scope="col"></th>
+					      <th scope="col">쿠폰 명</th>
+					      <th scope="col">수량</th>
+					      <th scope="col">쿠폰 공지</th>
+					      <th scope="col">발급 기간</th>
+					      <th scope="col">사용 종료일</th>
+					      <th scope="col">수정</th>
+					      <th scope="col">삭제</th>
 					    </tr>
 					  </thead>
 					  <c:forEach var="list" items="${list}">

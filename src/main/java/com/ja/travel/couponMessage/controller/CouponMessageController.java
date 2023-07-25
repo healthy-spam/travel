@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ja.travel.couponMessage.service.CouponMessageService;
+import com.ja.travel.dto.CouponDto;
 import com.ja.travel.dto.MessageDto;
 import com.ja.travel.dto.UserCouponDto;
 import com.ja.travel.dto.UserDto;
@@ -37,6 +38,10 @@ public class CouponMessageController {
 		
 	    List<UserCouponDto> userCouponList = couponMessageService.getUserCoupon(userId);
 	    
+	    List<CouponDto> couponList = couponMessageService.getCouponList(); 
+	    
+	    
+	    model.addAttribute("couponList", couponList);
 		
 		return "couponMessage/allCouponPage";
 	}
