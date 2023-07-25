@@ -111,7 +111,7 @@ function getProfile(user_nickname, user_id, user_image, crew_member_log_date) {
 
     // Register the event listener inside the getProfile function
     document.getElementById("sendmessage").addEventListener("click", function () {
-      console.log("ddd");
+    	bootstrap.Modal.getOrCreateInstance("#noteModal").show();
     });
 	}
 </script>
@@ -529,7 +529,47 @@ font-size: 30px
 </div>
 
 	<input type="hidden" value="${crewDto.crew_domain }" id = "crew_domain">
-	
+				<div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+					<div class="modal-dialog  modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="noteModalLabel">쪽지보내기</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="container">
+									<div class="row">
+										<div class="col">
+											<form action="/travel/sendMessageProcess?user_id=${sessionuser.user_id}" method="post">
+
+												<input type="hidden" id="notedUserNickname" name="user_nickname">
+
+												<div class="row mb-2">
+													<div class="col">
+														<input name="message_title" class="form-control" type="text" placeholder="제목">
+													</div>
+												</div>
+												<div class="row">
+													<div class="col">
+														<div class="form-floating">
+															<textarea class="form-control" placeholder="#" id="floatingTextarea3" name="message_content" style="height: 15em; resize: none;"></textarea>
+															<label for="floatingTextarea3" style="font-size: 0.9em;">스팸성 쪽지는 제재 사유가 될 수 있습니다.</label>
+														</div>
+													</div>
+												</div>
+												<div class="row mt-2">
+													<div class="col d-flex justify-content-end">
+														<button class="btn" style="background-color: #03c75a; color: white;" type="submit">보내기</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.13.0/Sortable.min.js"></script>
 
 
