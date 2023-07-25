@@ -81,30 +81,30 @@ pageEncoding="UTF-8"%>
 				</div>
 				<c:choose>
 				<c:when test="${map.userReportDto.user_report_status eq '미처리'}">
-				<div class="row d-flex justify-content-center mt-5">
+				<div class="row d-flex justify-content-center mt-2">
 					<div class="col">
-						<div class="row">
+						<div class="row mt-2">
 						  <div class="col-sm-2">
 						  	신고 대상
 						  </div>
-						  <div class="col-sm-10">
-						  	${map.reportedUserDto.user_email}
+						  <div class="col-sm-10 b">
+						  	${map.reportedUserDto.user_nickname}
 						  </div>
 						</div>
 
-						<div class="row">  
+						<div class="row mt-2">  
 						  <div class="col-sm-2">
 						  	상세 설명
 						  </div>
-						  <div class="col-sm-10">
+						  <div class="col-sm-10 b">
 						    ${map.userReportDto.user_report_desc}
 						  </div>
 						</div>
-						<div class="row">  
+						<div class="row mt-2">  
 						  <div class="col-sm-2">
 						  	첨부 파일
 						  </div>
-						  <div class="col-sm-10">
+						  <div class="col-sm-10 b">
 							  <c:choose>
 							  	<c:when test="${empty map.userReportDto.user_report_attached}">
 							  		없음
@@ -122,7 +122,7 @@ pageEncoding="UTF-8"%>
 				<form method="post" action="restrictUserProcess">
 				<div class="row mt-3">
 					<div class="col mb-3">					 
-					  <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="user_restrict_reason" placeholder="제한 사유"></textarea>
+					  <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="user_restrict_reason" placeholder="제한 사유" style="resize: none;"></textarea>
 					</div>
 				</div>
 				<div class="row">
@@ -194,46 +194,46 @@ pageEncoding="UTF-8"%>
 				</div>
 				<div class="row d-flex justify-content-center mt-5">
 					<div class="col">
-						<div class="row">
+						<div class="row mt-2">
 							<div class="col-sm-2">
 								제한 방식
 							</div>
-							<div class="col-sm-10">
+							<div class="col-sm-10 b">
 								로그인 제한
 							</div>
-						<div class="row">							
+						<div class="row mt-2">							
 							<div class="col-sm-2">
 								총 제한일
 							</div>
-							<div class="col-sm-10">
+							<div class="col-sm-10 b">
 								${map.memberRestrictDto.user_restrict_duration}
 							</div>
 						</div>
-						<div class="row">
+						<div class="row mt-2">
 							<div class="col-sm-2">
 								제한 일자
 							</div>
-							<div class="col-sm-10">
+							<div class="col-sm-10 b">
 								<fmt:formatDate value="${map.memberRestrictDto.user_restrict_start_date}" pattern="yyyy-MM-dd" />
 							</div>
 						</div>
-						<div class="row">	  
+						<div class="row mt-2">	  
 							<div class="col-sm-2">
 								해제 예정일
 							</div>
-							<div class="col-sm-10">
+							<div class="col-sm-10 b">
 								<fmt:formatDate value="${map.memberRestrictDto.user_restrict_end_date}" pattern="yyyy-MM-dd" />
 							</div>
 						</div>
-						<div class="row">	  
+						<div class="row mt-2">	  
 							<div class="col-sm-2">
 								제한 이유
 							</div>
-							<div class="col-sm-10">
+							<div class="col-sm-10 b">
 								${map.memberRestrictDto.user_restrict_reason}
 							</div>
 						</div>
-						<div class="row">
+						<div class="row mt-5">
 							<div class="col text-center">
 								<span>
 									<button type="button" class="btn btn-secondary" onclick = "location.href='./userReportPage'">뒤로가기</button>
