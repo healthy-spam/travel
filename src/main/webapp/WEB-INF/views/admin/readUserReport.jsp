@@ -111,7 +111,7 @@ pageEncoding="UTF-8"%>
 							  	</c:when>
 							  	<c:otherwise>
 							    	<c:forEach items="${map.list}" var="data">
-							    		<img src="/uploadFiles/reportImages/${data.user_report_attached}">
+							    		<img src="/uploadFiles/reportImages/${data.user_report_attached}" style="width: 10em; height: 10em;">
 							    	</c:forEach>
 							    </c:otherwise>
 							  </c:choose>
