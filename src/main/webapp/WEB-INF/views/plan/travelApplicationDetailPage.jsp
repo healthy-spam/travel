@@ -1010,7 +1010,7 @@ body {
 								<div class="row">
 									<div class="col-12 d-flex justify-content-start align-items-center" style="font-size: ">
 										<i class="bi bi-link me-1 fs-5 mb-2"></i>
-										<h5>관련 플래너</h5>
+										<h5>추천 플래너</h5>
 									</div>
 									<c:forEach items="${map.list2}" var="data">
 										<div class="col-2">

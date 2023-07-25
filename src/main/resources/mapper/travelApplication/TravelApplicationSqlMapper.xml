@@ -249,7 +249,8 @@
 			#{user_id},
 			#{planning_id},
 			#{planning_application_content},
-			'신청'
+			'신청',
+			SYSDATE
 		)
 	</insert>
 
