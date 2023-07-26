@@ -20,7 +20,7 @@ pageEncoding="UTF-8"%>
 	}
 	
 	#naviBack {
-		background-color:black;
+		background-color:#303030;
 		color:white;
 		height: 100vh;
 	}
@@ -188,6 +188,7 @@ pageEncoding="UTF-8"%>
 						<input type="hidden" value="${map.guidePlanningDto.guide_planning_id}" name="guide_planning_id">
 						<input type="hidden" value="${map.guideReportDto.guide_report_id}" name="guide_report_id">
 						<input type="hidden" value="${map.guideDto.guide_id}" name="guide_id">
+						<input type="hidden" value="플랜 생성 제한" name="guide_report_status">
 						<span>
 							<button class="btn btn-secondary" type="submit">제한</button>
 						</span>

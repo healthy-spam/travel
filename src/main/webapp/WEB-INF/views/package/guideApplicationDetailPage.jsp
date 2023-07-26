@@ -17,7 +17,7 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <title>플랜 참가 신청 페이지</title>
 <script type="text/javascript"
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=99e2d84aee0718d5faa9b9e1821fca6b&libraries=services,drawing,clusterer"></script>
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=99e2d84aee0718d5faa9b9e1821fca6b&libraries=services,clusterer,drawing"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 
@@ -43,6 +43,7 @@ var linePath2 = [
 
 let placeThumbnail2;
 let placeThumbnail3;
+
 
 
 const guidePlanningId = new URLSearchParams(location.search).get("guide_planning_id");
@@ -202,30 +203,125 @@ function search(keyword) {
 		if (status === kakao.maps.services.Status.OK) {
 			coords1 = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-			if (marker1) {
+			/* if (marker1) {
 				marker1.setPosition(coords1);
 			} else {
 				marker1 = new kakao.maps.Marker({
 					map: map1,
 					position: coords1
 				});
-			}
+			} */
 
-			var content = '<div style="width:150px; text-align:center; padding:6px 0;">' + keyword + '</div>';
+			 var content = '<div style="background-color: white; border-radius: 15px; padding: 5px; width: 100%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); position: relative; font-weight: 700;">'
+				+ '<span style="background-color: #03c75a; border-radius: 50%; width: 30px; height: 30px; padding: 5px; display: inline-flex; align-items: center; justify-content: center;"><i class="bi bi-geo-alt-fill" style="font-size: 20px; color: white;"></i></span>'
+				+ ' '
+				+ keyword
+				+ '<div style="position: absolute; bottom: -8px; left: 10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>'
+				+ '</div>';
 
-			if (infowindow1) {
-				infowindow1.setContent(content);
-			} else {
-				infowindow1 = new kakao.maps.InfoWindow({
-					content: content
-				});
-			}
 
-			infowindow1.open(map1, marker1);
+			
+			var mainOverlay = new kakao.maps.CustomOverlay(
+					{
+						position : coords1,
+						content : content,
+						yAnchor : 0.7,
+						xAnchor : 0.1
+					});
 
+			
+			mainOverlay.setMap(map1);
+			
 			map1.setCenter(coords1);
 			map1.setLevel(3);
 		}
+	});
+}
+
+
+
+
+function getAddresList() {
+	var plan_id = '${map.planDto.plan_id}';
+	
+	var placeAddressList = [];
+	const xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			const response = JSON.parse(xhr.responseText);
+			// js 작업//
+
+			if (response.list != null) {
+				
+			
+
+				for ( var i in response.list) {
+					placeAddressList.push(response.list[i].placeDto);
+				}
+				addMarkers(placeAddressList);
+			}
+		}
+	}
+
+	//post
+	xhr.open("post", "./getAddresList");
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.send("plan_id=" + plan_id);
+
+}
+
+function addMarkers(placeDtoList) {
+
+	var geocoder = new kakao.maps.services.Geocoder();
+	var bounds = new kakao.maps.LatLngBounds();
+
+	// Promise로 각 주소를 좌표로 변환하는 비동기 작업을 관리합니다.
+	var promises = placeDtoList
+			.map(function(placeDto, index) {
+				return new Promise(
+						function(resolve) {
+							geocoder
+									.addressSearch(
+											placeDto.plan_place_address,
+											function(result, status) {
+												if (status === kakao.maps.services.Status.OK) {
+													var coords = new kakao.maps.LatLng(
+															result[0].y,
+															result[0].x);
+
+													var content = '<div style="background-color: white; border-radius: 15px; padding: 5px; width: 100%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); position: relative; font-weight: 700;">'
+															+ '<span style="background-color: #03c75a; border-radius: 50%; width: 30px; height: 30px; padding: 5px; display: inline-flex; align-items: center; justify-content: center;"><i class="bi bi-geo-alt-fill" style="font-size: 20px; color: white;"></i></span>'
+															+ ' '
+															+ placeDto.plan_place_name
+															+ '<div style="position: absolute; bottom: -8px; left: 10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>'
+															+ '</div>';
+
+													// CustomOverlay를 생성합니다.
+													var mainOverlay = new kakao.maps.CustomOverlay(
+															{
+																position : coords,
+																content : content,
+																yAnchor : 0.7,
+																xAnchor : 0.1
+															});
+
+													// CustomOverlay를 지도에 표시합니다.
+													mainOverlay.setMap(map2);
+
+													bounds.extend(coords);
+
+													resolve();
+												} else {
+													resolve();
+												}
+											});
+						});
+			});
+
+	// 모든 주소가 좌표로 변환되면 지도의 범위를 업데이트합니다.
+	Promise.all(promises).then(function() {
+		map2.setBounds(bounds);
 	});
 }
 
@@ -275,26 +371,7 @@ function search2(keyword) {
 		if (status === kakao.maps.services.Status.OK) {
 			coords2 = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-			if (marker2) {
-				marker2.setPosition(coords2);
-			} else {
-				marker2 = new kakao.maps.Marker({
-					map: map2,
-					position: coords2
-				});
-			}
-
-			var content = '<div style="width:150px; text-align:center; padding:6px 0;">' + keyword + '</div>';
-
-			if (infowindow2) {
-				infowindow2.setContent(content);
-			} else {
-				infowindow2 = new kakao.maps.InfoWindow({
-					content: content
-				});
-			}
-
-			infowindow2.open(map2, marker2);
+		
 
 			map2.setCenter(coords2);
 			map2.setLevel(3);
@@ -431,6 +508,7 @@ function planningDay() {
 	                        address.setAttribute("type", "hidden");
 	                        address.value = place.planPlace.plan_place_address;
 	                        mapLine(place.planPlace.plan_place_address);
+	                     
 	                        
 	                        content.style.fontSize = "20px";
 	                        content.style.fontWeight = "bold";
@@ -778,11 +856,10 @@ function planningDay() {
 				
 				if (response.list != null) {
 					var boardInfo = document.querySelector('.board-info');
-					var regDate = new Date('${map.guidePlanningDto.guide_planning_reg_date}');
-					var boardRegDate = formatDate(regDate);
+					
 					var replyInputCol = null;
 					
-					boardInfo.innerText = boardRegDate + ' · 댓글 ' + response.list.length;
+					boardInfo.innerText =  '  댓글 ' + response.list.length;
 					
 					for (let i in response.list) {
 						
@@ -905,6 +982,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		initMap2();
 		showCoupon();
 		getCommentList();
+		getAddresList();
 		 Line();
 
 	});
@@ -1284,13 +1362,13 @@ document.addEventListener("DOMContentLoaded", function() {
 							</div>
 						<div class="row mt-5"  >
 							<div class="col-1 d-flex align-items-center ">
-								<i class="bi bi-caret-left-fill" style="cursor: pointer; font-size: 30px; " onclick="showPreviousCard()"></i>
+								<i class="bi bi-caret-left" style="cursor: pointer; font-size: 20px; color:#03c75a; " onclick="showPreviousCard()"></i>
 
 							</div>
 							<div class="col" id="planDetail"  >
 							</div>
 							<div class="col-1 d-flex align-items-center">
-								<i class="bi bi-caret-right-fill" style="cursor: pointer; font-size: 30px; " onclick="showNextCard()"></i>
+								<i class="bi bi-caret-right" style="cursor: pointer; font-size: 20px; color:#03c75a; " onclick="showNextCard()"></i>
 								
 							
 							</div>
@@ -1309,18 +1387,30 @@ document.addEventListener("DOMContentLoaded", function() {
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-12 mb-1 comment-info d-flex justify-content-between">
-				<span class="board-info"></span>
-				<a href="../main" style="color: #999999; text-decoration: none;">목록</a>
+			<div class="row mt-5 mb-5">
+				
+				<div class="col" style="border-top : solid 3px 	#ededed;">
+				
+				</div>
+				
 			</div>
-			<div class="col mb-3 comment-wrapper" onclick="loginCheck()">
-				<input class="form-control comment p-2" type="text" placeholder="댓글을 입력해주세요.">
-				<button class="comment-button" type="button" onclick="createCommentFunc()">작성</button>
+		<div class="row mt-5">
+			<div class="col-2"></div>
+			<div class="col">
+				<div class="row">
+					<div class="col-12 mb-1 comment-info d-flex justify-content-between">
+						<span class="board-info"></span>
+					</div>
+					<div class="col mb-3 comment-wrapper" onclick="loginCheck()">
+						<input class="form-control comment p-2" type="text" placeholder="댓글을 입력해주세요.">
+						<button class="comment-button" style = "background:white; font-size:15px;font-weight:bold;"type="button" onclick="createCommentFunc()">작성</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col comment-list"></div>
+				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col comment-list"></div>
+			<div class="col-2"></div>
 		</div>
 		<div class="row">
 			<div class="col">

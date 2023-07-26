@@ -29,13 +29,12 @@
         vertical-align: top;
     }
     .btnpink {
-		background-color: #DB4465;
+		background-image: linear-gradient(98deg,#03c75a,#38a877);
 		color: white;
 	}
 	.btn-outline {
 		background-color:white;
-		color:#DB4465;
-		border-color:#DB4465;
+
 	}
 </style>
 
@@ -227,11 +226,11 @@ function uploadPhotos() {
 	<div class="container">
 		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 	</div>
-	<div class="container py-5 px-5">
+	<div class="container px-5">
         <div class="row my-3">
         	<div class="col"></div>
         	<div class="col-10">
-        		<h1>크루 만들기</h1>
+        		<h3>크루 만들기</h3>
         	</div>
     	    <div class="col"></div>
         </div>
@@ -275,7 +274,7 @@ function uploadPhotos() {
 					    </div>
 					    <div class="col">
 					        <div class="input-group">
-                                <input type="file" class="form-control-file" id="crew_thumbnail" name="crew_thumbnail">
+                                <input type="file" class="form-control" id="crew_thumbnail" name="crew_thumbnail">
 					        </div>
 					    </div>
 					</div>
@@ -319,9 +318,9 @@ function uploadPhotos() {
                         </p>
                     </div>
 				</div>
-                <div class="row buttons pt-2">
+                <div class="row buttons py-2">
                     <div class="col text-end">
-                        <button type="button" onclick="history.back(); return false;" class="btn btn-outline">취소하기</button>
+                        <button type="button" onclick="history.back(); return false;" class="btn btn-outline-success">취소하기</button>
                     </div>
                     <div class="col ">
                         <button class="btn btnpink" onclick="createcrew()">생성하기</button>

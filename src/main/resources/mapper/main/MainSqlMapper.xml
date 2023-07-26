@@ -39,10 +39,9 @@
 	<select id="getMyPlanningList" resultType="com.ja.travel.dto.PlanningDto">
 		SELECT planning.* FROM planning_application
 		INNER JOIN member ON planning_application.user_id = member.user_id
-		INNER JOIN planning ON planning.planning_id =
-		planning_application.planning_id
-		WHERE member.user_id = #{user_id}
-		AND planning_member_status = '수락'
+		INNER JOIN planning ON planning.planning_id = planning_application.planning_id
+		WHERE member.user_id = 1
+        AND planning_member_status = '수락'
 		ORDER BY planning.planning_id DESC
 	</select>
 	

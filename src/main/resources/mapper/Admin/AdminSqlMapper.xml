@@ -46,7 +46,7 @@
 
 <select id="selectAllApply" resultType="com.ja.travel.dto.GuideApplyDto">
 	SELECT * FROM guide_apply
-	ORDER BY guide_apply_date DESC
+	ORDER BY guide_apply_id DESC
 </select>
 
 <select id="selectGuideApplyById" resultType="com.ja.travel.dto.GuideApplyDto">
@@ -167,6 +167,7 @@
 
 <select id="getReportedGuideList" resultType="com.ja.travel.dto.GuideReportDto">
 	SELECT * FROM guide_report
+	ORDER BY guide_report_id DESC
 </select>
 
 <select id="getGuidePlanningDtoById" resultType="com.ja.travel.dto.GuidePlanningDto">
@@ -225,7 +226,7 @@
 		#{coupon_id},
 		#{coupon_title},
 		#{coupon_content},
-		#{coupon_image},
+		#{coupon_image,jdbcType=VARCHAR},
 		#{coupon_issue_start},
 		#{coupon_issue_end},
 		#{coupon_use_end},
@@ -237,6 +238,7 @@
 
 <select id="getCouponList" resultType="com.ja.travel.dto.CouponDto">
 	SELECT * FROM coupon
+	ORDER BY coupon_id DESC
 </select>
 
 <select id="getCouponByCouponId" resultType="com.ja.travel.dto.CouponDto">
@@ -249,7 +251,7 @@
 	SET
 		coupon_title = #{coupon_title},
 		coupon_content = #{coupon_content},
-		coupon_image = #{coupon_image},
+		coupon_image = #{coupon_image,jdbcType=VARCHAR},
 		coupon_issue_start = #{coupon_issue_start},
 		coupon_issue_end = #{coupon_issue_end},
 		coupon_use_end = #{coupon_use_end},

@@ -21,7 +21,9 @@ pageEncoding="UTF-8"%>
     var markers = [];
     let overlays = [];
     let polyline = null;
-    
+    const myDayPlaceList = []; // const, let, var을 안쓰면 자동으로 암묵적 전역변수로 선언
+    const myDayPlaceNames = [];
+    const myDayPlacePhoto = [];
     
     const planId = new URLSearchParams(location.search).get("id");
    
@@ -80,9 +82,7 @@ pageEncoding="UTF-8"%>
     function loadMyList(plan_day_id, plan_day){
         const xhr = new XMLHttpRequest();
         
-        myDayPlaceList = [];
-        myDayPlaceNames = [];
-        myDayPlacePhoto = [];
+        
         // 모든 마커 제거
         for (let i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
@@ -254,60 +254,6 @@ pageEncoding="UTF-8"%>
        overlays.push(overlay);
    }
     
-    function search2(keyword, index) {
-        // 주소-좌표 변환 객체를 생성합니다
-        var geocoder = new kakao.maps.services.Geocoder();
-        
-        // 주소로 좌표를 검색합니다
-        geocoder.addressSearch( keyword, function(result, status) {
-        // 정상적으로 검색이 완료됐으면
-        if (status === kakao.maps.services.Status.OK) {
-        coords = new kakao.maps.LatLng(result[0].y, result[0].x);           
-        
-        // 처음 마커를 생성하는 경우
-        marker = new kakao.maps.Marker({
-         map : map,
-         position : coords
-        });
-        
-        markers.push(marker);
-        
-        if (index !== myDayPlaceList.length - 1) {
-         const path = polyline.getPath();
-         path.push(coords);
-         polyline.setPath(path);
-      }
-
-      if (index === myDayPlaceList.length - 1) {
-         polyline.setMap(map);
-      }        
-        
-        // 선의 경로에 위치 추가
-      var path = polyline.getPath();
-      path.push(coords);
-      polyline.setPath(path);
-        
-        
-        // 인포윈도우가 이미 존재하는 경우, 인포윈도우의 내용을 변경
-        if (infowindow) {
-           infowindow.setContent(content);
-        } else {
-         // 처음 인포윈도우를 생성하는 경우
-         infowindow = new kakao.maps.InfoWindow({
-            content : content
-         });
-        }
-        
-        infowindow.open(map, marker);
-        
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        map.setCenter(coords);
-        map.setLevel(5);
-                                                       
-      }
-        
-      });
-   }
    
     function submitModal(){
           
@@ -315,14 +261,25 @@ pageEncoding="UTF-8"%>
          
           // 플래너 제목, 설명, 썸네일, 공개 여부 값 가져오기
           const planTitle = document.getElementById('plan_title').value;
-          const planThumbnail = document.getElementById('plan_thumbnail').files[0];
+          const planThumbnail = document.getElementById('plan_thumbnail').files[0];          
+          
+          let planDisclosureStatus;
+          let radios = document.getElementsByName('plan_disclosure_status');
+
+          for (let i = 0, length = radios.length; i < length; i++) {
+              if (radios[i].checked) {
+                  planDisclosureStatus = radios[i].value;
+                  break;
+              }
+          }
           
           console.log(planId);
           
           // FormData에 값 추가
+          formData.append('plan_disclosure_status', planDisclosureStatus);
           formData.append('plan_title', planTitle);
           formData.append('img', planThumbnail);
-      formData.append('planId', planId);
+		  formData.append('planId', planId);
           
           const xhr = new XMLHttpRequest();
           
@@ -548,6 +505,71 @@ pageEncoding="UTF-8"%>
               reader.readAsDataURL(file);
           }
           
+       // 라디오 버튼 추가 부분 시작
+          var rowRadio = document.createElement('div');
+          rowRadio.classList.add('row');
+          rowRadio.classList.add('mt-3');
+          col1Div.appendChild(rowRadio);
+
+          // 아이콘 + 라벨 행 생성
+          var rowRadioIcon = document.createElement('div');
+          rowRadioIcon.classList.add('row');
+          rowRadio.appendChild(rowRadioIcon);
+
+          var rowRadioColIcon = document.createElement('div');
+          rowRadioColIcon.classList.add('col-12');
+          rowRadioIcon.appendChild(rowRadioColIcon);
+
+          var icon = document.createElement('i');
+          icon.classList.add('bi');
+          icon.classList.add('bi-check-circle');
+          icon.classList.add('me-1');
+          rowRadioColIcon.appendChild(icon);
+
+          var iconSpan = document.createElement('span');
+          iconSpan.innerText = ' 플랜 공개 여부';
+          iconSpan.style.fontStyle = 'normal'; // 기울임체 해제 // 글꼴을 보통으로 설정
+          iconSpan.style.fontWeight = 'bolder';
+          rowRadioColIcon.appendChild(iconSpan);
+
+          // 라디오 버튼 행 생성
+          var rowRadioButtons = document.createElement('div');
+          rowRadioButtons.classList.add('row','mt-2');
+          rowRadio.appendChild(rowRadioButtons);
+
+          var rowRadioCol = document.createElement('div');
+          rowRadioCol.classList.add('col-12');
+          rowRadioButtons.appendChild(rowRadioCol);
+
+          var radioPublicLabel = document.createElement('label');
+          radioPublicLabel.innerText = ' 공개 ';
+          radioPublicLabel.setAttribute('class', 'me-3');
+          radioPublicLabel.style.fontWeight = 'bolder';
+
+          var radioPublic = document.createElement('input');
+          radioPublic.setAttribute('type', 'radio');
+          radioPublic.setAttribute('name', 'plan_disclosure_status');
+          radioPublic.setAttribute('id', 'public_plan_disclosure_status');
+          radioPublic.setAttribute('value', '공개');
+          radioPublic.setAttribute('class', 'me-1');
+          radioPublic.checked = true; // Default value
+          radioPublicLabel.appendChild(radioPublic);
+          rowRadioCol.appendChild(radioPublicLabel);
+
+          var radioPrivateLabel = document.createElement('label');
+          radioPrivateLabel.innerText = '비공개 ';
+          radioPrivateLabel.style.fontWeight = 'bolder';
+
+          var radioPrivate = document.createElement('input');
+          radioPrivate.setAttribute('type', 'radio');
+          radioPrivate.setAttribute('name', 'plan_disclosure_status');
+          radioPrivate.setAttribute('id', 'private_plan_disclosure_status');
+          radioPrivate.setAttribute('value', '비공개');
+          radioPrivate.setAttribute('class', 'me-1');
+          radioPrivateLabel.appendChild(radioPrivate);
+          rowRadioCol.appendChild(radioPrivateLabel);
+          // 라디오 버튼 추가 부분 끝
+          
           var row3 = document.createElement('div');
           row3.classList.add('row');
           row3.classList.add('mt-3');
@@ -658,44 +680,46 @@ pageEncoding="UTF-8"%>
                                   <span class="" style="font-weight: 700; font-size: 20px;">${data.planDto.plan_title}</span>
                               </div>
                         
-                        <c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">                                                    
-                           <div class="col-3">                                                                            
-                               <div class="dropdown ">
-                                   <button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: bolder; background-color: #faf7f0;">
-                                       <i class="bi bi-gear"></i> 관리
-                                   </button>
-                                   <ul class="dropdown-menu" >
-                                       <li class="col-auto"><a class="dropdown-item" id="editPlanButton" onclick="showModal('${data.planDto.plan_title}');"><i class="bi bi-vector-pen"></i> 정보 수정</a></li>
-                                       <li class="col-auto "><a class="dropdown-item" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}&plan_title=${data.planDto.plan_title}"><i class="bi bi-signpost-split"></i> 루트 수정</a></li>
-                                       <li class="col-auto "><a class="dropdown-item" href="./deleteProcess?id=${data.planDto.plan_id}"><i class="bi bi-trash3"></i> 플래너 삭제</a></li>
-                                   </ul>
-                               </div>                                    
-                           </div>
-                        </c:if>
+						<c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">                                                    
+							<div class="col-3">                                                                            
+								<div class="dropdown ">
+									<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: bolder; background-color: #faf7f0;">
+										<i class="bi bi-gear"></i> 관리
+									</button>
+									<ul class="dropdown-menu" >
+										<li class="col-auto"><a class="dropdown-item" id="editPlanButton" onclick="showModal('${data.planDto.plan_title}');"><i class="bi bi-vector-pen"></i> 정보 수정</a></li>
+										<li class="col-auto "><a class="dropdown-item" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}&plan_title=${data.planDto.plan_title}"><i class="bi bi-signpost-split"></i> 루트 수정</a></li>
+										<li class="col-auto "><a class="dropdown-item" href="./deleteProcess?id=${data.planDto.plan_id}"><i class="bi bi-trash3"></i> 플래너 삭제</a></li>
+									</ul>
+								</div>                                    
+							</div>
+							<div class="col-3">
+								<div class="dropdown">
+									<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: bolder; background-color: #faf7f0;">
+										<i class="bi bi-people"></i> 모집
+									</button>
+									<ul class="dropdown-menu">
+										<c:if test="${data.planDto.plan_statuse != '모집'}">
+										<li class="col-auto"><a class="dropdown-item" href="./travelRecruitmentPage?plan_id=${data.planDto.plan_id}"><i class="bi bi-people-fill"></i> 모집</a></li>
+		                       			</c:if>
+										<c:if test="${data.planDto.plan_statuse != '모집' && guideCheck == 1 }">
+										<li class="col-auto "><a class="dropdown-item" href="../guidePackage/packageRecruitmentPage?plan_id=${data.planDto.plan_id}"><i class="bi bi-bag-heart"></i> 패키지 모집</a></li>
+		                       			</c:if>
+										<li class="col-auto "><a class="dropdown-item" href="#"><i class="bi bi-bag-heart-fill"></i> 크루원 모집</a></li>	
+									</ul>
+								</div>									                       								
+		                     </div>  
+						</c:if>
+                        
                         <c:if test="${!empty sessionuser && sessionuser.user_id != data.planDto.user_id && data.planDto.plan_disclosure_status == '공개'}">
                            <div class="col-4">
                                       <button id="copyPlan" class="btn shadow-sm" style="font-weight: bolder; border-radius: 17px; background-color: #faf7f0;">
                                    <i class="bi bi-bookmark"></i> 일정 담기
                                </button>
                            </div>
-                        </c:if>
+                        </c:if>                                             
                         
-                        <c:choose>
-                           <c:when test="${data.planDto.referenced_plan_id != 0}">
-                              <div class="col-2">
-                                 <a class="btn" href="readPlanPage?id=${data.planDto.referenced_plan_id}">
-                                    <i class="bi bi-bookmark-fill" style="font-size: 20px;"></i>
-                                    <span class="plan-copy-count" style="font-size: 15px; font-weight: bolder;">0</span>                              
-                                 </a>
-                              </div>
-                           </c:when>
-                           <c:otherwise>
-                              <div class="col-2">
-                                  <i class="bi bi-bookmark" style="font-size: 20px;"></i>
-                                  <span class="plan-copy-count" style="font-size: 15px; font-weight: bolder;">0</span>
-                               </div>
-                           </c:otherwise>
-                        </c:choose>
+                        
                         
                      </div>                          
                       </div>                                                                         
@@ -704,35 +728,7 @@ pageEncoding="UTF-8"%>
                   
               </div>              
                                                       
-          </div>
-          
-         <c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">
-          <div class="row mt-2 align-items-center justify-content-center">
-                                       
-                <div class="col-3">
-                   &nbsp;
-                </div>
-            
-                   <div class="col">
-                       <!-- 크루원 모집란 -->
-                          <a href="" class="btn shadow-sm" style=" font-weight: bolder; border-radius: 17px; background-color: #faf7f0;">
-                           <i class="bi bi-bag-heart"></i> 크루원 모집
-                           </a>                                                                                          
-                       <c:if test="${data.planDto.plan_statuse != '모집' && guideCheck == 1 }">
-                           <a href="../guidePackage/packageRecruitmentPage?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style=" font-weight: bolder; border-radius: 17px; background-color: #faf7f0;">
-                           <i class="bi bi-bag-heart"></i> 패키지 모집
-                           </a>
-                       </c:if>
-                       <c:if test="${data.planDto.plan_statuse != '모집'}">
-                           <a href="./travelRecruitmentPage?plan_id=${data.planDto.plan_id}" class="btn shadow-sm" style="font-weight: bolder; border-radius: 17px; background-color: #faf7f0;" >
-                           <i class="bi bi-people"></i> 모집
-                           </a>
-                       </c:if> 
-                     </div>                             
-                                 
-          </div>
-         </c:if>
-          
+          </div>                             
           
           <div class="row">
              <div class="col">

@@ -167,9 +167,6 @@ public class PackageService {
 		int planDayListSize = planDayList.size();
 
 		
-		
-		
-		
 		List<Map<String, Object>> list = new ArrayList<>();
 		
 		for (PlanDayDto planDay : planDayList) {
@@ -349,6 +346,27 @@ public class PackageService {
 			packageSqlMapper.addLike(guidePlanningCommentLove);
 		}
 		
+	}
+
+	public List<Map<String, Object>> getPlanDayList(int plan_id) {
+		List<PlanDayDto> planDayList = packageSqlMapper.getPlanDayByPlanId(plan_id);
+		
+		List<Map<String, Object>> list = new ArrayList<>();
+		
+		for (PlanDayDto planDay : planDayList) {
+			List<PlanPlaceDto> placeList = packageSqlMapper.getPlaceByPlanId(planDay);
+			
+			for (PlanPlaceDto placeDto : placeList) {
+				
+				Map<String, Object> map = new HashMap<>();
+				
+				map.put("placeDto", placeDto);
+				
+				list.add(map);
+			}
+		}
+		
+		return list;
 	}
 
 	

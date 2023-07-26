@@ -21,7 +21,7 @@ pageEncoding="UTF-8"%>
 	}
 
 	#naviBack {
-		background-color:black;
+		background-color:#303030;
 		color:white;
 		height: 100vh;
 	}
@@ -78,9 +78,8 @@ pageEncoding="UTF-8"%>
 				</div>
 				<div class="row d-flex justify-content-center mt-5">
 					<table class="table table-sm h-75">
-					  <thead class="table-secondary">
+					  <thead class="table-secondary text-center">
 					    <tr>
-					      <th scope="col"></th>
 					      <th scope="col">회원 계정</th>
 					      <th scope="col">가이드 이름</th>
 					      <th scope="col">가이드 프로필</th>
@@ -89,9 +88,8 @@ pageEncoding="UTF-8"%>
 					    </tr>
 					  </thead>
 					  <c:forEach var="list" items="${list}">
-					  <tbody>
+					  <tbody class="text-center">
 					    <tr>
-					      <th scope="row">${list.guideApplyDto.guide_apply_id}</th>
 					      <td>${list.userDto.user_email}</td>
 					      <td>${list.guideApplyDto.guide_apply_name}</td>
 					      <td><a href="./readProfilePage?id=${list.guideApplyDto.guide_apply_id}">보기</a></td>
