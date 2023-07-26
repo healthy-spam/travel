@@ -78,7 +78,7 @@ pageEncoding="UTF-8"%>
 
 				<div class="row d-flex justify-content-center mt-5">
 					<table class="table table-sm h-75">
-					  <thead class="table-secondary">
+					  <thead class="table-secondary text-center">
 					    <tr>
 					      <th scope="col">신고자</th>
 					      <th scope="col">신고 대상</th>
@@ -88,7 +88,7 @@ pageEncoding="UTF-8"%>
 					    </tr>
 					  </thead>
 					  <c:forEach var="list" items="${list}">
-					  <tbody>
+					  <tbody class="text-center">
 					    <tr>
 					      <td>${list.reportingUserDto.user_nickname}</td>
 					      <td>${list.reportedUserDto.user_nickname}</td>

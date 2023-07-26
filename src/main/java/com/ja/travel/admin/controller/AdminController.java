@@ -93,7 +93,7 @@ public class AdminController {
 			
 		if(sessionUser != null) {
 			adminSession.setAttribute("sessionUser", sessionUser);
-			return "admin/adminPage";
+			return "redirect:../admin/registedCityPage";
 		}
 		else return "redirect:../admin/loginFail";
 	}
@@ -236,7 +236,7 @@ public class AdminController {
 	
 	@RequestMapping("registCouponProcess")
 	public String registCouponProcess(CouponDto params, MultipartFile[] couponImage) {
-		
+			
 			if(couponImage != null) {
 			
 			for(MultipartFile multipartfile : couponImage ) {
@@ -280,7 +280,7 @@ public class AdminController {
 				
 			}
 					
-		}
+		}else params.setCoupon_image(null);
 		
 			adminService.registerCoupon(params);
 			

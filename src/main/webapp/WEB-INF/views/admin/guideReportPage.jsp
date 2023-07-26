@@ -77,9 +77,8 @@ pageEncoding="UTF-8"%>
 				</div>
 				<div class="row d-flex justify-content-center mt-5">
 					<table class="table table-sm h-75">
-					  <thead class="table-secondary">
+					  <thead class="table-secondary text-center">
 					    <tr>
-					      <th scope="col"></th>
 					      <th scope="col">신고자</th>
 					      <th scope="col">가이드 계정</th>
 					      <th scope="col">세부 내용</th>
@@ -88,9 +87,8 @@ pageEncoding="UTF-8"%>
 					    </tr>
 					  </thead>
 					  <c:forEach var="list" items="${list}">
-					  <tbody>
+					  <tbody class="text-center">
 					    <tr>
-					      <th scope="row">${list.guideReportDto.guide_report_id}</th>
 					      <td>${list.reportingUserDto.user_email}</td>
 					      <td>${list.guideUserDto.user_email}</td>
 					      <td><a href="./readGuideReport?id=${list.guideReportDto.guide_report_id}">보기</a></td>

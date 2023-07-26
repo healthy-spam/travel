@@ -12,6 +12,20 @@ pageEncoding="UTF-8"%>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@100;300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <title>Insert title here</title>
+<script type="text/javascript">
+	function openModal(couponContent){
+		
+		console.log(couponContent);
+		
+		var myModal = new bootstrap.Modal(document.getElementById('couponModal'));
+		var couponModalContent = document.getElementById("couponModalContent");
+		
+		couponModalContent.textContent = couponContent;
+		
+		myModal.show();
+		
+	}
+</script>
 <style>
 
 	body {
@@ -61,6 +75,8 @@ pageEncoding="UTF-8"%>
 		font-weight:bold;
 		font-size: 25px;
 	}
+	
+
 </style>
 </head>
 <body>
@@ -73,14 +89,13 @@ pageEncoding="UTF-8"%>
 			<div class="col-8 mx-auto">
 				<div class="row mt-5 pageTitle border-dark-subtle border-bottom border-2">
 					<div class="col">
-						가이드 신청 내역
+						쿠폰 리스트
 					</div>
 				</div>				
 				<div class="row d-flex justify-content-center mt-5 mx-auto">
 					<table class="table h-75 w-100">
-					  <thead class="table-secondary">
+					  <thead class="table-secondary text-center">
 					    <tr>
-					      <th scope="col"></th>
 					      <th scope="col">쿠폰 명</th>
 					      <th scope="col">수량</th>
 					      <th scope="col">쿠폰 공지</th>
@@ -91,12 +106,11 @@ pageEncoding="UTF-8"%>
 					    </tr>
 					  </thead>
 					  <c:forEach var="list" items="${list}">
-					  <tbody>
-					    <tr>
-					      <th scope="row">${list.coupon_id}</th>
+					  <tbody class="text-center tbody">
+					    <tr>					   
 					      <td>${list.coupon_title}</td>
 					      <td>${list.coupon_amount}</td>
-					      <td>${list.coupon_content}</td>					      
+						  <td onclick="openModal(`${list.coupon_content}`)">보기</td>					      
 					      <td>
 					      <div class="col">
 					      	<div class="row">
@@ -122,6 +136,23 @@ pageEncoding="UTF-8"%>
 			</div>
 			</c:if>
 		</div>
+</div>
+<div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="couponModalLabel">쿠폰 공지</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="couponModalContent">
+        <!-- 쿠폰 공지 내용 작성 -->
+        여기에 쿠폰 공지 내용을 작성하세요.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </body>

@@ -31,7 +31,7 @@ public class RestCouponMessageController {
 		List<CouponDto> couponList = couponMessageService.getCouponList();
 		map.put("couponList", couponList);
 		map.put("result", "success");
-		
+
 		
 		return map;
 	}
@@ -54,12 +54,13 @@ public class RestCouponMessageController {
 	
 	@RequestMapping("/hasCoupon")
 	public Map<String, Object> hasCoupon(HttpSession session, @RequestParam("couponId") Integer couponId) {
-		
+		System.out.println(couponId);
 		Map<String, Object> map = new HashMap<>();
 		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
 		int userId = sessionUser.getUser_id();
 		
 		map.put("hasCoupon", couponMessageService.hasCoupon(userId, couponId));
+		System.out.println(couponMessageService.hasCoupon(userId, couponId));
 		map.put("isExpired", couponMessageService.isExpired(couponId));
 		map.put("isExhausted", couponMessageService.isExhausted(couponId));
 		return map;

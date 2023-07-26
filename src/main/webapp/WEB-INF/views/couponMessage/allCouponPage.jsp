@@ -43,15 +43,17 @@
 	
 	.couponTitleCol {
 		margin-left : 60px;
-		margin-top : 30px;
+		margin-top : 35px;
 	}
 	
 	.couponPriceCol {
 		margin-left : 60px;
+		font-size : 3em;
+		font-weight: bold;
 	}
 	
 	.couponDateCol {
-		margin-left : 60px;
+		color: gray;	
 	}
 	
 	.couponTitleRow {
@@ -59,15 +61,20 @@
 	}
 	
 	.couponPriceRow {
-		height: 30%;
+		height: 40%;
 	}
 	
 	.couponDateRow {
-		height: 30%;
+		height: 20%;
+	}
+	
+	.iconDown:hover {
+		font-size : 32px;
 	}
 	
 	.iconDown {
 		font-size : 30px;
+		cursor: pointer;
 	}
 	
 	.textDown {
@@ -76,7 +83,7 @@
 	
 	.couponContent {
 		border: solid 2px white;
-		color: white;
+		color: gray;
 		border-radius: 10px;
 		
 	}
@@ -89,11 +96,16 @@
 	.mustRead {
 		font-size : 1.25em;
 	}
+	
+	.issueDateText {
+		margin-left : 60px;
+	}
 </style>
 
 <script type="text/javascript">
 	var changeBackColor = true;
-
+	
+	
 	function formatDate(date, format) {
 	  var year = date.getFullYear();
 	  var month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -193,162 +205,21 @@
 	    targetCollapse.classList.add('show');
 	  }
 	  
-	  function reloadCouponList() {
-		  const xhr = new XMLHttpRequest();
-		  
-			xhr.onreadystatechange = function(){
-				if(xhr.readyState == 4 && xhr.status == 200){
-					const response = JSON.parse(xhr.responseText);
-					// js 작업..
-					document.getElementById("couponRep").innerHTML = "";
-					let getCouponButton = null;
-					
-					for(data of response.couponList){
-						
-						
-						var startDate = new Date(data.coupon_issue_start);
-						var endDate = new Date(data.coupon_issue_end);
-						var couponStartDateFormatted = formatDate(startDate, 'yy-MM-dd');
-						var couponEndDateFormatted = formatDate(endDate, 'yy-MM-dd');						
-						var couponId = data.coupon_id;
-						var uniqueId = "cardContent_" + couponId;
-						
-						
-						
-						
-						const col1 = document.createElement("div");
-						col1.classList.add("col-3","mt-5", "card", "d-flex", "flex-column", "justify-content-center", "mx-3", "mb-3");
-						col1.style.width = '18rem';
-						col1.setAttribute("couponId", data.coupon_id);
-						const col1row1 = document.createElement("div");
-						col1row1.classList.add("row");
-						col1.appendChild(col1row1);
-						
-						const col1row1col1 = document.createElement("div");
-						col1row1col1.classList.add("col");
-						col1row1.appendChild(col1row1col1);
-						
-						var imageUrl = "/uploadFiles/" + data.coupon_image;
-						
-						const img1 = document.createElement("img");
-						img1.className = "card-img-top";
-						img1.onload = function() {
-
-							};
-						img1.src = imageUrl;
-						img1.setAttribute("width", "150px");
-						img1.setAttribute("height", "200px");
-						
-						col1row1col1.appendChild(img1);
-						
-						const col1row2 = document.createElement("div");
-						col1row2.classList.add("row", "card-body");
-						col1.appendChild(col1row2);
-						
-						const col1row2col1 = document.createElement("div");
-						col1row2col1.classList.add("col", "h5", "text-center");
-						col1row2col1.innerText = data.coupon_title
-						col1row2.appendChild(col1row2col1);
-						
-						const col1row3 = document.createElement("div");
-						col1row3.classList.add("row");
-						col1.appendChild(col1row3);
-						
-						const col1row3col1 = document.createElement("div");
-						col1row3col1.classList.add("col", "text-center");
-						col1row3col1.setAttribute("data-bs-toggle", "collapse");
-						col1row3col1.setAttribute("data-bs-target", "#" + uniqueId);
-						col1row3.appendChild(col1row3col1);
-						
-						const buttonElement = document.createElement("button");
-						buttonElement.innerText = "쿠폰 내용";
-						
-						col1row3col1.appendChild(buttonElement);
-						
-						const collapseDiv = document.createElement("div");
-						collapseDiv.classList.add("collapse", "text-center");
-						collapseDiv.id = "cardContent_" + data.coupon_id;
-						collapseDiv.innerText = data.coupon_content;
-						buttonElement.appendChild(collapseDiv);
-						
-						const col1row4 = document.createElement("div");
-						col1row4.classList.add("row", "mt-3");
-						col1.appendChild(col1row4);
-						
-						const col1row4col1 = document.createElement("div");
-						col1row4col1.classList.add("col", "text-center");
-						col1row4col1.innerText = "발급기간";
-						col1row4.appendChild(col1row4col1);
-						
-						const col1row5 = document.createElement("div");
-						col1row5.classList.add("row");
-						col1.appendChild(col1row5);
-						
-						const col1row5col1 = document.createElement("div");
-						col1row5col1.classList.add("col-5", "text-center");
-						col1row5col1.innerText = couponStartDateFormatted;
-						col1row5.appendChild(col1row5col1);
-						
-						const col1row5col2 = document.createElement("div");
-						col1row5col2.classList.add("col-2");
-						col1row5col2.innerText = "~";
-						col1row5.appendChild(col1row5col2);
-						
-						const col1row5col3 = document.createElement("div");
-						col1row5col3.classList.add("col-5", "text-start");
-						col1row5col3.innerText = couponEndDateFormatted;
-						col1row5.appendChild(col1row5col3);
-						
-						const col1row6 = document.createElement("div");
-						col1row6.classList.add("row", "mt-3");
-						col1.appendChild(col1row6);
-						
-						const col1row6col1 = document.createElement("div");
-						col1row6col1.classList.add("col", "text-center");
-						col1row6.appendChild(col1row6col1);
-						
-						const getCouponButton = document.createElement("button");
-						getCouponButton.type = "button";
-						getCouponButton.className = "btn btn-primary";
-						getCouponButton.innerText = "받기";
-						getCouponButton.setAttribute("couponId", couponId);
-						getCouponButton.setAttribute("onclick", "getCoupon(" + data.coupon_id+")")
-						col1row6col1.appendChild(getCouponButton);
-						
-						
-						
-						
-						document.getElementById("couponRep").appendChild(col1);
-
-						refreshCoupon(couponId);
-					}
-						
-					}
-				
-				}
-					
-			
-			//get
-			xhr.open("get", "./getCouponList");
-			xhr.send();
-			
-	  }
-
 	  
-	  function getCoupon(couponId){
+	  function getCoupon(element){
 		  
 		  
 		  const xhr = new XMLHttpRequest();
 			
-		  
+		  var couponId = element.getAttribute('data-coupon-id');
 		  
 			xhr.onreadystatechange = function(){
 				if(xhr.readyState == 4 && xhr.status == 200){
 					const response = JSON.parse(xhr.responseText);
 					// js 작업..
 
-					refreshCoupon(couponId);
-					console.log(couponId);
+					refreshCoupon();
+					
 				}
 			}
 						
@@ -358,50 +229,74 @@
 			xhr.send("couponId=" + couponId);
 	  }
 	  
-
-	  function refreshCoupon(couponId){
-		  	if(mySessionId == null) return;
+	
+	  function checkCoupon(couponId){
+		  console.log(couponId);
+		  
+		    let couponElement = document.querySelector(`[data-coupon-id="${couponId}"]`);
+		    if (couponElement === null) {
+		        console.log(`쿠폰 엘리먼트를 찾을 수 없습니다. couponId: ${couponId}`);
+		        return;
+		    }
+		  
+		  const xhr = new XMLHttpRequest();
 			
-		  	const getCouponButton = document.querySelector('button.btn.btn-primary[couponId="' + couponId + '"]');
-			  	console.log(getCouponButton);
-		  	if (getCouponButton !== null) {
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState == 4 && xhr.status == 200){
+					const response = JSON.parse(xhr.responseText);
+					// js 작업..
+						if (response.hasCoupon) {
+				          // 이미 쿠폰을 받은 상태
+				          textDown.innerText = "받기 완료";
+				          iconDown.disabled = true;
+				        } else {
+				          // 쿠폰을 받지 않은 상태
+				          if (response.isExpired) {
+				        	  textDown.innerText = "발급기간만료";
+				        	  iconDown.disabled = true;
+				          } else if (response.isExhausted) {
+				        	  textDown.innerText = "소진";
+				        	  iconDown.disabled = true;
+				          } else {
+				        	  textDown.innerText = "다운로드";
+				        	  iconDown.disabled = false;
+				        	  }
+				       	 	}
+				}
+			}
+			
+			//get
+			xhr.open("get", "hasCoupon?couponId=" + couponId);
+			xhr.send();
+	  }
+	  function refreshCoupon(){
+		  	if(mySessionId == null) return;
+		  	
+		  		
 			const xhr = new XMLHttpRequest();
 			
 			xhr.onreadystatechange = function(){
 				if(xhr.readyState == 4 && xhr.status == 200){
 					const response = JSON.parse(xhr.responseText);
 					// js 작업..
-					
-					 if (response.hasCoupon) {
-				          // 이미 쿠폰을 받은 상태
-				          getCouponButton.innerText = "받기 완료";
-				          getCouponButton.disabled = true;
-				        } else {
-				          // 쿠폰을 받지 않은 상태
-				          if (response.isExpired) {
-				            getCouponButton.innerText = "발급기간만료";
-				            getCouponButton.disabled = true;
-				          } else if (response.isExhausted) {
-				            getCouponButton.innerText = "소진";
-				            getCouponButton.disabled = true;
-				          } else {
-				            getCouponButton.innerText = "받기";
-				            getCouponButton.disabled = false;
-				          }
-				        }
-				      }
-				    };
+					for(data of response.couponList){
+						const couponId = data.coupon_id;
+						console.log(couponId);
+						checkCoupon(couponId);
+				     	 }
+						}
+				    }
 			//get
-			xhr.open("get", "./hasCoupon?couponId=" + couponId);
+			xhr.open("get", "./getCouponList");
 			xhr.send();
 			
-		  }
+		  
 	  }
 	  
 	  window.addEventListener("DOMContentLoaded", function(){
 			//사실상 시작 시점...
 			getSessionId();
-			reloadCouponList();
+			refreshCoupon();
 		});
 	  
 </script>
@@ -426,6 +321,7 @@
 			</div>
 			
 			<c:forEach var="coupon" items="${couponList}">
+			
 			<div class="row mt-5 mx-auto">
 				<div class="col">
 					<div class="row mb-3 mx-auto couponRow" style="overflow: hidden;">
@@ -437,11 +333,11 @@
 					        </div>
 					        <div class="row couponPriceRow">
 					        	<div class="col couponPriceCol">
-					        		${coupon.coupon_discount}
+					        		${coupon.coupon_discount}원 할인
 					        	</div>
 					        </div>
 					        <div class="row couponDateRow">
-					        	<div class="col-4">
+					        	<div class="col-2 issueDateText">
 					        	발급기한
 					        	</div>
 					        	<div class="col-auto couponDateCol">
@@ -452,12 +348,13 @@
 					    </div>
 					    <div class="col-md-3 text-center couponRight">
 					    	<div class="row">
-					    		<div class="col">
-					      			<i class="bi bi-download iconDown"></i>
+					    		<div class="col iconDown"   data-coupon-id="${coupon.coupon_id}" onclick="getCoupon(this)">
+					    		
+					      			<i class="bi bi-download"></i>
 					      		</div>
 					      	<div class="row">
 					      		<div class="col textDown">
-					      			다운로드
+					      			
 					      		</div>
 					      	</div>
 					      	</div>

@@ -75,7 +75,7 @@ pageEncoding="UTF-8"%>
 			<div class="col-8 mx-auto">
 				<div class="row mt-5 pageTitle border-dark-subtle border-bottom border-2">
 					<div class="col">
-						가이드 신청 내역
+						쿠폰 등록
 					</div>
 				</div>
 			<div class="row">
@@ -84,7 +84,7 @@ pageEncoding="UTF-8"%>
 					<div class="row mt-3">  
 					  <div class="col-6 mx-auto">
 					    <label for="inputText1" class="form-label">쿠폰명</label>
-					    <input type="text" class="form-control" id="intputText1" name="coupon_title">
+					    <input type="text" class="form-control" id="inputText1" name="coupon_title">
 					  </div>
 					</div>
 					<div class="row">
@@ -136,10 +136,10 @@ pageEncoding="UTF-8"%>
 					<div class="row mb-2">
 					  <div class="col-6 mx-auto text-center">
 					  	<span>
-					    <button type="button" class="btn btn-secondary">발행</button>
+					    <button type="submit" class="btn btn-secondary">발행</button>
 					    </span>
 					    <span>
-					    <button type="button" class="btn btn-secondary" onclick="location.href='registerPage'">취소</button>
+					    <button type="button" class="btn btn-secondary" onclick="location.href='registedCouponPage'">취소</button>
 					    </span>
 					  </div>
 					</div>				  

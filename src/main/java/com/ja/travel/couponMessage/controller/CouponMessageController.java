@@ -28,7 +28,6 @@ public class CouponMessageController {
 
 		UserDto sessionuser = (UserDto) session.getAttribute("sessionuser");
 		int userId = sessionuser.getUser_id();
-<<<<<<< HEAD
 		
 		
 	    List<UserCouponDto> userCouponList = couponMessageService.getUserCoupon(userId);
@@ -38,11 +37,8 @@ public class CouponMessageController {
 	    
 	    model.addAttribute("couponList", couponList);
 		
-=======
 
-		List<UserCouponDto> userCouponList = couponMessageService.getUserCoupon(userId);
 
->>>>>>> 4074ba53a94195d5eb220c67f137f7e4f10a4ac0
 		return "couponMessage/allCouponPage";
 	}
 
