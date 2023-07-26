@@ -88,7 +88,7 @@ function removeModal() {
 }
 
 function createModal() {
-	   
+    
     // 모달 요소 생성
     var modalDiv = document.createElement('div');
     modalDiv.classList.add('modal');
@@ -113,7 +113,8 @@ function createModal() {
 
     // 모달 헤더 생성
     var modalHeaderDiv = document.createElement('div');
-    modalHeaderDiv.classList.add('modal-header');
+    modalHeaderDiv.classList.add('modal-header','p-2');
+    modalHeaderDiv.style.backgroundColor= '#03c75a';
 
     // 모달 제목 생성
     var modalTitleH1 = document.createElement('h1');
@@ -121,19 +122,22 @@ function createModal() {
     modalTitleH1.classList.add('fs-5');
     modalTitleH1.id = 'dynamicModalLabel';
     modalTitleH1.innerText = 'SAVE';
+    modalTitleH1.style.fontWeight = 'bolder';
+    modalTitleH1.style.color = 'white';
    
 
     // 모달 닫기 버튼 생성
     var closeButton = document.createElement('button');
     closeButton.type = 'button';
-    closeButton.classList.add('btn-close');
+    closeButton.classList.add('btn', 'bi', 'bi-x-lg');
     closeButton.setAttribute('data-bs-dismiss', 'modal');
     closeButton.setAttribute('aria-label', 'Close');
+    closeButton.style.color = 'white';
     closeButton.setAttribute('onclick', 'removeModal()');
 
     // 모달 바디 생성
     var modalBodyDiv = document.createElement('div');
-    modalBodyDiv.classList.add('modal-body');
+    modalBodyDiv.classList.add('modal-body','p-2');
 
     // 모달 바디내 container생성
     var containerDiv = document.createElement('div');
@@ -153,7 +157,7 @@ function createModal() {
     // 0 번째 row
     var row0 = document.createElement('div');
     row0.classList.add('row');
-    row0.classList.add('mt-2');
+    row0.classList.add('mt-1');
     col1Div.appendChild(row0);
 
     var row0Col1 = document.createElement('div');
@@ -162,13 +166,15 @@ function createModal() {
     
     var row0Col1Icon = document.createElement('i');
     row0Col1Icon.classList.add('bi');
-    row0Col1Icon.classList.add('bi-pencil');
-    row0Col1Icon.classList.add('me-2');
+    row0Col1Icon.classList.add('bi-check-circle');
+    row0Col1Icon.classList.add('me-1');
     row0Col1.appendChild(row0Col1Icon);
     
 
     var row0Col1Span = document.createElement('span');
     row0Col1Span.innerText = '플랜 제목   ';
+    row0Col1Span.style.fontStyle = 'normal'; // 기울임체 해제 // 글꼴을 보통으로 설정    
+    row0Col1Span.style.fontWeight = 'bolder';
     
     row0Col1.appendChild(row0Col1Span);
     
@@ -191,86 +197,117 @@ function createModal() {
     
     // 첫 번째 
 
-	var row1 = document.createElement('div');
-	row1.classList.add('row');
-	row1.classList.add('mt-4');
-	col1Div.appendChild(row1);
-	
-	var row1Col1 = document.createElement('div');
-	row1Col1.classList.add('col');
-	row1.appendChild(row1Col1);
-	
-	// 컨테이너1
-	var container1 = document.createElement('div');
-	container1.classList.add('form-check'); // Add Bootstrap form-check class for styling
-	row1Col1.appendChild(container1);
-	
-	var publicRadio = document.createElement('input');
-	publicRadio.type = 'radio';
-	publicRadio.name = 'planDisclosureStatus';
-	publicRadio.value = '공개';
-	publicRadio.id = 'publicRadio';
-	publicRadio.classList.add('form-check-input'); // Add Bootstrap form-check-input class for styling
-	container1.appendChild(publicRadio);
-	
-	var publicLabel = document.createElement('label');
-	publicLabel.innerHTML = '공개';
-	publicLabel.setAttribute('for', 'publicRadio');
-	publicLabel.classList.add('form-check-label'); // Add Bootstrap form-check-label class for styling
-	container1.appendChild(publicLabel);
-	
-	// 간격을 추가하기 위한 빈 컨테이너
-	var spacer = document.createElement('div');
-	spacer.style.marginRight = '20px'; // 원하는 간격 크기로 수정
-	row1Col1.appendChild(spacer);
-	
-	// 컨테이너2
-	var container2 = document.createElement('div');
-	container2.classList.add('form-check'); // Add Bootstrap form-check class for styling
-	row1Col1.appendChild(container2);
-	
-	var privateRadio = document.createElement('input');
-	privateRadio.type = 'radio';
-	privateRadio.name = 'planDisclosureStatus';
-	privateRadio.value = '비공개';
-	privateRadio.id = 'privateRadio';
-	privateRadio.classList.add('form-check-input'); // Add Bootstrap form-check-input class for styling
-	container2.appendChild(privateRadio);
-	
-	var privateLabel = document.createElement('label');
-	privateLabel.innerHTML = '비공개';
-	privateLabel.setAttribute('for', 'privateRadio');
-	privateLabel.classList.add('form-check-label'); // Add Bootstrap form-check-label class for styling
-	container2.appendChild(privateLabel);
+   var row1 = document.createElement('div');
+   row1.classList.add('row');
+   row1.classList.add('mt-3');
+   col1Div.appendChild(row1);
+   
+   var row1Col2 = document.createElement('div');
+   row1Col2.classList.add('col');
+   row1.appendChild(row1Col2);
+   
+   var icon = document.createElement('i');
+    icon.classList.add('bi');
+    icon.classList.add('bi-check-circle');
+    icon.classList.add('me-1');
+    row1Col2.appendChild(icon);
 
+    var iconSpan = document.createElement('span');
+    iconSpan.innerText = ' 플랜 공개 여부';
+    iconSpan.style.fontStyle = 'normal'; // 기울임체 해제 // 글꼴을 보통으로 설정
+    iconSpan.style.fontWeight = 'bolder';
+    row1Col2.appendChild(iconSpan);
+   
+    var row2 = document.createElement('div');
+   row2.classList.add('row');
+   row2.classList.add('mt-1');
+   col1Div.appendChild(row2);
+    
+   var row1Col1 = document.createElement('div');
+   row1Col1.classList.add('col');
+   row2.appendChild(row1Col1);
+   
+   var row3 = document.createElement('div');
+   row3.classList.add('row');
+   row1Col1.appendChild(row3);
+   
+   var col4 = document.createElement('div');
+   col4.classList.add('col','d-flex');
+   row3.appendChild(col4);
+   
+   // 컨테이너1
+   var container1 = document.createElement('div');
+   container1.classList.add('form-check','pe-4'); // Add Bootstrap form-check class for styling
+   col4.appendChild(container1);
+   
+   var publicRadio = document.createElement('input');
+   publicRadio.type = 'radio';
+   publicRadio.name = 'planDisclosureStatus';
+   publicRadio.value = '공개';
+   publicRadio.id = 'publicRadio';
+   publicRadio.classList.add('form-check-input'); // Add Bootstrap form-check-input class for styling
+   container1.appendChild(publicRadio);
+   
+   var publicLabel = document.createElement('label');
+   publicLabel.innerHTML = '공개';
+   publicLabel.setAttribute('for', 'publicRadio');
+   publicLabel.classList.add('form-check-label'); // Add Bootstrap form-check-label class for styling
+   container1.appendChild(publicLabel);
+   
+   
+   
+   // 컨테이너2
+   var container2 = document.createElement('div');
+   container2.classList.add('form-check'); // Add Bootstrap form-check class for styling
+   col4.appendChild(container2);
+   
+   var privateRadio = document.createElement('input');
+   privateRadio.type = 'radio';
+   privateRadio.name = 'planDisclosureStatus';
+   privateRadio.value = '비공개';
+   privateRadio.id = 'privateRadio';
+   privateRadio.classList.add('form-check-input'); // Add Bootstrap form-check-input class for styling
+   container2.appendChild(privateRadio);
+   
+   var privateLabel = document.createElement('label');
+   privateLabel.innerHTML = '비공개';
+   privateLabel.setAttribute('for', 'privateRadio');
+   privateLabel.classList.add('form-check-label'); // Add Bootstrap form-check-label class for styling
+   container2.appendChild(privateLabel);
+     
+   var row2 = document.createElement('div');
+   row2.classList.add('row');
+   row2.classList.add('mt-3');
+   col1Div.appendChild(row2);
+   
+   var row2Col2 = document.createElement('div');
+   row2Col2.classList.add('col');
+   row2.appendChild(row2Col2);
+   
+   var row2Col1 = document.createElement('div');
+   row2Col1.classList.add('col-6','d-grid');
+   row2.appendChild(row2Col1);
 
+   var row2Col3 = document.createElement('div');
+   row2Col3.classList.add('col');
+   row2.appendChild(row2Col3);
+   
+   var completeButton = document.createElement('button');
+   completeButton.innerText = '완료';
 
-  	
-	var row2 = document.createElement('div');
-	row2.classList.add('row');
-	row2.classList.add('mt-4');
-	col1Div.appendChild(row2);
+   // 버튼 스타일 설정
+   completeButton.classList.add('btn'); // Add Bootstrap btn class for basic button styling
+   
+   completeButton.classList.add('text-white'); // Set text color to white
+   completeButton.classList.add('fw-bold'); // Set font weight to bold
+   completeButton.style.borderRadius = '10px'; // Set border radius to make the button corners round
+   completeButton.style.backgroundColor = '#03c75a';
+   // row2Col1 요소에 스타일을 적용하여 오른쪽으로 배치
+   //row2Col1.style.display = 'flex';
+   //row2Col1.style.justifyContent = 'flex-end';
 
-	var row2Col1 = document.createElement('div');
-	row2Col1.classList.add('col');
-	row2.appendChild(row2Col1);
-
-	var completeButton = document.createElement('button');
-	completeButton.innerText = '완료';
-
-	// 버튼 스타일 설정
-	completeButton.classList.add('btn'); // Add Bootstrap btn class for basic button styling
-	
-	completeButton.classList.add('text-white'); // Set text color to white
-	completeButton.classList.add('fw-bold'); // Set font weight to bold
-	completeButton.style.borderRadius = '10px'; // Set border radius to make the button corners round
-	completeButton.style.backgroundColor = '#03c75a';
-	// row2Col1 요소에 스타일을 적용하여 오른쪽으로 배치
-	row2Col1.style.display = 'flex';
-	row2Col1.style.justifyContent = 'flex-end';
-
-	// 완료 버튼을 row2Col1 요소의 자식으로 추가
-	row2Col1.appendChild(completeButton);
+   // 완료 버튼을 row2Col1 요소의 자식으로 추가
+   row2Col1.appendChild(completeButton);
 
 
     // 완료 버튼을 row2Col1 요소의 자식으로 추가
@@ -300,17 +337,7 @@ function createModal() {
  }
 
 	
-	//저장  
-
 	
-	
-	function showPlace(item) {
-	     
-	     var placeAddressElement = item.querySelector('.address');
-	     var address = placeAddressElement.value;
-	
-	     search(address);
-	   }
 
 
    
@@ -330,30 +357,26 @@ function createModal() {
 	                           result[0].x);
 	
 	                     // 마커가 이미 존재하는 경우, 마커의 위치를 변경
-	                     if (marker) {
-	                        marker.setPosition(coords);
-	                     } else {
-	                        // 처음 마커를 생성하는 경우
-	                        marker = new kakao.maps.Marker({
-	                           map : map,
-	                           position : coords
-	                        });
-	                     }
+	                     
 	
-	                     var content = '<div style="width:150px; text-align:center; padding:6px 0;">'
-	                           + keyword + '</div>';
+	                   var content = '<div style="background-color: white; border-radius: 15px; padding: 5px; width: 100%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); position: relative; font-weight: 700;">'
+				+ '<span style="background-color: #03c75a; border-radius: 50%; width: 30px; height: 30px; padding: 5px; display: inline-flex; align-items: center; justify-content: center;"><i class="bi bi-geo-alt-fill" style="font-size: 20px; color: white;"></i></span>'
+				+ ' '
+				+ keyword
+				+ '<div style="position: absolute; bottom: -8px; left: 10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>'
+				+ '</div>';
 	
 	                     // 인포윈도우가 이미 존재하는 경우, 인포윈도우의 내용을 변경
-	                     if (infowindow) {
-	                        infowindow.setContent(content);
-	                     } else {
-	                        // 처음 인포윈도우를 생성하는 경우
-	                        infowindow = new kakao.maps.InfoWindow({
-	                           content : content
-	                        });
-	                     }
-	
-	                     infowindow.open(map, marker);
+		                  var mainOverlay = new kakao.maps.CustomOverlay(
+						{
+							position : coords,
+							content : content,
+							yAnchor : 0.7,
+							xAnchor : 0.1
+						});
+		
+					
+						mainOverlay.setMap(map);
 	
 	                     // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
 	                     map.setCenter(coords);
@@ -635,12 +658,24 @@ function createModal() {
                   
                   for(y of x.listInner){
                      const newElementInner = document.getElementById("templete_my_place").cloneNode(true);
-                     newElementInner.querySelector(".placeName").innerText = y.planPlaceDto.plan_place_name;
+                     newElementInner.querySelector(".placeName").innerText = y.planPlaceDto.plan_place_name 
+                     search(y.planPlaceDto.plan_place_address);
                     
-                     newElementInner.querySelector(".address").remove();
+                     newElementInner.querySelector(".address").remove(); 
                      newElementInner.removeAttribute("id");
                      newElementInner.classList.remove("d-none");
                      newElement.querySelector(".placeList").appendChild(newElementInner);
+                     
+                   /*   <div class="row d-none p-1 " id="templete_my_place">
+                     <div class="col text-center">
+                        <div class="row" >
+                           <div class="col placeName fw-bold">송리...</div>
+                        </div>
+                        <div class="row ">
+                           <div class="col address text-secondary">주소.. 어쩌...</div>
+                        </div>
+                     </div>
+                  </div> */
                   }                  
                }
                                                  
@@ -693,23 +728,33 @@ function createModal() {
 	                // Offcanvas 바디 생성
 	                const body = document.createElement("div");
 	                body.classList.add("offcanvas-body");
+				
+					const ccc = response.data.length;
+					
+	                
+               	  for (const dayDto of response.data) {
+ 	                    const aaa = document.getElementById("templete_edit").cloneNode(true);
+ 	                    aaa.classList.remove("d-none");
+ 	                    aaa.removeAttribute("id");
 
-	                for (const dayDto of response.data) {
-	                    const aaa = document.getElementById("templete_edit").cloneNode(true);
-	                    aaa.classList.remove("d-none");
-	                    aaa.removeAttribute("id");
-
-	                    aaa.querySelector(".edit_day").innerText = "DAY " + dayDto.plan_day;
-	                   
-	                    const trashButton = aaa.querySelector(".trash");
-	                    trashButton.addEventListener("click", function() {
-	                    	deleteDay(dayDto.plan_day_id); // 클릭 이벤트가 발생할 때 콜백 함수를 호출하면서 day를 전달합니다.
-	                    });
-	                    
-	                    
-	                    body.appendChild(aaa);
-	                }
-
+ 	                    aaa.querySelector(".edit_day").innerText = "DAY " + dayDto.plan_day;
+ 	                   
+ 	                    const trashButton = aaa.querySelector(".trash");
+ 	                    if(ccc === 1){
+ 	                    	 trashButton.addEventListener("click", function() {
+ 	 	                    	onlyOne(); // 클릭 이벤트가 발생할 때 콜백 함수를 호출하면서 day를 전달합니다.
+ 	 	                    });
+ 	                    }else{
+ 	                       trashButton.addEventListener("click", function() {
+ 	 	                    	deleteDay(dayDto.plan_day_id); // 클릭 이벤트가 발생할 때 콜백 함수를 호출하면서 day를 전달합니다.
+ 	 	                    });
+ 	 	                    
+ 	                    }
+ 	                 
+ 	                    
+ 	                    body.appendChild(aaa);
+ 	                }
+               	
 	                // Offcanvas 구조 조립
 	                header.appendChild(title);
 	                header.appendChild(closeButton);
@@ -737,6 +782,12 @@ function createModal() {
 	    xhr.send();
 	}
    
+ function onlyOne(){
+	 
+	   swal('', '최소 일정 계획 일수는 1일 입니다.', 'warning'); 
+	 
+ }  
+   
  function deleteDay(dayId) {
 
      const xhr = new XMLHttpRequest();
@@ -758,24 +809,34 @@ function createModal() {
               // Offcanvas 바디 생성
               const body = document.createElement("div");
               body.classList.add("offcanvas-body");
-
-              for (const dayDto of response.data) {
-                  const aaa = document.getElementById("templete_edit").cloneNode(true);
-                  aaa.classList.remove("d-none");
-                  aaa.removeAttribute("id");
-
-                  aaa.querySelector(".edit_day").innerText = "DAY " + dayDto.plan_day;
-                 
-                  const trashButton = aaa.querySelector(".trash");
-                  trashButton.addEventListener("click", function() {
-                  	deleteDay(dayDto.plan_day_id); // 클릭 이벤트가 발생할 때 콜백 함수를 호출하면서 day를 전달합니다.
-                  });
-                  
-                  
-                  body.appendChild(aaa);
-                  
-              }
+              
               const Offcanvas = document.querySelector(".offcanvas");
+              
+          	const ccc = response.data.length;
+			
+            
+         	  for (const dayDto of response.data) {
+                   const aaa = document.getElementById("templete_edit").cloneNode(true);
+                   aaa.classList.remove("d-none");
+                   aaa.removeAttribute("id");
+
+                   aaa.querySelector(".edit_day").innerText = "DAY " + dayDto.plan_day;
+                  
+                   const trashButton = aaa.querySelector(".trash");
+                   if(ccc === 1){
+                   	 trashButton.addEventListener("click", function() {
+	                    	onlyOne(); // 클릭 이벤트가 발생할 때 콜백 함수를 호출하면서 day를 전달합니다.
+	                    });
+                   }else{
+                      trashButton.addEventListener("click", function() {
+	                    	deleteDay(dayDto.plan_day_id); // 클릭 이벤트가 발생할 때 콜백 함수를 호출하면서 day를 전달합니다.
+	                    });
+	                    
+                   }
+                
+                   
+                   body.appendChild(aaa);
+               }
               
               Offcanvas.appendChild(body);
 

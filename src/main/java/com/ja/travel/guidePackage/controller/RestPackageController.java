@@ -200,5 +200,15 @@ public class RestPackageController {
 		
 		return map;
 	}
+	
+	@RequestMapping("getAddresList")
+	public Map<String, Object> getAddresList(int plan_id) {
+		Map<String, Object> map = new HashMap<>();
+		List<Map<String, Object>> list = packageService.getPlanDayList(plan_id);
+
+		map.put("list", list);
+
+		return map;
+	}
 
 }
