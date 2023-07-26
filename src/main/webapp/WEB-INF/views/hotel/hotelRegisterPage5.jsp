@@ -8,17 +8,22 @@
 
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .reserveButton {
-        width: auto;
-        height: auto;
-        background: linear-gradient(to right, rgb(60, 60, 60), rgb(36, 36, 36), rgb(46, 46, 46), rgb(46, 46, 46));
-        border-radius: 10px;
-        border: none;
-        color: rgb(255, 255, 255);
-        padding: 10px 30px;
-        font-weight: 600;
-        font-size: 16px;
-        text-align: center;
+    
+    .nextButton {
+	    width: auto;
+	    height: auto;
+	    background-image: linear-gradient(98deg,#4f4f4f,#4f4f4f);
+	    border-radius: 10px;
+	    border: none;
+	    color: rgb(255, 255, 255);
+	    padding: 10px 30px;
+	    font-weight: 600;
+	    font-size: 14px;
+	    text-align: center;
+    }
+    
+    .nextButton:hover {
+    	background-image: linear-gradient(98deg,#4f4f4f,#333333);	
     }
 
     .box {
@@ -45,15 +50,16 @@
     }
      
     a {
-	   	text-decoration: none;
-	   	font-weight: 600;
-	   	color: black;
-   	}
+    	text-decoration: none;
+    	font-weight: 600;
+    	color: #595959;
+    }
     
     a:hover {
 		text-decoration: none;
-		color: #9c9c9c
+		color: black;
 	}
+	
     </style>
 </head>
 <body>
@@ -360,7 +366,7 @@
             </div>
             <div class="col"></div>
             <div class="col-auto px-5">
-                <button class="reserveButton">
+                <button class="nextButton">
                     <span>다음</span>
                 </button>
             </div>

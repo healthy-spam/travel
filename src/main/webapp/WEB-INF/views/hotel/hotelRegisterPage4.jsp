@@ -10,72 +10,28 @@
 
 <script type="text/javascript">
 
-/* const formData = new FormData();
+const hotelTitleInput = document.querySelector("input[type='text'][name='hotel_title']");
 
-/*
- 메인 이미지 폼데이터에 저장하는 event (saveFile)
-*/
-
-function saveFile(event) {
-    const hotelMainImage = event.target.files[0];
-    formData.append("hotelMainImage",hotelMainImage);
-} 
-/*
-상세 이미지들 폼데이터에 저장하는 event (saveFiles)
-*/
-function saveFiles(event) {
-    const hotelImageDetails = event.target.files;
-    for (let i = 0; i < hotelImageDetails.length; i++) {
-        formData.append("hotelImageDetails" + i, hotelImageDetails[i]);
-    }
-}
-
-function sendHotelBasics2() {
-	
-	const hotel_title = document.getElementById("hotel_title").value;
-	const hotel_content = document.getElementById("hotel_content").value;
-	const hotel_price = document.getElementById("hotel_price").value;
-	const hotel_reserve_start_date = document.getElementById("hotel_reserve_start_date").value;
-	const hotel_reserve_end_date = document.getElementById("hotel_reserve_end_date").value;
-	
-	formData.append('hotel_title', hotel_title);
-	formData.append('hotel_content', hotel_content);
-	formData.append('hotel_price', hotel_price);
-	formData.append('hotel_reserve_start_date', hotel_reserve_start_date);
-	formData.append('hotel_reserve_end_date', hotel_reserve_end_date);
-	
-	const xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function() {
-		
-		if (xhr.readyState == 4 && xhr.status == 200) {
-			const response = JSON.parse(xhr.responseText);
-			console.log(formData);
-		}
-	}
-	
-	xhr.open("post", "./inserthotelInfo3");
-	xhr.send(formData);
-	
-	window.location.href = "/travel/hotel/hotelRegisterPage5";
-} */
-	
 </script>
 
 <style>
 
-    .reserveButton {
+    .nextButton {
 	    width: auto;
 	    height: auto;
-	    background: linear-gradient(to right, rgb(60, 60, 60), rgb(36, 36, 36), rgb(46, 46, 46), rgb(46, 46, 46));
+	    background-image: linear-gradient(98deg,#4f4f4f,#4f4f4f);
 	    border-radius: 10px;
 	    border: none;
 	    color: rgb(255, 255, 255);
 	    padding: 10px 30px;
 	    font-weight: 600;
-	    font-size: 16px;
+	    font-size: 14px;
 	    text-align: center;
-	}
+    }
+    
+    .nextButton:hover {
+    	background-image: linear-gradient(98deg,#4f4f4f,#333333);	
+    }
 
 	.box {
 	    width: auto;
@@ -89,13 +45,14 @@ function sendHotelBasics2() {
 	a {
     	text-decoration: none;
     	font-weight: 600;
-    	color: black;
+    	color: #595959;
     }
     
     a:hover {
 		text-decoration: none;
-		color: #9c9c9c
+		color: black;
 	}
+	
 </style>
 </head>
 <body>
@@ -204,7 +161,7 @@ function sendHotelBasics2() {
             </div>
             <div class="col"></div>
             <div class="col-auto px-5">
-                <button class="reserveButton">
+                <button class="nextButton">
                     <span>다음</span>
                 </button>
             </div>

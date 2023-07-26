@@ -75,164 +75,42 @@ function openMap(compAddress,compName) {
 }
 
 
-function clickDashButton1() {
+document.addEventListener("DOMContentLoaded", function(event) {
 	
-	let currentValue = parseInt(numberOfGuest.innerText);
-	
-	if (currentValue <= 0) {
+	/* 주소 유효성 검사입니다. */
+	function addressVcForm() {
 		
-		return;
-	}
-	
-	numberOfGuest.innerText = currentValue - 1;
-	
-}
-
-function clickPlusButton1() {
-	
-	let currentValue = parseInt(numberOfGuest.innerText);
-	
-	if (currentValue >= 16) {
+		const addressVcDiv = document.getElementById("addressVc");
 		
-		return;
-	}
-	
-	numberOfGuest.innerText = currentValue + 1;
-}
-
-function clickDashButton2() {
-	
-	let currentValue = parseInt(numberOfBedRoom.innerText);
-	
-	if (currentValue <= 0) {
+		const addressInput = document.querySelector("input[type='text'][name='hotel_address']");
 		
-		return;
-	}
-	
-	numberOfBedRoom.innerText = currentValue - 1;
-	
-}
-
-function clickPlusButton2() {
-	
-	let currentValue = parseInt(numberOfBedRoom.innerText);
-	
-	if (currentValue >= 16) {
+		let isChecked = false;
 		
-		return;
-	}
-	
-	numberOfBedRoom.innerText = currentValue + 1;
-}
-
-function clickDashButton3() {
-	
-	let currentValue = parseInt(numberOfBathRoom.innerText);
-	
-	if (currentValue <= 0) {
-		
-		return;
-	}
-	
-	numberOfBathRoom.innerText = currentValue - 1;
-	
-}
-
-function clickPlusButton3() {
-	
-	let currentValue = parseInt(numberOfBathRoom.innerText);
-	
-	if (currentValue >= 16) {
-		
-		return;
-	}
-	
-	numberOfBathRoom.innerText = currentValue + 1;
-}
-
-function clickDashButton4() {
-	
-	let currentValue = parseInt(numberOfBed.innerText);
-	
-	if (currentValue <= 0) {
-		
-		return;
-	}
-	
-	numberOfBed.innerText = currentValue - 1;
-	
-}
-
-function clickPlusButton4() {
-	
-	let currentValue = parseInt(numberOfBed.innerText);
-	
-	if (currentValue >= 16) {
-		
-		return;
-	}
-	
-	numberOfBed.innerText = currentValue + 1;
-}
-
-function sendHotelBasics() {
-	
-	const numberOfGuest = document.getElementById("numberOfGuest");
-	const numberOfBedRoom = document.getElementById("numberOfBedRoom");
-	const numberOfBathRoom = document.getElementById("numberOfBathRoom");
-	const numberOfBed = document.getElementById("numberOfBed");
-	
-	const guestNum = parseInt(numberOfGuest.innerText);
-	const bedRoomNum = parseInt(numberOfBedRoom.innerText);
-	const bedNum = parseInt(numberOfBed.innerText);
-	const bathRoomNum = parseInt(numberOfBathRoom.innerText);
-	
-	const checkInTimeElement = document.getElementById("checkInTime").value;
-	const checkOutTimeElement = document.getElementById("checkOutTime").value;
-	
-	const checkInTime = parseInt(checkInTimeElement);
-	const checkOutTime = parseInt(checkOutTimeElement);
-	
-	const addr1 = document.getElementById("hostAddress").value;
-	const addr2 = document.getElementById("addressDetail").value;
-	
-	
-	const xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function() {
-		
-		if(xhr.readyState == 4 && xhr.status == 200) {
+		if (addressInput.value == "") {
 			
-			const response = JSON.parse(xhr.responseText);
+			addressVcDiv.innerText = "*필수 입력사항 입니다. 주소를 입력해주세요.";
+			addressVcDiv.style.fontSize = "0.9em";
+			addressVcDiv.style.color = "red";
 			
+			addressInput.focus();
 			
+			return false;
 		}
+		
+		return true;
+		
 	}
-	
-	xhr.open("post", "./inserthotelInfo2");
-	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhr.send("hotel_limit_number=" + guestNum + "&hotel_bedRoom=" + bedRoomNum + "&hotel_bed=" + bedNum + "&hotel_bathRoom=" + bathRoomNum + "&hotel_check_in_time=" + checkInTime + "&hotel_check_out_time=" + checkOutTime + "&hotel_address=" + addr1 + " " + addr2);
-	
-	window.location.href = "/travel/hotel/hotelRegisterPage4";
-}
-
-/* window.addEventListener("DOMContentLoaded", function() {
-	
-	let numberOfGuest = document.getElementById("numberOfGuest");
-	
-	let numberOfBedRoom = document.getElementById("numberOfBedRoom");
-	
-	let numberOfBathRoom = document.getElementById("numberOfBathRoom");
-	
-	let numberOfBed = document.getElementById("numberOfBed");
-	
- 	numberOfGuest.innerText = 0;
- 	numberOfBedRoom.innerText = 0;
- 	numberOfBathRoom.innerText = 0;
- 	numberOfBed.innerText = 0;
- 	 */
- 	
-	
+		
+		document.getElementById("nextButton").addEventListener("click", function(event){
+			
+			if (!addressVcForm()) {
+				
+				event.preventDefault();
+			}
+			
+		});
+		
+});
 
 
 </script>
@@ -240,17 +118,21 @@ function sendHotelBasics() {
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
    
-        .reserveButton {
-        width: auto;
-        height: auto;
-        background: linear-gradient(to right, rgb(60, 60, 60), rgb(36, 36, 36), rgb(46, 46, 46), rgb(46, 46, 46));
-        border-radius: 10px;
-        border: none;
-        color: rgb(255, 255, 255);
-        padding: 10px 30px;
-        font-weight: 600;
-        font-size: 14px;
-        text-align: center;
+    .nextButton {
+	    width: auto;
+	    height: auto;
+	    background-image: linear-gradient(98deg,#4f4f4f,#4f4f4f);
+	    border-radius: 10px;
+	    border: none;
+	    color: rgb(255, 255, 255);
+	    padding: 10px 30px;
+	    font-weight: 600;
+	    font-size: 14px;
+	    text-align: center;
+    }
+    
+    .nextButton:hover {
+    	background-image: linear-gradient(98deg,#4f4f4f,#333333);	
     }
 
     .box {
@@ -265,12 +147,12 @@ function sendHotelBasics() {
     a {
     	text-decoration: none;
     	font-weight: 600;
-    	color: black;
+    	color: #595959;
     }
     
     a:hover {
 		text-decoration: none;
-		color: #9c9c9c
+		color: black;
 	}
     </style>
 </head>
@@ -469,19 +351,9 @@ function sendHotelBasics() {
                         		<input class="form-control" type="text" id="hostAddress" placeholder="주소를 입력해주세요" name="hotel_address">
                         	</div>
                         </div>
-                        <div class="row mt-2">
+                        <div class="row">
                         	<div class="col">
-                        		<input class="form-control" type="text" id="addressDetail" name="addressDetail" placeholder="상세주소를 입력해주세요">
-                        	</div>
-                        </div>
-                        <div class="row my-2">
-                        	<div class="col d-flex justify-content-end">
-                        		<div class="reserveButton" onclick="getMap()">확인</div>
-                        	</div>
-                        </div>
-                        <div class="row my-5">
-                        	<div class="col">
-                        		<div class="rounded " id="map" style="width: 100%; height: 300px;"></div>
+                        		<div id="addressVc"></div>
                         	</div>
                         </div>
                     </div> 
@@ -497,7 +369,7 @@ function sendHotelBasics() {
             </div>
             <div class="col"></div>
             <div class="col-auto px-5">
-                <button class="reserveButton">
+                <button id="nextButton" class="nextButton">
                     <span>다음</span>
                 </button>
             </div>

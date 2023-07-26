@@ -395,16 +395,19 @@ public class HotelService {
 	}
 
 	public void insertHotelFacilityLine(int[] hotelFacilityIdList, int hotel_id) {
+		
+		if (hotelFacilityIdList != null) {
 
-		for (int hotelFacilityId : hotelFacilityIdList) {
-
-			HotelFacilityLineDto hotelFacilityLineDto = new HotelFacilityLineDto();
-
-			hotelFacilityLineDto.setHotel_facility_id(hotelFacilityId);
-			hotelFacilityLineDto.setHotel_id(hotel_id);
-
-			hotelSqlMapper.insertHotelFacilityLine(hotelFacilityLineDto);
-
+			for (int hotelFacilityId : hotelFacilityIdList) {
+	
+				HotelFacilityLineDto hotelFacilityLineDto = new HotelFacilityLineDto();
+	
+				hotelFacilityLineDto.setHotel_facility_id(hotelFacilityId);
+				hotelFacilityLineDto.setHotel_id(hotel_id);
+	
+				hotelSqlMapper.insertHotelFacilityLine(hotelFacilityLineDto);
+	
+			}
 		}
 	}
 

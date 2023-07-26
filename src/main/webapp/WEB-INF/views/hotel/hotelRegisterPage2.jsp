@@ -10,87 +10,70 @@
 <script type="text/javascript">
 
 	
-	/* let spanText = null;
-
-	function clickProcess() {
-		
-		const boxElement = this;
-		
-		if (boxElement.classList == "box") {
-			
-			boxElement.classList.replace("box", "selectedBox");
-			
-			spanText = this.querySelector("span").innerText;
-			
-			console.log(spanText);
-			
-		} else {
-			
-			boxElement.classList.replace("selectedBox", "box");
-			
-		}
-		
-	}
-
-	function clickCategory() {
-		
-		const boxElements = document.querySelectorAll(".box");
-		
-		for (let i = 0; i < boxElements.length; i++) {
-			
-			const boxElement = boxElements[i];
-			
-			boxElement.addEventListener("click", clickProcess);
-			
-		}
-		
-	}
+	document.addEventListener("DOMContentLoaded", function() {
 	
-	function sendCategory() {
+		/* 카테고리 유호성 검사 */
+		function categoryVcForm() {
 			
-			const xhr = new XMLHttpRequest();
+			const categoryVcDiv = document.getElementById("categoryVc");
 			
-			xhr.onreadystatechange = function() {
+			const radioButtons = document.querySelectorAll("input[type='radio'][name='hotel_category']");
+			
+			let isChecked = false;
+			
+			for (let i = 0; i < radioButtons.length; i++) {
 				
-				if (xhr.readyState == 4 && xhr.status == 200) {
+				if (radioButtons[i].checked) {
+						
+					isChecked = true;
 					
-					const response = JSON.parse(xhr.responseText);
-					
-					
+					break;
 				}
 			}
 			
-			xhr.open("get", "./inserthotelInfo1?spanText=" + spanText);
-			xhr.send();
+			if (!isChecked) {
+				
+				categoryVcDiv.innerText = "*숙소 종류를 선택해주세요(필수 1개 선택)"
+				categoryVcDiv.style.color = "red";
+				categoryVcDiv.style.fontSize = "0.9em";
+				
+				return false;
+				
+			}
 			
-			window.location.href = "/travel/hotel/hotelRegisterPage3";
+			return true;
 		}
-
-
-	
-	window.addEventListener("DOMContentLoaded", function() {
 		
-		clickCategory();
+		document.getElementById("nextButton").addEventListener("click", function(event){
+			
+			if (!categoryVcForm()) {
+				
+				event.preventDefault();
+			}
+		});
 		
 	});
-	 
- */
+	
  
 </script>
  
     <style>
 
-        .reserveButton {
-        width: auto;
-        height: auto;
-        background: linear-gradient(to right, rgb(60, 60, 60), rgb(36, 36, 36), rgb(46, 46, 46), rgb(46, 46, 46));
-        border-radius: 10px;
-        border: none;
-        color: rgb(255, 255, 255);
-        padding: 10px 30px;
-        font-weight: 600;
-        font-size: 14px;
-        text-align: center;
+    .nextButton {
+	    width: auto;
+	    height: auto;
+	    background-image: linear-gradient(98deg,#4f4f4f,#4f4f4f);
+	    border-radius: 10px;
+	    border: none;
+	    color: rgb(255, 255, 255);
+	    padding: 10px 30px;
+	    font-weight: 600;
+	    font-size: 14px;
+	    text-align: center;
+    }
+    
+    .nextButton:hover {
+    	background-image: linear-gradient(98deg,#4f4f4f,#333333);	
     }
 
     .box {
@@ -107,15 +90,6 @@
     	padding: 16px 14px;
     }
     
-   /*  .selectedBox {
-        width: auto;
-        height: auto;
-        border: solid black 2px;
-        border-radius: 10px;
-        padding: 16px 14px;
-        background-color: #f5f5f5;
-
-    } */
     
     .box1MouseOver {
         width: auto;
@@ -129,12 +103,12 @@
     a {
     	text-decoration: none;
     	font-weight: 600;
-    	color: black;
+    	color: #595959;
     }
     
     a:hover {
 		text-decoration: none;
-		color: #9c9c9c
+		color: black;
 	}
     </style>
 </head>
@@ -142,7 +116,7 @@
 
 
  <div class="container-fluid">
-        <div class="row align-items-center py-4" style="position: fixed; top: 0; width: 100%; background-color: white; z-index: 1;">
+        <div class="row align-items-center py-4" style="position: fixed; top: 0; width: 100%; z-index: 1;">
             <div class="col px-5">
                 <span style="color: #e7104a; font-size: 25px; font-weight: 600;">LOGO</span>
             </div>
@@ -154,7 +128,7 @@
             </div>
         </div>
 		<form action="./hotelRegisterPage2Process" method="post">
-        <div class="row" style="padding-top: 80px;">
+        <div class="row" style="padding-top: 10em; padding-bottom: 10em;">
             <div class="col"></div>
             <div class="col">
                 <div class="row my-4">
@@ -396,17 +370,23 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                	<div class="col">
+                		<div id="categoryVc">                			
+                		</div>
+                	</div>
+                </div>
             </div>
             <div class="col"></div>
         </div>
 
-        <div class="row align-items-center py-4" style="position: fixed; bottom: 0; width: 100%; z-index: 1; background-color: white;">
+        <div class="row align-items-center py-4" style="position: fixed; bottom: 0; width: 100%; z-index: 1;">
             <div class="col-auto px-5">
                 <span style="font-size: 14px; font-weight: 600;">뒤로</span>
             </div>
             <div class="col"></div>
             <div class="col-auto px-5">
-                <button class="reserveButton" >
+                <button id="nextButton" class="nextButton" >
                     <span>다음</span>
                 </button>
             </div>
