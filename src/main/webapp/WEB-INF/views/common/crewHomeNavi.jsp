@@ -3,20 +3,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="theiaStickySidebar" style="position: fixed; min-width: 304px;">
 	<div data-viewname="DGroupBandSideCoverView" class="sideCover">
-		<div class=" flex-column flex-shrink-0 p-3">
+		<div class=" flex-column flex-shrink-0">
 			<div class="row">
 				<div class="col align-items-center text-center">
 					<a href="/travel/crew/crewhome/${crewDto.crew_domain }" class=" mb-3">
-						<img src="/uploadFiles/crewFiles/crewthumbnail/${crewDto.crew_thumbnail }" width="150" height="150">
+						<img src="/uploadFiles/crewFiles/crewthumbnail/${crewDto.crew_thumbnail }" width="300" height="200">
 					</a>
 				</div>	
 			</div>
-			<div class="row">
-				<span class="text-center crewname">${crewDto.crew_name }</span>
+			<div class="row pt-2">
+				<span class="text-center crewname pb-1" style="font-size: 20px;font-weight: bold;">${crewDto.crew_name }</span>
 			</div>
 
-			<div class="row">
-				<div class="col">멤버 ${membersize } / 20 ・ 리더 ${masterName }</div>
+			<div class="row pb-1">
+				<div class="col text-center">멤버 ${membersize } / 20 ・ 리더 ${masterName }</div>
 			</div>
 			<c:choose>
 				<c:when test="${!empty crewMemberDto && crewMemberDto.crew_domain == crewDto.crew_domain}">

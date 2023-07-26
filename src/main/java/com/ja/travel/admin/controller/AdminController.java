@@ -88,20 +88,21 @@ public class AdminController {
 	
 	
 	@RequestMapping("adminLoginProcess")
-	public String adminLoginProcess(HttpSession session, AdminDto params) {
+	public String adminLoginProcess(HttpSession adminSession, AdminDto params) {
 		AdminDto sessionUser = adminService.getIdAndPw(params);
 			
 		if(sessionUser != null) {
-			session.setAttribute("sessionUser", sessionUser);
-			return "admin/adminPage";
+			adminSession.setAttribute("sessionUser", sessionUser);
+			return "redirect:../admin/registedCityPage";
 		}
 		else return "redirect:../admin/loginFail";
 	}
 	
 	@RequestMapping("adminLogoutProcess")
-	public String adminLogoutProcess(HttpSession session) {
+	public String adminLogoutProcess(HttpSession adminSession) {
 		
-		session.invalidate();
+		
+		adminSession.removeAttribute("sesseionUser");
 		
 		return "admin/adminLoginPage";
 				
@@ -132,11 +133,11 @@ public class AdminController {
 	}
 	
 	@RequestMapping("applyGuideProcess")
-	public String applyGuideProcess(GuideApplyDto params, HttpSession session) {
+	public String applyGuideProcess(GuideApplyDto params, HttpSession adminSession) {
 			
 		
 		
-		AdminDto sessionUser = (AdminDto)session.getAttribute("sessionUser");
+		AdminDto sessionUser = (AdminDto)adminSession.getAttribute("sessionUser");
 		GuideDto guideDto = new GuideDto();
 		if (sessionUser != null) {
 			adminService.updateGuideApply(params);
@@ -186,9 +187,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping("restrictUserProcess")
-	public String restrictUserProcess(HttpSession session ,MemberRestrictDto params, @RequestParam("user_report_status") String user_report_status) {
+	public String restrictUserProcess(HttpSession adminSession ,MemberRestrictDto params, @RequestParam("user_report_status") String user_report_status) {
 		
-		AdminDto sessionUser = (AdminDto) session.getAttribute("sessionUser");
+		AdminDto sessionUser = (AdminDto) adminSession.getAttribute("sessionUser");
 		params.setAdmin_id(sessionUser.getAdmin_id());
 		System.out.println(params.getAdmin_id());
 		adminService.restrictUser(params, user_report_status);
@@ -216,9 +217,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping("restrictGuideProcess")
-	public String restrictGuideProcess(HttpSession session ,GuideRestrictDto params, String guide_report_status, int guide_planning_id) {
+	public String restrictGuideProcess(HttpSession adminSession ,GuideRestrictDto params,@RequestParam("guide_report_status") String guide_report_status, int guide_planning_id) {
 		
-		AdminDto sessionUser = (AdminDto) session.getAttribute("sessionUser");
+		AdminDto sessionUser = (AdminDto) adminSession.getAttribute("sessionUser");
 		params.setAdmin_id(sessionUser.getAdmin_id());
 		adminService.restrictGuide(params, guide_report_status, guide_planning_id);
 		
@@ -235,7 +236,7 @@ public class AdminController {
 	
 	@RequestMapping("registCouponProcess")
 	public String registCouponProcess(CouponDto params, MultipartFile[] couponImage) {
-		
+			
 			if(couponImage != null) {
 			
 			for(MultipartFile multipartfile : couponImage ) {
@@ -279,7 +280,7 @@ public class AdminController {
 				
 			}
 					
-		}
+		}else params.setCoupon_image(null);
 		
 			adminService.registerCoupon(params);
 			

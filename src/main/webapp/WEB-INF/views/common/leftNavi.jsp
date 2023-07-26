@@ -20,11 +20,14 @@ pageEncoding="UTF-8"%>
 								Admin
 							</div>		
 						</div>
-					</div>
+					</div>					
 					<c:choose>
 					<c:when test="${empty sessionUser}">
-					<button class="btn btn-secondary"
-									type="button" onclick="location.href='./adminLoginPage'">로그인</button>
+						<div class="row mb-2">
+							<div class="col-9">
+								<button class="btn btn-secondary" type="button" onclick="location.href='./adminLoginPage'">로그인</button>
+							</div>
+						</div>
 					</c:when>
 					<c:otherwise>
 					<div class="col-3 my-auto icon1">

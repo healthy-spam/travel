@@ -207,7 +207,7 @@ public class CrewController {
 	}
 	
 	@RequestMapping("/sendchat")
-	public void sendchat(@RequestParam("crew_chat_text") String crew_chat_text, HttpSession session) {
+	public @ResponseBody void sendchat(@RequestParam("crew_chat_text") String crew_chat_text, HttpSession session) {
 		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
 		crewService.sendchat(crew_chat_text, userDto);
 	}
