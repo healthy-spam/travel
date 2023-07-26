@@ -135,15 +135,19 @@ public interface PlanSqlMapper {
 
    public List<PlanRouteCityDto> getRouteList(int plan_day_city_id);
    
-   // 0724 수정시작 일정담기
+   // 일정담기
    public void insertPlan(PlanDto copiedPlan);
-    public void insertPlanDay(PlanDayDto copiedPlanDay);
+   public void insertPlanDay(PlanDayDto copiedPlanDay);
     
-    public void insertPlanDayCity2(PlanDayCityDto planDayCityDto);
-    public List<PlanDayCityDto> getPlanDayCity(int planDayId);
+   public void insertPlanDayCity2(PlanDayCityDto planDayCityDto);
+   public List<PlanDayCityDto> getPlanDayCity(int planDayId);
     
-    public void insertPlanRouteCity2(PlanRouteCityDto planRouteCity);
-    public List<PlanRouteCityDto> getPlanRouteCity(int planDayCityId);
+   public void insertPlanRouteCity2(PlanRouteCityDto planRouteCity);
+   public List<PlanRouteCityDto> getPlanRouteCity(int planDayCityId);
     
-   // 0724 수정 끝
+   // 일정담기 끝
+   
+   // 플랜 참조하기 카운트
+   public Integer getReferenceCount(int plan_id);
+
 }

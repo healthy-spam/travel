@@ -21,7 +21,9 @@ pageEncoding="UTF-8"%>
     var markers = [];
     let overlays = [];
     let polyline = null;
-    
+    const myDayPlaceList = []; // const, let, var을 안쓰면 자동으로 암묵적 전역변수로 선언
+    const myDayPlaceNames = [];
+    const myDayPlacePhoto = [];
     
     const planId = new URLSearchParams(location.search).get("id");
    
@@ -80,9 +82,7 @@ pageEncoding="UTF-8"%>
     function loadMyList(plan_day_id, plan_day){
         const xhr = new XMLHttpRequest();
         
-        myDayPlaceList = [];
-        myDayPlaceNames = [];
-        myDayPlacePhoto = [];
+        
         // 모든 마커 제거
         for (let i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
@@ -254,60 +254,6 @@ pageEncoding="UTF-8"%>
        overlays.push(overlay);
    }
     
-    function search2(keyword, index) {
-        // 주소-좌표 변환 객체를 생성합니다
-        var geocoder = new kakao.maps.services.Geocoder();
-        
-        // 주소로 좌표를 검색합니다
-        geocoder.addressSearch( keyword, function(result, status) {
-        // 정상적으로 검색이 완료됐으면
-        if (status === kakao.maps.services.Status.OK) {
-        coords = new kakao.maps.LatLng(result[0].y, result[0].x);           
-        
-        // 처음 마커를 생성하는 경우
-        marker = new kakao.maps.Marker({
-         map : map,
-         position : coords
-        });
-        
-        markers.push(marker);
-        
-        if (index !== myDayPlaceList.length - 1) {
-         const path = polyline.getPath();
-         path.push(coords);
-         polyline.setPath(path);
-      }
-
-      if (index === myDayPlaceList.length - 1) {
-         polyline.setMap(map);
-      }        
-        
-        // 선의 경로에 위치 추가
-      var path = polyline.getPath();
-      path.push(coords);
-      polyline.setPath(path);
-        
-        
-        // 인포윈도우가 이미 존재하는 경우, 인포윈도우의 내용을 변경
-        if (infowindow) {
-           infowindow.setContent(content);
-        } else {
-         // 처음 인포윈도우를 생성하는 경우
-         infowindow = new kakao.maps.InfoWindow({
-            content : content
-         });
-        }
-        
-        infowindow.open(map, marker);
-        
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        map.setCenter(coords);
-        map.setLevel(5);
-                                                       
-      }
-        
-      });
-   }
    
     function submitModal(){
           

@@ -379,16 +379,14 @@ function planSearch() {
                     }
 
                     planCardBox.querySelector(".user-age").innerText = ageGroup;
-
                     
-                    planCardBox.querySelector(".readPlan").href = "./readPlanPage?id="+ plan.planDto.plan_id;
-                    //planCardBox.querySelector(".copyPlan").href = "./copyPlanProcess?plan_id="+ plan.planDto.plan_id;
+                    planCardBox.querySelector(".readPlan").href = "./readPlanPage?id="+ plan.planDto.plan_id;                    
                     
                     let copyPlanButton = planCardBox.querySelector(".copyPlan");
                     
                     if(sessionUser == null || plan.planDto.user_id === sessionUser.user_id) {
-                        copyPlanButton.classList.add("disabled");
-                        copyPlanButton.href = "#";
+                    	planCardBox.querySelector(".copyPlanCol").remove();
+                        
                     } else {
                         copyPlanButton.addEventListener('click', function(e) {
                             e.preventDefault(); // prevent the default action
@@ -398,18 +396,20 @@ function planSearch() {
                             xhr.onreadystatechange = function () {
                                 if (this.readyState === 4 && this.status === 200) {
                                     const response = JSON.parse(this.responseText);
-                                    window.location.href = response.redirect;
-
-                                    // Update the count in the UI
-                                    //const countElement = planCardBox.querySelector(".plan-copy-count");
-                                    //const currentCount = parseInt(countElement.innerText, 10);
-                                    //countElement.innerText = currentCount + 1;
+                                    window.location.href = response.redirect;                                   
                                 }
                             }
                             xhr.send();
                         });
-                    }
-
+                    }                                        
+                    
+                    getPlanReferenceCount(plan.planDto.plan_id)
+                    .then((referenceCount) => {
+                        planCardBox.querySelector(".plan-copy-count").innerText = referenceCount;
+                    })
+                    .catch((error) => {
+                        console.error("Error retrieving reference count:", error);
+                    });
                     
                     const route_col = planCardBox.querySelector(".route_col");
                     const templateNode = planCardBox.querySelector("#templete_my_place").cloneNode(true);
@@ -421,13 +421,13 @@ function planSearch() {
                     
                     planPublicList.appendChild(planCardBox);
                     
-                   // 각 플랜 카드에 버튼 컨테이너 추가                                                            
-               loadDay(plan.planDto.plan_id, buttonsContainer, route_col, templateNode).then((totalDays) => {
+					// 각 플랜 카드에 버튼 컨테이너 추가                                                            
+					loadDay(plan.planDto.plan_id, buttonsContainer, route_col, templateNode).then((totalDays) => {
                        
-                  planCardBox.querySelector(".plan-total-days").innerText = totalDays + "일";
+						planCardBox.querySelector(".plan-total-days").innerText = totalDays + "일";
                        
-                          setDayButtonEvents(buttonsContainer);
-                      });
+						setDayButtonEvents(buttonsContainer);
+					});
                 }
             }
         }
@@ -435,6 +435,28 @@ function planSearch() {
 
     xhr.open("get", "./getSearchPlanList?type="+searchType+"&word="+searchText);
     xhr.send();
+}
+
+// 일정담기 카운팅
+function getPlanReferenceCount(planId) {		
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        
+        xhr.onreadystatechange = function() {
+            console.log(`ReadyState: ${xhr.readyState}, Status: ${xhr.status}`);
+            if (xhr.readyState === 4 && xhr.status === 200) {                
+                
+                const response = JSON.parse(xhr.responseText);
+                
+                resolve(response.referenceCount);
+            } else if (xhr.readyState === 4) {
+                reject("Error retrieving reference count");
+            }
+        }
+        
+        xhr.open("get", "./getReferenceCounts?planId=" + planId);
+        xhr.send();
+    });
 }
 
 function loadDay(planId, buttonsContainer, route_col, templateNode) {
@@ -879,16 +901,16 @@ window.addEventListener("DOMContentLoaded", () => {
                <div class="card-body pt-2">
                
                <div class="row mt-1 align-items-center">
-                  <div class="col-8">
+                  <div class="col-9">
                            <p class="h5 plan-title m-0" style="font-weight: bold; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
                            
                            </p>                
                   </div>
-                  <div class="col text-end pe-0">
-                     <i class="bi bi-bookmark-fill" style="width: 4rem; color: #007aff;"></i>
+                  <div class="col pe-0 text-end">
+                     <i class="bi bi-share" style="width: 4rem; color: #007aff;"></i>
                   </div>
-                  <div class="col ps-0 align-items-center">
-                     <span class="plan-copy-count" style="font-size: 15px; font-weight: bolder;">0</span>
+                  <div class="col ps-1 align-items-center text-center">
+                     <span class="plan-copy-count" style="font-size: 15px; font-weight: bolder;">1</span>
                   </div>
                </div>                                    
                         
@@ -938,10 +960,10 @@ window.addEventListener("DOMContentLoaded", () => {
                <div class="row mt-3">
                      <div class="col-12">
                         <div class="row">
-                           <div class="col d-grid">
+                           <div class="col d-grid copyPlanCol">
                               
                               <a class="btn copyPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #00b04f; font-weight: 600;" href="">
-                                 <i class="bi bi-bookmark" style="width: 1rem;"></i> 일정담기                                 
+                                 <i class="bi bi-share" style="width: 1rem;"></i> 일정담기                                 
                               </a>
                               
                            </div>
