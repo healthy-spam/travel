@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
 
 		<div class="row border-2  border-bottom border-light mt-3">
 			<div class="col">
-				<div class="row">
+				<div class="row mb-3">
 
 					<div class="col-9" id="naviTS">
 						<div class="row">

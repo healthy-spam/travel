@@ -19,7 +19,7 @@ pageEncoding="UTF-8"%>
 	font-family: 'Noto Sans KR', sans-serif;		
 	}
 	#naviBack {
-		background-color:black;
+		background-color:#303030;
 		color:white;
 		height: 100vh;
 	}

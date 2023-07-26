@@ -21,9 +21,9 @@ pageEncoding="UTF-8"%>
 	}
 
 	#naviBack {
-		background-color:black;
+		background-color:#303030;
 		color:white;
-		height: 100vh;
+		height: 120vh;
 	}
 	
 	#naviTS {

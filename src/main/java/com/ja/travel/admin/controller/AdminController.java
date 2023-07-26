@@ -354,7 +354,7 @@ public class AdminController {
 				
 			}
 					
-		}		
+		}else params.setCoupon_image(null);		
 		
 		adminService.updateCoupon(params);
 	

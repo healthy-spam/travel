@@ -32,7 +32,9 @@ public class CouponMessageController {
 		
 	    List<UserCouponDto> userCouponList = couponMessageService.getUserCoupon(userId);
 	    
-	    List<CouponDto> couponList = couponMessageService.getCouponList(); 
+	    List<Map<String, Object>> couponList = couponMessageService.getCouponList(userId); 
+	    
+	    
 	    
 	    
 	    model.addAttribute("couponList", couponList);

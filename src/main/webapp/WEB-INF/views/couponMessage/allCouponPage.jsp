@@ -24,8 +24,8 @@
 	}
 	
 	.couponRow {
-		width: 720px;
-		height: 240px;
+		width: 400px;
+		height: 160px;
 		box-shadow:2px 3px 5px 0px #2c3b29;
 		border-radius: 20px;
 		overflow: hidden;
@@ -37,7 +37,18 @@
 	}
 	
 	.couponRight {	  
-	    background-color: #bad6b4;
+	    background-color: #4d7849;
+	    padding-top : 80px;
+	}
+	
+	.couponBan {
+		background-color: #ccba60;	
+		padding-top : 80px
+		
+	}
+	
+	.couponRightCheck {
+		background-color: #3e573c;
 	    padding-top : 80px;
 	}
 	
@@ -78,8 +89,8 @@
 	}
 	
 	.textDown {
-		margin-left: 30px;
-	}
+
+	}	
 	
 	.couponContent {
 		border: solid 2px white;
@@ -99,6 +110,37 @@
 	
 	.issueDateText {
 		margin-left : 60px;
+	}
+	
+	.iconCheck {
+		font-size: 30px;
+	}
+	
+	.upSticky {	
+	  position: fixed;
+	  bottom: 50px; /* 원하는 아이콘의 아래 여백 조정 */
+	  left: 80rem; /* 원하는 아이콘의 오른쪽 여백 조정 */
+	  cursor: pointer;
+	  font-weight: bold;
+	  
+	}
+	
+	.bi-arrow-up {
+		font-size: 30px;
+		font-weight: bold;
+		margin-left:4px;
+
+	}
+	
+	.upText {
+		font-size: 15px;
+		border-bottom-left-radius : 2px;
+		border-bottom-right-radius : 2px;	
+		background-color : white;
+	}
+	
+	.topWhite{
+		background-color:white;
 	}
 </style>
 
@@ -161,29 +203,6 @@
 	}
 
 	
-	function changeBackGround() {	
-		if (changeBackColor) {
-			var container = document.querySelector('.container-fluid');
-			container.style.backgroundColor = '#444444';
-			
-			var otherElements = container.querySelectorAll(':not(.container)');
-			otherElements.forEach(function(element) {
-				element.style.color = 'white';
-			});
-			changeBackColor = false;
-		} else {
-			var container = document.querySelector('.container-fluid');
-			container.style.backgroundColor = 'white';
-			
-			var otherElements = container.querySelectorAll(':not(.container)');
-			otherElements.forEach(function(element) {
-				element.style.color = 'black';
-			});
-			changeBackColor = true;
-		}
-		
-		
-	}
 	
 	// 쿠폰 내용 버튼 클릭 이벤트 처리
 	  var collapseButtons = document.getElementsByClassName('btn-collapse');
@@ -206,6 +225,8 @@
 	  }
 	  
 	  
+
+	  
 	  function getCoupon(element){
 		  
 		  
@@ -218,7 +239,7 @@
 					const response = JSON.parse(xhr.responseText);
 					// js 작업..
 
-					refreshCoupon();
+					location.reload();
 					
 				}
 			}
@@ -229,46 +250,8 @@
 			xhr.send("couponId=" + couponId);
 	  }
 	  
-	
-	  function checkCoupon(couponId){
-		  console.log(couponId);
-		  
-		    let couponElement = document.querySelector(`[data-coupon-id="${couponId}"]`);
-		    if (couponElement === null) {
-		        console.log(`쿠폰 엘리먼트를 찾을 수 없습니다. couponId: ${couponId}`);
-		        return;
-		    }
-		  
-		  const xhr = new XMLHttpRequest();
-			
-			xhr.onreadystatechange = function(){
-				if(xhr.readyState == 4 && xhr.status == 200){
-					const response = JSON.parse(xhr.responseText);
-					// js 작업..
-						if (response.hasCoupon) {
-				          // 이미 쿠폰을 받은 상태
-				          textDown.innerText = "받기 완료";
-				          iconDown.disabled = true;
-				        } else {
-				          // 쿠폰을 받지 않은 상태
-				          if (response.isExpired) {
-				        	  textDown.innerText = "발급기간만료";
-				        	  iconDown.disabled = true;
-				          } else if (response.isExhausted) {
-				        	  textDown.innerText = "소진";
-				        	  iconDown.disabled = true;
-				          } else {
-				        	  textDown.innerText = "다운로드";
-				        	  iconDown.disabled = false;
-				        	  }
-				       	 	}
-				}
-			}
-			
-			//get
-			xhr.open("get", "hasCoupon?couponId=" + couponId);
-			xhr.send();
-	  }
+	  
+	    
 	  function refreshCoupon(){
 		  	if(mySessionId == null) return;
 		  	
@@ -293,10 +276,17 @@
 		  
 	  }
 	  
+	  function scrollToTop() {
+		  window.scrollTo({
+		    top: 0,
+		    behavior: 'smooth'
+		  });
+		}
+	  
 	  window.addEventListener("DOMContentLoaded", function(){
 			//사실상 시작 시점...
 			getSessionId();
-			refreshCoupon();
+			
 		});
 	  
 </script>
@@ -305,83 +295,145 @@
 	<div class="container">
 		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 		<div class="container bg">
-			<div class="row mt-5">
-				<div class="col mt-4 text-center">
-					<h1>이벤트 쿠폰존</h1>
-				</div>
-			</div>
-			<div class = "row mt-2">
-				<div class = "col ps-0">
-					<img src = "resources/img/couponBanner3.jpg" alt="쿠폰 배너" style="width:1296px; margin:0px;">
-				</div>
-			</div>
-			
-			<div class="row mt-3 align-items-center" id="couponRep">
-			  
-			</div>
-			
-			<c:forEach var="coupon" items="${couponList}">
-			
-			<div class="row mt-5 mx-auto">
-				<div class="col">
-					<div class="row mb-3 mx-auto couponRow" style="overflow: hidden;">
-					    <div class="col-md-9 couponLeft">
-					        <div class="row couponTitleRow">
-					        	<div class="col couponTitleCol">
-					        		${coupon.coupon_title}
-					        	</div>
-					        </div>
-					        <div class="row couponPriceRow">
-					        	<div class="col couponPriceCol">
-					        		${coupon.coupon_discount}원 할인
-					        	</div>
-					        </div>
-					        <div class="row couponDateRow">
-					        	<div class="col-2 issueDateText">
-					        	발급기한
-					        	</div>
-					        	<div class="col-auto couponDateCol">
-					        		<fmt:formatDate value="${coupon.coupon_issue_start}" pattern="yyyy-MM-dd" />
-					        		~<fmt:formatDate value="${coupon.coupon_issue_end}" pattern="yyyy-MM-dd" />
-					        	</div>
-					        </div>
-					    </div>
-					    <div class="col-md-3 text-center couponRight">
-					    	<div class="row">
-					    		<div class="col iconDown"   data-coupon-id="${coupon.coupon_id}" onclick="getCoupon(this)">
-					    		
-					      			<i class="bi bi-download"></i>
-					      		</div>
-					      	<div class="row">
-					      		<div class="col textDown">
-					      			
-					      		</div>
-					      	</div>
-					      	</div>
-					    </div>
-
-					  </div>
+			<div class="row">
+				<div class="col upSticky" onclick="scrollToTop()">
+					<div class="row">
+						<div class="col">
+							<i class="bi bi-arrow-up"></i>
+						</div>
 					</div>
-	 			</div>
-	 			<div class="row">
-	 				<div class="col-6 mx-auto couponContent mb-5">
-	 					<div class="row">
-	 						<div class="col mustRead">
-	 							꼭 읽어주세요!
-	 						</div>
-	 					</div>
-	 					<div class="row">
-	 						<div class="col">
-	 							${coupon.coupon_content}
-	 						</div>
-	 					</div>
-	 				</div>
-	 			</div>
-	 			</c:forEach>	 			
-	 			
+					<div class="row">
+						<div class="col">
+							맨위로
+						</div>
+					</div>
+				</div>
 			</div>
+			<div class="row topWhite">
+				<div class="col">
+					<div class="row mt-5 pageTitle">
+						<div class="col text-center" style="font-size:30px">
+							이벤트 쿠폰존
+						</div>
+					</div>
+					<div class = "row mt-2">
+						<div class = "col ps-0">
+							<img src = "resources/img/couponBanner4.jpg" alt="쿠폰 배너" style="width:1296px; margin:0px;">
+						</div>
+					</div>	
+				</div>		
+			</div>
+			<div class="row mt-5 mx-auto">
+				<c:forEach var="coupon" items="${couponList}" varStatus="status">
+					<div class="col-5">
+						<div class="row">			
+							<div class="col">
+								<div class="row mb-3 mx-auto couponRow" style="overflow: hidden;">
+								    <div class="col-md-9 couponLeft">
+								        <div class="row couponTitleRow">
+								        	<div class="col couponTitleCol">
+								        		${coupon.couponDto.coupon_title}
+								        	</div>
+								        </div>
+								        <div class="row couponPriceRow">
+								        	<div class="col couponPriceCol">
+								        		${coupon.couponDto.coupon_discount}원 할인
+								        	</div>
+								        </div>
+								        <div class="row couponDateRow">
+								        	<div class="col-2 issueDateText">
+								        	발급기한
+								        	</div>
+								        	<div class="col-auto couponDateCol">
+								        		<fmt:formatDate value="${coupon.couponDto.coupon_issue_start}" pattern="yyyy-MM-dd" />
+								        		~<fmt:formatDate value="${coupon.couponDto.coupon_issue_end}" pattern="yyyy-MM-dd" />
+								        	</div>
+								        </div>
+								    </div>
+								    
+								    
+								    <c:choose>
+								    <c:when test="${coupon.hasCoupon}">
+									    <div class="col-md-3 text-center couponRightCheck">
+									    	<div class="row">						    	
+									    		<div class="col iconCheck">						    		
+									      			<i class="bi bi-check-lg"></i>
+									      		</div>
+									      	</div>
+									      	<div class="row">
+									      		<div class="col textDown">
+									      			받기완료
+									      		</div>
+									      	</div>
+									    </div>
+								    </c:when>
+								    <c:when test="${coupon.isExpired}">
+								    	<div class="col-md-3 text-center couponBan">
+								    	<div class="row">					    		
+								    		<div class="col iconCheck">					    		
+								      			<i class="bi bi-x-lg"></i>
+								      		</div>
+								      	</div>
+								      	<div class="row">
+								      		<div class="col textDown">
+								      			발급기간종료
+								      		</div>
+								      	</div>
+								    </div>
+								    </c:when>
+								    <c:when test="${coupon.isExhausted}">
+								    	<div class="col-md-3 text-center couponBan">
+								    	<div class="row">					    		
+								    		<div class="col iconCheck">					    		
+								      			<i class="bi bi-x-lg"></i>
+								      		</div>
+								      	</div>
+								      	<div class="row">
+								      		<div class="col textDown">
+								      			쿠폰소진
+								      		</div>
+								      	</div>
+								    </div>
+								    </c:when>
+								    <c:otherwise>
+										<div class="col-md-3 text-center couponRight">
+											<div class="row">
 			
-			</div>
+												<div class="col iconDown" data-coupon-id="${coupon.couponDto.coupon_id}"
+													onclick="getCoupon(this)">
+			
+													<i class="bi bi-download"></i>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col textDown">다운로드</div>
+											</div>
+										</div>
+											</c:otherwise>
+								    </c:choose>
+			
+								  </div>
+								</div>
+				 			</div>
+				 			<div class="row">
+				 				<div class="col-6 mx-auto couponContent mb-5">
+				 					<div class="row">
+				 						<div class="col mustRead">
+				 							꼭 읽어주세요!
+				 						</div>
+				 					</div>
+				 					<div class="row">
+				 						<div class="col">
+				 							${coupon.couponDto.coupon_content}
+				 						</div>
+				 					</div>
+				 				</div>
+				 			</div>
+			 			</div>
+		 			</c:forEach>	 	
+	 			</div>			 		 			
+			</div>		
+		</div>
 
 
 	
