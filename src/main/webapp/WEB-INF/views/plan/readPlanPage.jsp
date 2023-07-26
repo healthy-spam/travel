@@ -650,6 +650,11 @@ pageEncoding="UTF-8"%>
         });
     });
       
+	function showCrewRecruitmentModal() {
+		var crewRecruitmentModal = new bootstrap.Modal(document.getElementById('crewRecruitmentModal'));
+ 	    crewRecruitmentModal.show();
+    }      
+      
     window.addEventListener("DOMContentLoaded", () => {
         map();
         loadDay();        
@@ -705,7 +710,7 @@ pageEncoding="UTF-8"%>
 										<c:if test="${data.planDto.plan_statuse != '모집' && guideCheck == 1 }">
 										<li class="col-auto "><a class="dropdown-item" href="../guidePackage/packageRecruitmentPage?plan_id=${data.planDto.plan_id}"><i class="bi bi-bag-heart"></i> 패키지 모집</a></li>
 		                       			</c:if>
-										<li class="col-auto "><a class="dropdown-item" href="#"><i class="bi bi-bag-heart-fill"></i> 크루원 모집</a></li>	
+										<li class="col-auto "><a class="dropdown-item" href="#" onclick="showCrewRecruitmentModal();"><i class="bi bi-bag-heart-fill"></i> 크루원 모집</a></li>	
 									</ul>
 								</div>									                       								
 		                     </div>  
@@ -737,7 +742,7 @@ pageEncoding="UTF-8"%>
           </div>
           
           <div class="row mt-2">
-             <div class="col-1">&nbsp;</div>
+             <div class="col-1 pe-0">&nbsp;</div>
              <div class="col-10">
                <div class="dropdown-center d-grid" >
                   <button class="btn dropdown-toggle shadow-sm" id="dayChange" style="font-weight: bolder;  border-radius: 12px; font-size: 20px; background-color: #faf7f0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -748,7 +753,7 @@ pageEncoding="UTF-8"%>
                   </ul>
                </div>
             </div>
-            <div class="col-1">&nbsp;</div>
+            <div class="col-1 ps-0">&nbsp;</div>
           </div>
           
           <div class="row mt-3">
@@ -801,6 +806,107 @@ pageEncoding="UTF-8"%>
    <jsp:include page="../common/bottomNavi.jsp"></jsp:include>
    
 </div>
+
+<!-- Crew Recruitment Modal -->
+<div class="modal fade" id="crewRecruitmentModal" tabindex="-1" aria-labelledby="crewRecruitmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        
+            <div class="modal-header" style="background-color: #03c75a;">            	
+				<h5 class="modal-title" id="crewRecruitmentModalLabel" style="color: white; font-weight: bolder;">크루원 모집</h5>	                            
+				<button type="button" class="btn bi bi-x-lg" data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>                            	
+            </div>
+            
+            <div class="modal-body">
+            	<div class="container"> 
+            		<div class="row">
+		                <div class="col-12" style="font-weight: bolder;">
+							<i class="bi bi-calendar-check"></i> 여행 출발 날짜
+						</div>
+						<div class="col-9 mt-1">
+							<input id="startDate" class="form-control" type="date" name="planning_start_date" placeholder="여행 출발 날짜">
+						</div>
+            		</div>
+            		
+            		<div class="row mt-2" style="overflow-y: auto; max-height: 300px;">
+					    <div class="col" style="font-weight: bolder;">
+					    	<div class="row">
+					    		<div class="col">
+					    			<i class="bi bi-person-lines-fill"></i> 크루원 목록
+					    		</div>
+					    	</div>					    	
+					        <div class="row">
+					    		<div class="col">
+							    	<div class="row align-items-center">
+							    		<div class="col-3 ">
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		</div>
+							    		<div class="col-1">
+							    			<input type="checkbox" class="">
+							    		</div>					    		
+							    	</div>
+									<div class="row align-items-center">
+							    		<div class="col-3 ">
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		</div>
+							    		<div class="col-1">
+							    			<input type="checkbox" class="">
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-3 ">
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		</div>
+							    		<div class="col-1">
+							    			<input type="checkbox" class="">
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-3 ">
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		</div>
+							    		<div class="col-1">
+							    			<input type="checkbox" class="">
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-3 ">
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		</div>
+							    		<div class="col-1">
+							    			<input type="checkbox" class="">
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-3 ">
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		</div>
+							    		<div class="col-1">
+							    			<input type="checkbox" class="">
+							    		</div>					    		
+							    	</div>
+							    								    						        					        
+					    		</div>    	
+					        </div>
+					    </div>					    
+					    
+					</div>
+					           	
+            	</div>
+	            <div class="row mt-1">	       
+	            	<div class="col-2">&nbsp;</div>         
+	                <div class="col d-grid">
+	                    <a href="../myPage" class="btn" style="background-color: #03c75a; color: white; font-weight: bolder;">클랜 모집</a>
+	                </div>
+	                <div class="col-2">&nbsp;</div>
+	            </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>
