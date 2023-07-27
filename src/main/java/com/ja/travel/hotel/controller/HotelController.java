@@ -315,8 +315,11 @@ public class HotelController {
 		HotelDto hotelDto = (HotelDto) session.getAttribute("hotelDto");
 
 		System.out.println("hotelFacilityLineDtoList = " + hotel_facility_id);
-
-		hotelService.insertHotelFacilityLine(hotel_facility_id, hotelDto.getHotel_id());
+		
+		if (hotel_facility_id != null) {
+			
+			hotelService.insertHotelFacilityLine(hotel_facility_id, hotelDto.getHotel_id());
+		}
 
 		return "redirect:./hotelPage";
 	}

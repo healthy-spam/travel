@@ -36,6 +36,22 @@
       )
    </insert>
    
+	<!-- 참조하기 카운트 -->
+	<select id="getReferenceCount" resultType="java.lang.Integer">
+	    WITH recursive_plan (plan_id, user_id, plan_title, referenced_plan_id, plan_content, plan_thumbnail, plan_disclosure_status, plan_statuse) AS
+	    (
+	        SELECT plan_id, user_id, plan_title, referenced_plan_id, plan_content, plan_thumbnail, plan_disclosure_status, plan_statuse
+	        FROM plan
+	        WHERE plan_id = #{plan_id}
+	        UNION ALL
+	        SELECT p.plan_id, p.user_id, p.plan_title, p.referenced_plan_id, p.plan_content, p.plan_thumbnail, p.plan_disclosure_status, p.plan_statuse
+	        FROM plan p
+	        INNER JOIN recursive_plan rp ON p.referenced_plan_id = rp.plan_id
+	    )
+	    SELECT COUNT(*) AS reference_count FROM recursive_plan
+	</select>
+
+   
    <!-- 0724수정 시작 일정담기 -->         
    <insert id="insertPlan" parameterType="com.ja.travel.dto.PlanDto">
        <selectKey keyProperty="plan_id" resultType="int" order="AFTER">

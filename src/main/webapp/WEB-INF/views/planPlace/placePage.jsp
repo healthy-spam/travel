@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 <script type="text/javascript">
 
-const categoryValue = 'recent';
+/* const categoryValue = 'recent';
 
 //플레이스 목록을 보여줍니다.
 function showPlaceList() {
@@ -38,7 +38,7 @@ function showPlaceList() {
 			for(data of response.list) {
 				
 				const divCol = document.createElement("div");
-				divCol.className = "col-3 mb-4";
+				divCol.className = "col-2 mb-4";
 				listStartRow.appendChild(divCol);
 				
 				const divCard = document.createElement("div");
@@ -61,9 +61,8 @@ function showPlaceList() {
 				const image = document.createElement("img");
 				image.src = "/uploadFiles/mainImage/" + data.planPlaceDto.plan_place_photo;
 				image.style.width = "100%";
-				image.style.height = "100%";
+				image.style.height = "12em";
 				image.style.objectFit = "cover";
-				image.style.width = "100%";
 				image.style.borderRadius = "10px";
 				anchor.appendChild(image);
 				
@@ -176,7 +175,7 @@ window.addEventListener("DOMContentLoaded", function() {
 	
 	showPlaceList();
 	
-});
+}); */
 
 </script>
 
@@ -195,13 +194,13 @@ window.addEventListener("DOMContentLoaded", function() {
 			width: auto;
 			height: auto;
 			padding: 12px 20px;
-			background-image: linear-gradient(98deg,#03c75a,#49c6dd);
+			background-image: linear-gradient(98deg,#00c261,#008f47);
 			font-size: 0.9em;
 			font-weight: 600;
 		}
     
     .registerButton:hover {
-    	background-image: linear-gradient(98deg,#07e86b,#57def7);
+    	background-image: linear-gradient(98deg,#008f47,#006633);
     	color: #f0f0f0;
 	}
     
@@ -325,22 +324,21 @@ window.addEventListener("DOMContentLoaded", function() {
         <div class="row my-3">
             <div class="col">
                 <div class="row" id="listStartRow">
-                <!-- ajax로 처리했어요 -->
-                <%-- 	<c:forEach items="${planPlaceList}" var="list">
-                    <div class="col-2 mb-4">
-                        <div class="card" style="border: none;">
+                <c:forEach items="${planPlaceList}" var="list">
+                    <div class="col-3 mb-3">
+    
                             <div class="row">
                                 <div class="col">
                                     <a href="./PlanPlaceDetailPage?plan_place_id=${list.planPlaceDto.plan_place_id}">
-                                        <img src="/uploadFiles/mainImage/${list.planPlaceDto.plan_place_photo}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                        <img src="/uploadFiles/mainImage/${list.planPlaceDto.plan_place_photo}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;">
                                     </a>
                                 </div>
                             </div>
                             <div class="row align-items-center my-2">
-                                <div class="col-auto">
-                                    <span style="font-size: 14px; font-weight: bold; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">${list.planPlaceDto.plan_place_name}</span>
+                                <div class="col">
+                                    <span style="font-size: 0.9em; font-weight: bold; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">${list.planPlaceDto.plan_place_name}</span>
                                 </div>
-                                <div class="col text-end pe-1">
+                                <div class="col-auto text-end" style="padding-right: 0.1em">
                                     <c:choose>
                                     	<c:when test="${!empty sessionuser}">
                                     		<a href="./clickLoveProcess1?plan_place_id=${list.planPlaceDto.plan_place_id}" class="bi bi-heart-fill" style="${list.searchPlanPlaceLoveDto != null ? 'color: #ff4f78; font-size: 12px;' : 'color: gray; font-size: 12px;'}"></a>
@@ -353,8 +351,8 @@ window.addEventListener("DOMContentLoaded", function() {
                                 <div class="col-auto p-0">
                                 	<span id="heartCount" style="font-size: 14px; font-weight: bold">${list.loveCount}</span>
                                 </div>
-                                <div class="col-auto pe-1">
-                                    <i style="font-size: 14px;"class="bi bi-chat"></i>
+                                <div class="col-auto" style="padding-left: 0.3em; padding-right: 0.1em">
+                                    <i style="font-size: 0.8em; color: gray;"class="bi bi-chat-right-dots"></i>
                                 </div>
                                 <div class="col-auto ps-0">
                                 	<span style="font-size: 14px; font-weight: bold">${list.commentCount}</span>
@@ -362,17 +360,11 @@ window.addEventListener("DOMContentLoaded", function() {
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <span style="font-size: 14px; color: gray; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">${list.planPlaceDto.plan_place_content}</span>
-                                </div>
-                            </div>
-                            <div class="row my-2">
-                                <div class="col">
                                     <span style="font-size: 14px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">${list.planPlaceDto.plan_place_address}</span>
                                 </div>
                             </div>
-                        </div>
                     </div>
-                     </c:forEach> --%>
+                     </c:forEach>
                 </div>
                 <div class="row">
                     <div class="col"></div>

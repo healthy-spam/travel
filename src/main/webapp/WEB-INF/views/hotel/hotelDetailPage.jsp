@@ -13,7 +13,11 @@
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=818488f03bbc3c53eaa216d3aaf39e13&libraries=services"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@100;300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=818488f03bbc3c53eaa216d3aaf39e13&libraries=services"></script>
 <script type="text/javascript">
 	
 	
@@ -273,14 +277,19 @@
     .reserveButton {
         width: 100%;
         height: 100%;
-        background-image: linear-gradient(98deg,#03c75a,#49c6dd);
+        background-image: linear-gradient(98deg,#03c75a,#38a877);
         border-radius: 10px;
         border: none;
-        padding: 10px 20px;
+        padding: 0.8em;
         color: rgb(255, 255, 255);
         font-weight: 600;
-        font-size: 0.9em;
+        font-size: 1em;
     }
+    
+    .reserveButton:hover {
+        background-image: linear-gradient(98deg,#1e9f58,#0e8a69);
+    }
+    
     .commentProfileImage {
         width: 40px;
         height: 40px;
@@ -304,7 +313,7 @@
         border-radius: 15px;
         background: #ffffff;
         box-shadow: 0px 6px 9px rgba(0, 0, 0, 0.18);
-        padding: 20px 20px;
+        padding: 2em 1.5em;
     }
     
     .imageButton {
@@ -318,6 +327,32 @@
         padding: 10px 20px;
     }
     
+    /* 숙소 제목 스타일 */
+    .hotelTitleBox {
+    	font-size: 1.7em; 
+    	font-weight: 600;
+    }
+    
+    /* 숙소 보조 스타일1 */
+    .hotelSubTitleBox1 {
+    	font-size: 0.9em; 
+    	font-weight: 600;
+    }
+    
+    .hotelSubTitleBox2 {
+    	font-size: 0.9em; 
+    }
+    
+    /* 이미지 스타일 */
+    .mainImgBox {
+    	width: 100%;
+    	height: 36em;
+    }
+    
+    .subImgBox {
+    	width: 100%;
+    	height: 18em;
+    }
 </style>
 </head>
 
@@ -334,56 +369,56 @@
 <!--숙소 제목 및 정보들입니다.-->        
             <div class="row">
                 <div class="col">
-                    <span style="font-size: 25px; font-weight: 600;">${hotelMap.hotelDto.hotel_title }</span>
+                    <span class="hotelTitleBox">${hotelMap.hotelDto.hotel_title }</span>
                 </div>
             </div>
             <div class="row align-items-center mb-3">
                 <div class="col-auto pe-1">
-                    <i class ="bi bi-star-fill" style="font-size: 14px;"></i>
+                    <i class ="bi bi-star-fill" style="font-size: 0.9em;"></i>
                 </div>
                 <div class="col-auto px-0">
                 	<c:choose>
 	                	<c:when test="${!empty hotelAvgReviewPoint}">
-	                		<span style="font-size: 14px; font-weight: bold;">
+	                		<span class="hotelSubTitleBox1">
 	                			 ${hotelAvgReviewPoint}
 	                		</span>
 	                	</c:when>
 	                	<c:otherwise>
-	                		<span style="font-size: 14px; font-weight: bold;">0.0</span>
+	                		<span class="hotelSubTitleBox1">0.0</span>
 	                	</c:otherwise>
                 	</c:choose>
                 </div>
                 <div class="col-auto px-1">
-                    <span style="font-size: 14px; font-weight: bold;">∙후기</span>
+                    <span class="hotelSubTitleBox1">∙후기</span>
                     <c:choose>
                     	<c:when test="${!empty hotelReviewPoint}">
-                    		<span style="font-size: 14px; font-weight: bold;">${hotelReviewPoint}</span>
+                    		<span class="hotelSubTitleBox1">${hotelReviewPoint}</span>
                     	</c:when>
                     	<c:otherwise>
-                    		<span style="font-size: 14px; font-weight: bold;">아직없음</span>
+                    		<span class="hotelSubTitleBox1">아직없음</span>
                     	</c:otherwise>
                     </c:choose>
                 </div>
                 <div class="col-auto">
-                    <span id="hotel_address" style="font-size: 14px;">${hotelMap.hotelDto.hotel_address}</span>
+                    <span id="hotel_address" class="hotelSubTitleBox2">${hotelMap.hotelDto.hotel_address}</span>
                 </div>
                 <div class="col px-0 d-flex justify-content-end">
-                    <span style="font-size: 12px; font-weight: bold;">공유하기</span>
+                    <span class="hotelSubTitleBox1">공유하기</span>
                 </div>
                 <div class="col-auto d-flex">
-                    <span style="font-size: 12px; font-weight: bold;">저장</span>
+                    <span class="hotelSubTitleBox1">저장</span>
                 </div>
             </div>
 <!--이미지를 불러옵니다.-->            
             <div class="row mb-5">
                 <div class="col">
-                    <img src="/uploadFiles/hotelMainImage/${hotelMap.hotelDto.hotel_main_image }" alt="" style="width: 100%; height: 38em;">
+                    <img src="/uploadFiles/hotelMainImage/${hotelMap.hotelDto.hotel_main_image }" alt="" class="mainImgBox">
                 </div>
                 <div class="col">
                     <div class="row row-cols-2">
                     	<c:forEach items="${hotelImageDetailsDtoList}" var="list" begin="0" end="3">
 	                        <div class="col">
-	                            <img src="/uploadFiles/hotelDetailImages/${list.hotelImageDetailsDto.hotel_image_details_link }" alt="" style="width: 100%; height: 19em;">
+	                            <img src="/uploadFiles/hotelDetailImages/${list.hotelImageDetailsDto.hotel_image_details_link }" alt="" class="subImgBox">
 	                        </div>
                     	</c:forEach>             
                     </div>
@@ -391,7 +426,7 @@
             </div>
 <!--숙소 호스팅 관련 옵션 소개란입니다.-->            
             <div class="row">
-                <div class="col">
+                <div class="col-7">
                     <div class="row">
                         <div class="col-auto">
                             <div class="row">
@@ -525,7 +560,7 @@
                     </div>
                 </div>
 <!--예약 기능이 들어있는 카드입니다.-->                
-                <div class="col d-flex justify-content-end">
+                <div class="col d-flex justify-content-end ps-5">
                     <div class="row">
                         <div class="col">
                             <div class="reserveCard">
@@ -533,30 +568,30 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col-auto pe-0">
-                                                <span style="font-size: 20px; font-weight: bold;">\</span>
+                                                <span style="font-size: 1.4em; font-weight: bold;">\</span>
                                             </div>
                                             <div class="col px-0">
-                                                <span style="font-size: 20px; font-weight: bold;">
+                                                <span style="font-size: 1.4em; font-weight: bold;">
                                                 	<fmt:formatNumber pattern="#,###" value="${hotelMap.hotelDto.hotel_price }" var="price"/>${price }
                                                 </span>
-                                                <span style="font-size: 14px;">/박</span>
+                                                <span style="font-size: 1em;">/박</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-auto">
                                         <div class="row">
                                             <div class="col pe-1">
-                                                <i class ="bi bi-star-fill" style="font-size: 13px;"></i>
+                                                <i class ="bi bi-star-fill" style="font-size: 0.9em;"></i>
                                             </div>
                                             <div class="col-auto px-0">
                                             	<c:choose>
                                             		<c:when test="${!empty hotelAvgReviewPoint}">
-                                            			<span style="font-size: 13px; font-weight: bold;">
+                                            			<span style="font-size: 0.9em; font-weight: bold;">
                                                 			${hotelAvgReviewPoint}
                                                 		</span>
                                             		</c:when>
                                             		<c:otherwise>
-                                            			<span style="font-size: 13px; font-weight: bold;">
+                                            			<span style="font-size: 0.9em; font-weight: bold;">
                                                 			0.0
                                                 		</span>
                                             		</c:otherwise>
@@ -566,17 +601,17 @@
                                                 <span>∙</span>
                                             </div>
                                             <div class="col-auto px-0">
-                                                <span style="font-size: 13px; color: gray;">∙후기</span>
+                                                <span style="font-size: 0.9em; color: gray;">∙후기</span>
                                             </div>
                                             <div class="col-auto ps-0">
                                             	<c:choose>
                                             		<c:when test="${!empty hotelReviewPoint}">
-                                            			<span style="font-size: 13px; color: gray;">
+                                            			<span style="font-size: 0.9em; color: gray;">
                                                 			${hotelReviewPoint}
                                                 		</span>
                                             		</c:when>
                                             		<c:otherwise>
-                                            			<span style="font-size: 13px; color: gray;">
+                                            			<span style="font-size: 0.9em; color: gray;">
                                                 			없음
                                                 		</span>
                                             		</c:otherwise>
@@ -591,7 +626,7 @@
                                             <div class="col-6">
                                                 <div class="row">
                                                     <div class="col-auto">
-                                                        <span style="font-size: 10px; font-weight: bold;">체크인</span>
+                                                        <span style="font-size: 0.7em; font-weight: bold;">체크인</span>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -603,7 +638,7 @@
                                             <div class="col-6">
                                                 <div class="row">
                                                     <div class="col-auto">
-                                                        <span style="font-size: 10px; font-weight: bold;">체크아웃</span>
+                                                        <span style="font-size: 0.7em; font-weight: bold;">체크아웃</span>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -613,20 +648,20 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row mt-1">
                                             <div class="col-auto">
-                                                <span style="font-size: 10px; font-weight: bold;">인원</span>
+                                                <span style="font-size: 0.7em; font-weight: bold;">인원</span>
                                             </div>
                                         </div>
                                         <div class="row py-1 align-items-center">
                                             <div class="col-auto">
-                                                <i onclick="clickDashButton()" class="bi bi-dash-lg" style="font-size: 18px;"></i>
+                                                <i onclick="clickDashButton()" class="bi bi-dash-lg" style="font-size: 1em;"></i>
                                             </div>
                                             <div class="col-auto">
                                                 <span id="numberOfPeople"></span>
                                             </div>
                                             <div class="col-auto">
-                                                <i onclick="clickPlusButton()" class="bi bi-plus-lg" style="font-size: 18px;"></i>
+                                                <i onclick="clickPlusButton()" class="bi bi-plus-lg" style="font-size: 1em;"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -638,10 +673,10 @@
                                 </div>
                                 <div class="row py-2">
                                     <div class="col px-3 text-center">
-                                        <span style="font-size: 13px;">예약 확정 전에는 요금이 청구되지 않습니다.</span>
+                                        <span style="font-size: 0.8em;">예약 확정 전에는 요금이 청구되지 않습니다.</span>
                                     </div>
                                 </div>
-                                <div class="row py-2" style="font-size: 14px; ">
+                                <div class="row py-2" style="font-size: 1em; ">
                                     <div class="col-auto pe-0">
                                         <span >\</span>
                                     </div>
@@ -672,7 +707,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row py-2" style="font-size: 14px;">
+                                <div class="row py-2" style="font-size: 1em;">
                                     <div class="col">
                                         <span style="text-decoration: underline;">트립스테이션 서비스 수수료</span>
                                     </div>
@@ -681,7 +716,7 @@
                                     </div>
                                 </div>
                                 <hr class="my-3">
-                                <div class="row" style="font-size: 16px; font-weight: bold;">
+                                <div class="row" style="font-size: 1em; font-weight: bold;">
                                     <div class="col text-start">
                                         <span>총 합계</span>
                                     </div>

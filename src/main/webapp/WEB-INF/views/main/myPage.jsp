@@ -279,6 +279,11 @@ button {
 	height: 1.5em;
 	margin-right: 0.5em;
 }
+
+ a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: black; /* 텍스트 색상을 검정색으로 변경 */
+  }
 </style>
 </head>
 <body>
@@ -348,6 +353,11 @@ button {
 					<div class="col mb-1" style="font-size: 1.5em; font-weight: 300;">
 						<p>마이패키지
 					</div>
+				</div>
+				<div class="row">
+				  <div class="col mb-1" style="font-size: 1.5em; font-weight: 300;">
+				    <p><a href="./guidePackage/guideAppPage">가이드 신청하기</a></p>
+				  </div>
 				</div>
 			</div>
 			<div class="col-8 px-4">

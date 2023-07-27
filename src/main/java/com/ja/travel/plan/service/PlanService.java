@@ -506,7 +506,7 @@ public class PlanService {
       
    }
 
-   // 0724 시작
+   // 플랜 일정담기 시작
    @Transactional
    public int copyPlanInsert(PlanDto copiedPlan) {
        // 플랜 등록과 등록된 플랜의 ID 반환      
@@ -573,6 +573,11 @@ public class PlanService {
        }
    }
    
-   //0724 끝
+   // 플랜 일정담기 끝
+   
+   // 플랜 일정담기 카운트
+   public Integer getReferenceCount(int plan_id) {
+	   return planSqlMapper.getReferenceCount(plan_id);
+   }
    
 }

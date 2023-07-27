@@ -55,6 +55,16 @@ public class RestPlanApplicationController {
        return map;
    }
 
+	// 일정담기 카운트
+	@RequestMapping("getReferenceCounts")
+	public Map<String, Object> getReferenceCount(@RequestParam("planId") int plan_id) {
+	   Map<String, Object> map = new HashMap<>();
+	
+	   map.put("referenceCount", planService.getReferenceCount(plan_id));
+	
+	   return map;
+	}
+
    
    @RequestMapping("registerPlanDayProcess")
    public Map<String, Object> registerPlanDayProcess(PlanDayDto params){
@@ -145,7 +155,7 @@ public class RestPlanApplicationController {
        return map;
    }
    
-   // 0725 시작
+   
    // 플래너 수정 서블릿
    @RequestMapping("updateContentProcess")
    public Map<String, Object> updateContentProcess(HttpSession session, PlanDto params, @RequestParam("planId") int plan_id, MultipartFile img) {
@@ -213,6 +223,7 @@ public class RestPlanApplicationController {
          return map;
    }
    
+   // 일정담기
    @RequestMapping("copyPlanProcess")
    public String copyPlanProcess(@RequestParam("plan_id") int plan_id, HttpSession session) {
        System.out.println("플래너 참조하기 서블릿 작동");
@@ -249,9 +260,7 @@ public class RestPlanApplicationController {
        planService.copyPlanRouteCities(planDayCityIdMap);
        
        return "{\"redirect\":\"../myPage\"}";
-   }
-   
-   //0725끝
+   }      
    
    @RequestMapping("updatePlan")
    public Map<String, Object> updatePlan(@RequestParam String plan_title, @RequestParam String planDisclosureStatus, @RequestParam int planId){

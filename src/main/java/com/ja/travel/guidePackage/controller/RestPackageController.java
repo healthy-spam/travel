@@ -210,5 +210,15 @@ public class RestPackageController {
 
 		return map;
 	}
+	
+	@RequestMapping("getGuideProfile")
+	public Map<String,Object> getGuideProfile(int guide_planning_id){
+		Map<String, Object> map = new HashMap<>();
+		
+		UserDto guide = packageService.getGuideInfo(guide_planning_id);
+		
+		map.put("guide", guide);
+		return map;
+	}
 
 }
