@@ -203,6 +203,11 @@ function deleteboard(crew_board_id) {
 
 	    }
 	}
+	
+function reportuser(user_id) {
+	document.getElementById("hidden").innerHTML = `<input type="hidden" id="reportedUserId" value="\${user_id}">`;
+	bootstrap.Modal.getOrCreateInstance("#reportmodal").show();
+}
 </script>
 
 <script>
@@ -225,6 +230,7 @@ function getcommentlist() {
 <script>
 function writecomment(crew_board_id, index) {
     var crew_comment = document.getElementById('comment-' + index).value;
+    console.log(index);
     console.log(crew_comment);
     
     // AJAX 요청 보내기
@@ -352,6 +358,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
     </script>
+
 <style>
 body {
 	background-color: #f2f2f2;
@@ -562,7 +569,8 @@ strong#Createnewpost {
 }
 
 .writercard {
-	background-color: green;
+	background-color: #17b75e;
+	color: white;
 }
 
 .chatarea {
@@ -625,8 +633,8 @@ strong#Createnewpost {
 									<div class="col-auto">
 										<i class="bi bi-folder-plus"></i>
 									</div>
-									<div class="col text-end">
-										<button class="btn btn-success btn-sm">Publish</button>
+									<div class="col text-end pe-0">
+										<button class="btn btn-success btn-sm">등록</button>
 									</div>
 								</div>
 							</div>
@@ -676,9 +684,11 @@ strong#Createnewpost {
 												<div class="col text-end mt-3">
 													<i class="bi bi-three-dots" data-bs-toggle="dropdown"></i>
 													<ul class="dropdown-menu">
-														<li class="dropdown-item" id="commentmodify">수정2</li>
+														<li class="dropdown-item" id="commentmodify">수정</li>
 														<li class="dropdown-item"
 															onclick="deleteboard('${list.c.crew_board_id}')">삭제</li>
+														<li class="dropdown-item"
+															onclick="reportuser('${list.userDto.user_id}')">신고</li>
 													</ul>
 												</div>
 											</div>
@@ -834,7 +844,7 @@ strong#Createnewpost {
 				<div class="col-3 ps-4">
 					<div class="card calendarcard">
 						<div class="row mx-1 sticky-header">
-							<div class="col p-2">
+							<div class="col p-2" style="font-weight: bold;">
 								크루 전체 채팅
 							</div>
 						</div>
@@ -854,7 +864,7 @@ strong#Createnewpost {
 												</div>
 												<div class="row">
 													<div class="col-auto">
-														<div class="card chatcard p-1">
+														<div class="card chatcard px-2 py-1">
 															${chat.chatDto.crew_chat_text }
 														</div>
 													</div>
@@ -870,18 +880,18 @@ strong#Createnewpost {
 									</c:when>
 									<c:otherwise>
 										<div class="row">
-											<div class="col me-2">
+											<div class="col me-2 pt-4">
 												<div class="row">
 													<div class="col">
 													</div>
-													<div class="col-auto text-end">
-														<div class="card writercard p-1">
+													<div class="col-auto">
+														<div class="card writercard p-1 px-2 ms-5" style="font-size:14px;">
 															${chat.chatDto.crew_chat_text }
 														</div>
 													</div>
 												</div>
 												<div class="row">
-													<div class="col text-end">
+													<div class="col text-end" style="font-size: 13px; padding-top: 4px;">
 														<fmt:formatDate value="${chat.chatDto.crew_chat_date }" pattern="MM.dd HH:mm" var="crew_chat_date" />
 															${crew_chat_date }
 													</div>
@@ -981,132 +991,6 @@ strong#Createnewpost {
 
 	<!-- modal end -->
 
-	<!--Modify Detail Modal -->
-
-	<div class="modal fade" id="boardDetailModal" tabindex="-1"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div
-			class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-			<div class="modal-content">
-				<div class="modal-header">
-
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body mx-5">
-
-					<div class="row  mt-5 pt-5 title" id="boardDetailTitle">
-						<strong>제목입니당</strong>
-					</div>
-					<div class="row  mt-5">
-						<div class="col" id="boardDetailWriter">
-							작성자 <strong> 작성자입니당 </strong>
-						</div>
-						<div class="col text-end">
-							작성일자 <strong> 날짜입니당 </strong>
-						</div>
-					</div>
-					<div class="row text-end">
-						<c:choose>
-							<c:when test="${userDto.user_id == sessionuser.user_id }">
-								<div class="col">
-									<div class="row justify-content-end">
-										<div class="col-auto">
-											<i class="bi bi-pencil icon-button" onclick="modifyboard()"
-												title="modify"></i>
-										</div>
-										<div class="col-auto">
-											<i class="bi bi-trash3 icon-button"
-												onclick="deleteboard('${crewBoardDto.crew_board_id}')"
-												title="remove"></i>
-										</div>
-									</div>
-								</div>
-							</c:when>
-							<c:otherwise>
-							</c:otherwise>
-						</c:choose>
-					</div>
-					<div class="row mb-3">
-						<div class="card my-3 py-3">
-							<div class="content m-4">${crewBoardDto.crew_board_content }
-							</div>
-						</div>
-					</div>
-					<div class="row title2">
-						<strong>댓글</strong>
-					</div>
-					<div class="row  mt-3">
-						<div class="card mb-5">
-							<div class="row m-2 mt-3">
-								<textarea placeholder="댓글 내용을 입력하세요."
-									class="textarea_input input_txt form-control"
-									style="height: 100px;" name="board_comment_content"
-									id="comment"></textarea>
-							</div>
-							<div class="row m-2">
-								<div class="col text-end">
-									<button id="writecomment" class="btn btn-success writecomment">작성하기</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div id="commentlist">
-						<c:forEach var="comment" items="${commentlist}">
-
-							<div class="row ">
-								<div class="col commentWriter">
-									<Strong>${comment.commentWriter.user_nickname }</Strong>
-								</div>
-								<div class="col text-end">
-									<c:choose>
-										<c:when
-											test="${comment.commentWriter.user_id == sessionuser.user_id }">
-											<div class="row justify-content-end">
-												<div class="col-auto">
-													<i class="bi bi-pencil icon-button"
-														onclick="modifyboard('${comment.crewBoardCommentDto.board_comment_id}')"
-														title="modify"></i>
-												</div>
-												<div class="col-auto">
-													<i class="bi bi-trash3 icon-button" title="remove"
-														onclick="deletecomment('${comment.crewBoardCommentDto.board_comment_id}')"></i>
-												</div>
-											</div>
-										</c:when>
-										<c:otherwise>
-										</c:otherwise>
-									</c:choose>
-
-								</div>
-							</div>
-							<div class="row mt-3">
-								<div class="comment">${comment.crewBoardCommentDto.crew_comment }</div>
-							</div>
-							<div class="row mt-3">
-								<div class="col">
-									<Strong> <fmt:formatDate
-											value="${comment.crewBoardCommentDto.crew_comment_date }"
-											pattern="yyyy-MM-dd HH:mm" var="formattedDate" />
-										${formattedDate }
-									</Strong>
-								</div>
-								<div class="col text-end"></div>
-							</div>
-							<div class="row mt-3">
-								<hr>
-							</div>
-
-						</c:forEach>
-					</div>
-
-
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- modal end -->
-
 
 
 <!-- Modal -->
@@ -1200,10 +1084,42 @@ strong#Createnewpost {
 			</div>
 		</div>
 	</div>
+	</div>
 
 	<!-- modal end -->
 
-
+	<div class="modal fade" id="reportmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<form action="/travel/admin/userReport?user_id=${sessionuser.user_id}" method="post" enctype="multipart/form-data">
+												<!-- 신고 대상자의 아이디를 담을 hidden input field 추가 -->
+												<div id="hidden"></div>
+												
+												<div class="row">
+													<div class="col">
+														<div class="form-floating">
+															<textarea class="form-control" placeholder="#" id="floatingTextarea2" name="user_report_desc" style="height: 15em; resize: none;"></textarea>
+															<label for="floatingTextarea2" style="font-size: 0.9em;">신고사유를 적어주세요. 허위 신고시 불이익이 있을 수 있습니다.</label>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col d-flex justify-content-end mt-2">
+														<input class="form-control" type="file" id="imageUpload" name="reportImages" accept="image/*" multiple>
+													</div>
+													<div class="col-12">
+														<div id="previewImages" style="display: none; overflow-x: auto; margin: 0.5em 0 0.5em 0; padding: 0.5em;"></div>
+													</div>
+												</div>
+												<div class="row mt-2">
+													<div class="col d-flex justify-content-end">
+														<button type="submit" class="btn" style="background-color: #03c75a; color: white;" >신고 제출</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
 
 
 	<script

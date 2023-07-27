@@ -133,6 +133,20 @@
 			/* 마우스 커서를 올렸을 때의 스타일 지정 (애니메이션 효과를 추가할 부분) */
 		  transform: scale(1.01); /* 카드 크기를 약간 확대하여 애니메이션 효과를 줍니다. */
 		}
+		
+.text-container {
+overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display: -webkit-box;  -webkit-line-clamp: 3;
+}
+
+.name {
+	font-weight: bold;
+	font-size:18px;
+}
+
+.text-grey {
+	color:#6C757D;
+	font-size:15px;
+}
 
 </style>
 <script type="text/javascript">
@@ -228,7 +242,7 @@
 	
 	
 	<div class="container py-4 px-5">
-		<div class="row mb-3">
+		<div class="row">
 			<div class="col">
 				<h1>나의 크루</h1>
 			</div>
@@ -399,10 +413,53 @@
 				</div>
 			</div>
 		</div>
-		
-		<div class="row my-3 ">
+		<div class="row">
+			<div class="col">
+				<h1>오늘의 인기글</h1>
+			</div>
+			<div class="col text-end">
+				<span>모두보기</span>
+			</div>
+		</div>
+		<div class="row  mb-5">
+			
+			<c:forEach var="ppost" items="${ppost}" varStatus="status">
+			<div class="col-6">
+				<div  class="card cSearchStyleItem p-4">
+
+    				<div class="content-photo">
+    					<div class="row">
+    						<div class="col-9">
+    							<div class="row">
+    								<span class="name pb-2">${ppost.crewBoardDto.crew_board_title }</span>
+    							</div>
+    							<div class="row">
+    								<span class="text-container">${ppost.crewBoardDto.crew_board_content }</span>
+    							</div>
+    						</div>
+    						<div class="col-3">
+    							<img src="/uploadFiles/crewFiles/crewboard/${ppost.crewBoardDto.crew_board_id }/${ppost.crewBoardAttachedDto.crew_board_attached }" width="100px" height="100px">
+    						</div>
+    					</div>
+    					<div class="row pt-2">
+    						<div class="col-auto text-grey">
+    							좋아요 ${ppost.likecount }
+    						</div>
+    						<div class="col text-grey">
+    							댓글 ${ppost.commentcount }
+    						</div>
+    					</div>
+    				</div>
+    			</div>
+    			</div>
+    			</c:forEach>
+			
+			<div class="col">
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-9">
-				<h1>전체 크루 리스트</h1>
+				<h1>이런 크루는 어때요</h1>
 			</div>
 			<div class="col text-end">
 			

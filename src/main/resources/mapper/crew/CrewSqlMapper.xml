@@ -359,4 +359,17 @@
 		     sysdate
 		)
 	</insert>
+	
+	<select id="getpopularpostlist" resultType="com.ja.travel.dto.CrewBoardDto">
+SELECT cb.* 
+FROM crew_board cb
+LEFT JOIN (
+    SELECT crew_board_id, COUNT(*) as like_count
+    FROM crew_board_like
+    GROUP BY crew_board_id
+) cb_like_count ON cb.crew_board_id = cb_like_count.crew_board_id
+WHERE ROWNUM BETWEEN 1 AND 2
+ORDER BY COALESCE(cb_like_count.like_count, 0) DESC
+	</select>
+	
 </mapper>

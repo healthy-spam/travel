@@ -280,10 +280,14 @@ button {
 	margin-right: 0.5em;
 }
 
- a {
+a {
     text-decoration: none; /* 밑줄 제거 */
     color: black; /* 텍스트 색상을 검정색으로 변경 */
   }
+  
+.navbar {
+	padding-left: 4em;
+}
 </style>
 </head>
 <body>

@@ -688,137 +688,135 @@ pageEncoding="UTF-8"%>
       <div class="col-5" style="box-shadow: 10px 0 5px -2px rgba(0, 0, 0, 0.2);">
           <div class="row align-items-center">
           
-              <div class="col">
+			<div class="col">
               
-                  <div class="row align-items-center text-center">
+				<div class="row align-items-center text-center">
                                              
-                      <div class="col-12 align-items-center justify-content-center">
+					<div class="col-12 align-items-center justify-content-center">
                       
-                          <div class="row align-items-center justify-content-center">
+						<div class="row align-items-center justify-content-center">
                           
-                              <div class="col-6 align-items-center justify-content-center">
-                                  <span class="" style="font-weight: 700; font-size: 17px;">${data.planDto.plan_title}</span>
-                              </div>
-                        
-						<c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">                                                    
-							<div class="col-3 pe-0">                                                                            
-								<div class="dropdown ">
-									<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: bolder; background-color: #faf7f0;">
-										<i class="bi bi-gear"></i> 관리
-									</button>
-									<ul class="dropdown-menu" >
-										<li class="col-auto"><a class="dropdown-item" id="editPlanButton" onclick="showModal('${data.planDto.plan_title}');"><i class="bi bi-vector-pen"></i> 정보 수정</a></li>
-										<li class="col-auto "><a class="dropdown-item" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}&plan_title=${data.planDto.plan_title}"><i class="bi bi-signpost-split"></i> 루트 수정</a></li>
-										<li class="col-auto "><a class="dropdown-item" href="./deleteProcess?id=${data.planDto.plan_id}"><i class="bi bi-trash3"></i> 플래너 삭제</a></li>
-									</ul>
-								</div>                                    
+							<div class="col-6 align-items-center justify-content-center">
+								<span class="" style="font-weight: 700; font-size: 17px;">${data.planDto.plan_title}</span>
 							</div>
-							<div class="col-3 ps-0">
-								<div class="dropdown">
-									<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: bolder; background-color: #faf7f0;">
-										<i class="bi bi-people"></i> 모집
+                        
+							<c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">                                                    
+								<div class="col-3 pe-0">                                                                            
+									<div class="dropdown ">
+										<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: 500; background-color: #faf7f0;">
+											<i class="bi bi-gear"></i> 관리
+										</button>
+										<ul class="dropdown-menu" >
+											<li class="col-auto"><a class="dropdown-item" id="editPlanButton" onclick="showModal('${data.planDto.plan_title}');"><i class="bi bi-vector-pen"></i> 정보 수정</a></li>
+											<li class="col-auto "><a class="dropdown-item" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}&plan_title=${data.planDto.plan_title}"><i class="bi bi-signpost-split"></i> 루트 수정</a></li>
+											<li class="col-auto "><a class="dropdown-item" href="./deleteProcess?id=${data.planDto.plan_id}"><i class="bi bi-trash3"></i> 플래너 삭제</a></li>
+										</ul>
+									</div>                                    
+								</div>
+								<div class="col-3 ps-0">
+									<div class="dropdown">
+										<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: 500; background-color: #faf7f0;">
+											<i class="bi bi-people"></i> 모집
+										</button>
+										<ul class="dropdown-menu">
+											<c:if test="${data.planDto.plan_statuse != '모집'}">
+											<li class="col-auto"><a class="dropdown-item" href="./travelRecruitmentPage?plan_id=${data.planDto.plan_id}"><i class="bi bi-people-fill"></i> 모집</a></li>
+			                       			</c:if>
+											<c:if test="${data.planDto.plan_statuse != '모집' && guideCheck == 1 }">
+											<li class="col-auto "><a class="dropdown-item" href="../guidePackage/packageRecruitmentPage?plan_id=${data.planDto.plan_id}"><i class="bi bi-bag-heart"></i> 패키지 모집</a></li>
+			                       			</c:if>
+											<li class="col-auto "><a class="dropdown-item" href="#" onclick="showCrewRecruitmentModal();"><i class="bi bi-bag-heart-fill"></i> 크루원 모집</a></li>	
+										</ul>
+									</div>									                       								
+			                     </div>  
+							</c:if>
+                        
+							<c:if test="${!empty sessionuser && sessionuser.user_id != data.planDto.user_id && data.planDto.plan_disclosure_status == '공개'}">
+								<div class="col-4">
+									<button id="copyPlan" class="btn shadow-sm" style="font-weight: bolder; border-radius: 17px; background-color: #faf7f0;">
+	                                   <i class="bi bi-bookmark"></i> 일정 담기
 									</button>
-									<ul class="dropdown-menu">
-										<c:if test="${data.planDto.plan_statuse != '모집'}">
-										<li class="col-auto"><a class="dropdown-item" href="./travelRecruitmentPage?plan_id=${data.planDto.plan_id}"><i class="bi bi-people-fill"></i> 모집</a></li>
-		                       			</c:if>
-										<c:if test="${data.planDto.plan_statuse != '모집' && guideCheck == 1 }">
-										<li class="col-auto "><a class="dropdown-item" href="../guidePackage/packageRecruitmentPage?plan_id=${data.planDto.plan_id}"><i class="bi bi-bag-heart"></i> 패키지 모집</a></li>
-		                       			</c:if>
-										<li class="col-auto "><a class="dropdown-item" href="#" onclick="showCrewRecruitmentModal();"><i class="bi bi-bag-heart-fill"></i> 크루원 모집</a></li>	
-									</ul>
-								</div>									                       								
-		                     </div>  
-						</c:if>
+								</div>
+	                        </c:if>                                                                                             
                         
-                        <c:if test="${!empty sessionuser && sessionuser.user_id != data.planDto.user_id && data.planDto.plan_disclosure_status == '공개'}">
-                           <div class="col-4">
-                                      <button id="copyPlan" class="btn shadow-sm" style="font-weight: bolder; border-radius: 17px; background-color: #faf7f0;">
-                                   <i class="bi bi-bookmark"></i> 일정 담기
-                               </button>
-                           </div>
-                        </c:if>                                             
-                        
-                        
-                        
-                     </div>                          
-                      </div>                                                                         
+						</div>                          
+					</div>                                                                         
                                             
-                  </div>                  
+				</div>                  
                   
-              </div>              
+			</div>              
                                                       
-          </div>                             
+		</div>                             
           
-          <div class="row">
-             <div class="col">
-                <hr>
-             </div>
-          </div>
+		<div class="row">
+			<div class="col">
+				<hr>
+			</div>
+		</div>
           
-          <div class="row mt-2">
-             <div class="col-1 pe-0">&nbsp;</div>
-             <div class="col-10">
-               <div class="dropdown-center d-grid" >
-                  <button class="btn dropdown-toggle shadow-sm" id="dayChange" style="font-weight: bolder;  border-radius: 12px; font-size: 20px; background-color: #faf7f0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                     <i class="bi bi-calendar-check"></i> 일정별 루트 목록                   
-                  </button>
-                  <ul class="dropdown-menu align-items-center" id="templete_day" style="font-size: 20px;">
-                     <!-- <li><a class="dropdown-item day-text" href="#"><i class="bi bi-send"></i> Day 1</a></li> -->                                          
-                  </ul>
-               </div>
-            </div>
+		<div class="row mt-2">
+			<div class="col-1 pe-0">&nbsp;</div>
+				<div class="col-10">
+				<div class="dropdown-center d-grid" >
+					<button class="btn dropdown-toggle shadow-sm" id="dayChange" style="font-weight: bolder;  border-radius: 12px; font-size: 20px; background-color: #faf7f0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bi bi-calendar-check"></i> 일정별 루트 목록                   
+					</button>
+					<ul class="dropdown-menu align-items-center" id="templete_day" style="font-size: 20px;">
+					<!-- <li><a class="dropdown-item day-text" href="#"><i class="bi bi-send"></i> Day 1</a></li> -->                                          
+					</ul>
+				</div>
+				</div>
             <div class="col-1 ps-0">&nbsp;</div>
-          </div>
+		</div>
           
-          <div class="row mt-3">
-             <div class="col" id="route_col">
+		<div class="row mt-3">
+			<div class="col" id="route_col">
              
-                <div class="row mt-2 align-items-center border p-1 m-1 d-none" id="templete_my_place">
-                   <div class="col-1 text-center">
-                       <span class="place_number" style="font-weight: bolder; font-size: 20px; color: #252525;"></span>
-                   </div>
-                   <div class="col-4 text-center ps-0">
-                       <img class="placeImage" alt="" src="" style="width: 140px; height: 90px; border-radius: 10px;">
-                   </div>
-                   <div class="col-7 p-0">
-                       <div class="row">
-                           <div class="col">
-                               <span class="placeName" style="font-weight: bolder; font-size: 12px; color: #252525;"></span>                            
-                           </div>                                                                                
-                       </div>
-                       <div class="row mt-1">
-                           <div class="col">
-                               <span class="placeContent" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 14px;"></span>
-                           </div>
-                       </div>
-                       <div class="row">
-                           <div class="col">
-                               <span class="placeAddress" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;"></span>
-                           </div>
-                       </div>
-                       <div class="row mt-1">
-                          <div class="col">
-                             <a class="readPlace" href="" style="text-decoration: none;">
-                             <span class="" style="color: #ffa800; font-size: 15px; font-weight: bolder;">상세보기</span>
-                             </a>
-                          </div>
-                       </div>
-                   </div>                      
-               </div>                             
+				<div class="row mt-2 align-items-center  border p-1 m-1 d-none" id="templete_my_place">
+					<div class="col-1 text-center">
+						<span class="place_number" style="font-weight: bolder; font-size: 20px; color: #252525;"></span>
+					</div>
+					<div class="col-4 text-center p-0">
+						<img class="placeImage" alt="" src="" style="width: 140px; height: 94px; border-radius: 10px;">
+					</div>
+					<div class="col-7 ps-0">
+						<div class="row">
+							<div class="col">
+								<span class="placeName" style="font-size: 10px; color: #252525; font-weight: 500;"></span>                            
+							</div>                                                                                
+						</div>
+						<div class="row mt-1">
+							<div class="col">
+								<span class="placeContent" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 14px;"></span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<span class="placeAddress" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;"></span>
+							</div>
+						</div>
+						<div class="row mt-1">
+							<div class="col">
+								<a class="readPlace" href="" style="text-decoration: none;">
+								<span class="" style="color: #ffa800; font-size: 15px; font-weight: bolder;">상세보기</span>
+								</a>
+							</div>
+						</div>
+					</div>                      
+				</div>                             
                 
-             </div>      
-          </div>
+			</div>      
+		</div>
           
-      </div>
+	</div>
       
-      <div class="col-7">                    
-         <div id="map" style="width: 1000px; height: 1000px"></div>
-      </div>
+	<div class="col-7">                    
+		<div id="map" style="width: 1000px; height: 1000px"></div>
+	</div>
       
-   </div>
+	</div>
    
-   <jsp:include page="../common/bottomNavi.jsp"></jsp:include>
+	<jsp:include page="../common/bottomNavi.jsp"></jsp:include>
    
 </div>
 
