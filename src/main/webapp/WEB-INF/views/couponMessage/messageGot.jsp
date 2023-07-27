@@ -70,6 +70,20 @@
 	 color:white;
 	}
 	
+	.pageAction a.active {
+		background-color: #03c75a;
+		color: white;
+		border-color: #ced4da;
+	}
+	
+	.pageAct a:hover:not(.avtive) {
+		background-color: white;
+	}
+	
+	.search {
+		background-color: white;
+		color: black;
+	}
 	</style>
 	<script type="text/javascript">
 			var changeBackColor = true;
@@ -999,6 +1013,21 @@
 				
 			}
 			
+			function replyMessage(){
+				
+				const messageGetSender = document.getElementById("messageGetSender").textContent;
+				const messageWriteSender = document.getElementById("messageWriteSender");
+				messageWriteSender.value = messageGetSender;
+				
+				const readMessageGetModal = bootstrap.Modal.getOrCreateInstance("#readMessageGetModal");
+				const messageWriteModal = bootstrap.Modal.getOrCreateInstance("#messageWriteModal");
+				
+				
+				readMessageGetModal.hide();
+				messageWriteModal.show();
+				
+			}
+			
 			window.addEventListener("DOMContentLoaded", function(){
 				//사실상 시작 시점...
 				reloadMessageGet();
@@ -1099,10 +1128,31 @@
 									    <input type="text" id="inputPassword6" class="form-control" aria-labelledby="passwordHelpInline">
 									  </div>
 									  <div class="col-auto my-auto">
-									    <button type="button" class="btn btn-primary btn btn-sm">검색</button>
+									    <button type="button" class="btn border border-dark-sutle btn-sm search">검색</button>
 									  </div>
 								</div>
 							</div>
+						</div>
+						<div class="row mx-auto mt-2">
+							<div class="col">
+							<ul class="pagination justify-content-center pageAction">
+							    <li class="page-item">
+							      <a class="page-link" href="#" aria-label="Previous">
+							        <span aria-hidden="true">&laquo;</span>
+							      </a>
+							    </li>
+							    <li class="page-item"><a class="page-link active" href="#">1</a></li>
+							    <li class="page-item"><a class="page-link" href="#">2</a></li>
+							    <li class="page-item"><a class="page-link" href="#">3</a></li>
+							    <li class="page-item"><a class="page-link" href="#">4</a></li>
+							    <li class="page-item"><a class="page-link" href="#">5</a></li>
+							    <li class="page-item">
+							      <a class="page-link" href="#" aria-label="Next">
+							        <span aria-hidden="true">&raquo;</span>
+							      </a>
+							    </li>
+							  </ul>
+							</div>											
 						</div>
 					</div>
 				</div>
@@ -1113,8 +1163,7 @@
 				<div class="ms-auto col-3 alert alert-success">읽지 않은 쪽지가 3개
 					있습니다.</div>
 				<div class="col-1"></div>
-			</div>
-	
+			</div>	
 		</div>
 	
 		<div class="modal fade" id="readMessageGetModal" tabindex="-1"
@@ -1147,7 +1196,7 @@
 					</div>
 					<div class="modal-footer justify-content-center">
 						<div class="col-2 text-end">
-							<button type="button" class="btn" onclick="reply()" style="background-color: #17b75e; color: white;">답장</button>
+							<button type="button" class="btn" onclick="replyMessage()" style="background-color: #17b75e; color: white;">답장</button>
 							
 						</div>
 						<div class="col-2">
@@ -1174,10 +1223,10 @@
 					<div class="modal-body" style="padding-top: 0;">
 						<div class="row mt-3">
 							<div class="col-3">
-								<label for="receiver" class="col-form-label">받는이</label>
+								<label for="messageWriteSender" class="col-form-label">받는이</label>
 							</div>
 							<div class="col">
-								<input type="text" class="form-control" id="receiver" name="user_nickname">
+								<input type="text" class="form-control" id="messageWriteSender" name="user_nickname">
 							</div>
 						</div>
 						<div class="row mt-1">
