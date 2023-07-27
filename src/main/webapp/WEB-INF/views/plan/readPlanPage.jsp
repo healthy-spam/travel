@@ -21,9 +21,7 @@ pageEncoding="UTF-8"%>
     var markers = [];
     let overlays = [];
     let polyline = null;
-    const myDayPlaceList = []; // const, let, var을 안쓰면 자동으로 암묵적 전역변수로 선언
-    const myDayPlaceNames = [];
-    const myDayPlacePhoto = [];
+    
     
     const planId = new URLSearchParams(location.search).get("id");
    
@@ -82,6 +80,9 @@ pageEncoding="UTF-8"%>
     function loadMyList(plan_day_id, plan_day){
         const xhr = new XMLHttpRequest();
         
+        myDayPlaceList = []; // const, let, var을 안쓰면 자동으로 암묵적 전역변수로 선언
+        myDayPlaceNames = [];
+        myDayPlacePhoto = [];
         
         // 모든 마커 제거
         for (let i = 0; i < markers.length; i++) {
