@@ -833,61 +833,187 @@ pageEncoding="UTF-8"%>
 						</div>
             		</div>
             		
+			    	<div class="row mt-3">
+			    		<div class="col" style="font-weight: bolder;">
+			    			<i class="bi bi-person-lines-fill"></i> 크루원 목록
+			    		</div>
+			    	</div>					    	
+			    	
+					<div class="row mt-1">
+          
+						<div class="col-9">
+							<div class="input-group border" style="border-radius: 7px;">
+								<span class="input-group-text pe-0" id="basic-addon1" style="background-color: white; border: 0;">
+									<i class="bi bi-search"></i>
+								</span>
+								<input type="text" class="form-control" placeholder="Search crew members" aria-label="Search" aria-describedby="basic-addon1" onchange="planSearch()" id="plan_search_text_box" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search crew members'" style="border: 0;">
+							</div>
+						</div>								          				          				          				         
+				          
+					</div>
+			    	
             		<div class="row mt-2" style="overflow-y: auto; max-height: 300px;">
 					    <div class="col" style="font-weight: bolder;">
-					    	<div class="row">
-					    		<div class="col">
-					    			<i class="bi bi-person-lines-fill"></i> 크루원 목록
-					    		</div>
-					    	</div>					    	
 					        <div class="row">
 					    		<div class="col">
 							    	<div class="row align-items-center">
-							    		<div class="col-3 ">
-							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
 							    		</div>
-							    		<div class="col-1">
-							    			<input type="checkbox" class="">
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
 							    		</div>					    		
 							    	</div>
 									<div class="row align-items-center">
-							    		<div class="col-3 ">
-							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
 							    		</div>
-							    		<div class="col-1">
-							    			<input type="checkbox" class="">
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
 							    		</div>					    		
 							    	</div>
 							    	<div class="row align-items-center">
-							    		<div class="col-3 ">
-							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
 							    		</div>
-							    		<div class="col-1">
-							    			<input type="checkbox" class="">
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
 							    		</div>					    		
 							    	</div>
 							    	<div class="row align-items-center">
-							    		<div class="col-3 ">
-							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
 							    		</div>
-							    		<div class="col-1">
-							    			<input type="checkbox" class="">
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
 							    		</div>					    		
 							    	</div>
 							    	<div class="row align-items-center">
-							    		<div class="col-3 ">
-							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
 							    		</div>
-							    		<div class="col-1">
-							    			<input type="checkbox" class="">
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
 							    		</div>					    		
 							    	</div>
 							    	<div class="row align-items-center">
-							    		<div class="col-3 ">
-							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
 							    		</div>
-							    		<div class="col-1">
-							    			<input type="checkbox" class="">
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
+							    		</div>
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
+							    		</div>
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
 							    		</div>					    		
 							    	</div>
 							    								    						        					        
