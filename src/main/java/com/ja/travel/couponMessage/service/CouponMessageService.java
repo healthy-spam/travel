@@ -338,4 +338,5 @@ public class CouponMessageService {
 		return couponMessageSqlMapper.checkStored(userId, messageId, userNickName) > 0;
 	}
 
+
 }

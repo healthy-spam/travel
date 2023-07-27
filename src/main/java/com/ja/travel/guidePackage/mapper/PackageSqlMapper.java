@@ -15,6 +15,7 @@ import com.ja.travel.dto.PlanCityDto;
 import com.ja.travel.dto.PlanDayDto;
 import com.ja.travel.dto.PlanDto;
 import com.ja.travel.dto.PlanPlaceDto;
+import com.ja.travel.dto.PlanPlacePhotoDto;
 import com.ja.travel.dto.UserCouponDto;
 import com.ja.travel.dto.UserDto;
 
@@ -94,6 +95,8 @@ public interface PackageSqlMapper {
 	public UserDto getUserOfCommentByPlanningId(int guide_planning_comment_id);
 
 	public int getTotalLike(int guide_planning_comment_id);
+
+	public List<PlanPlacePhotoDto> getPhotos(int plan_place_id);
 
 	
 

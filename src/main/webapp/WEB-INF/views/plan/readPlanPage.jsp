@@ -10,7 +10,7 @@ pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@100;300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@300;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=db6c20ca60db131bdca5b89e7568dc3f&libraries=services"></script>
 <title>플래너 상세보기 페이지</title>
 <script type="text/javascript">
@@ -32,8 +32,8 @@ pageEncoding="UTF-8"%>
         // 지도 api
         var container = document.getElementById('map');
         var options = {
-        center: new kakao.maps.LatLng(35.5665, 126.9780),
-        level: 13
+        center: new kakao.maps.LatLng(37.5100, 127.0980),
+        level: 6
         };
 
         map = new kakao.maps.Map(container, options);
@@ -226,8 +226,18 @@ pageEncoding="UTF-8"%>
         polyline.setMap(map);
     }
 
+    
+    // 마커 이미지의 이미지 주소입니다
+    var imageSrc = "http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(24, 35); 
+
+    // 마커 이미지를 생성합니다    
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+    
     // 일정별 루트 명소들 이름
-   function createMarker(i, coords) {
+   	function createMarker(i, coords) {
        var marker = new kakao.maps.Marker({
            map: map,
            position: coords
@@ -662,7 +672,11 @@ pageEncoding="UTF-8"%>
     });
 
 </script>
-
+<style type="text/css">
+	body {
+	font-family: 'Noto Sans KR', sans-serif;	
+	}	
+</style>
 </head>
 
 <body>
@@ -683,11 +697,11 @@ pageEncoding="UTF-8"%>
                           <div class="row align-items-center justify-content-center">
                           
                               <div class="col-6 align-items-center justify-content-center">
-                                  <span class="" style="font-weight: 700; font-size: 20px;">${data.planDto.plan_title}</span>
+                                  <span class="" style="font-weight: 700; font-size: 17px;">${data.planDto.plan_title}</span>
                               </div>
                         
 						<c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">                                                    
-							<div class="col-3">                                                                            
+							<div class="col-3 pe-0">                                                                            
 								<div class="dropdown ">
 									<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: bolder; background-color: #faf7f0;">
 										<i class="bi bi-gear"></i> 관리
@@ -699,7 +713,7 @@ pageEncoding="UTF-8"%>
 									</ul>
 								</div>                                    
 							</div>
-							<div class="col-3">
+							<div class="col-3 ps-0">
 								<div class="dropdown">
 									<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: bolder; background-color: #faf7f0;">
 										<i class="bi bi-people"></i> 모집
@@ -829,61 +843,187 @@ pageEncoding="UTF-8"%>
 						</div>
             		</div>
             		
+			    	<div class="row mt-3">
+			    		<div class="col" style="font-weight: bolder;">
+			    			<i class="bi bi-person-lines-fill"></i> 크루원 목록
+			    		</div>
+			    	</div>					    	
+			    	
+					<div class="row mt-1">
+          
+						<div class="col-9">
+							<div class="input-group border" style="border-radius: 7px;">
+								<span class="input-group-text pe-0" id="basic-addon1" style="background-color: white; border: 0;">
+									<i class="bi bi-search"></i>
+								</span>
+								<input type="text" class="form-control" placeholder="Search crew members" aria-label="Search" aria-describedby="basic-addon1" onchange="planSearch()" id="plan_search_text_box" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search crew members'" style="border: 0;">
+							</div>
+						</div>								          				          				          				         
+				          
+					</div>
+			    	
             		<div class="row mt-2" style="overflow-y: auto; max-height: 300px;">
 					    <div class="col" style="font-weight: bolder;">
-					    	<div class="row">
-					    		<div class="col">
-					    			<i class="bi bi-person-lines-fill"></i> 크루원 목록
-					    		</div>
-					    	</div>					    	
 					        <div class="row">
 					    		<div class="col">
 							    	<div class="row align-items-center">
-							    		<div class="col-3 ">
-							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
 							    		</div>
-							    		<div class="col-1">
-							    			<input type="checkbox" class="">
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
 							    		</div>					    		
 							    	</div>
 									<div class="row align-items-center">
-							    		<div class="col-3 ">
-							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
 							    		</div>
-							    		<div class="col-1">
-							    			<input type="checkbox" class="">
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
 							    		</div>					    		
 							    	</div>
 							    	<div class="row align-items-center">
-							    		<div class="col-3 ">
-							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
 							    		</div>
-							    		<div class="col-1">
-							    			<input type="checkbox" class="">
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
 							    		</div>					    		
 							    	</div>
 							    	<div class="row align-items-center">
-							    		<div class="col-3 ">
-							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
 							    		</div>
-							    		<div class="col-1">
-							    			<input type="checkbox" class="">
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
 							    		</div>					    		
 							    	</div>
 							    	<div class="row align-items-center">
-							    		<div class="col-3 ">
-							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
 							    		</div>
-							    		<div class="col-1">
-							    			<input type="checkbox" class="">
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
 							    		</div>					    		
 							    	</div>
 							    	<div class="row align-items-center">
-							    		<div class="col-3 ">
-							    			<img src="/travel/resources/img/icon.png" style="width: 2rem;"> <span style="font-weight: bolder;">기훈2 &nbsp;</span>						    				
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
 							    		</div>
-							    		<div class="col-1">
-							    			<input type="checkbox" class="">
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
+							    		</div>
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
+							    		</div>
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
 							    		</div>					    		
 							    	</div>
 							    								    						        					        
@@ -894,7 +1034,7 @@ pageEncoding="UTF-8"%>
 					</div>
 					           	
             	</div>
-	            <div class="row mt-1">	       
+	            <div class="row mt-4">	       
 	            	<div class="col-2">&nbsp;</div>         
 	                <div class="col d-grid">
 	                    <a href="../myPage" class="btn" style="background-color: #03c75a; color: white; font-weight: bolder;">클랜 모집</a>

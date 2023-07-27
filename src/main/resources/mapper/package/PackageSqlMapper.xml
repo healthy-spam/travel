@@ -345,6 +345,10 @@ resultType="int">
 		WHERE guide_planning_comment_id = #{guide_planning_comment_id}
 	</select>
 	
+	<select id="getPhotos" resultType="com.ja.travel.dto.PlanPlacePhotoDto">
+		SELECT * FROM plan_place_photo WHERE plan_place_id=#{plan_place_id}
+	</select>
+	
 
 
 	

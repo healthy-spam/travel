@@ -16,8 +16,7 @@
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <title>플랜 참가 신청 페이지</title>
-<script type="text/javascript"
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=99e2d84aee0718d5faa9b9e1821fca6b&libraries=services,clusterer,drawing"></script>
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=db6c20ca60db131bdca5b89e7568dc3f&libraries=services,clusterer,drawing"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 
@@ -26,24 +25,16 @@ var marker1;
 var infowindow1;
 var coords1;
 var map2;
-var marker2;
-var infowindow2;
-var coords2;
+var markers = [];
+let overlays = [];
+let polyline = null;
+
 var startPoint = '${map.guidePlanningDto.guide_planning_start_point}'; // 최초 모집장소
 var user_id = '${sessionuser.user_id}';
 var couponDiscountValue = 0;
-var linePath = [];
-var linePath2 = [
-    new kakao.maps.LatLng(33.452344169439975, 126.56878163224233),
-    new kakao.maps.LatLng(33.452739313807456, 126.5709308145358),
-    new kakao.maps.LatLng(33.45178067090639, 126.5726886938753) 
-];
 
 
-
-let placeThumbnail2;
-let placeThumbnail3;
-
+const planId = '${map.planDto.plan_id}';
 
 
 const guidePlanningId = new URLSearchParams(location.search).get("guide_planning_id");
@@ -136,7 +127,7 @@ function initMap1() {
 function initMap2() {
 	var container = document.getElementById('map2');
 	var options = {
-		center: new kakao.maps.LatLng(36.3415, 127.3894),
+		center: new kakao.maps.LatLng(35.5665, 126.9780),
 		level: 13
 	};
 
@@ -144,12 +135,196 @@ function initMap2() {
 	
 }
 
-function showPlace(item) {
-	  // 전달받은 element 내에서 .placeName 클래스를 가진 요소를 찾습니다.
-	  var placeAddressElement = item.querySelector('.address');
-	  var address = placeAddressElement.value;
-	  search2(address);
-	}
+function loadDay() {
+    const xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+       if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+             const response = JSON.parse(xhr.responseText); 
+
+             const dayList = document.getElementById("templete_day"); // dayList 변수 선언
+             let firstDayId;
+
+             for(let i = 0; i < response.data.length; i++){
+                const dayDto = response.data[i];
+
+                if (i === 0) { // 첫번째 반복일 때 firstDayId에 저장
+                    firstDayId = dayDto.plan_day_id;
+                }
+           
+                const newNode = document.createElement('li'); // 새로운 'li' 요소 생성
+                newNode.innerHTML = '<a class="dropdown-item day-text text-center" style="font-weight: bolder;">' + '<i class="bi bi-send"></i>' +' Day' + dayDto.plan_day + '</a>'; // 'li' 요소에 'a' 태그와 텍스트 삽입
+                newNode.querySelector(".dropdown-item").setAttribute("onclick", "loadMyList(" + dayDto.plan_day_id + "," + dayDto.plan_day + ")");
+                dayList.appendChild(newNode);
+             }
+
+             // 첫번째 day에 대한 명소 목록을 로드합니다.
+             if (firstDayId !== undefined) {
+                loadMyList(firstDayId, 1); // 1 넣을까 말까
+             }
+          }
+       }
+    }
+
+    xhr.open("get", "../plan/getPlanDayList2?planId=" + planId);
+    xhr.send();
+}
+
+function loadMyList(plan_day_id, plan_day){
+    const xhr = new XMLHttpRequest();
+    
+    myDayPlaceList = [];
+    myDayPlaceNames = [];
+    myDayPlacePhoto = [];
+    // 모든 마커 제거
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = []; // 마커 배열 초기화
+    
+    // 모든 오버레이 제거
+    for (let i = 0; i < overlays.length; i++) {
+        overlays[i].setMap(null);
+    }
+    overlays = []; // 오버레이 배열 초기화
+    
+    // 이전 폴리라인 제거
+    if (polyline !== null) {
+        polyline.setMap(null);
+    }
+
+    // 새로운 폴리라인 초기화
+    polyline = new kakao.maps.Polyline({
+        path: [],
+        strokeWeight: 3,
+        strokeColor: '#03c75a',
+        strokeOpacity: 1,
+        strokeStyle: 'solid'
+    });        
+    
+    while (myDayPlaceList.length > 0) {
+        myDayPlaceList.pop();
+    }
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+
+                const route_col = document.getElementById("route_col");
+                const templateNode = document.getElementById("templete_my_place").cloneNode(true);
+
+                // "templete_my_place" 뒤에 오는 모든 노드를 제거합니다.
+                while(route_col.lastChild && route_col.lastChild.id !== "templete_my_place"){
+                    route_col.removeChild(route_col.lastChild);
+                }
+
+                // 일정별 명소 목록이 없으면
+                if(response.myList != null)  {
+                    let placeCounter = 0; // Counter 변수를 추가합니다.
+
+                    for(x of response.myList){
+                        for(y of x.listInner){
+                            const newElementInner = templateNode.cloneNode(true);
+
+                            // placeName, plan_place_photo, plan_place_content, and plan_place_address from the response
+                            newElementInner.querySelector(".placeName").innerText = y.planPlaceDto.plan_place_name;
+                            newElementInner.querySelector(".placeImage").src = "/uploadFiles/mainImage/"+y.planPlaceDto.plan_place_photo;
+                            newElementInner.querySelector(".placeContent").innerText = y.planPlaceDto.plan_place_content;
+                            newElementInner.querySelector(".placeAddress").innerText = y.planPlaceDto.plan_place_address;
+                            newElementInner.querySelector(".place_number").innerText = ++placeCounter; // Counter를 증가시키고 place_number에 할당합니다.
+                    		
+                            const dayChangeButton = document.getElementById("dayChange");
+                            dayChangeButton.innerHTML = `<i class="bi bi-calendar-check"></i> Day ` +plan_day;
+                            
+                            newElementInner.querySelector(".placeName").style.fontSize = "20px";
+                            newElementInner.removeAttribute("id");
+                            newElementInner.classList.remove("d-none");
+                            newElementInner.querySelector(".readPlace").href = "../planPlace/PlanPlaceDetailPage?plan_place_id=" + y.planPlaceDto.plan_place_id;                                
+                            
+
+                            route_col.appendChild(newElementInner);
+                            
+                            myDayPlaceList.push(y.planPlaceDto.plan_place_address);
+                            myDayPlaceNames.push(y.planPlaceDto.plan_place_name);
+                            myDayPlacePhoto.push(y.planPlaceDto.plan_place_photo);
+                            console.log(myDayPlacePhoto);
+                            
+                            if (myDayPlaceList.length >= 2) {
+                                drawPin(myDayPlaceList[myDayPlaceList.length - 2], myDayPlaceList[myDayPlaceList.length - 1], polyline);  // polyline 객체를 인수로 전달
+                            }
+                        }                  
+                    }  
+                }  
+             
+            }
+        }
+    }
+
+    xhr.open("get", "../plan/getMyList?dayId=" + plan_day_id);
+    xhr.send();
+}
+
+
+//일정별 마커와 루트
+async function drawPin() {
+    var geocoder = new kakao.maps.services.Geocoder();
+    let coords = [];
+
+    // Wrap the address search in a new Promise
+    const searchAddress = (address) => new Promise((resolve, reject) => {
+        geocoder.addressSearch(address, function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                resolve(new kakao.maps.LatLng(result[0].y, result[0].x));
+            } else {
+                reject(status);
+            }
+        });
+    });
+
+    // Use a for loop to await the address search for each address
+    for (let i = 0; i < myDayPlaceList.length; i++) {
+        coords[i] = await searchAddress(myDayPlaceList[i]);
+    }
+
+    // Separate loop for marker creation and event listener
+    for (let i = 0; i < coords.length; i++) {
+        createMarker(i, coords[i]);
+    }
+
+    polyline.setPath(coords);
+    polyline.setMap(map2);
+}
+
+// 일정별 루트 명소들 이름
+function createMarker(i, coords) {
+   var marker = new kakao.maps.Marker({
+       map: map2,
+       position: coords
+   });
+
+   var content = 
+      '<div style="padding:5px; font-size: 11px; font-weight: bolder; background-color: white; width: 145px; border-radius: 10px; position: relative; margin-bottom: 1px; margin-left: 61px;">' 
+          +'<div style="display: flex; align-items: center;">'
+              +'<img style="width: 30px; height: 30px; border-radius: 50%;" src="/uploadFiles/mainImage/'+ myDayPlacePhoto[i] +'">'
+              +'<span style="font-size: 11px; margin-left: 10px;">'+ myDayPlaceNames[i] +'</span>' 
+          +'</div>'
+          +'<div style="position: absolute; bottom: -10px; left: 30px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>'
+      +'</div>';
+
+
+   // Create a custom overlay
+   let overlay = new kakao.maps.CustomOverlay({
+       content: content,
+       map: map2,
+       position: marker.getPosition(),
+       yAnchor: 1.2
+   });      
+
+   markers.push(marker);
+   overlays.push(overlay);
+}
 	
 
 
@@ -203,14 +378,6 @@ function search(keyword) {
 		if (status === kakao.maps.services.Status.OK) {
 			coords1 = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-			/* if (marker1) {
-				marker1.setPosition(coords1);
-			} else {
-				marker1 = new kakao.maps.Marker({
-					map: map1,
-					position: coords1
-				});
-			} */
 
 			 var content = '<div style="background-color: white; border-radius: 15px; padding: 5px; width: 100%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); position: relative; font-weight: 700;">'
 				+ '<span style="background-color: #03c75a; border-radius: 50%; width: 30px; height: 30px; padding: 5px; display: inline-flex; align-items: center; justify-content: center;"><i class="bi bi-geo-alt-fill" style="font-size: 20px; color: white;"></i></span>'
@@ -240,144 +407,6 @@ function search(keyword) {
 
 
 
-
-function getAddresList() {
-	var plan_id = '${map.planDto.plan_id}';
-	
-	var placeAddressList = [];
-	const xhr = new XMLHttpRequest();
-
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == 4 && xhr.status == 200) {
-			const response = JSON.parse(xhr.responseText);
-			// js 작업//
-
-			if (response.list != null) {
-				
-			
-
-				for ( var i in response.list) {
-					placeAddressList.push(response.list[i].placeDto);
-				}
-				addMarkers(placeAddressList);
-			}
-		}
-	}
-
-	//post
-	xhr.open("post", "./getAddresList");
-	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhr.send("plan_id=" + plan_id);
-
-}
-
-function addMarkers(placeDtoList) {
-
-	var geocoder = new kakao.maps.services.Geocoder();
-	var bounds = new kakao.maps.LatLngBounds();
-
-	// Promise로 각 주소를 좌표로 변환하는 비동기 작업을 관리합니다.
-	var promises = placeDtoList
-			.map(function(placeDto, index) {
-				return new Promise(
-						function(resolve) {
-							geocoder
-									.addressSearch(
-											placeDto.plan_place_address,
-											function(result, status) {
-												if (status === kakao.maps.services.Status.OK) {
-													var coords = new kakao.maps.LatLng(
-															result[0].y,
-															result[0].x);
-
-													var content = '<div style="background-color: white; border-radius: 15px; padding: 5px; width: 100%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); position: relative; font-weight: 700;">'
-															+ '<span style="background-color: #03c75a; border-radius: 50%; width: 30px; height: 30px; padding: 5px; display: inline-flex; align-items: center; justify-content: center;"><i class="bi bi-geo-alt-fill" style="font-size: 20px; color: white;"></i></span>'
-															+ ' '
-															+ placeDto.plan_place_name
-															+ '<div style="position: absolute; bottom: -8px; left: 10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>'
-															+ '</div>';
-
-													// CustomOverlay를 생성합니다.
-													var mainOverlay = new kakao.maps.CustomOverlay(
-															{
-																position : coords,
-																content : content,
-																yAnchor : 0.7,
-																xAnchor : 0.1
-															});
-
-													// CustomOverlay를 지도에 표시합니다.
-													mainOverlay.setMap(map2);
-
-													bounds.extend(coords);
-
-													resolve();
-												} else {
-													resolve();
-												}
-											});
-						});
-			});
-
-	// 모든 주소가 좌표로 변환되면 지도의 범위를 업데이트합니다.
-	Promise.all(promises).then(function() {
-		map2.setBounds(bounds);
-	});
-}
-
-
-function mapLine(keyword){
-	var geocoder = new kakao.maps.services.Geocoder();
-	
-	geocoder.addressSearch(keyword, function(result, status) {
-		if (status === kakao.maps.services.Status.OK) {
-			
-			linePath.push(new kakao.maps.LatLng(result[0].y, result[0].x))
-			/* const spots = new kakao.maps.LatLng(result[0].y, result[0].x);
-			
-			console.log(spots);
-			
-			linePath.push(spots); */
-			
-			
-			
-		}
-	});
-	
-}
-
-function Line(){
-	
-	var polyline = new kakao.maps.Polyline({
-	    path: linePath2, // 선을 구성하는 좌표배열 입니다
-	    strokeWeight: 5, // 선의 두께 입니다
-	    strokeColor: '#FFAE00', // 선의 색깔입니다
-	    strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-	    strokeStyle: 'solid' // 선의 스타일입니다
-	});
-	
-
-
-	polyline.setMap(map2);
-	
-	
-}
-
-
-function search2(keyword) {
-	var geocoder = new kakao.maps.services.Geocoder();
-
-	geocoder.addressSearch(keyword, function(result, status) {
-		if (status === kakao.maps.services.Status.OK) {
-			coords2 = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-		
-
-			map2.setCenter(coords2);
-			map2.setLevel(3);
-		}
-	});
-}
 
 
 function planprice(){
@@ -422,239 +451,10 @@ function planningDay() {
 		}
 
 
-	 function info() {
-	    const planDetail = document.getElementById("planDetail");
-	    const xhr = new XMLHttpRequest();
-
-	    xhr.onreadystatechange = function () {
-	        if (xhr.readyState === 4 && xhr.status === 200) {
-	            const response = JSON.parse(xhr.responseText);
-
-	            if (response.list != null) {
-
-	                for (data of response.list) {
-	                    // 카드 제목 생성
-	                    const aaa = document.createElement("div");
-	                    aaa.classList.add("card");
-
-	                    const cardHeader = document.createElement("div");
-	                    cardHeader.classList.add("card-header");
-
-	                    const cardTitle = document.createElement("h5");
-	                    cardTitle.classList.add("card-title");
-	                    cardTitle.innerText = 'DAY' + data.planDay.plan_day;
-	                    cardTitle.style.fontSize = "25px";
-	                    cardTitle.style.fontWeight = "bold";
-	                    
-
-	                    const cardText = document.createElement("p");
-	                    cardText.classList.add("card-text");
-	                    cardText.innerText = calculateDate(response.guidePlanningDto.guide_planning_start_date,
-	                        data.planDay.plan_day);
-
-	                    cardHeader.appendChild(cardTitle);
-	                    cardHeader.appendChild(cardText);
-	                    aaa.appendChild(cardHeader);
-
-	                    // 카드 바디 생성
-	                    const cardBody = document.createElement("div");
-	                    cardBody.classList.add("card-body");
-	                    
-	                    const row1 = document.createElement("div");
-                        row1.classList.add("row");
-                        cardBody.appendChild(row1);
-                        
-                        const col1 = document.createElement("div");
-                        col1.classList.add("col");
-                        row1.appendChild(col1);
-                        
-                        let placePhoto;
-
-	                    for (place of data.placeList) {
-	                        const row2 = document.createElement("div");
-	                        row2.classList.add("row");
-	                        row2.classList.add("mt-3");
-	                        col1.appendChild(row2);
-	                        
-	                        const col2 = document.createElement("div");
-	                        col2.classList.add("col");
-	                        row2.appendChild(col2);
-
-	                        // 카드 바디 내용 구성
-	                        const placeNameElement = document.createElement("div");
-	                        placeNameElement.classList.add("place_name");
-	                        placeNameElement.addEventListener("click", function() {
-	                            showPlace(this);
-	                        });
-
-	                        const placeIndex = data.placeList.indexOf(place) + 1;
-	                        const iconClass = 'bi-' + placeIndex + '-circle-fill';
-	                       
-
-	                        const iconElement = document.createElement("span");
-	                        iconElement.classList.add(iconClass);
-
-	                        const spaceTextNode = document.createTextNode(" ");
-	                        const content =  document.createElement("span");
-	                        content.innerText = place.planPlace.plan_place_name;
-	                        const city = document.createElement("span");
-	                        city.innerText =  ' (' + place.planCityName+ ')';
-	                        city.style.fontSize = "15px";
-	                        city.style.fontWeight = "bold";
-	                        city.style.color = "gray";
-
-	                        const address = document.createElement("input");
-	                        address.classList.add("address");
-	                        address.setAttribute("type", "hidden");
-	                        address.value = place.planPlace.plan_place_address;
-	                        mapLine(place.planPlace.plan_place_address);
-	                     
-	                        
-	                        content.style.fontSize = "20px";
-	                        content.style.fontWeight = "bold";
-	                        content.style.marginRight = "5px";
-	                        content.style.cursor = "pointer";
-	                        
-	                        iconElement.style.fontSize = "20px";
-	                        iconElement.style.marginRight = "5px";
-							
-	                        
-	                        placeNameElement.appendChild(iconElement);
-	                        placeNameElement.appendChild(spaceTextNode);
-	                        placeNameElement.appendChild(content);
-	                        placeNameElement.appendChild(city);
-	                        placeNameElement.appendChild(address);
-
-	                        col2.appendChild(placeNameElement);
-	                        
-	                        const row3 = document.createElement("div");
-	                        row3.classList.add("row");
-	                        row3.classList.add("mt-3");
-	                        col1.appendChild(row3);
-	                        
-	                        const col3 = document.createElement("div");
-	                        col3.classList.add("col-3");
-	                        col3.classList.add("text-center");
-	                        col3.classList.add("px-auto");
-	                        col3.classList.add("mx-auto");
-	                        row3.appendChild(col3);
-	                        
-	                        const col4 = document.createElement("div");
-	                        col4.classList.add("col");
-	                        row3.appendChild(col4);
-	                        
-	                        
-	                       
-	                        
-	                        const placeThumbnail = document.createElement("img");
-	                        placeThumbnail.classList.add("place_thumbnail");
-	                        placeThumbnail.src = "/uploadFiles/mainImage/" + place.planPlace.plan_place_photo;
-	                        placeThumbnail.style.width = "90px";
-	                        placeThumbnail.style.height = "90px";
-	                        placeThumbnail.style.borderRadius = "50%";
-	                        
-	                        placePhoto = place.planPlace.plan_place_photo;
-
-	                        // placePhoto 값을 활용하여 이미지 경로를 설정하고, placeThumbnail2와 placeThumbnail3 값을 할당합니다.
-	                        if (placeThumbnail2 === undefined) {
-	                            placeThumbnail2 = placePhoto;
-	                        } else if (placeThumbnail3 === undefined) {
-	                            placeThumbnail3 = placePhoto;
-	                        }
-	                        
-	                        
-	                       
-	                        
-	                        
-	                        
-
-	                        const placeContent = document.createElement("p");
-	                        placeContent.classList.add("place_content");
-	                        placeContent.innerText = place.planPlace.plan_place_content;
-	                        
-		                     
-		                    col3.appendChild(placeThumbnail);
-		                    col4.appendChild(placeContent);
-		                                     
-
-	                       
-	                    }
-	         
-	                   aaa.appendChild(cardBody);
-
-	                    // 최종적으로 planDetail에 추가
-	                    planDetail.appendChild(aaa);
-	                    showCard(0);
-	                    
-	                    
-	                    
-	                }
-	                
-	                placeThumbnail();
-	                
-
-	            }
-	        }
-	    };
-
-	    xhr.open("POST", "./guideApplicationDetailInfo");
-	    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	    xhr.send("guide_planning_id=" + guidePlanningId);
-	} 
 	 
 	 
-	 function placeThumbnail(){
-		 
-		 console.log(placeThumbnail2);
-		 console.log(placeThumbnail3);
-		 
-		 const aaa = document.querySelector(".aaa");
-		 const bbb = document.querySelector(".bbb");
-		 
-		 const placeThumbnails1 = document.createElement("img");
-		 placeThumbnails1.classList.add("packageThumbnail2");
-         placeThumbnails1.src = "/uploadFiles/mainImage/" + placeThumbnail2;
-        
-         
-         const placeThumbnails2 = document.createElement("img");
-         placeThumbnails2.classList.add("packageThumbnail3");
-         placeThumbnails2.src = "/uploadFiles/mainImage/" + placeThumbnail3;
-        
-		 aaa.appendChild(placeThumbnails1);
-		
-		 bbb.appendChild(placeThumbnails2);
-	 }
 	 
-	 let currentCardIndex = 0;
-
-	 function showCard(index) {
-		  const cards = document.getElementsByClassName("card");
-		  if (index < 0) {
-		    index = 0;
-		  } else if (index >= cards.length) {
-		    index = cards.length - 1;
-		  }
-
-		  currentCardIndex = index;
-
-		  // 모든 카드를 숨기고, 현재 인덱스의 카드만 보여줍니다.
-		  for (let i = 0; i < cards.length; i++) {
-		    if (i === currentCardIndex) {
-		      cards[i].style.display = "block";
-		    } else {
-		      cards[i].style.display = "none";
-		    }
-		  }
-		}
-
-
-	 function showPreviousCard() {
-	   showCard(currentCardIndex - 1);
-	 }
-
-	 function showNextCard() {
-	   showCard(currentCardIndex + 1);
-	 }
+	
 	 
 	
 	 
@@ -840,6 +640,95 @@ function planningDay() {
 		return yyyy + '/' + MM + '/' + dd + ' ' + hh + ':' + mm;
 	}
  
+ function guideProfile(){
+	 
+	 const xhr = new XMLHttpRequest();
+		
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4 && xhr.status == 200){
+				const response = JSON.parse(xhr.responseText);
+				
+				if(response != null){
+					
+					console.log(response.guide.user_image);
+					const guideProfile = document.querySelector(".guide_profile")
+					
+					const img = document.createElement('img');
+				    img.classList.add('guide_thumbnail');
+				    img.alt = "썸네일";
+				    img.src = '/uploadFiles/profileImage/'+ response.guide.user_image;
+				    img.setAttribute('data-bs-toggle', 'dropdown');
+					
+				    if (response.guide.user_id != '${sessionuser.user_id}') {
+				    	const dropdownMenu = document.createElement('div');
+					    dropdownMenu.classList.add('dropdown-menu');
+
+					    // 드랍다운 메뉴 엘리먼트 추가
+					    const dropdownItem1 = document.createElement('a');
+					    dropdownItem1.classList.add('dropdown-item');
+					    dropdownItem1.innerText = '신고하기';
+					    
+					    const dropdownItem2 = document.createElement('a');
+					    dropdownItem2.classList.add('dropdown-item');
+					    dropdownItem2.innerText = '쪽지보내기';
+					    
+					    dropdownMenu.appendChild(dropdownItem2);
+					    dropdownMenu.appendChild(dropdownItem1);
+					    
+					    dropdownItem1.addEventListener('click', function(e) {
+					        e.preventDefault();
+
+					        // 클로저에 현재 사용자 객체를 저장
+					        var currentUser = response.guide;
+
+					        var myModalEl = document.getElementById('reportModal');
+					        var myModal = new bootstrap.Modal(myModalEl, {});
+
+					        // 모달이 보여질 때 currentUser 객체를 사용
+					        myModalEl.addEventListener('shown.bs.modal', function () {
+					            // 히든 인풋 필드의 값을 currentUser.user_id로 설정
+					            document.getElementById('reportedUserId').value = currentUser.user_id;
+					        });
+
+					        myModal.show();
+					    });
+					    
+					    dropdownItem2.addEventListener('click', function(e) {
+					        e.preventDefault();
+
+					        // 클로저에 현재 사용자 객체를 저장
+					        var currentUser = response.list.guide;
+
+					        var myModalEl = document.getElementById('noteModal');
+					        var myModal = new bootstrap.Modal(myModalEl, {});
+
+					        // 모달이 보여질 때 currentUser 객체를 사용
+					        myModalEl.addEventListener('shown.bs.modal', function () {
+					            // 히든 인풋 필드의 값을 currentUser.user_id로 설정
+					            document.getElementById('notedUserNickname').value = currentUser.user_nickname;
+					        });
+
+					        myModal.show();
+					    });
+					    
+					    guideProfile.style.cursor = 'pointer';
+					    guideProfile.appendChild(dropdownMenu);
+				    }
+				    guideProfile.appendChild(img);
+				}
+			}
+		}
+		
+		
+		
+		//post
+		xhr.open("post", "./getGuideProfile");
+		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded"); 
+		xhr.send("guide_planning_id="+guidePlanningId);
+	 
+	 
+ } 
+ 
  function getCommentList() {
 
 		const xhr = new XMLHttpRequest();
@@ -881,7 +770,66 @@ function planningDay() {
 					    img.classList.add('user-thumbnail');
 					    img.alt = "썸네일";
 					    img.src = '/uploadFiles/profileImage/'+response.list[i].user.user_image;
+					    img.setAttribute('data-bs-toggle', 'dropdown');
+					    
+					    if (response.list[i].user.user_id != '${sessionuser.user_id}') {
+					    	const dropdownMenu = document.createElement('div');
+						    dropdownMenu.classList.add('dropdown-menu');
+
+						    // 드랍다운 메뉴 엘리먼트 추가
+						    const dropdownItem1 = document.createElement('a');
+						    dropdownItem1.classList.add('dropdown-item');
+						    dropdownItem1.innerText = '신고하기';
+						    
+						    const dropdownItem2 = document.createElement('a');
+						    dropdownItem2.classList.add('dropdown-item');
+						    dropdownItem2.innerText = '쪽지보내기';
+						    
+						    dropdownMenu.appendChild(dropdownItem2);
+						    dropdownMenu.appendChild(dropdownItem1);
+						    
+						    dropdownItem1.addEventListener('click', function(e) {
+						        e.preventDefault();
+
+						        // 클로저에 현재 사용자 객체를 저장
+						        var currentUser = response.list[i].user;
+
+						        var myModalEl = document.getElementById('reportModal');
+						        var myModal = new bootstrap.Modal(myModalEl, {});
+
+						        // 모달이 보여질 때 currentUser 객체를 사용
+						        myModalEl.addEventListener('shown.bs.modal', function () {
+						            // 히든 인풋 필드의 값을 currentUser.user_id로 설정
+						            document.getElementById('reportedUserId').value = currentUser.user_id;
+						        });
+
+						        myModal.show();
+						    });
+						    
+						    dropdownItem2.addEventListener('click', function(e) {
+						        e.preventDefault();
+
+						        // 클로저에 현재 사용자 객체를 저장
+						        var currentUser = response.list[i].user;
+
+						        var myModalEl = document.getElementById('noteModal');
+						        var myModal = new bootstrap.Modal(myModalEl, {});
+
+						        // 모달이 보여질 때 currentUser 객체를 사용
+						        myModalEl.addEventListener('shown.bs.modal', function () {
+						            // 히든 인풋 필드의 값을 currentUser.user_id로 설정
+						            document.getElementById('notedUserNickname').value = currentUser.user_nickname;
+						        });
+
+						        myModal.show();
+						    });
+						    
+						    col1Div.style.cursor = 'pointer';
+						    col1Div.appendChild(dropdownMenu);
+					    }
+					    
 					    col1Div.appendChild(img);
+					    
 					    
 					    // Col div
 					    const colDiv = document.createElement('div');
@@ -939,6 +887,9 @@ function planningDay() {
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhr.send("guide_planning_id="+guidePlanningId);
 	}
+ 
+ 
+ 
 	
 	function addLike(guide_comment_id) {
 	
@@ -974,16 +925,17 @@ function planningDay() {
  
 	
 document.addEventListener("DOMContentLoaded", function() {
+	 guideProfile(); 
 		planningDay();
-		info();
 		showStart()
 		planprice();
+		loadDay(); 
 		initMap1();
 		initMap2();
 		showCoupon();
 		getCommentList();
-		getAddresList();
-		 Line();
+		
+	
 
 	});
  
@@ -991,21 +943,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </script>
 <style>
-
-
-#planDetail{
-	
-	
-}
-
-.card-body {
-    overflow-y: scroll; /* 크롬, 사파리, 오페라, 엣지 */
-    height : 500px;
-}
-
-.card-body::-webkit-scrollbar {
-    display: none; /* 크롬, 사파리, 오페라, 엣지 */
-}
 
 
  .user-thumbnail {
@@ -1114,9 +1051,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
 }
 
-.place_name:hover{
-	cursor: pointer;
-}
+
 
 .comment-wrapper {
 	position: relative;
@@ -1158,6 +1093,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	font-size: 0.9em;
 }
 
+.guide_thumbnail{
+
+width : 100px; height:100px; border-radius:50px;
+
+}
+
 </style>
 
 </head>
@@ -1194,14 +1135,16 @@ document.addEventListener("DOMContentLoaded", function() {
 					<div class="col-4">
 						<div class="row mb-4">
 							<div class="col aaa">
-
+								<img src="/uploadFiles/${map.placePhoto1 }"
+							class="packageThumbnail2">
 
 							</div>
 
 						</div>
 						<div class="row">
 							<div class="col bbb">
-
+								<img src="/uploadFiles/${map.placePhoto2}"
+							class="packageThumbnail3">
 							</div>
 						</div>
 
@@ -1264,12 +1207,12 @@ document.addEventListener("DOMContentLoaded", function() {
 					</div>
 				</div>
 				<div class="row mt-5">
-					<div class="col">
-						<img src="/uploadFiles/profileImage/${map.user.user_image}" style="width : 100px; height:100px; border-radius:50px;">
+					<div class="col guide_profile">
+						
 					</div>
 				</div>
 				<div class="row mt-5">
-					<div class="col" style="color : gray;">
+					<div class="col " style="color : gray;">
 						${map.guide.guide_profile }
 					</div>
 				</div>
@@ -1352,34 +1295,69 @@ document.addEventListener("DOMContentLoaded", function() {
 								<div class="col-1"></div>
 							</div>
 							<div class="row mt-3" >
-								<div class="col-1"></div>
+								
 								<div class="col">
 									<div class="map1 shadow" id="map1" style="width: 100%; height: 300px;">
 									</div>		
 								</div>				
-								<div class="col-1"></div>
+								
 								
 							</div>
 						<div class="row mt-5"  >
-							<div class="col-1 d-flex align-items-center ">
-								<i class="bi bi-caret-left" style="cursor: pointer; font-size: 20px; color:#03c75a; " onclick="showPreviousCard()"></i>
-
-							</div>
-							<div class="col" id="planDetail"  >
-							</div>
-							<div class="col-1 d-flex align-items-center">
-								<i class="bi bi-caret-right" style="cursor: pointer; font-size: 20px; color:#03c75a; " onclick="showNextCard()"></i>
-								
-							
-							</div>
+							 <div class="col">
+				               <div class="dropdown-center d-grid" >
+				                  <button class="btn dropdown-toggle shadow-sm" id="dayChange" style="font-weight: bolder;  border-radius: 12px; font-size: 20px; background-color: #faf7f0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+				                     <i class="bi bi-calendar-check"></i> 일정별 루트 목록                   
+				                  </button>
+				                  <ul class="dropdown-menu align-items-center" id="templete_day" style="font-size: 20px;">
+				                     <!-- <li><a class="dropdown-item day-text" href="#"><i class="bi bi-send"></i> Day 1</a></li> -->                                          
+				                  </ul>
+				               </div>
+				            </div>
 						</div>
+						<div class="row mt-3">
+				             <div class="col" id="route_col">
+								<div class="row mt-2 align-items-center border p-1 m-1 d-none" id="templete_my_place">
+								   <div class="col-1 text-center">
+								                      <span class="place_number" style="font-weight: bolder; font-size: 20px; color: #252525;"></span>
+								     </div>
+								     <div class="col-4 text-center ps-0">
+								         <img class="placeImage" alt="" src="" style="width: 140px; height: 90px; border-radius: 10px;">
+								     </div>
+								     <div class="col-7 p-0">
+								         <div class="row">
+								             <div class="col">
+								                 <span class="placeName" style="font-weight: bolder; font-size: 12px; color: #252525;"></span>                            
+								             </div>                                                                                
+								         </div>
+								         <div class="row mt-1">
+								             <div class="col">
+								                 <span class="placeContent" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 14px;"></span>
+								             </div>
+								         </div>
+								         <div class="row">
+								             <div class="col">
+								                 <span class="placeAddress" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;"></span>
+								             </div>
+								         </div>
+								         <div class="row mt-1">
+								            <div class="col">
+								               <a class="readPlace" href="" style="text-decoration: none;">
+								               <span class="" style="color: #ffa800; font-size: 15px; font-weight: bolder;">상세보기</span>
+								               </a>
+								            </div>
+								         </div>
+								     </div>                      
+								 </div>  
+				 			</div>
+ 						</div>
 					</div>
 					<div class="col-1">
 					</div>
 					<div class="col-5">
 						<div class= "row mt-5">
 							<div class="col">
-								<div class="map2 shadow" id="map2" style="width: 100%; height: 900px;">
+								<div class="map2 shadow" id="map2" style="width: 100%; height: 800px;">
 								</div>	
 							</div>
 						</div>			
@@ -1412,15 +1390,104 @@ document.addEventListener("DOMContentLoaded", function() {
 			</div>
 			<div class="col-2"></div>
 		</div>
+		
+	</div>
+<div class="container">
 		<div class="row">
 			<div class="col">
-			       
-			       -footer-                              
-			       
+				<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+					<div class="modal-dialog  modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="reportModalLabel">신고하기</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="container">
+									<div class="row">
+										<div class="col">
+											<form action="/travel/admin/userReport?user_id=${sessionuser.user_id}" method="post" enctype="multipart/form-data">
+												<!-- 신고 대상자의 아이디를 담을 hidden input field 추가 -->
+												<input type="hidden" id="reportedUserId" name="reported_user_id">
+												
+												<div class="row">
+													<div class="col">
+														<div class="form-floating">
+															<textarea class="form-control" placeholder="#" id="floatingTextarea2" name="user_report_desc" style="height: 15em; resize: none;"></textarea>
+															<label for="floatingTextarea2" style="font-size: 0.9em;">신고사유를 적어주세요. 허위 신고시 불이익이 있을 수 있습니다.</label>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col d-flex justify-content-end mt-2">
+														<input class="form-control" type="file" id="imageUpload" name="reportImages" accept="image/*" multiple>
+													</div>
+													<div class="col-12">
+														<div id="previewImages" style="display: none; overflow-x: auto; margin: 0.5em 0 0.5em 0; padding: 0.5em;"></div>
+													</div>
+												</div>
+												<div class="row mt-2">
+													<div class="col d-flex justify-content-end">
+														<button type="submit" class="btn" style="background-color: #03c75a; color: white;" >신고 제출</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+					<div class="modal-dialog  modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="noteModalLabel">쪽지보내기</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="container">
+									<div class="row">
+										<div class="col">
+											<form action="/travel/sendMessageProcess?user_id=${sessionuser.user_id}" method="post">
+												<!-- 신고 대상자의 아이디를 담을 hidden input field 추가 -->
+												<input type="hidden" id="notedUserNickname" name="user_nickname">
+
+												<div class="row mb-2">
+													<div class="col">
+														<input name="message_title" class="form-control" type="text" placeholder="제목">
+													</div>
+												</div>
+												<div class="row">
+													<div class="col">
+														<div class="form-floating">
+															<textarea class="form-control" placeholder="#" id="floatingTextarea3" name="message_content" style="height: 15em; resize: none;"></textarea>
+															<label for="floatingTextarea3" style="font-size: 0.9em;">스팸성 쪽지는 제재 사유가 될 수 있습니다.</label>
+														</div>
+													</div>
+												</div>
+												<div class="row mt-2">
+													<div class="col d-flex justify-content-end">
+														<button class="btn" style="background-color: #03c75a; color: white;" type="submit">보내기</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-
+	<jsp:include page="../common/bottomNavi.jsp"></jsp:include>
 
 	
 	

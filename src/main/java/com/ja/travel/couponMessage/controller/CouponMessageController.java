@@ -90,6 +90,7 @@ public class CouponMessageController {
 		
 		return result;
 	}
+	
 
 	@RequestMapping("/readMessageGot")
 	public String readMessageGot(Model model, int id) {

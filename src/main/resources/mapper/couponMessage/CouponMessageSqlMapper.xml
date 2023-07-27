@@ -37,7 +37,7 @@
 
 <select id="getCouponList" resultType="com.ja.travel.dto.CouponDto">
 	SELECT * FROM coupon
-	ORDER BY coupon_id DESC
+	ORDER BY coupon_issue_end DESC
 </select>
 
 <update id="decreaseCoupon">
@@ -134,6 +134,7 @@
 <select id="selectAllMessageWroteByUserId" resultType="com.ja.travel.dto.MessageDto">
 	SELECT * FROM message
 	WHERE user_id = #{user_id}
+	ORDER BY message_reg_date DESC
 </select>
 
 <insert id="insertUserCoupon2">
