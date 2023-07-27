@@ -32,8 +32,8 @@ pageEncoding="UTF-8"%>
         // 지도 api
         var container = document.getElementById('map');
         var options = {
-        center: new kakao.maps.LatLng(35.5665, 126.9780),
-        level: 13
+        center: new kakao.maps.LatLng(37.5100, 127.0980),
+        level: 6
         };
 
         map = new kakao.maps.Map(container, options);
@@ -226,8 +226,18 @@ pageEncoding="UTF-8"%>
         polyline.setMap(map);
     }
 
+    
+    // 마커 이미지의 이미지 주소입니다
+    var imageSrc = "http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(24, 35); 
+
+    // 마커 이미지를 생성합니다    
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+    
     // 일정별 루트 명소들 이름
-   function createMarker(i, coords) {
+   	function createMarker(i, coords) {
        var marker = new kakao.maps.Marker({
            map: map,
            position: coords
@@ -687,11 +697,11 @@ pageEncoding="UTF-8"%>
                           <div class="row align-items-center justify-content-center">
                           
                               <div class="col-6 align-items-center justify-content-center">
-                                  <span class="" style="font-weight: 700; font-size: 18px;">${data.planDto.plan_title}</span>
+                                  <span class="" style="font-weight: 700; font-size: 17px;">${data.planDto.plan_title}</span>
                               </div>
                         
 						<c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">                                                    
-							<div class="col-3">                                                                            
+							<div class="col-3 pe-0">                                                                            
 								<div class="dropdown ">
 									<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: bolder; background-color: #faf7f0;">
 										<i class="bi bi-gear"></i> 관리
@@ -703,7 +713,7 @@ pageEncoding="UTF-8"%>
 									</ul>
 								</div>                                    
 							</div>
-							<div class="col-3">
+							<div class="col-3 ps-0">
 								<div class="dropdown">
 									<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: bolder; background-color: #faf7f0;">
 										<i class="bi bi-people"></i> 모집
@@ -1024,7 +1034,7 @@ pageEncoding="UTF-8"%>
 					</div>
 					           	
             	</div>
-	            <div class="row mt-1">	       
+	            <div class="row mt-4">	       
 	            	<div class="col-2">&nbsp;</div>         
 	                <div class="col d-grid">
 	                    <a href="../myPage" class="btn" style="background-color: #03c75a; color: white; font-weight: bolder;">클랜 모집</a>
