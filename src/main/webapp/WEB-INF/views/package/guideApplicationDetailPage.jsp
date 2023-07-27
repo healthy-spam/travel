@@ -257,7 +257,7 @@ function loadMyList(plan_day_id, plan_day){
                         }                  
                     }  
                 }  
-                placeThumbnail()
+             
             }
         }
     }
@@ -640,6 +640,95 @@ function planningDay() {
 		return yyyy + '/' + MM + '/' + dd + ' ' + hh + ':' + mm;
 	}
  
+ function guideProfile(){
+	 
+	 const xhr = new XMLHttpRequest();
+		
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4 && xhr.status == 200){
+				const response = JSON.parse(xhr.responseText);
+				
+				if(response != null){
+					
+					console.log(response.guide.user_image);
+					const guideProfile = document.querySelector(".guide_profile")
+					
+					const img = document.createElement('img');
+				    img.classList.add('guide_thumbnail');
+				    img.alt = "썸네일";
+				    img.src = '/uploadFiles/profileImage/'+ response.guide.user_image;
+				    img.setAttribute('data-bs-toggle', 'dropdown');
+					
+				    if (response.guide.user_id != '${sessionuser.user_id}') {
+				    	const dropdownMenu = document.createElement('div');
+					    dropdownMenu.classList.add('dropdown-menu');
+
+					    // 드랍다운 메뉴 엘리먼트 추가
+					    const dropdownItem1 = document.createElement('a');
+					    dropdownItem1.classList.add('dropdown-item');
+					    dropdownItem1.innerText = '신고하기';
+					    
+					    const dropdownItem2 = document.createElement('a');
+					    dropdownItem2.classList.add('dropdown-item');
+					    dropdownItem2.innerText = '쪽지보내기';
+					    
+					    dropdownMenu.appendChild(dropdownItem2);
+					    dropdownMenu.appendChild(dropdownItem1);
+					    
+					    dropdownItem1.addEventListener('click', function(e) {
+					        e.preventDefault();
+
+					        // 클로저에 현재 사용자 객체를 저장
+					        var currentUser = response.guide;
+
+					        var myModalEl = document.getElementById('reportModal');
+					        var myModal = new bootstrap.Modal(myModalEl, {});
+
+					        // 모달이 보여질 때 currentUser 객체를 사용
+					        myModalEl.addEventListener('shown.bs.modal', function () {
+					            // 히든 인풋 필드의 값을 currentUser.user_id로 설정
+					            document.getElementById('reportedUserId').value = currentUser.user_id;
+					        });
+
+					        myModal.show();
+					    });
+					    
+					    dropdownItem2.addEventListener('click', function(e) {
+					        e.preventDefault();
+
+					        // 클로저에 현재 사용자 객체를 저장
+					        var currentUser = response.list.guide;
+
+					        var myModalEl = document.getElementById('noteModal');
+					        var myModal = new bootstrap.Modal(myModalEl, {});
+
+					        // 모달이 보여질 때 currentUser 객체를 사용
+					        myModalEl.addEventListener('shown.bs.modal', function () {
+					            // 히든 인풋 필드의 값을 currentUser.user_id로 설정
+					            document.getElementById('notedUserNickname').value = currentUser.user_nickname;
+					        });
+
+					        myModal.show();
+					    });
+					    
+					    guideProfile.style.cursor = 'pointer';
+					    guideProfile.appendChild(dropdownMenu);
+				    }
+				    guideProfile.appendChild(img);
+				}
+			}
+		}
+		
+		
+		
+		//post
+		xhr.open("post", "./getGuideProfile");
+		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded"); 
+		xhr.send("guide_planning_id="+guidePlanningId);
+	 
+	 
+ } 
+ 
  function getCommentList() {
 
 		const xhr = new XMLHttpRequest();
@@ -741,6 +830,7 @@ function planningDay() {
 					    
 					    col1Div.appendChild(img);
 					    
+					    
 					    // Col div
 					    const colDiv = document.createElement('div');
 					    colDiv.classList.add('col', 'p-0', 'mb-2');
@@ -797,6 +887,9 @@ function planningDay() {
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhr.send("guide_planning_id="+guidePlanningId);
 	}
+ 
+ 
+ 
 	
 	function addLike(guide_comment_id) {
 	
@@ -832,6 +925,7 @@ function planningDay() {
  
 	
 document.addEventListener("DOMContentLoaded", function() {
+	 guideProfile(); 
 		planningDay();
 		showStart()
 		planprice();
@@ -849,10 +943,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </script>
 <style>
-
-
-
-
 
 
  .user-thumbnail {
@@ -1003,6 +1093,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	font-size: 0.9em;
 }
 
+.guide_thumbnail{
+
+width : 100px; height:100px; border-radius:50px;
+
+}
+
 </style>
 
 </head>
@@ -1111,12 +1207,12 @@ document.addEventListener("DOMContentLoaded", function() {
 					</div>
 				</div>
 				<div class="row mt-5">
-					<div class="col">
-						<img src="/uploadFiles/profileImage/${map.user.user_image}" style="width : 100px; height:100px; border-radius:50px;">
+					<div class="col guide_profile">
+						
 					</div>
 				</div>
 				<div class="row mt-5">
-					<div class="col" style="color : gray;">
+					<div class="col " style="color : gray;">
 						${map.guide.guide_profile }
 					</div>
 				</div>
@@ -1296,7 +1392,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		</div>
 		
 	</div>
-	<div class="container">
+<div class="container">
 		<div class="row">
 			<div class="col">
 				<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">

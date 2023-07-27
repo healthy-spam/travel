@@ -66,5 +66,10 @@ public class PackageController {
 		model.addAttribute("guide_planning_id", guide_planning_id);
 		return "package/guideApplicationDetailPage";
 	}
+	@RequestMapping("guideAppPage")
+	public String guideAppPage() {
+	
+		return "package/guideAppPage";
+	}
 
 }

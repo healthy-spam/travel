@@ -383,6 +383,11 @@ public class PackageService {
 		return list;
 	}
 
+	public UserDto getGuideInfo(int guidePlanningId) {
+		// TODO Auto-generated method stub
+		return packageSqlMapper.getUserByGuidePlanningId(guidePlanningId);
+	}
+
 	
 
 }
