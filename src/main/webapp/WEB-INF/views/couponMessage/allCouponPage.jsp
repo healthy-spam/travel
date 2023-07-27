@@ -76,11 +76,16 @@
 	}
 	
 	.couponPriceRow {
-		height: 40%;
+		height: 35%;
 	}
 	
 	.couponDateRow {
-		height: 20%;
+		height: 15%;
+		margin-right:20px;
+	}
+	
+	.couponEndRow {
+		height: 10%;
 		margin-right:20px;
 	}
 	
@@ -115,6 +120,7 @@
 	
 	.issueDateText {
 		margin-left : 30px;
+		color:gray;		
 	}
 	
 	.iconCheck {
@@ -352,6 +358,15 @@
 								        	<div class="col-8 couponDateCol">
 								        		<fmt:formatDate value="${coupon.couponDto.coupon_issue_start}" pattern="yyyy-MM-dd" />
 								        		~<fmt:formatDate value="${coupon.couponDto.coupon_issue_end}" pattern="yyyy-MM-dd" />
+								        	</div>
+								        </div>
+								        <div class="row mx-auto couponEndRow">
+								        	<div class="col-4 issueDateText">
+								        	사용기한
+								        	</div>
+								        	<div class="col-8 couponDateCol">
+								        		<fmt:formatDate value="${coupon.couponDto.coupon_use_end}" pattern="yyyy-MM-dd" />&nbsp;까지
+								        		
 								        	</div>
 								        </div>
 								    </div>

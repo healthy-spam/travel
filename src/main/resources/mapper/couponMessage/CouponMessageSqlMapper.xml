@@ -37,7 +37,7 @@
 
 <select id="getCouponList" resultType="com.ja.travel.dto.CouponDto">
 	SELECT * FROM coupon
-	ORDER BY coupon_id DESC
+	ORDER BY coupon_issue_end DESC
 </select>
 
 <update id="decreaseCoupon">
