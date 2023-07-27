@@ -10,7 +10,7 @@ pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@100;300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@300;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=db6c20ca60db131bdca5b89e7568dc3f&libraries=services"></script>
 <title>플래너 상세보기 페이지</title>
 <script type="text/javascript">
@@ -662,7 +662,11 @@ pageEncoding="UTF-8"%>
     });
 
 </script>
-
+<style type="text/css">
+	body {
+	font-family: 'Noto Sans KR', sans-serif;	
+	}	
+</style>
 </head>
 
 <body>
@@ -683,7 +687,7 @@ pageEncoding="UTF-8"%>
                           <div class="row align-items-center justify-content-center">
                           
                               <div class="col-6 align-items-center justify-content-center">
-                                  <span class="" style="font-weight: 700; font-size: 20px;">${data.planDto.plan_title}</span>
+                                  <span class="" style="font-weight: 700; font-size: 18px;">${data.planDto.plan_title}</span>
                               </div>
                         
 						<c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">                                                    
