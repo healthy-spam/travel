@@ -20,11 +20,11 @@
 		
 	}
 	.bg{
-		background-color:#c5d6c3;
+		background-color:#f3faeb;
 	}
 	
 	.couponRow {
-		width: 400px;
+		width: 380px;
 		height: 160px;
 		box-shadow:2px 3px 5px 0px #2c3b29;
 		border-radius: 20px;
@@ -37,34 +37,38 @@
 	}
 	
 	.couponRight {	  
-	    background-color: #4d7849;
-	    padding-top : 80px;
+	    background-color: #4c9c53;
+	    padding-top : 50px;
 	}
 	
 	.couponBan {
-		background-color: #ccba60;	
-		padding-top : 80px
+		background-color: #ff9500;	
+		padding-top : 40px
 		
 	}
 	
 	.couponRightCheck {
-		background-color: #3e573c;
-	    padding-top : 80px;
+		background-color: #45854b;
+	    padding-top : 50px;
 	}
 	
 	.couponTitleCol {
-		margin-left : 60px;
-		margin-top : 35px;
+		margin-left : 40px;
+		margin-top : 20px;
 	}
 	
 	.couponPriceCol {
-		margin-left : 60px;
-		font-size : 3em;
+		margin-left : 40px;
+		font-size : 2em;
 		font-weight: bold;
 	}
 	
 	.couponDateCol {
-		color: gray;	
+		color: gray;
+		margin-right: -60px;
+		margin-left: -30px;
+		font-size: 0.9em;
+		margin-top: 1px;
 	}
 	
 	.couponTitleRow {
@@ -77,6 +81,7 @@
 	
 	.couponDateRow {
 		height: 20%;
+		margin-right:20px;
 	}
 	
 	.iconDown:hover {
@@ -93,7 +98,7 @@
 	}	
 	
 	.couponContent {
-		border: solid 2px white;
+		border: solid 2px #a0a897;
 		color: gray;
 		border-radius: 10px;
 		
@@ -109,7 +114,7 @@
 	}
 	
 	.issueDateText {
-		margin-left : 60px;
+		margin-left : 30px;
 	}
 	
 	.iconCheck {
@@ -118,8 +123,8 @@
 	
 	.upSticky {	
 	  position: fixed;
-	  bottom: 50px; /* 원하는 아이콘의 아래 여백 조정 */
-	  left: 80rem; /* 원하는 아이콘의 오른쪽 여백 조정 */
+	  bottom: 30px; /* 원하는 아이콘의 아래 여백 조정 */
+	  left: 83rem; /* 원하는 아이콘의 오른쪽 여백 조정 */
 	  cursor: pointer;
 	  font-weight: bold;
 	  
@@ -311,21 +316,21 @@
 			</div>
 			<div class="row topWhite">
 				<div class="col">
-					<div class="row mt-5 pageTitle">
+					<div class="row mt-2 pageTitle">
 						<div class="col text-center" style="font-size:30px">
 							이벤트 쿠폰존
 						</div>
 					</div>
-					<div class = "row mt-2">
+					<div class = "row mt-5">
 						<div class = "col ps-0">
-							<img src = "resources/img/couponBanner4.jpg" alt="쿠폰 배너" style="width:1296px; margin:0px;">
+							<img src = "resources/img/couponBanner6.jpg" alt="쿠폰 배너" style="width:1296px; margin:0px;">
 						</div>
 					</div>	
 				</div>		
 			</div>
-			<div class="row mt-5 mx-auto">
+			<div class="row mt-5 mx-5">
 				<c:forEach var="coupon" items="${couponList}" varStatus="status">
-					<div class="col-5">
+					<div class="col-6">
 						<div class="row">			
 							<div class="col">
 								<div class="row mb-3 mx-auto couponRow" style="overflow: hidden;">
@@ -340,11 +345,11 @@
 								        		${coupon.couponDto.coupon_discount}원 할인
 								        	</div>
 								        </div>
-								        <div class="row couponDateRow">
-								        	<div class="col-2 issueDateText">
+								        <div class="row mx-auto couponDateRow">
+								        	<div class="col-4 issueDateText">
 								        	발급기한
 								        	</div>
-								        	<div class="col-auto couponDateCol">
+								        	<div class="col-8 couponDateCol">
 								        		<fmt:formatDate value="${coupon.couponDto.coupon_issue_start}" pattern="yyyy-MM-dd" />
 								        		~<fmt:formatDate value="${coupon.couponDto.coupon_issue_end}" pattern="yyyy-MM-dd" />
 								        	</div>
