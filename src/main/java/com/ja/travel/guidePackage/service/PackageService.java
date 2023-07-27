@@ -21,6 +21,7 @@ import com.ja.travel.dto.PlanCityDto;
 import com.ja.travel.dto.PlanDayDto;
 import com.ja.travel.dto.PlanDto;
 import com.ja.travel.dto.PlanPlaceDto;
+import com.ja.travel.dto.PlanPlacePhotoDto;
 import com.ja.travel.dto.PlanningComment;
 import com.ja.travel.dto.PlanningCommentLove;
 import com.ja.travel.dto.UserCouponDto;
@@ -155,6 +156,7 @@ public class PackageService {
 	
 
 	public Map<String, Object> getPlaceByDayForPlan(int guide_planning_id) {
+		
 		List<GuidePlanningApplicationDto> count = packageSqlMapper
 				.getGuidePlanningAcceptCountByGuidePlanningId(guide_planning_id);
 		
@@ -185,6 +187,8 @@ public class PackageService {
 				
 			}
 			
+			
+			
 			map.put("placeList", placeListWithCity);
 			map.put("planDay", planDay);
 			list.add(map);
@@ -192,11 +196,21 @@ public class PackageService {
 
 		}
 		
+		PlanDayDto firstPlanDay = planDayList.get(0);
+		List<PlanPlaceDto> placeList = packageSqlMapper.getPlaceByPlanId(firstPlanDay);
+		PlanPlaceDto planPlaceDto2 = placeList.get(0);
+		List<PlanPlacePhotoDto> placePhotoDtoList = packageSqlMapper.getPhotos(planPlaceDto2.getPlan_place_id());
+		PlanPlacePhotoDto placePhotoDto1 = placePhotoDtoList.get(0);
+		PlanPlacePhotoDto placePhotoDto2 = placePhotoDtoList.get(1);
+		
+		String placePhoto1 = placePhotoDto1.getPlan_place_photo_link();
+		String placePhoto2 = placePhotoDto2.getPlan_place_photo_link();
 		
 
 		Map<String, Object> resultMap = new HashMap<>();
 
-		
+		resultMap.put("placePhoto1", placePhoto1);
+		resultMap.put("placePhoto2", placePhoto2);
 		resultMap.put("user", user);
 		resultMap.put("planDayListSize", planDayListSize);
 		resultMap.put("guidePlanningDto", guidePlanningDto);
