@@ -150,5 +150,7 @@ public interface CrewMapper {
 
 	public void sendchat(CrewChatDto crewChatDto);
 
+	public List<CrewBoardDto> getpopularpostlist();
+
 	
 }
