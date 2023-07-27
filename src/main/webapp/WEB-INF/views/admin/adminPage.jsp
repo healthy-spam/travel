@@ -11,7 +11,7 @@ pageEncoding="UTF-8"%>
 <title>Insert title here</title>
 <style>
 	#naviBack {
-		background-color:black;
+		background-color:#303030;
 		color:white;
 		height: 100vh;
 	}

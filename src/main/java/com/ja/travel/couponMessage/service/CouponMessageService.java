@@ -142,12 +142,28 @@ public class CouponMessageService {
 
 	}
 
-	public List<CouponDto> getCouponList() {
-		List<CouponDto> couponList = couponMessageSqlMapper.getCouponList();
-
+	public List<Map<String, Object>> getCouponList(int userId) {
+		List<Map<String, Object>> couponList = new ArrayList<>();
+		List<CouponDto> list = couponMessageSqlMapper.getCouponList();
+		
+		for(CouponDto couponDto : list) {
+			Map<String, Object> map = new HashMap<>();
+			
+			UserCouponDto userCouponDto = new UserCouponDto();
+			int couponId = couponDto.getCoupon_id();
+			userCouponDto.setCoupon_id(couponId);
+			userCouponDto.setUser_id(userId);
+			map.put("hasCoupon", couponMessageSqlMapper.countCoupon(userCouponDto) > 0);
+			map.put("isExpired", couponMessageSqlMapper.checkExpired(couponId) > 0);
+			map.put("isExhausted", couponMessageSqlMapper.checkExhausted(couponId) > 0);
+			map.put("couponDto", couponDto);
+			couponList.add(map);
+			}
+			
 		return couponList;
+		}
+		
 
-	}
 
 	// 쿠폰등록버튼 누르면 유저쿠폰테이블에 insert
 	public void insertUserCoupon2(int couponId, int userId) {

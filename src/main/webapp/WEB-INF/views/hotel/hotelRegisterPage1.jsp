@@ -9,18 +9,25 @@
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
    
-        .reserveButton {
-        width: auto;
-        height: auto;
-        background-image: linear-gradient(98deg,#03c75a,#49c6dd);
-        border-radius: 10px;
-        border: none;
-        color: rgb(255, 255, 255);
-        padding: 10px 30px;
-        font-weight: 600;
-        font-size: 14px;
-        text-align: center;
+     .startButton {
+	     width: auto;
+	     height: auto;
+	     background-image: linear-gradient(98deg,#03c75a,#38a877);
+	     border-radius: 10px;
+	     border: none;
+	     color: rgb(255, 255, 255);
+	     padding: 10px 30px;
+	     font-weight: 600;
+	     font-size: 14px;
+	     text-align: center;
+	     text-decoration: none;
     }
+    
+    .startButton:hover {
+	   	background-image: linear-gradient(98deg,#1e9f58,#0e8a69);
+	   	
+	   	color: #f0f0f0;
+	}
 
     .box {
         width: auto;
@@ -162,7 +169,7 @@
             </div>
             <div class="col"></div>
             <div class="col-auto px-5">
-            	<a href="./hotelRegisterPage2" class="reserveButton px-5">
+            	<a href="./hotelRegisterPage2" class="startButton px-5">
                		<span>시작하기</span>
             	</a>
             </div>

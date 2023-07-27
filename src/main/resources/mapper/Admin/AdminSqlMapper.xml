@@ -251,7 +251,7 @@
 	SET
 		coupon_title = #{coupon_title},
 		coupon_content = #{coupon_content},
-		coupon_image = #{coupon_image},
+		coupon_image = #{coupon_image,jdbcType=VARCHAR},
 		coupon_issue_start = #{coupon_issue_start},
 		coupon_issue_end = #{coupon_issue_end},
 		coupon_use_end = #{coupon_use_end},
