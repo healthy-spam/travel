@@ -341,7 +341,7 @@ function createModal() {
 
 
    
-	function search(keyword) {
+	 function search(keyword, place_name, place_photo) {
 	
 	   // 주소-좌표 변환 객체를 생성합니다
 	   var geocoder = new kakao.maps.services.Geocoder();
@@ -359,12 +359,15 @@ function createModal() {
 	                     // 마커가 이미 존재하는 경우, 마커의 위치를 변경
 	                     
 	
-	                   var content = '<div style="background-color: white; border-radius: 15px; padding: 5px; width: 100%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); position: relative; font-weight: 700;">'
-				+ '<span style="background-color: #03c75a; border-radius: 50%; width: 30px; height: 30px; padding: 5px; display: inline-flex; align-items: center; justify-content: center;"><i class="bi bi-geo-alt-fill" style="font-size: 20px; color: white;"></i></span>'
-				+ ' '
-				+ keyword
-				+ '<div style="position: absolute; bottom: -8px; left: 10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>'
-				+ '</div>';
+	             var content = '<div style="padding:5px; font-size: 11px; font-weight: bolder; background-color: white; width: 145px; border-radius: 10px; position: relative; margin-bottom: 1px; margin-left: 61px;">' 
+        + '<div style="display: flex; align-items: center;">'
+        + '<img style="width: 30px; height: 30px; border-radius: 50%;" src="/uploadFiles/mainImage/'+ place_photo +'">'
+        + '<span style="font-size: 11px; margin-left: 10px;">'+ place_name +'</span>' 
+        + '</div>'
+        + '<div style="position: absolute; bottom: -10px; left: 30px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;"></div>'
+        // 여기에 추가적인 내용을 원하시는대로 포함시킬 수 있습니다.
+       
+        + '</div>';
 	
 	                     // 인포윈도우가 이미 존재하는 경우, 인포윈도우의 내용을 변경
 		                  var mainOverlay = new kakao.maps.CustomOverlay(
@@ -585,7 +588,7 @@ function createModal() {
                   newElement.querySelector(".placeImg").src = "/uploadFiles/mainImage/" + placeDto.plan_place_photo;
                   
                   newElement.querySelector(".show").addEventListener("click", function() {
-                       search(placeDto.plan_place_address);
+                       search(placeDto.plan_place_address,placeDto.plan_place_name, placeDto.plan_place_photo);
                      });
                   
                   
@@ -659,23 +662,15 @@ function createModal() {
                   for(y of x.listInner){
                      const newElementInner = document.getElementById("templete_my_place").cloneNode(true);
                      newElementInner.querySelector(".placeName").innerText = y.planPlaceDto.plan_place_name 
-                     search(y.planPlaceDto.plan_place_address);
+                     search(y.planPlaceDto.plan_place_address, y.planPlaceDto.plan_place_name, y.planPlaceDto.plan_place_photo);
+
                     
                      newElementInner.querySelector(".address").remove(); 
                      newElementInner.removeAttribute("id");
                      newElementInner.classList.remove("d-none");
                      newElement.querySelector(".placeList").appendChild(newElementInner);
                      
-                   /*   <div class="row d-none p-1 " id="templete_my_place">
-                     <div class="col text-center">
-                        <div class="row" >
-                           <div class="col placeName fw-bold">송리...</div>
-                        </div>
-                        <div class="row ">
-                           <div class="col address text-secondary">주소.. 어쩌...</div>
-                        </div>
-                     </div>
-                  </div> */
+                
                   }                  
                }
                                                  

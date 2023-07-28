@@ -76,6 +76,10 @@ pageEncoding="UTF-8"%>
 		font-size: 25px;
 	}
 	
+	.couponContent:hover {
+		cursor: pointer;
+	}
+	
 
 </style>
 </head>
@@ -110,7 +114,9 @@ pageEncoding="UTF-8"%>
 					    <tr>					   
 					      <td>${list.coupon_title}</td>
 					      <td>${list.coupon_amount}</td>
-						  <td onclick="openModal(`${list.coupon_content}`)">보기</td>					      
+						  <td onclick="openModal(`${list.coupon_content}`)">
+						  	<p class="couponContent">보기</p>
+						  </td>					      
 					      <td>
 					      <div class="col">
 					      	<div class="row">

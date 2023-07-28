@@ -8,15 +8,19 @@
 	<html>
 	<head>
 	<meta charset="UTF-8">
-	<link
-		href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-		rel="stylesheet"
-		integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-		crossorigin="anonymous">
-	<link rel="stylesheet"
-		href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"		crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@100;300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 	<title>메인 페이지</title>
 	<style>
+	
+	body {
+	font-family: 'Nanum Gothic', sans-serif;
+	font-family: 'Noto Sans KR', sans-serif;		
+	}
+	
 	#row1col5:hover {
 		font-weight: bold;
 	}
@@ -45,6 +49,40 @@
 	
 	.aa{
 	color: #fcba03;
+	}
+	
+	.bb {
+	color: #fcba03;
+	}
+	
+	.container-fluid {
+	border:1px black;
+	}
+	
+	.shadow1 {
+		  box-shadow: inset 0 0 1px;
+	}
+	
+	.writeBtn {
+	 border-color:#03c75a;
+	 border-radius: 20px;
+	 background-color:#03c75a;
+	 color:white;
+	}
+	
+	.pageAction a.active {
+		background-color: #03c75a;
+		color: white;
+		border-color: #ced4da;
+	}
+	
+	.pageAct a:hover:not(.avtive) {
+		background-color: white;
+	}
+	
+	.search {
+		background-color: white;
+		color: black;
 	}
 	</style>
 	<script type="text/javascript">
@@ -152,6 +190,17 @@
 				
 				
 			let mySessionId = null;
+			
+			
+			//쪽지쓰기(모달)
+			function openMessageWritePage() {
+			
+				
+				const messageWriteModal = bootstrap.Modal.getOrCreateInstance("#messageWriteModal");
+				
+				messageWriteModal.show();
+				
+			}
 			
 			//받은쪽지 내용 읽기(모달)
 			function openMessageGetPage(messageId, messageTitle, messageNickName, messageSendDateFormatted, messageContent) {
@@ -288,30 +337,7 @@
 				xhr.open("get", "./getMyId", false); // 딱 여기만 쓰세요...false 동기식 호출..! 권장되지 않음
 				xhr.send();		
 			}
-			
-			function changeBackGround() {	
-				if (changeBackColor) {
-					var container = document.querySelector('.container-fluid');
-					container.style.backgroundColor = '#444444';
-					
-					var otherElements = container.querySelectorAll(':not(.container)');
-					otherElements.forEach(function(element) {
-						element.style.color = 'white';
-					});
-					changeBackColor = false;
-				} else {
-					var container = document.querySelector('.container-fluid');
-					container.style.backgroundColor = 'white';
-					
-					var otherElements = container.querySelectorAll(':not(.container)');
-					otherElements.forEach(function(element) {
-						element.style.color = 'black';
-					});
-					changeBackColor = true;
-				}
-				
-				
-			}
+
 			// 받은 쪽지 리스트
 			function reloadMessageGet(){
 				const xhr = new XMLHttpRequest();
@@ -514,8 +540,8 @@
 									row1.appendChild(row1col2);
 									
 									const istar2 = document.createElement("i");
-									if(data.message_status && data.message_status.indexOf("받은쪽지보관") >= 0){
-									istar2.classList.add("bi", "bi-star-fill", "aa");
+									if(data.message_status && data.message_status.indexOf("보낸쪽지보관") >= 0){
+									istar2.classList.add("bi", "bi-star-fill", "bb");
 									}else{
 									istar2.classList.add("bi", "bi-star");
 									}
@@ -974,8 +1000,7 @@
 						const restoreStar = document.getElementById("restoreStar");
 						if(response.isStored){
 							
-							restoreStar.classList.remove("bi-star");
-							restoreStar.classList.add("bi-star-fill");
+
 						}
 					}
 				}
@@ -988,6 +1013,21 @@
 				
 			}
 			
+			function replyMessage(){
+				
+				const messageGetSender = document.getElementById("messageGetSender").textContent;
+				const messageWriteSender = document.getElementById("messageWriteSender");
+				messageWriteSender.value = messageGetSender;
+				
+				const readMessageGetModal = bootstrap.Modal.getOrCreateInstance("#readMessageGetModal");
+				const messageWriteModal = bootstrap.Modal.getOrCreateInstance("#messageWriteModal");
+				
+				
+				readMessageGetModal.hide();
+				messageWriteModal.show();
+				
+			}
+			
 			window.addEventListener("DOMContentLoaded", function(){
 				//사실상 시작 시점...
 				reloadMessageGet();
@@ -997,27 +1037,20 @@
 	
 	</head>
 	<body>
-		<div class="container-fluid">
+		<div class="container">
 			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-			<div class="container-fluid">
+		</div>
+			<div class="container-fluid border-1 border-top border-black">
 	
-				<div class="row mt-5 mb-3">
-					<div class="col-2 rounded ms-4"
-						style="background-color: #e8e8e8; height: 100vh; width : 15%;">
+				<div class="row mb-3">
+					<div class="col-2 border-1 border-end border-black"	style="background-color: #e6e9f099; height: 200vh; width : 15%;">						
 						<div class="row">
-							<div class="col p-3 text-white text-center rounded-top"
-								style="background-color: #17b75e">쪽지함</div>
-						</div>
-						
-						<div class="row">
-							<div class="col text-center p-3 border-secondary border-2 border-bottom"
-								style="-bs-border-opacity: .5;">
-								<button class="btn btn-defualt btn-lg border border-dark"
-									type="button" onclick="location.href='./writeMessage'">쪽지쓰기</button>
+							<div class="col text-center p-3 border-2 border-bottom">
+								<button class="btn writeBtn" type="button" onclick="openMessageWritePage()">쪽지쓰기</button>
 							</div>
 						</div>
 						
-						<div class="row border-secondary border-2 border-bottom" onclick="reloadMessageGet()" style = "cursor: pointer;">
+						<div class="row border-2 border-bottom" onclick="reloadMessageGet()" style = "cursor: pointer;">
 							<div class="col-4 p-3 text-end"
 								style="-bs-border-opacity: .5; margin-left:16px;">
 								<i class="bi bi-envelope"></i>
@@ -1031,7 +1064,7 @@
 							</div>
 						</div>
 						
-						<div class="row border-secondary border-2 border-bottom" onclick="reloadMessageSend()" style = "cursor: pointer;">
+						<div class="row border-2 border-bottom" onclick="reloadMessageSend()" style = "cursor: pointer;">
 							<div class="col-4 p-3 text-end"
 								style="-bs-border-opacity: .5; margin-left:16px;">
 								<i class="bi bi-envelope"></i>
@@ -1045,7 +1078,7 @@
 							</div>
 						</div>
 						
-						<div class="row border-secondary border-2 border-bottom" id="trashButton" onclick="reloadTrash()" style = "cursor: pointer;">
+						<div class="row border-2 border-bottom" id="trashButton" onclick="reloadTrash()" style = "cursor: pointer;">
 							<div class="col-4 p-3 text-end"
 								style="-bs-border-opacity: .5; margin-left:30px;">
 								<i class="bi bi-trash"></i>
@@ -1056,7 +1089,7 @@
 							</div>
 						</div>
 						
-						<div class="row text-center border-secondary border-2 border-bottom" id="storageButton" onclick="reloadStorage()" style = "cursor: pointer;">
+						<div class="row text-center border-2 border-bottom" id="storageButton" onclick="reloadStorage()" style = "cursor: pointer;">
 							<div class="col-4 p-3 text-end"
 								style="-bs-border-opacity: .5; margin-left:30px;">
 								<i class="bi bi-star-fill aa"></i>
@@ -1069,7 +1102,7 @@
 					</div>
 	
 					<div class="col-9 mx-4">
-						<div class="row">
+						<div class="row mt-2">
 							<div class="col" id="targetCol">
 								<div class="row mb-3 h2">
 									<div class="col" id="messageType">받은 쪽지함</div>
@@ -1095,10 +1128,31 @@
 									    <input type="text" id="inputPassword6" class="form-control" aria-labelledby="passwordHelpInline">
 									  </div>
 									  <div class="col-auto my-auto">
-									    <button type="button" class="btn btn-primary btn btn-sm">검색</button>
+									    <button type="button" class="btn border border-dark-sutle btn-sm search">검색</button>
 									  </div>
 								</div>
 							</div>
+						</div>
+						<div class="row mx-auto mt-2">
+							<div class="col">
+							<ul class="pagination justify-content-center pageAction">
+							    <li class="page-item">
+							      <a class="page-link" href="#" aria-label="Previous">
+							        <span aria-hidden="true">&laquo;</span>
+							      </a>
+							    </li>
+							    <li class="page-item"><a class="page-link active" href="#">1</a></li>
+							    <li class="page-item"><a class="page-link" href="#">2</a></li>
+							    <li class="page-item"><a class="page-link" href="#">3</a></li>
+							    <li class="page-item"><a class="page-link" href="#">4</a></li>
+							    <li class="page-item"><a class="page-link" href="#">5</a></li>
+							    <li class="page-item">
+							      <a class="page-link" href="#" aria-label="Next">
+							        <span aria-hidden="true">&raquo;</span>
+							      </a>
+							    </li>
+							  </ul>
+							</div>											
 						</div>
 					</div>
 				</div>
@@ -1109,8 +1163,7 @@
 				<div class="ms-auto col-3 alert alert-success">읽지 않은 쪽지가 3개
 					있습니다.</div>
 				<div class="col-1"></div>
-			</div>
-	
+			</div>	
 		</div>
 	
 		<div class="modal fade" id="readMessageGetModal" tabindex="-1"
@@ -1143,8 +1196,8 @@
 					</div>
 					<div class="modal-footer justify-content-center">
 						<div class="col-2 text-end">
-							<button type="button" class="btn"
-								style="background-color: #17b75e; color: white;">답장</button>
+							<button type="button" class="btn" onclick="replyMessage()" style="background-color: #17b75e; color: white;">답장</button>
+							
 						</div>
 						<div class="col-2">
 							<button type="button" class="btn btn-secondary"
@@ -1154,9 +1207,60 @@
 				</div>
 			</div>
 		</div>
-	</div>
+
+		<div class="modal fade" id="messageWriteModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form action="./sendMessageProcess" method="post">
+					<div class="modal-header"
+						style="background-color: #17b75e; color: white;">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">쪽지쓰기</h1>
+						<button type="button" class="btn-close btn-light"
+							data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
+					</div>
+					
+					<div class="modal-body" style="padding-top: 0;">
+						<div class="row mt-3">
+							<div class="col-3">
+								<label for="messageWriteSender" class="col-form-label">받는이</label>
+							</div>
+							<div class="col">
+								<input type="text" class="form-control" id="messageWriteSender" name="user_nickname">
+							</div>
+						</div>
+						<div class="row mt-1">
+							<div class="col-3">
+								<label for="title" class="col-form-label">제목</label>
+							</div>
+							<div class="col">
+								<input type="text" class="form-control" id="title" name="message_title">
+							</div>
+						</div>
+						<div class="row mt-3">
+							<div class="col">
+								<textarea class="form-control" id="content" rows="10" cols="30" name="message_content"></textarea>			
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-center">
+						<div class="col-2 text-end">
+							<button type="submit" class="btn"
+								style="background-color: #17b75e; color: white;">전송</button>
 	
-		<div class="modal fade" id="readMessageSendModal" tabindex="-1"
+						</div>
+						<div class="col-2">
+							<button type="button" class="btn btn-secondary"
+								onclick="reloadMessageGet()" data-bs-dismiss="modal">닫기</button>
+						</div>				
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+	<div class="modal fade" id="readMessageSendModal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -1345,7 +1449,6 @@
 				</div>
 			</div>
 		</div>
-		
 
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

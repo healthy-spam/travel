@@ -11,10 +11,14 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@100;300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@300;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <title>플래너 페이지</title>
 <style >
- 
+
+ 	body {
+	font-family: 'Noto Sans KR', sans-serif;	
+	}
+ 	
 </style>
 
 <script>
@@ -731,13 +735,17 @@ window.addEventListener("DOMContentLoaded", () => {
 <body >
 
    <div class="container">
-
-      <jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+   
+	<div class="row">
+		<div class="col-12">		
+			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		</div>
+	</div>
     
     <div class="row">
        <div class="col-12">
                 
-         <div class="row-auto mt-3" style="background-image: url('/travel/resources/img/plan7rere.jpeg'); background-size: 100%; min-height: 400px; width: auto; background-repeat: no-repeat; border-radius: 13px">
+         <div class="row-auto mt-2" style="background-image: url('/travel/resources/img/plan7rere.jpeg'); background-size: 100%; min-height: 400px; width: auto; background-repeat: no-repeat; border-radius: 13px">
             
                <div class="col-3">&nbsp;</div>   
                         
@@ -761,23 +769,23 @@ window.addEventListener("DOMContentLoaded", () => {
                         
                         <div class="row">
                            <div class="col">
-                              <h2 class="imgText mb-0" style="font-weight: bolder; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">여행의 시작</h2>
+                              <h2 class="imgText mb-0" style="font-weight: 600; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">여행의 시작</h2>
                            </div>
                         </div>
                         
                         <div class="row mt-0">
                            <div class="col">
-                              <h2 class="imgText" style="font-weight: bolder; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">TripStation</h2>      
+                              <h2 class="imgText" style="font-weight: 600; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">TripStation</h2>      
                            </div>
                         </div>
                         <div class="row mt-3">
                            <div class="col">
-                              <h3 class="m-0" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">다른 여행자들과 공유한 일정을 참조하거나</h3>
+                              <h3 class="m-0" style="font-size: 20px; font-weight: 400; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">다른 여행자들과 공유한 일정을 참조하거나</h3>
                            </div>
                         </div>
                         <div class="row">
                            <div class="col">
-                              <h3 class="" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">당신만의 특별한 여행 계획을 세우세요.</h3>
+                              <h3 class="" style="font-size: 20px; font-weight: 400; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">당신만의 특별한 여행 계획을 세우세요.</h3>
                            </div>
                         </div>                                               
                         
@@ -799,7 +807,7 @@ window.addEventListener("DOMContentLoaded", () => {
                          <div class="row">
                            <div class="col-4">&nbsp;</div>
                            <div class="col">         
-                              <a class="btn btn-lg d-grid align-items-center my-button" onclick="showModal();" style="border-radius: 18px; background: #03c75a; font-size: 20px; color: white; font-weight: bolder; border: 0px;">플래너 작성하기</a>         
+                              <a class="btn btn-lg d-grid align-items-center my-button" onclick="showModal();" style="border-radius: 18px; background: #03c75a; font-size: 20px; color: white; font-weight: 500; border: 0px;">플래너 작성하기</a>         
                            </div>                           
                            <div class="col-2">&nbsp;</div>
                         </div>
@@ -845,7 +853,7 @@ window.addEventListener("DOMContentLoaded", () => {
          
          <div class="col-3 mt-2 m-0" id="planCardBox">
                
-            <div class="card h-100 shadow-lg" style="border-radius: 15px; border: none; "  onclick="" >
+            <div class="card h-100" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: none; "  onclick="" >
             
             <div class="flex-row mt-3 border shadow" style="border-radius: 10px; position: absolute; top: 5px; left: 50%; transform: translate(-50%, 0%); width: 90%; background-color: white;">                                
                                     
@@ -861,18 +869,18 @@ window.addEventListener("DOMContentLoaded", () => {
                         <div class="col-4">
                            <div class="row">
                               <div class="col text-center">
-                                 <span class="user-name text-break" style="font-size: 13px; font-weight: bolder; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; color: #000;">기훈</span>                        
+                                 <span class="user-name text-break" style="font-size: 13px; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; color: #000;">기훈</span>                        
                               </div>
                            </div>
                            <div class="row">
                               <div class="col text-center" style="line-height: 15px;">
-                                 <span class="user-age " style="font-size: 12px; color: #007aff; font-weight: 600; ">20대</span>
-                                 <span class="user-gender " style="font-size: 12px; color: #007aff; font-weight: 600; ">남성</span>                        
+                                 <span class="user-age " style="font-size: 12px; color: #00A3FF; font-weight: 500; ">20대</span>
+                                 <span class="user-gender " style="font-size: 12px; color: #00A3FF; font-weight: 500; ">남성</span>                        
                               </div>
                            </div>
                         </div>
 
-                        <div class="col-1 d-flex align-items-center justify-content-center">ㅣ</div>
+                        <div class="col-1 d-flex ps-0 align-items-center justify-content-center">ㅣ</div>
                         
                         <div class="col-1 d-flex align-items-center justify-content-center">
                            <i class="bi bi-calendar d-flex align-items-center justify-content-center" style="color: #9a9a9a;"></i>
@@ -880,9 +888,9 @@ window.addEventListener("DOMContentLoaded", () => {
                                  
                         <div class="col-4 ps-0">
                            <div class="row">
-                              <div class="col" style="font-size: 12px;">
-                                 <span class="" style="font-weight: bolder; color: #9a9a9a;">여행기간</span>                        
-                                 <span class="plan-total-days" style="color: #00b04f; font-weight: bolder; ">12일</span>                        
+                              <div class="col ps-0" style="font-size: 12px;">
+                                 <span class="" style="font-weight: 500; color: #9a9a9a;">여행기간</span>                        
+                                 <span class="plan-total-days" style="color: #00b04f; font-weight: 500; ">12일</span>                        
                               </div>                                                                  
                            </div>
                         </div>
@@ -894,7 +902,7 @@ window.addEventListener("DOMContentLoaded", () => {
                            
                   <div class="row">
                      <div class="col">
-                  <img src="" class="card-img-top plan-thumbnail img-fluid" style=" width: 450px; height: 250px;">                     
+                  <img src="" class="card-img-top plan-thumbnail img-fluid" style=" width: 450px; height: 242px;">                     
                      </div>
                   </div>                                
                
@@ -902,19 +910,19 @@ window.addEventListener("DOMContentLoaded", () => {
                
                <div class="row mt-1 align-items-center">
                   <div class="col-9">
-                           <p class="h5 plan-title m-0" style="font-weight: bold; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
+                           <p class="h6 plan-title m-0" style=" display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
                            
                            </p>                
                   </div>
                   <div class="col pe-0 text-end">
-                     <i class="bi bi-share" style="width: 4rem; color: #007aff;"></i>
+                     <i class="bi bi-share" style="width: 4rem; color: #00A3FF;"></i>
                   </div>
                   <div class="col ps-1 align-items-center text-center">
-                     <span class="plan-copy-count" style="font-size: 15px; font-weight: bolder;">1</span>
+                     <span class="plan-copy-count" style="font-size: 15px; font-weight: 500;">1</span>
                   </div>
                </div>                                    
                         
-                  <div class="row mt-3">               
+                  <div class="row mt-2">               
                      <div class="col-12">
                          <div class="row scrollable-div" style="display: flex; overflow-x: auto; white-space: nowrap;">
                            <div class="col btnCol">
@@ -937,17 +945,17 @@ window.addEventListener("DOMContentLoaded", () => {
                               <div class="flex-col mx-2">
                                  <div class="row mt-1">
                                     <div class="col">
-                                       <span class="placeName" style="font-weight: bolder; font-size: 14px;">롯데타워</span>                                                                      
+                                       <span class="placeName" style="font-weight: 500; font-size: 14px;">롯데타워</span>                                                                      
                                     </div>
                                  </div>
                                  <div class="row mt-1">
                                     <div class="col-10">
-                                       <span class="placeAddress text-break" style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; color: #9a9a9a;">서울 송파구 올림픽로 300</span>
-                                    </div>
+									    <span class="placeAddress text-break" style="font-size: 10px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; color: #9a9a9a;">서울 송파구 올림픽로 300</span>
+									</div>
                                  </div>
                                  <div class="row mt-1">
                                     <a class="readPlace" href="" style="text-decoration: none;">
-                                    <span class="" style="color: #ffa800; font-size: 12px; font-weight: bolder;">자세히보기</span>
+                                    <span class="" style="color: #ffa800; font-size: 12px; font-weight: 500;">상세보기</span>
                                     </a>
                                  </div>
                               </div>
@@ -962,14 +970,14 @@ window.addEventListener("DOMContentLoaded", () => {
                         <div class="row">
                            <div class="col d-grid copyPlanCol">
                               
-                              <a class="btn copyPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #00b04f; font-weight: 600;" href="">
+                              <a class="btn copyPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #00b04f; font-weight: 500;" href="">
                                  <i class="bi bi-share" style="width: 1rem;"></i> 일정담기                                 
                               </a>
                               
                            </div>
                            <div class="col d-grid">
                            
-                              <a class="btn readPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #00b04f; font-weight: 600;" href="">
+                              <a class="btn readPlan" style="border-radius: 15px; border-color: #03c75a; border-width: 1px; color: #00b04f; font-weight: 500;" href="">
                                  <i class="bi bi-list-ul" style="width: 1rem;"></i> 상세보기
                               </a>
                               

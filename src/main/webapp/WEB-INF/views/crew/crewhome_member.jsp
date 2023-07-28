@@ -548,7 +548,7 @@ font-size: 30px
 													<div class="col">
 														<input name="message_title" class="form-control" type="text" placeholder="제목">
 													</div>
-												</div>
+												</div> 
 												<div class="row">
 													<div class="col">
 														<div class="form-floating">

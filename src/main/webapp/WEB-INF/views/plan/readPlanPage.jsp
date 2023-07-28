@@ -10,7 +10,7 @@ pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@100;300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@300;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=db6c20ca60db131bdca5b89e7568dc3f&libraries=services"></script>
 <title>플래너 상세보기 페이지</title>
 <script type="text/javascript">
@@ -21,9 +21,7 @@ pageEncoding="UTF-8"%>
     var markers = [];
     let overlays = [];
     let polyline = null;
-    const myDayPlaceList = []; // const, let, var을 안쓰면 자동으로 암묵적 전역변수로 선언
-    const myDayPlaceNames = [];
-    const myDayPlacePhoto = [];
+    
     
     const planId = new URLSearchParams(location.search).get("id");
    
@@ -34,8 +32,8 @@ pageEncoding="UTF-8"%>
         // 지도 api
         var container = document.getElementById('map');
         var options = {
-        center: new kakao.maps.LatLng(35.5665, 126.9780),
-        level: 13
+        center: new kakao.maps.LatLng(37.5100, 127.0980),
+        level: 6
         };
 
         map = new kakao.maps.Map(container, options);
@@ -82,6 +80,9 @@ pageEncoding="UTF-8"%>
     function loadMyList(plan_day_id, plan_day){
         const xhr = new XMLHttpRequest();
         
+        myDayPlaceList = []; // const, let, var을 안쓰면 자동으로 암묵적 전역변수로 선언
+        myDayPlaceNames = [];
+        myDayPlacePhoto = [];
         
         // 모든 마커 제거
         for (let i = 0; i < markers.length; i++) {
@@ -225,8 +226,18 @@ pageEncoding="UTF-8"%>
         polyline.setMap(map);
     }
 
+    
+    // 마커 이미지의 이미지 주소입니다
+    var imageSrc = "http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(24, 35); 
+
+    // 마커 이미지를 생성합니다    
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+    
     // 일정별 루트 명소들 이름
-   function createMarker(i, coords) {
+   	function createMarker(i, coords) {
        var marker = new kakao.maps.Marker({
            map: map,
            position: coords
@@ -650,13 +661,22 @@ pageEncoding="UTF-8"%>
         });
     });
       
+	function showCrewRecruitmentModal() {
+		var crewRecruitmentModal = new bootstrap.Modal(document.getElementById('crewRecruitmentModal'));
+ 	    crewRecruitmentModal.show();
+    }      
+      
     window.addEventListener("DOMContentLoaded", () => {
         map();
         loadDay();        
     });
 
 </script>
-
+<style type="text/css">
+	body {
+	font-family: 'Noto Sans KR', sans-serif;	
+	}	
+</style>
 </head>
 
 <body>
@@ -668,139 +688,364 @@ pageEncoding="UTF-8"%>
       <div class="col-5" style="box-shadow: 10px 0 5px -2px rgba(0, 0, 0, 0.2);">
           <div class="row align-items-center">
           
-              <div class="col">
+			<div class="col">
               
-                  <div class="row align-items-center text-center">
+				<div class="row align-items-center text-center">
                                              
-                      <div class="col-12 align-items-center justify-content-center">
+					<div class="col-12 align-items-center justify-content-center">
                       
-                          <div class="row align-items-center justify-content-center">
+						<div class="row align-items-center justify-content-center">
                           
-                              <div class="col-6 align-items-center justify-content-center">
-                                  <span class="" style="font-weight: 700; font-size: 20px;">${data.planDto.plan_title}</span>
-                              </div>
-                        
-						<c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">                                                    
-							<div class="col-3">                                                                            
-								<div class="dropdown ">
-									<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: bolder; background-color: #faf7f0;">
-										<i class="bi bi-gear"></i> 관리
-									</button>
-									<ul class="dropdown-menu" >
-										<li class="col-auto"><a class="dropdown-item" id="editPlanButton" onclick="showModal('${data.planDto.plan_title}');"><i class="bi bi-vector-pen"></i> 정보 수정</a></li>
-										<li class="col-auto "><a class="dropdown-item" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}&plan_title=${data.planDto.plan_title}"><i class="bi bi-signpost-split"></i> 루트 수정</a></li>
-										<li class="col-auto "><a class="dropdown-item" href="./deleteProcess?id=${data.planDto.plan_id}"><i class="bi bi-trash3"></i> 플래너 삭제</a></li>
-									</ul>
-								</div>                                    
+							<div class="col-6 align-items-center justify-content-center">
+								<span class="" style="font-weight: 700; font-size: 17px;">${data.planDto.plan_title}</span>
 							</div>
-							<div class="col-3">
-								<div class="dropdown">
-									<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: bolder; background-color: #faf7f0;">
-										<i class="bi bi-people"></i> 모집
+                        
+							<c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">                                                    
+								<div class="col-3 pe-0">                                                                            
+									<div class="dropdown ">
+										<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: 500; background-color: #faf7f0;">
+											<i class="bi bi-gear"></i> 관리
+										</button>
+										<ul class="dropdown-menu" >
+											<li class="col-auto"><a class="dropdown-item" id="editPlanButton" onclick="showModal('${data.planDto.plan_title}');"><i class="bi bi-vector-pen"></i> 정보 수정</a></li>
+											<li class="col-auto "><a class="dropdown-item" href="./registerPlanRoutePage?plan_id=${data.planDto.plan_id}&plan_title=${data.planDto.plan_title}"><i class="bi bi-signpost-split"></i> 루트 수정</a></li>
+											<li class="col-auto "><a class="dropdown-item" href="./deleteProcess?id=${data.planDto.plan_id}"><i class="bi bi-trash3"></i> 플래너 삭제</a></li>
+										</ul>
+									</div>                                    
+								</div>
+								<div class="col-3 ps-0">
+									<div class="dropdown">
+										<button class="btn dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 15px; font-weight: 500; background-color: #faf7f0;">
+											<i class="bi bi-people"></i> 모집
+										</button>
+										<ul class="dropdown-menu">
+											<c:if test="${data.planDto.plan_statuse != '모집'}">
+											<li class="col-auto"><a class="dropdown-item" href="./travelRecruitmentPage?plan_id=${data.planDto.plan_id}"><i class="bi bi-people-fill"></i> 모집</a></li>
+			                       			</c:if>
+											<c:if test="${data.planDto.plan_statuse != '모집' && guideCheck == 1 }">
+											<li class="col-auto "><a class="dropdown-item" href="../guidePackage/packageRecruitmentPage?plan_id=${data.planDto.plan_id}"><i class="bi bi-bag-heart"></i> 패키지 모집</a></li>
+			                       			</c:if>
+											<li class="col-auto "><a class="dropdown-item" href="#" onclick="showCrewRecruitmentModal();"><i class="bi bi-bag-heart-fill"></i> 크루원 모집</a></li>	
+										</ul>
+									</div>									                       								
+			                     </div>  
+							</c:if>
+                        
+							<c:if test="${!empty sessionuser && sessionuser.user_id != data.planDto.user_id && data.planDto.plan_disclosure_status == '공개'}">
+								<div class="col-4">
+									<button id="copyPlan" class="btn shadow-sm" style="font-weight: bolder; border-radius: 17px; background-color: #faf7f0;">
+	                                   <i class="bi bi-bookmark"></i> 일정 담기
 									</button>
-									<ul class="dropdown-menu">
-										<c:if test="${data.planDto.plan_statuse != '모집'}">
-										<li class="col-auto"><a class="dropdown-item" href="./travelRecruitmentPage?plan_id=${data.planDto.plan_id}"><i class="bi bi-people-fill"></i> 모집</a></li>
-		                       			</c:if>
-										<c:if test="${data.planDto.plan_statuse != '모집' && guideCheck == 1 }">
-										<li class="col-auto "><a class="dropdown-item" href="../guidePackage/packageRecruitmentPage?plan_id=${data.planDto.plan_id}"><i class="bi bi-bag-heart"></i> 패키지 모집</a></li>
-		                       			</c:if>
-										<li class="col-auto "><a class="dropdown-item" href="#"><i class="bi bi-bag-heart-fill"></i> 크루원 모집</a></li>	
-									</ul>
-								</div>									                       								
-		                     </div>  
-						</c:if>
+								</div>
+	                        </c:if>                                                                                             
                         
-                        <c:if test="${!empty sessionuser && sessionuser.user_id != data.planDto.user_id && data.planDto.plan_disclosure_status == '공개'}">
-                           <div class="col-4">
-                                      <button id="copyPlan" class="btn shadow-sm" style="font-weight: bolder; border-radius: 17px; background-color: #faf7f0;">
-                                   <i class="bi bi-bookmark"></i> 일정 담기
-                               </button>
-                           </div>
-                        </c:if>                                             
-                        
-                        
-                        
-                     </div>                          
-                      </div>                                                                         
+						</div>                          
+					</div>                                                                         
                                             
-                  </div>                  
+				</div>                  
                   
-              </div>              
+			</div>              
                                                       
-          </div>                             
+		</div>                             
           
-          <div class="row">
-             <div class="col">
-                <hr>
-             </div>
-          </div>
+		<div class="row">
+			<div class="col">
+				<hr>
+			</div>
+		</div>
           
-          <div class="row mt-2">
-             <div class="col-1">&nbsp;</div>
-             <div class="col-10">
-               <div class="dropdown-center d-grid" >
-                  <button class="btn dropdown-toggle shadow-sm" id="dayChange" style="font-weight: bolder;  border-radius: 12px; font-size: 20px; background-color: #faf7f0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                     <i class="bi bi-calendar-check"></i> 일정별 루트 목록                   
-                  </button>
-                  <ul class="dropdown-menu align-items-center" id="templete_day" style="font-size: 20px;">
-                     <!-- <li><a class="dropdown-item day-text" href="#"><i class="bi bi-send"></i> Day 1</a></li> -->                                          
-                  </ul>
-               </div>
-            </div>
-            <div class="col-1">&nbsp;</div>
-          </div>
+		<div class="row mt-2">
+			<div class="col-1 pe-0">&nbsp;</div>
+				<div class="col-10">
+				<div class="dropdown-center d-grid" >
+					<button class="btn dropdown-toggle shadow-sm" id="dayChange" style="font-weight: bolder;  border-radius: 12px; font-size: 20px; background-color: #faf7f0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bi bi-calendar-check"></i> 일정별 루트 목록                   
+					</button>
+					<ul class="dropdown-menu align-items-center" id="templete_day" style="font-size: 20px;">
+					<!-- <li><a class="dropdown-item day-text" href="#"><i class="bi bi-send"></i> Day 1</a></li> -->                                          
+					</ul>
+				</div>
+				</div>
+            <div class="col-1 ps-0">&nbsp;</div>
+		</div>
           
-          <div class="row mt-3">
-             <div class="col" id="route_col">
+		<div class="row mt-3">
+			<div class="col" id="route_col">
              
-                <div class="row mt-2 align-items-center border p-1 m-1 d-none" id="templete_my_place">
-                   <div class="col-1 text-center">
-                       <span class="place_number" style="font-weight: bolder; font-size: 20px; color: #252525;"></span>
-                   </div>
-                   <div class="col-4 text-center ps-0">
-                       <img class="placeImage" alt="" src="" style="width: 140px; height: 90px; border-radius: 10px;">
-                   </div>
-                   <div class="col-7 p-0">
-                       <div class="row">
-                           <div class="col">
-                               <span class="placeName" style="font-weight: bolder; font-size: 12px; color: #252525;"></span>                            
-                           </div>                                                                                
-                       </div>
-                       <div class="row mt-1">
-                           <div class="col">
-                               <span class="placeContent" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 14px;"></span>
-                           </div>
-                       </div>
-                       <div class="row">
-                           <div class="col">
-                               <span class="placeAddress" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;"></span>
-                           </div>
-                       </div>
-                       <div class="row mt-1">
-                          <div class="col">
-                             <a class="readPlace" href="" style="text-decoration: none;">
-                             <span class="" style="color: #ffa800; font-size: 15px; font-weight: bolder;">상세보기</span>
-                             </a>
-                          </div>
-                       </div>
-                   </div>                      
-               </div>                             
+				<div class="row mt-2 align-items-center  border p-1 m-1 d-none" id="templete_my_place">
+					<div class="col-1 text-center">
+						<span class="place_number" style="font-weight: bolder; font-size: 20px; color: #252525;"></span>
+					</div>
+					<div class="col-4 text-center p-0">
+						<img class="placeImage" alt="" src="" style="width: 140px; height: 94px; border-radius: 10px;">
+					</div>
+					<div class="col-7 ps-0">
+						<div class="row">
+							<div class="col">
+								<span class="placeName" style="font-size: 10px; color: #252525; font-weight: 500;"></span>                            
+							</div>                                                                                
+						</div>
+						<div class="row mt-1">
+							<div class="col">
+								<span class="placeContent" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 14px;"></span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<span class="placeAddress" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;"></span>
+							</div>
+						</div>
+						<div class="row mt-1">
+							<div class="col">
+								<a class="readPlace" href="" style="text-decoration: none;">
+								<span class="" style="color: #ffa800; font-size: 15px; font-weight: bolder;">상세보기</span>
+								</a>
+							</div>
+						</div>
+					</div>                      
+				</div>                             
                 
-             </div>      
-          </div>
+			</div>      
+		</div>
           
-      </div>
+	</div>
       
-      <div class="col-7">                    
-         <div id="map" style="width: 1000px; height: 1000px"></div>
-      </div>
+	<div class="col-7">                    
+		<div id="map" style="width: 1000px; height: 1000px"></div>
+	</div>
       
-   </div>
+	</div>
    
-   <jsp:include page="../common/bottomNavi.jsp"></jsp:include>
+	<jsp:include page="../common/bottomNavi.jsp"></jsp:include>
    
 </div>
+
+<!-- Crew Recruitment Modal -->
+<div class="modal fade" id="crewRecruitmentModal" tabindex="-1" aria-labelledby="crewRecruitmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        
+            <div class="modal-header" style="background-color: #03c75a;">            	
+				<h5 class="modal-title" id="crewRecruitmentModalLabel" style="color: white; font-weight: bolder;">크루원 모집</h5>	                            
+				<button type="button" class="btn bi bi-x-lg" data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>                            	
+            </div>
+            
+            <div class="modal-body">
+            	<div class="container"> 
+            		<div class="row">
+		                <div class="col-12" style="font-weight: bolder;">
+							<i class="bi bi-calendar-check"></i> 여행 출발 날짜
+						</div>
+						<div class="col-9 mt-1">
+							<input id="startDate" class="form-control" type="date" name="planning_start_date" placeholder="여행 출발 날짜">
+						</div>
+            		</div>
+            		
+			    	<div class="row mt-3">
+			    		<div class="col" style="font-weight: bolder;">
+			    			<i class="bi bi-person-lines-fill"></i> 크루원 목록
+			    		</div>
+			    	</div>					    	
+			    	
+					<div class="row mt-1">
+          
+						<div class="col-9">
+							<div class="input-group border" style="border-radius: 7px;">
+								<span class="input-group-text pe-0" id="basic-addon1" style="background-color: white; border: 0;">
+									<i class="bi bi-search"></i>
+								</span>
+								<input type="text" class="form-control" placeholder="Search crew members" aria-label="Search" aria-describedby="basic-addon1" onchange="planSearch()" id="plan_search_text_box" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search crew members'" style="border: 0;">
+							</div>
+						</div>								          				          				          				         
+				          
+					</div>
+			    	
+            		<div class="row mt-2" style="overflow-y: auto; max-height: 300px;">
+					    <div class="col" style="font-weight: bolder;">
+					        <div class="row">
+					    		<div class="col">
+							    	<div class="row align-items-center">
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
+							    		</div>
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
+							    		</div>					    		
+							    	</div>
+									<div class="row align-items-center">
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
+							    		</div>
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
+							    		</div>
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
+							    		</div>
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
+							    		</div>
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
+							    		</div>
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
+							    		</div>
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
+							    		</div>					    		
+							    	</div>
+							    	<div class="row align-items-center">
+							    		<div class="col-auto pe-0">
+							    			<input type="checkbox" class=""> 
+							    			<img src="/travel/resources/img/icon.png" style="width: 2rem; border-radius: 50%;"> 						    				
+							    		</div>
+							    		<div class="col ps-1 align-items-center">
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="font-weight: 500;">기훈2</span>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col">
+							    					<span style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: #9a9a9a;">
+							    						rlgns400@naver.com
+							    					</span>
+							    				</div>
+							    			</div>
+							    		</div>					    		
+							    	</div>
+							    								    						        					        
+					    		</div>    	
+					        </div>
+					    </div>					    
+					    
+					</div>
+					           	
+            	</div>
+	            <div class="row mt-4">	       
+	            	<div class="col-2">&nbsp;</div>         
+	                <div class="col d-grid">
+	                    <a href="../myPage" class="btn" style="background-color: #03c75a; color: white; font-weight: bolder;">클랜 모집</a>
+	                </div>
+	                <div class="col-2">&nbsp;</div>
+	            </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

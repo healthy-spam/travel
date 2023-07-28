@@ -41,6 +41,22 @@ public class CrewService {
 
 		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
 		
+		List<CrewBoardDto> a = crewMapper.getpopularpostlist();
+		System.out.println(a.size());
+		List<Map<String, Object>> ppost = new ArrayList<Map<String,Object>>();
+		
+		for(CrewBoardDto AA : a) {
+			System.out.println(AA.toString());
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("crewBoardDto", AA);
+			map.put("likecount", crewMapper.getBoardLikeListByCrewBoardId(AA.getCrew_board_id()).size());
+			map.put("crewBoardAttachedDto", crewMapper.getCrewBoardAttachedByCrewBoardId(AA.getCrew_board_id()).get(0));
+			map.put("commentcount", crewMapper.getAllCommentByCrewBoardId(AA.getCrew_board_id()).size());
+			ppost.add(map);
+		}
+		model.addAttribute("ppost", ppost);
+		
+		
 		try { //크루 멤버일경우
 			CrewMemberDto crewMemberDto = crewMapper.getCrewMemberDtoByUserId(userDto.getUser_id()); //자신의 크루 멤버 정보 가져오기
 			CrewDto crewDto = crewMapper.getCrewDtoByCrewDomain(crewMemberDto.getCrew_domain()); //가입한 크루 정보 가져오기
