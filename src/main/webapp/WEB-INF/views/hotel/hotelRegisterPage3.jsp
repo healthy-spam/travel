@@ -75,7 +75,7 @@ function openMap(compAddress,compName) {
 }
 
 
-document.addEventListener("DOMContentLoaded", function(event) {
+/* document.addEventListener("DOMContentLoaded", function(event) {
 	
 	/* 주소 유효성 검사입니다. */
 	function addressVcForm() {
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		});
 		
 });
-
+ */
 
 </script>
 

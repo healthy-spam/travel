@@ -13,9 +13,7 @@
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@100;300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@300;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=818488f03bbc3c53eaa216d3aaf39e13&libraries=services"></script>
 <script type="text/javascript">
@@ -261,6 +259,11 @@
 </script>
 
 <style>
+
+	body {
+		font-family: 'Noto Sans KR', sans-serif;	
+	}
+	
     .hostImage {
         width: 54px;
         height: 54px;
@@ -282,7 +285,7 @@
         border: none;
         padding: 0.8em;
         color: rgb(255, 255, 255);
-        font-weight: 600;
+        font-weight: 500;
         font-size: 1em;
     }
     
@@ -301,7 +304,7 @@
         height: auto;
         border-radius: 10px;
         border: solid black 1px;
-        font-weight: bold;
+        font-weight: 500;
         font-size: 0.9em;
         background-color: rgb(255, 255, 255);
         padding: 10px 20px;
@@ -321,7 +324,7 @@
         height: auto;
         border-radius: 10px;
         border: solid black 1px;
-        font-weight: bold;
+        font-weight: 500;
         font-size: 0.9em;
         background-color: rgb(255, 255, 255);
         padding: 10px 20px;
@@ -336,7 +339,7 @@
     /* 숙소 보조 스타일1 */
     .hotelSubTitleBox1 {
     	font-size: 0.9em; 
-    	font-weight: 600;
+    	font-weight: 500;
     }
     
     .hotelSubTitleBox2 {
@@ -346,12 +349,12 @@
     /* 이미지 스타일 */
     .mainImgBox {
     	width: 100%;
-    	height: 36em;
+    	height: 32em;
     }
     
     .subImgBox {
     	width: 100%;
-    	height: 18em;
+    	height: 16em;
     }
 </style>
 </head>
@@ -360,21 +363,74 @@
     
 <div class="container">
 
-	<div class="container">
-		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-	</div>
-	
-    <div class="row mt-4">
-        <div class="col">
+	<div class="row fw-bold justify-content-center">
+			<div class="col-10">
+				<nav class="navbar navbar-expand-lg bg-body-tertiary">
+					<div class="container-fluid p-0">
+						<span class="fw-bold navbar-brand mb-0 h1" style="font-size: 30px; font-weight: 700;"> TripStation</span>
+						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+								<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" aria-current="page" data-bs-toggle="dropdown" href="/travel/main" aria-expanded="false">여행</a>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="/travel/main">맞춤여행</a></li>
+										<li><a class="dropdown-item" href="/travel/package">패키지</a></li>
+									</ul>
+								</li>
+								<li class="nav-item"><a class="nav-link" href="/travel/plan/planPage">플래너</a></li>
+								<li class="nav-item"><a class="nav-link" href="#" role="button">크루</a></li>
+								<li class="nav-item"><a class="nav-link" href="/travel/hotel/hotelPage" role="button">숙소</a></li>
+								<li class="nav-item"><a class="nav-link" href="/travel/planPlace/placePage">플레이스</a></li>
+							</ul>
+							<c:choose>
+								<c:when test="${!empty sessionuser}">
+									<ul class="navbar-nav align-items-center">
+										<li>
+											<c:choose>
+												<c:when test="${sessionuser.user_image != null}">
+													<img alt="썸네일" src="/uploadFiles/profileImage/${sessionuser.user_image}" style="width: 2em; height: 2em; border-radius: 50%;">
+												</c:when>
+												<c:otherwise>
+													<img alt="썸네일" src="/travel/resources/img/icon.png" style="width: 2em; height: 2em; border-radius: 50%;">
+												</c:otherwise>
+											</c:choose>
+										</li>
+										<li class="nav-item dropdown">
+											<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ${sessionuser.user_nickname} </a>
+											<ul class="dropdown-menu" aria-labelledby="userDropdown">
+												<li><a class="dropdown-item" href="/travel/myPage">마이페이지</a></li>
+												<li><a class="dropdown-item" href="/travel/crew/main">크루페이지</a></li>
+												<li><a class="dropdown-item" href="/travel/allCouponPage">쿠폰</a></li>
+												<li><a class="dropdown-item" href="/travel/messageGot">쪽지</a></li>
+												<li><a class="dropdown-item" href="javascript:logout();">로그아웃</a></li>
+											</ul>
+										</li>
+									</ul>
+								</c:when>
+								<c:otherwise>
+									<a class="nav-link" href="/travel/login">로그인</a>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>
+
+    <div class="row mt-4 justify-content-center">
+        <div class="col-10">
 <!--숙소 제목 및 정보들입니다.-->        
             <div class="row">
                 <div class="col">
                     <span class="hotelTitleBox">${hotelMap.hotelDto.hotel_title }</span>
                 </div>
             </div>
-            <div class="row align-items-center mb-3">
+            <div class="row mb-2">
                 <div class="col-auto pe-1">
-                    <i class ="bi bi-star-fill" style="font-size: 0.9em;"></i>
+                    <i class ="bi bi-star-fill" style="font-size: 0.85em;"></i>
                 </div>
                 <div class="col-auto px-0">
                 	<c:choose>
@@ -392,7 +448,7 @@
                     <span class="hotelSubTitleBox1">∙후기</span>
                     <c:choose>
                     	<c:when test="${!empty hotelReviewPoint}">
-                    		<span class="hotelSubTitleBox1">${hotelReviewPoint}</span>
+                    		<span class="hotelSubTitleBox1" style="font-size: 0.85em;">${hotelReviewPoint}</span>
                     	</c:when>
                     	<c:otherwise>
                     		<span class="hotelSubTitleBox1">아직없음</span>
@@ -431,33 +487,33 @@
                         <div class="col-auto">
                             <div class="row">
                                 <div class="col-auto pe-1">
-                                    <span style="font-size: 20px; font-weight: bold;">${hotelMap.userDto.user_nickname }</span>
+                                    <span style="font-size: 1.3em; font-weight: 500;">${hotelMap.userDto.user_nickname }</span>
                                 </div>
                                 <div class="col-auto px-0">
-                                    <span style="font-size: 20px; font-weight: bold;">님이 호스팅하는 숙소</span>
+                                    <span style="font-size: 1.3em; font-weight: 500;">님이 호스팅하는 숙소</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-auto pe-0">
-                                    <span style="font-size: 14px;">최대 인원${hotelMap.hotelDto.hotel_limit_number }명</span>
+                                    <span style="font-size: 0.85em;">최대 인원${hotelMap.hotelDto.hotel_limit_number }명</span>
                                 </div>
                                 <div class="col-auto px-1">
                                     <span>∙</span>
                                 </div>
                                 <div class="col-auto px-0">
-                                    <span style="font-size: 14px;">침실${hotelMap.hotelDto.hotel_bedRoom }개</span>
+                                    <span style="font-size: 0.85em;">침실${hotelMap.hotelDto.hotel_bedRoom }개</span>
                                 </div>
                                 <div class="col-auto px-1">
                                     <span>∙</span>
                                 </div>
                                 <div class="col-auto px-0">
-                                    <span style="font-size: 14px;">침대${hotelMap.hotelDto.hotel_bed }개</span>
+                                    <span style="font-size: 0.85em;">침대${hotelMap.hotelDto.hotel_bed }개</span>
                                 </div>
                                 <div class="col-auto px-1">
                                     <span>∙</span>
                                 </div>
                                 <div class="col-auto px-0">
-                                    <span style="font-size: 14px;">욕실${hotelMap.hotelDto.hotel_bathRoom }개</span>
+                                    <span style="font-size: 0.85em;">욕실${hotelMap.hotelDto.hotel_bathRoom }개</span>
                                 </div>
                             </div>
                         </div>
@@ -469,54 +525,54 @@
 <!--숙소 소개입니다.-->                    
                     <div class="row mb-4">
                         <div class="col-auto">
-                            <i class="bi bi-door-closed" style="font-size: 25px;"></i>
+                            <i class="bi bi-door-closed" style="font-size: 1.6em;"></i>
                         </div>
                         <div class="col-auto">
                             <div class="row">
                                 <div class="col ps-0">
-                                    <span style="font-size: 14px; font-weight: 600;">셀프 체크인</span>
+                                    <span style="font-size: 0.9em; font-weight: 500;">셀프 체크인</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col ps-0">
-                                    <span style="font-size: 13px; color: gray;">키패드를 이용해 체크인하세요.</span>
+                                    <span style="font-size: 0.85em; color: gray;">키패드를 이용해 체크인하세요.</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-auto">
-                            <i class="bi bi-trophy" style="font-size: 25px;"></i>
+                            <i class="bi bi-trophy" style="font-size: 1.6em;"></i>
                         </div>
                         <div class="col-auto ps-0">
                             <div class="row">
                                 <div class="col-auto pe-0">
-                                    <span style="font-size: 14px; font-weight: 600;">${hotelMap.userDto.user_nickname }</span>
+                                    <span style="font-size: 0.9em; font-weight: 500;">${hotelMap.userDto.user_nickname }</span>
                                 </div>
                                 <div class="col-auto px-0">
-                                    <span style="font-size: 14px; font-weight: 600;">님은 슈퍼호스트입니다</span>
+                                    <span style="font-size: 0.9em; font-weight: 500;">님은 슈퍼호스트입니다</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <span style="font-size: 13px; color: gray;">편안히 머무를 수 있도록 최선을 다하는 호스트입니다.</span>
+                                    <span style="font-size: 0.85em; color: gray;">편안히 머무를 수 있도록 최선을 다하는 호스트입니다.</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-auto">
-                            <i class="bi bi-geo-alt" style="font-size: 25px;"></i>
+                            <i class="bi bi-geo-alt" style="font-size: 1.6em;"></i>
                         </div>
                         <div class="col-auto">
                             <div class="row">
                                 <div class="col ps-0">
-                                    <span style="font-size: 14px; font-weight: 600;">훌륭한 숙소 위치</span>
+                                    <span style="font-size: 0.9em; font-weight: 500;">훌륭한 숙소 위치</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col ps-0">
-                                    <span style="font-size: 13px; color: gray;">최근 숙박한 게스트중 100%가 별점 5점을 준 숙소입니다.</span>
+                                    <span style="font-size: 0.85em; color: gray;">최근 숙박한 게스트중 100%가 별점 5점을 준 숙소입니다.</span>
                                 </div>
                             </div>
                         </div>
@@ -525,7 +581,7 @@
 <!--숙소 정보입니다.-->                    
                     <div class="row my-5">
                         <div class="col">
-                            <span style="font-size: 14px;">
+                            <span style="font-size: 0.9em;">
                                 ${hotelMap.hotelDto.hotel_content}
                             </span>
                         </div>
@@ -534,7 +590,7 @@
 <!--숙소 편의시설입니다.-->                    
                     <div class="row mb-3">
                         <div class="col">
-                            <span style="font-size: 20px; font-weight: bold;">숙소 편의시설</span>
+                            <span style="font-size: 1.3em; font-weight: 500;">숙소 편의시설</span>
                         </div>
                     </div>
                     <div class="row row-cols-2">
@@ -545,7 +601,7 @@
 	                                	<img alt="" src="/uploadFiles/hotelFacilityIcon/${hotelFacilityList.hotelFacilityDto.hotel_facility_image}" style="width: 23px;">
 	                                </div>
 	                                <div class="col ps-0">
-	                                    <span style="font-size: 14px;">${hotelFacilityList.hotelFacilityDto.hotel_facility_name}</span>
+	                                    <span style="font-size: 0.9em;">${hotelFacilityList.hotelFacilityDto.hotel_facility_name}</span>
 	                                </div>
 	                            </div>
 	                        </div>
@@ -568,10 +624,10 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col-auto pe-0">
-                                                <span style="font-size: 1.4em; font-weight: bold;">\</span>
+                                                <span style="font-size: 1.4em; font-weight: 600;">\</span>
                                             </div>
                                             <div class="col px-0">
-                                                <span style="font-size: 1.4em; font-weight: bold;">
+                                                <span style="font-size: 1.4em; font-weight: 600;">
                                                 	<fmt:formatNumber pattern="#,###" value="${hotelMap.hotelDto.hotel_price }" var="price"/>${price }
                                                 </span>
                                                 <span style="font-size: 1em;">/박</span>
@@ -586,7 +642,7 @@
                                             <div class="col-auto px-0">
                                             	<c:choose>
                                             		<c:when test="${!empty hotelAvgReviewPoint}">
-                                            			<span style="font-size: 0.9em; font-weight: bold;">
+                                            			<span style="font-size: 0.9em; font-weight: 500;">
                                                 			${hotelAvgReviewPoint}
                                                 		</span>
                                             		</c:when>
@@ -601,17 +657,17 @@
                                                 <span>∙</span>
                                             </div>
                                             <div class="col-auto px-0">
-                                                <span style="font-size: 0.9em; color: gray;">∙후기</span>
+                                                <span style="font-size: 0.85em; color: gray;">∙후기</span>
                                             </div>
                                             <div class="col-auto ps-0">
                                             	<c:choose>
                                             		<c:when test="${!empty hotelReviewPoint}">
-                                            			<span style="font-size: 0.9em; color: gray;">
+                                            			<span style="font-size: 0.85em; color: gray;">
                                                 			${hotelReviewPoint}
                                                 		</span>
                                             		</c:when>
                                             		<c:otherwise>
-                                            			<span style="font-size: 0.9em; color: gray;">
+                                            			<span style="font-size: 0.85em; color: gray;">
                                                 			없음
                                                 		</span>
                                             		</c:otherwise>
@@ -626,7 +682,7 @@
                                             <div class="col-6">
                                                 <div class="row">
                                                     <div class="col-auto">
-                                                        <span style="font-size: 0.7em; font-weight: bold;">체크인</span>
+                                                        <span style="font-size: 0.7em; font-weight: 500;">체크인</span>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -638,7 +694,7 @@
                                             <div class="col-6">
                                                 <div class="row">
                                                     <div class="col-auto">
-                                                        <span style="font-size: 0.7em; font-weight: bold;">체크아웃</span>
+                                                        <span style="font-size: 0.7em; font-weight: 500;">체크아웃</span>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -650,7 +706,7 @@
                                         </div>
                                         <div class="row mt-1">
                                             <div class="col-auto">
-                                                <span style="font-size: 0.7em; font-weight: bold;">인원</span>
+                                                <span style="font-size: 0.7em; font-weight: 500;">인원</span>
                                             </div>
                                         </div>
                                         <div class="row py-1 align-items-center">
@@ -658,7 +714,7 @@
                                                 <i onclick="clickDashButton()" class="bi bi-dash-lg" style="font-size: 1em;"></i>
                                             </div>
                                             <div class="col-auto">
-                                                <span id="numberOfPeople"></span>
+                                                <span id="numberOfPeople" style="color: gray;"></span>
                                             </div>
                                             <div class="col-auto">
                                                 <i onclick="clickPlusButton()" class="bi bi-plus-lg" style="font-size: 1em;"></i>
@@ -716,7 +772,7 @@
                                     </div>
                                 </div>
                                 <hr class="my-3">
-                                <div class="row" style="font-size: 1em; font-weight: bold;">
+                                <div class="row" style="font-size: 1.1em; font-weight: 500;">
                                     <div class="col text-start">
                                         <span>총 합계</span>
                                     </div>
@@ -736,15 +792,15 @@
             <hr class="my-5">
             <div class="row align-items-center">
                 <div class="col-auto pe-1">
-                    <i class ="bi bi-star-fill" style="font-size: 16px;"></i>
+                    <i class ="bi bi-star-fill" style="font-size: 1.1em;"></i>
                 </div>
                 <div class="col-auto px-0">
                 	<c:choose>
                 		<c:when test="${!empty hotelAvgReviewPoint}">
-                			 <span style="font-size: 20px; font-weight: bold;">${hotelAvgReviewPoint}</span>
+                			 <span style="font-size: 1.3em; font-weight: 500;">${hotelAvgReviewPoint}</span>
                 		</c:when>
 	                	<c:otherwise>
-	                		 <span style="font-size: 20px; font-weight: bold;">0.0</span>
+	                		 <span style="font-size: 1.3em; font-weight: 500;">0.0</span>
 	                	</c:otherwise>
                 	</c:choose>
                 </div>
@@ -752,10 +808,10 @@
                     <span style="font-size: 20px; font-weight: bold;">∙후기</span>
                     <c:choose>
                     	<c:when test="${!empty hotelReviewPoint}">
-                    		<span style="font-size: 20px; font-weight: bold;">${hotelReviewPoint}</span>
+                    		<span style="font-size: 1.3em; font-weight: 500;">${hotelReviewPoint}</span>
                     	</c:when>
                     	<c:otherwise>
-                    		<span style="font-size: 20px; font-weight: bold;">아직없음</span>
+                    		<span style="font-size: 1.3em; font-weight: 500;">아직없음</span>
                     	</c:otherwise>
                     </c:choose>
                 </div>
@@ -770,12 +826,12 @@
 	                        <div class="col px-0">
 	                            <div class="row">
 	                                <div class="col">
-	                                    <span style="font-size: 15px; font-weight: bold;">${list.userDto.user_nickname }</span>
+	                                    <span style="font-size: 1em; font-weight: 500;">${list.userDto.user_nickname }</span>
 	                                </div>
 	                            </div>
 	                            <div class="row">
 	                                <div class="col">
-	                                    <span style="font-size: 15px; color: gray;">2023년 7월</span>
+	                                    <span style="font-size: 0.85em; color: gray;">2023년 7월</span>
 	                                </div>
 	                            </div>
 	                        </div>
@@ -799,17 +855,17 @@
 <!--호스팅 지역-->            
             <div class="row mb-4">
                 <div class="col">
-                    <span style="font-size: 20px; font-weight: bold;">호스팅 지역</span>
+                    <span style="font-size: 1.3em; font-weight: 500;">호스팅 지역</span>
                 </div>
             </div>
             <div class="row pb-2">
                 <div class="col">
-                    <div id="map" style="width:100%; height:500px;"></div>
+                    <div id="map" style="width:100%; height: 32em;"></div>
                 </div>
             </div>
             <div class="row mt-2">
             	<div class="col">
-            		<span style="font-size: 14px; font-weight: 600;">${hotelMap.hotelDto.hotel_address}</span>
+            		<span style="font-size: 0.85em; font-weight: 500;">${hotelMap.hotelDto.hotel_address}</span>
             	</div>
             </div>
             <hr class="my-5">
@@ -821,41 +877,41 @@
                 <div class="col ps-0">
                     <div class="row">
                         <div class="col-auto pe-1">
-                            <span style="font-size: 20px; font-weight: bold;">호스트:</span>
+                            <span style="font-size: 1.2em; font-weight: 500;">호스트:</span>
                         </div>
                         <div class="col px-0">
-                            <span style="font-size: 20px; font-weight: bold;">${hotelMap.userDto.user_nickname }</span>
+                            <span style="font-size: 1.2em; font-weight: 500;">${hotelMap.userDto.user_nickname }</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-auto pe-1">
-                            <span style="font-size: 13px; color: gray;">회원 가입일:</span>
+                            <span style="font-size: 0.85em; color: gray;">회원 가입일:</span>
                         </div>
                         <div class="col px-0">
-                            <span style="font-size: 13px; color: gray;">2020년 5월</span>
+                            <span style="font-size: 0.85em; color: gray;">2020년 5월</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row my-4">
+            <div class="row my-4 align-items-center">
                 <div class="col-auto">
-                    <i class="bi bi-star-fill" style="font-size: 14px;"></i>
+                    <i class="bi bi-star-fill" style="font-size: 0.85em;"></i>
                 </div>
                 <div class="col-auto ps-0 pe-1">
-                    <span style="font-size: 14px;">후기</span>
+                    <span style="font-size: 0.85em;">후기</span>
                 </div>
                	<c:choose>
                 	<c:when test="${!empty hotelReviewPoint}">
                			<div class="col-auto px-0">
-		                    <span style="font-size: 14px;">${hotelReviewPoint}</span> 
+		                    <span style="font-size: 0.85em;">${hotelReviewPoint}</span> 
                 		</div>
 		                <div class="col-auto px-0">
-		                    <span style="font-size: 14px;">개</span>
+		                    <span style="font-size: 0.85em;">개</span>
 		                </div>
 	                </c:when>
 	                	<c:otherwise>
 	                		<div class="col-auto px-0">
-		                		<span style="font-size: 14px;">아직 없음</span>	                		
+		                		<span style="font-size: 0.85em;">아직 없음</span>	                		
 	                		</div>
 	                	</c:otherwise>
                 	</c:choose>
@@ -863,18 +919,18 @@
                     <i class="bi bi-shield-fill-check" style="font-size: 14px;"></i>
                 </div>
                 <div class="col-auto px-0">
-                    <span style="font-size: 14px;">본인 인증 완료</span>
+                    <span style="font-size: 0.85em;">본인 인증 완료</span>
                 </div>
                 <div class="col-auto">
-                    <i class="bi bi-trophy-fill" style="font-size: 14px;"></i>
+                    <i class="bi bi-trophy-fill" style="font-size: 0.85em;"></i>
                 </div>
                 <div class="col px-0">
-                    <span style="font-size: 14px;">슈퍼호스트</span>
+                    <span style="font-size: 0.85em;">슈퍼호스트</span>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <span style="font-size: 14px;">
+                    <span style="font-size: 0.95em;">
                         은퇴 후 안동에 귀향하여 우리의 전통한옥을 사랑하고 연구하며 알리는 사람입니다.
                         좌우명
                         미소짓고
@@ -889,69 +945,69 @@
 <!--알아두어야 할 사항-->
             <div class="row mb-3">
                 <div class="col">
-                    <span style="font-size: 20px; font-weight: bold;">알아두어야 할 사항</span>
+                    <span style="font-size: 1.3em; font-weight: 500;">알아두어야 할 사항</span>
                 </div>
             </div>
             <div class="row mb-5">
                 <div class="col">
                     <div class="row">
                         <div class="col">
-                            <span style="font-size: 14px; font-weight: bold;">숙소 이용규칙</span>
+                            <span style="font-size: 1em; font-weight: 500;">숙소 이용규칙</span>
                         </div>
                     </div>
                     <div class="row mt-2">
                         <div class="col-auto pe-1">
-                            <span style="font-size: 14px;">체크인 가능 시간:</span>
+                            <span style="font-size: 0.85em;">체크인 가능 시간:</span>
                         </div>
                         <div class="col px-0">
-                            <span style="font-size: 14px;">오후 ${hotelMap.hotelDto.hotel_check_in_time }:00 이후</span>
+                            <span style="font-size: 0.85em;">오후 ${hotelMap.hotelDto.hotel_check_in_time }:00 이후</span>
                         </div>
                     </div>
                     <div class="row mt-2">
                         <div class="col-auto pe-1">
-                            <span style="font-size: 14px;">체크아웃 가능 시간:</span>
+                            <span style="font-size: 0.85em;">체크아웃 가능 시간:</span>
                         </div>
                         <div class="col px-0">
-                            <span style="font-size: 14px;">오전 ${hotelMap.hotelDto.hotel_check_out_time}:00 전까지</span>
+                            <span style="font-size: 0.85em;">오전 ${hotelMap.hotelDto.hotel_check_out_time}:00 전까지</span>
                         </div>
                     </div>
                     <div class="row mt-2">
                         <div class="col-auto pe-1">
-                            <span style="font-size: 14px;">게스트 정원</span>
+                            <span style="font-size: 0.85em;">게스트 정원</span>
                         </div>
                         <div class="col px-0">
-                            <span style="font-size: 14px;">${hotelMap.hotelDto.hotel_limit_number }명</span>
+                            <span style="font-size: 0.85em;">${hotelMap.hotelDto.hotel_limit_number }명</span>
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="row">
                         <div class="col">
-                            <span style="font-size: 14px; font-weight: bold;">안전 및 숙소</span>
+                            <span style="font-size: 1em; font-weight: 500;">안전 및 숙소</span>
                         </div>
                     </div>
                     <div class="row mt-2">
                         <div class="col">
-                            <span style="font-size: 14px;">일산화탄소 경보기</span>
+                            <span style="font-size: 0.85em;">일산화탄소 경보기</span>
                         </div>
                     </div>
                     <div class="row mt-2">
                         <div class="col">
-                            <span style="font-size: 14px;">화재경보기</span>
+                            <span style="font-size: 0.85em;">화재경보기</span>
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="row">
                         <div class="col">
-                            <span style="font-size: 14px; font-weight: bold;">환불 정책</span>
+                            <span style="font-size: 1em; font-weight: 500;">환불 정책</span>
                         </div>
                     </div>
                     <div class="row my-2">
                         <div class="col">
-                        	<span id="checkInDay" style="font-size: 14px;"></span>
-                            <span style="font-size: 14px;">오후 12:00</span>
-                            <span style="font-size: 14px;">전에 취소하면 부분 환불을 받으실수 있습니다.</span>
+                        	<span id="checkInDay" style="font-size: 0.85em;"></span>
+                            <span style="font-size: 0.85em;">오후 12:00</span>
+                            <span style="font-size: 0.85em;">전에 취소하면 부분 환불을 받으실수 있습니다.</span>
                         </div>
                     </div>
                 </div>
@@ -959,25 +1015,32 @@
         </div>
     </div>
 </div>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col" style="background-color: #ededed; height: 10em;">
-            <div class="row">
+<div class="container" >
+    <div class="row justify-content-center">
+        <div class="col-10" style="background-color: #ededed;">
+            <div class="row mt-4">
                 <div class="col">
-                    <div class="row my-4">
-                        <div class="col">
-                            <span style="font-size: 14px; font-weight: bold;">트립스테이션 지원</span>
+                    <div class="row">
+                        <div class="col-auto">
+                            <span style="font-size: 0.8em;">
+                                © 2023 TripStation, Inc. · 개인정보 처리방침  · 이용약관  · 사이트맵  · 환불 정책  · 회사 세부정보
+                            </span>
                         </div>
-                        <div class="col">
-                            <span style="font-size: 14px; font-weight: bold;">커뮤니티</span>
-                        </div>
-                        <div class="col">
-                            <span style="font-size: 14px; font-weight: bold;">호스팅</span>
-                        </div>
-                        <div class="col">
-                            <span style="font-size: 14px; font-weight: bold;">트립스테이션</span>
+                        <div class="col d-flex justify-content-end">
+                            <i class="bi bi-instagram"></i>
+                            <i class="bi bi-twitter px-3"></i>
+                            <i class="bi bi-envelope"></i>
                         </div>
                     </div>
+                    <hr class="my-2">
+                </div>
+                <div class="col"></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <span style="font-size: 0.5em; color: gray;">
+                        웹사이트 제공자: Tripstation Ireland KOREA, private unlimited company, 8 Hanover Quay Dublin 2, D02 DP23 Ireland | 이사: hoyeong shin | VAT 번호: IE982232384L | 사업자 등록 번호: IE 123125 | 연락처: terms@tripstation.com, 웹사이트, 080-822-0230 | 호스팅 서비스 제공업체: 아마존 웹서비스 | 트립스테이션은 통신판매 중개자로 트립스테이션 플랫폼을 통하여 게스트와 호스트 사이에 이루어지는 통신판매의 당사자가 아닙니다. 트립스테이션 플랫폼을 통하여 예약된 숙소, 체험, 호스트 서비스에 관한 의무와 책임은 해당 서비스를 제공하는 호스트에게 있습니다.
+                    </span>
                 </div>
             </div>
         </div>

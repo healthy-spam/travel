@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@300;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <script type="text/javascript">
 
 const hotelTitleInput = document.querySelector("input[type='text'][name='hotel_title']");
@@ -15,6 +15,10 @@ const hotelTitleInput = document.querySelector("input[type='text'][name='hotel_t
 </script>
 
 <style>
+
+	body {
+		font-family: 'Noto Sans KR', sans-serif;	
+	}
 
     .nextButton {
 	    width: auto;

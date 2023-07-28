@@ -61,7 +61,7 @@ public class PlanPlaceController {
 	}
 
 	@RequestMapping("PlanPlaceDetailPage")
-	public String PlanPlaceDetailPage(HttpSession session, int plan_place_id, Model model) {
+	public String planPlaceDetailPage(HttpSession session, int plan_place_id, Model model) {
 
 		UserDto userDto = (UserDto) session.getAttribute("sessionuser");
 
@@ -87,14 +87,14 @@ public class PlanPlaceController {
 		return "planPlace/PlanPlaceDetailPage";
 	}
 
-	@RequestMapping("writePlanPlaceCommentProcess")
+	@RequestMapping("writeplanPlaceCommentProcess")
 	public String writePlanPlaceCommentProcess(PlanPlaceCommentDto planPlaceCommentDto) {
 
 		planPlaceService.writePlanPlaceCommentByUser(planPlaceCommentDto);
 
 		int plan_place_id = planPlaceCommentDto.getPlan_place_id();
 
-		return "redirect:PlanPlaceDetailPage?plan_place_id=" + plan_place_id;
+		return "redirect:planPlaceDetailPage?plan_place_id=" + plan_place_id;
 	}
 
 //	@RequestMapping("clickLoveProcess")
@@ -105,21 +105,33 @@ public class PlanPlaceController {
 //		return "redirect:./PlanPlaceDetailPage?plan_place_id=" + plan_place_id;
 //	}
 //
-//	@RequestMapping("clickLoveProcess1")
-//	public String clickLoveProcess1(int plan_place_id, HttpSession session) {
-//
-//		String sortType = (String) session.getAttribute("sortType");
-//
-//		planPlaceService.clickLove(plan_place_id, session);
-//
-//		if (sortType == null) {
-//
-//			return "redirect:placePage";
-//
-//		} else {
-//
-//			return "redirect:placePage?sortType=" + sortType;
-//		}
-//	}
+	@RequestMapping("clickLoveProcess1")
+	public String clickLoveProcess1(int plan_place_id, HttpSession session) {
+
+		String sortType = (String) session.getAttribute("sortType");
+		
+		UserDto userDto =  (UserDto)session.getAttribute("sessionuser");
+		
+		PlanPlaceLoveDto planPlaceLoveDto = new PlanPlaceLoveDto();
+		
+		if (userDto != null) {
+			
+			int user_id = userDto.getUser_id();
+			
+			planPlaceLoveDto.setPlan_place_id(plan_place_id);
+			planPlaceLoveDto.setUser_id(user_id);
+		
+			planPlaceService.clickLove(planPlaceLoveDto);
+		}
+
+		if (sortType == null) {
+
+			return "redirect:placePage";
+
+		} else {
+
+			return "redirect:placePage?sortType=" + sortType;
+		}
+	}
 
 }

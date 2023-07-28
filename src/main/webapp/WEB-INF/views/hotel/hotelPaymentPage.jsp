@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@300;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
@@ -21,6 +22,10 @@ function returnPage() {
 </script>
 <style>
 
+	body {
+		font-family: 'Noto Sans KR', sans-serif;	
+	}
+
     .reserveCard {
         width: auto;
         height: auto;
@@ -32,9 +37,8 @@ function returnPage() {
     }
 
     .imgCard {
-
-        width: 7em;
-        height: 7em;
+        width: 6.5em;
+        height: 5em;
         border: none;
         border-radius: 10px;
     }
@@ -42,12 +46,13 @@ function returnPage() {
     .reserveButton {
 	    width: 100%;
 	    height: 100%;
-	    background-image: linear-gradient(98deg,#03c75a,#49c6dd);
+	    background-image: linear-gradient(30deg,#00b078,#00b067);
+	    /* background-color: #00d478; */
 	    border-radius: 10px;
 	    border: none;
 	    padding: 10px 20px;
 	    color: rgb(255, 255, 255);
-	    font-weight: 600;
+	    font-weight: 500;
 	    font-size: 1.2em;
 	}
         
@@ -56,8 +61,66 @@ function returnPage() {
 <body>
 
 <div class="container">
-<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
-    <div class="row mt-5">
+	
+	<div class="row fw-bold justify-content-center">
+			<div class="col-auto"></div>
+			<div class="col-11">
+				<nav class="navbar navbar-expand-lg bg-body-tertiary">
+					<div class="container p-0">
+						<span class="fw-bold navbar-brand mb-0 h1" style="font-size: 30px; font-weight: 700;"> TripStation</span>
+						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav mb-2 mb-lg-0">
+								<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" aria-current="page" data-bs-toggle="dropdown" href="/travel/main" aria-expanded="false">여행</a>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="/travel/main">맞춤여행</a></li>
+										<li><a class="dropdown-item" href="/travel/package">패키지</a></li>
+									</ul>
+								</li>
+								<li class="nav-item"><a class="nav-link" href="/travel/plan/planPage">플래너</a></li>
+								<li class="nav-item"><a class="nav-link" href="#" role="button">크루</a></li>
+								<li class="nav-item"><a class="nav-link" href="/travel/hotel/hotelPage" role="button">숙소</a></li>
+								<li class="nav-item"><a class="nav-link" href="/travel/planPlace/placePage">플레이스</a></li>
+							</ul>
+							<c:choose>
+								<c:when test="${!empty sessionuser}">
+									<ul class="navbar-nav align-items-center ms-auto">
+										<li>
+											<c:choose>
+												<c:when test="${sessionuser.user_image != null}">
+													<img alt="썸네일" src="/uploadFiles/profileImage/${sessionuser.user_image}" style="width: 2em; height: 2em; border-radius: 50%;">
+												</c:when>
+												<c:otherwise>
+													<img alt="썸네일" src="/travel/resources/img/icon.png" style="width: 2em; height: 2em; border-radius: 50%;">
+												</c:otherwise>
+											</c:choose>
+										</li>
+										<li class="nav-item dropdown">
+											<a class="nav-link dropdown-toggle pe-0" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ${sessionuser.user_nickname} </a>
+											<ul class="dropdown-menu" aria-labelledby="userDropdown">
+												<li><a class="dropdown-item" href="/travel/myPage">마이페이지</a></li>
+												<li><a class="dropdown-item" href="/travel/crew/main">크루페이지</a></li>
+												<li><a class="dropdown-item" href="/travel/allCouponPage">쿠폰</a></li>
+												<li><a class="dropdown-item" href="/travel/messageGot">쪽지</a></li>
+												<li><a class="dropdown-item" href="javascript:logout();">로그아웃</a></li>
+											</ul>
+										</li>
+									</ul>
+								</c:when>
+								<c:otherwise>
+									<a class="nav-link" href="/travel/login">로그인</a>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>
+
+    <div class="row mt-3 justify-content-center">
         <div class="col-auto">
             <div class="row mt-1">
                 <div class="col pe-0">
@@ -67,67 +130,67 @@ function returnPage() {
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-11">
              <!-- 확인 및 결제 -->
             <div class="row mb-4">
                 <div class="col">
-                    <span style="font-size: 1.9em; font-weight: 600;">확인 및 결제</span>
+                    <span style="font-size: 1.8em; font-weight: 500;">확인 및 결제</span>
                 </div>
             </div>
             <div class="row mb-5">
                 <div class="col-6">
                     <div class="row">
                         <!-- 결제정보란 -->
-                        <div class="col pe-5">                
+                        <div class="col">                
                             <!-- 예약 정보 -->
                             <div class="row my-3">
                                 <div class="col">
-                                    <span style="font-size: 1.4em; font-weight: 600;">예약 정보</span>
+                                    <span style="font-size: 1.4em; font-weight: 500;">예약 정보</span>
                                 </div>
                             </div>
                             <!-- 날짜 -->
                             <div class="row">
                                 <div class="col">
-                                    <span style="font-size: 1em; font-weight: 600;">날짜</span>
+                                    <span style="font-size: 1em; font-weight: 500;">날짜</span>
                                 </div>
                                 <div class="col text-end">
-                                    <span style="font-size: 1em; font-weight: 600;">수정</span>
+                                    <span style="font-size: 0.9em; font-weight: 500;">수정</span>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col">
-                                    <span style="font-size: 1em;"><fmt:formatDate value="${formatCheckInDate }" pattern="M월 d일"/>~<fmt:formatDate value="${formatCheckOutDate }" pattern="d일"/></span>
+                                    <span style="font-size: 0.9em;"><fmt:formatDate value="${formatCheckInDate }" pattern="M월 d일"/>~<fmt:formatDate value="${formatCheckOutDate }" pattern="d일"/></span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <span style="font-size: 1em; font-weight: 600;">게스트</span>
+                                    <span style="font-size: 1em; font-weight: 500;">게스트</span>
                                 </div>
                                 <div class="col text-end">
-                                    <span style="font-size: 1em; font-weight: 600;">수정</span>
+                                    <span style="font-size: 0.9em; font-weight: 500;">수정</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <span style="font-size: 1em;">게스트 ${guestNum}명</span>
+                                    <span style="font-size: 0.9em;">게스트 ${guestNum}명</span>
                                 </div>
                             </div>
                             <hr class="my-4">
                             <!-- 환불정책 -->
-                            <div class="row pb-4">
+                            <div class="row pb-3">
                                 <div class="col">
-                                    <span style="font-size: 1.4em; font-weight: 600;">환불정책</span>
+                                    <span style="font-size: 1.4em; font-weight: 500;">환불정책</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-auto pe-0">
-                                    <span style="font-size: 0.9em; font-weight: 600;">
+                                    <span style="font-size: 0.9em; font-weight: 500;">
 	                                    <c:set var="currentDate" value="<%= new java.util.Date() %>" />
 	    								<fmt:formatDate value="${currentDate}" pattern="M월 d일" />
                                     </span>
                                 </div>
                                 <div class="col-auto ps-0">
-                                    <span style="font-size: 0.9em; font-weight: 600;">
+                                    <span style="font-size: 0.9em; font-weight: 500;">
                                         오후 2:00 전까지 무료로 취소하실 수 있습니다.
                                     </span>
                                 </div>
@@ -139,9 +202,9 @@ function returnPage() {
                             </div>
                             <hr class="my-4">
                             <!-- 기본 규칙 -->
-                            <div class="row pb-4">
+                            <div class="row pb-3">
                                 <div class="col">
-                                    <span style="font-size: 1.4em; font-weight: 600;">기본 규칙</span>
+                                    <span style="font-size: 1.4em; font-weight: 500;">기본 규칙</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -190,26 +253,26 @@ function returnPage() {
                     </div>
                 </div>
                 <!-- 결제카드 박스 -->
-                <div class="col-5 ps-5">
-                    <div class="row">
+                <div class="col-5 ps-5 content-end">
+                    <div class="row mt-3">
                         <div class="col">
-                            <div class="reserveCard">
+                            <div class="reserveCard">	
                                 <!-- 사진 -->
                                 <div class="row">
                                     <div class="col-auto pe-0">
-                                        <img class="imgCard" style="width: 100%;" src="/uploadFiles/hotelMainImage/${hotelMap.hotelDto.hotel_main_image}" alt="">
+                                        <img class="imgCard" src="/uploadFiles/hotelMainImage/${hotelMap.hotelDto.hotel_main_image}" alt="">
                                     </div>
                                     <div class="col-auto">
                                         <div class="row">
                                             <div class="col">
-                                                <span class="align-text-top" style="font-size: 0.7em; color: gray;">
+                                                <span class="align-text-top" style="font-size: 0.8em; color: gray;">
                                                 	${hotelMap.hotelDto.hotel_category}
                                                 </span>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col">
-                                                <span class="align-text-top" style="font-size: 0.8em;">
+                                                <span class="align-text-top" style="font-size: 0.85em;">
                                                 	${hotelMap.hotelDto.hotel_title}
                                                 </span>
                                             </div>
@@ -239,7 +302,7 @@ function returnPage() {
                                     <!-- 요금 세부정보 -->
                                     <div class="row">
                                         <div class="col">
-                                            <span style="font-size: 1.2em; font-weight: 600;">요금 세부정보</span>
+                                            <span style="font-size: 1.15em; font-weight: 500;">요금 세부정보</span>
                                         </div>
                                     </div>
                                     <div class="row my-2">
@@ -285,16 +348,16 @@ function returnPage() {
                                     <!-- 합계 금액 -->
                                     <div class="row my-1">
                                         <div class="col-auto pe-0">
-                                            <span style="font-size: 1em; font-weight: 600;">총 합계</span>
+                                            <span style="font-size: 1.15em; font-weight: 500;">총 합계</span>
                                         </div>
                                         <div class="col ps-0">
-                                            <span style="font-size: 1em; font-weight: 600;">(KRW)</span>
+                                            <span style="font-size: 1.15em; font-weight: 500;">(KRW)</span>
                                         </div>
                                         <div class="col-auto text-end pe-0">
-                                            <span style="font-size: 1em; font-weight: 600;">\</span>
+                                            <span style="font-size: 1.15em; font-weight: 600;">\</span>
                                         </div>
                                         <div class="col-auto text-end ps-0">
-                                            <span style="font-size: 1em; font-weight: 600;">
+                                            <span style="font-size: 1.15em; font-weight: 600;">
                                             	${totalFee }
                                             </span>
                                         </div>
@@ -312,10 +375,10 @@ function returnPage() {
         <div class="col" style="background-color: #ededed;">
             <div class="row mt-4">
                 <div class="col"></div>
-                <div class="col-8">
+                <div class="col-10">
                     <div class="row">
                         <div class="col-auto">
-                            <span style="font-size: 0.9em;">
+                            <span style="font-size: 0.8em;">
                                 © 2023 TripStation, Inc. · 개인정보 처리방침  · 이용약관  · 사이트맵  · 환불 정책  · 회사 세부정보
                             </span>
                         </div>
@@ -331,7 +394,7 @@ function returnPage() {
             </div>
             <div class="row mb-3">
                 <div class="col"></div>
-                <div class="col-8">
+                <div class="col-10">
                     <span style="font-size: 0.5em; color: gray;">
                         웹사이트 제공자: Tripstation Ireland KOREA, private unlimited company, 8 Hanover Quay Dublin 2, D02 DP23 Ireland | 이사: hoyeong shin | VAT 번호: IE982232384L | 사업자 등록 번호: IE 123125 | 연락처: terms@tripstation.com, 웹사이트, 080-822-0230 | 호스팅 서비스 제공업체: 아마존 웹서비스 | 트립스테이션은 통신판매 중개자로 트립스테이션 플랫폼을 통하여 게스트와 호스트 사이에 이루어지는 통신판매의 당사자가 아닙니다. 트립스테이션 플랫폼을 통하여 예약된 숙소, 체험, 호스트 서비스에 관한 의무와 책임은 해당 서비스를 제공하는 호스트에게 있습니다.
                     </span>
