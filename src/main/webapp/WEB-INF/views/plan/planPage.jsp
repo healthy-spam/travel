@@ -769,23 +769,23 @@ window.addEventListener("DOMContentLoaded", () => {
                         
                         <div class="row">
                            <div class="col">
-                              <h2 class="imgText mb-0" style="font-weight: bolder; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">여행의 시작</h2>
+                              <h2 class="imgText mb-0" style="font-weight: 600; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">여행의 시작</h2>
                            </div>
                         </div>
                         
                         <div class="row mt-0">
                            <div class="col">
-                              <h2 class="imgText" style="font-weight: bolder; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">TripStation</h2>      
+                              <h2 class="imgText" style="font-weight: 600; font-size: 48px; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">TripStation</h2>      
                            </div>
                         </div>
                         <div class="row mt-3">
                            <div class="col">
-                              <h3 class="m-0" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">다른 여행자들과 공유한 일정을 참조하거나</h3>
+                              <h3 class="m-0" style="font-size: 20px; font-weight: 400; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">다른 여행자들과 공유한 일정을 참조하거나</h3>
                            </div>
                         </div>
                         <div class="row">
                            <div class="col">
-                              <h3 class="" style="font-size: 20px; font-weight: 500; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">당신만의 특별한 여행 계획을 세우세요.</h3>
+                              <h3 class="" style="font-size: 20px; font-weight: 400; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">당신만의 특별한 여행 계획을 세우세요.</h3>
                            </div>
                         </div>                                               
                         
@@ -807,7 +807,7 @@ window.addEventListener("DOMContentLoaded", () => {
                          <div class="row">
                            <div class="col-4">&nbsp;</div>
                            <div class="col">         
-                              <a class="btn btn-lg d-grid align-items-center my-button" onclick="showModal();" style="border-radius: 18px; background: #03c75a; font-size: 20px; color: white; font-weight: bolder; border: 0px;">플래너 작성하기</a>         
+                              <a class="btn btn-lg d-grid align-items-center my-button" onclick="showModal();" style="border-radius: 18px; background: #03c75a; font-size: 20px; color: white; font-weight: 500; border: 0px;">플래너 작성하기</a>         
                            </div>                           
                            <div class="col-2">&nbsp;</div>
                         </div>
@@ -955,7 +955,7 @@ window.addEventListener("DOMContentLoaded", () => {
                                  </div>
                                  <div class="row mt-1">
                                     <a class="readPlace" href="" style="text-decoration: none;">
-                                    <span class="" style="color: #ffa800; font-size: 12px; font-weight: 500;">자세히보기</span>
+                                    <span class="" style="color: #ffa800; font-size: 12px; font-weight: 500;">상세보기</span>
                                     </a>
                                  </div>
                               </div>
