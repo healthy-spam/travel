@@ -95,4 +95,14 @@ public interface CouponMessageSqlMapper {
 
 	public int checkStored(@Param("userId") int userId, @Param("messageId") int messageId, @Param("userNickName") String userNickName);
 
+	public void deleteMessageGetPerman(@Param("messageId") int messageId);
+
+	public void deleteMessageSendPerman(@Param("messageId") int messageId);
+
+	public void restoreMessageGet(@Param("messageId") int messageId);
+
+	public void restoreMessageSend(@Param("messageId") int messageId);
+	
+	
+
 }

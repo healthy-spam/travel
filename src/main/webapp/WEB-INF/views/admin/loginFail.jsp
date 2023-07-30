@@ -97,9 +97,9 @@
 		            </div>
 	            </div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
             	<div class="col">
-            		<h3>로그인 실패! 아이디와 비밀번호를 확인해주세요</h3>
+            		<h5>로그인 실패! 아이디와 비밀번호를 확인해주세요</h5>
             	</div>
             </div>
         </div>

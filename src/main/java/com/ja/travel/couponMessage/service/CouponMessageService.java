@@ -274,9 +274,24 @@ public class CouponMessageService {
 		return list;
 	}
 
-	public void deleteMessageInTrash(int messageId) {
+	public void deleteMessageInTrash(int userId, int messageId) {
 		// TODO Auto-generated method stub
-		couponMessageSqlMapper.deleteMessagePerman(messageId);
+		
+		// 세션 받아와서 유저 닉네임 검색
+		UserDto userDto = couponMessageSqlMapper.getUserDtoByUserId(userId);
+		
+		// 휴지통에 있는 쪽지 아이디로 MessageDto 가져오기
+		MessageDto messageDto = couponMessageSqlMapper.getMessageDtoByMessageId(messageId);
+		System.out.println(userDto.getUser_nickname());
+		System.out.println(messageDto.getUser_nickname());
+		if(userDto.getUser_nickname().equals(messageDto.getUser_nickname())) {
+			// 휴지통에 있는 받은쪽지 영구삭제
+			couponMessageSqlMapper.deleteMessageGetPerman(messageId);
+		} else if(userDto.getUser_id() == messageDto.getUser_id()) {
+			// 휴지통에 있는 보낸쪽지 영구삭제
+			couponMessageSqlMapper.deleteMessageSendPerman(messageId);
+		}
+		
 	}
 
 	public List<Map<String, Object>> getMessageInStorage(int userId) {
@@ -336,6 +351,26 @@ public class CouponMessageService {
 		String userNickName = userDto.getUser_nickname();
 		System.out.println(userId);
 		return couponMessageSqlMapper.checkStored(userId, messageId, userNickName) > 0;
+	}
+
+
+	public void restoreMessageInTrash(int userId, int messageId) {
+		// TODO Auto-generated method stub
+		
+		// 세션 받아와서 유저 닉네임 검색
+		UserDto userDto = couponMessageSqlMapper.getUserDtoByUserId(userId);
+		
+		// 휴지통에 있는 쪽지 아이디로 MessageDto 가져오기
+		MessageDto messageDto = couponMessageSqlMapper.getMessageDtoByMessageId(messageId);
+		System.out.println(userDto.getUser_nickname());
+		System.out.println(messageDto.getUser_nickname());
+		if(userDto.getUser_nickname().equals(messageDto.getUser_nickname())) {
+			// 휴지통에 있는 받은쪽지 복구
+			couponMessageSqlMapper.restoreMessageGet(messageId);
+		} else if(userDto.getUser_id() == messageDto.getUser_id()) {
+			// 휴지통에 있는 보낸쪽지 복구
+			couponMessageSqlMapper.restoreMessageSend(messageId);
+		}
 	}
 
 

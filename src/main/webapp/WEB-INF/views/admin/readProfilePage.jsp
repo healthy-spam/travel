@@ -11,55 +11,9 @@ pageEncoding="UTF-8"%>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@100;300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/admin/leftNavi.css">
 <title>Insert title here</title>
 <style>
-
-	body {
-		font-family: 'Nanum Gothic', sans-serif;
-		font-family: 'Noto Sans KR', sans-serif;		
-	}
-	
-	#naviBack {
-		background-color:#303030;
-		color:white;
-		height: 100vh;
-	}
-	
-	#naviTS {
-		font-size : 150%;		
-	}
-	
-	.icon1 {
-		font-size : 150%;
-		cursor: pointer;
-		color: white;
-	}
-	
-	.naviIcon {
-		font-size : 150%;		
-		color:#ebebeb;
-	}
-	
-	.naviIconText {
-		font-size : 150%;
-		font-weight: bold;
-		color:#ebebeb;
-				
-	}	
-	
-	.smallCategory:hover {
-		background-color:#303030;
-	}
-	
-	.smallCategory {
-		font-size : 120%;
-		color:#ebebeb;
-	}
-	
-	.pageTitle {
-		font-weight:bold;
-		font-size: 25px;
-	}
 	
 	.email {
 		font-size: 15px;	
@@ -98,7 +52,7 @@ pageEncoding="UTF-8"%>
 							<div class="col">
 								<div class="row">
 								  <div class="col-sm-2 b">
-								  	닉네임
+								  	가이드명
 								  </div>
 								  <div class="col-sm-10">
 								  	${map.guideApplyDto.guide_apply_name}
@@ -127,7 +81,7 @@ pageEncoding="UTF-8"%>
 				<div class="row mt-5">
 				<form  method="post">
 					<div class="col mb-3">					  
-					  <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="승인/거절 메시지를 입력하세요" rows="8" name="guide_apply_message"></textarea>
+					  <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="승인/거절 메시지를 입력하세요" rows="8" name="guide_apply_message" style="resize:none;"></textarea>
 					</div>
 				<div class="row text-center">
 						<input type="hidden" value="${map.guideApplyDto.guide_apply_id}" name="guide_apply_id">
@@ -161,7 +115,7 @@ pageEncoding="UTF-8"%>
 					<div class="col">
 						<div class="row">
 						  <div class="col-sm-2 b">
-						  	닉네임
+						  	가이드명
 						  </div>
 						  <div class="col-sm-10">
 						  	${map.guideApplyDto.guide_apply_name}
@@ -212,7 +166,7 @@ pageEncoding="UTF-8"%>
 					<div class="col">
 						<div class="row">
 						  <div class="col-sm-2 b">
-						  	닉네임
+						  	가이드명
 						  </div>
 						  <div class="col-sm-10">
 						  	${map.guideApplyDto.guide_apply_name}

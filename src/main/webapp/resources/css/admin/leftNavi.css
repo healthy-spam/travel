@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+	body {
+		font-family: 'Nanum Gothic', sans-serif;
+		font-family: 'Noto Sans KR', sans-serif;
+		
+	}
+
+	#naviBack {
+		background-color:#303030;
+		color:white;
+		height: 100vh;
+	}
+	
+	#naviTS {
+		font-size : 150%;		
+	}
+	
+	.icon1 {
+		font-size : 150%;
+		cursor: pointer;
+		color: white;
+	}
+	
+	.naviIcon {
+		font-size : 150%;		
+		color:#ebebeb;
+	}
+	
+	.naviIconText {
+		font-size : 150%;
+		font-weight: bold;
+		color:#ebebeb;
+				
+	}	
+	
+	.smallCategory:hover {
+		background-color:#303030;
+	}
+	
+	.smallCategory {
+		font-size : 120%;
+		color:#ebebeb;
+	}
+	
+	.pageTitle {
+		font-weight:bold;
+		font-size: 25px;
+	}

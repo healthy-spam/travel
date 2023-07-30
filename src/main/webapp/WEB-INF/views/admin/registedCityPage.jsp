@@ -11,49 +11,9 @@ pageEncoding="UTF-8"%>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@100;300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/admin/leftNavi.css">
 <title>Insert title here</title>
 <style>
-
-	body {
-	font-family: 'Nanum Gothic', sans-serif;
-	font-family: 'Noto Sans KR', sans-serif;		
-	}
-	#naviBack {
-		background-color:#303030;
-		color:white;
-		height: 100vh;
-	}
-	
-	#naviTS {
-		font-size : 150%;		
-	}
-	
-	.icon1 {
-		font-size : 150%;
-		cursor: pointer;
-		color: white;
-	}
-	
-	.naviIcon {
-		font-size : 150%;		
-		color:#ebebeb;
-	}
-	
-	.naviIconText {
-		font-size : 150%;
-		font-weight: bold;
-		color:#ebebeb;
-				
-	}	
-	
-	.smallCategory:hover {
-		background-color:#303030;
-	}
-	
-	.smallCategory {
-		font-size : 120%;
-		color:#ebebeb;
-	}
 	
 	.deleteColumn {
 		width: 20%;
@@ -61,16 +21,27 @@ pageEncoding="UTF-8"%>
 	
 	.nameColumn {
 		width: 60%;
+		margin-left:20px;
 	}
 	
 	.indexColumn {
 		width: 20%
 	}
 	
-	.pageTitle {
-		font-weight:bold;
-		font-size: 25px;
+	.pageAction a.active {
+	background-color: #ced4da;
+	color: white;
+	border-color: #ced4da;
 	}
+	
+	.pageAct a:hover:not(.avtive) {
+		background-color: white;
+	}
+	
+	.page-link {
+		color: black;
+	}
+	
 </style>
 </head>
 <body>
@@ -92,7 +63,7 @@ pageEncoding="UTF-8"%>
 					  <thead class="table-secondary">
 					    <tr>
 					      <th scope="col" class ="indexColumn"></th>
-					      <th scope="col" class="nameColumn">도시 명</th>
+					      <th scope="col" class="nameColumn" style="padding-left:15px;">도시 명</th>
 					      <th scope="col" class="deleteColumn">도시 삭제</th>
 					    </tr>
 					  </thead>
@@ -101,11 +72,32 @@ pageEncoding="UTF-8"%>
 					    <tr>
 					      <th scope="row">${list.plan_city_id}</th>
 					      <td>${list.plan_city_name}</td>
-					      <td><button type="button" class="btn btn-danger btn-sm" onclick="location.href='deleteCityProcess?id=${list.plan_city_id}' ">삭제</button>
+					      <td style="padding-left:15px;"><button type="button" class="btn btn-danger btn-sm" onclick="location.href='deleteCityProcess?id=${list.plan_city_id}' ">삭제</button>
 					    </tr>
 					  </tbody>
 					  </c:forEach>
 					</table>
+				</div>
+				<div class="row mx-auto mt-2">
+					<div class="col">
+					<ul class="pagination justify-content-center pageAction">
+					    <li class="page-item">
+					      <a class="page-link" href="#" aria-label="Previous">
+					        <span aria-hidden="true">&laquo;</span>
+					      </a>
+					    </li>
+					    <li class="page-item"><a class="page-link active" href="#">1</a></li>
+					    <li class="page-item"><a class="page-link" href="#">2</a></li>
+					    <li class="page-item"><a class="page-link" href="#">3</a></li>
+					    <li class="page-item"><a class="page-link" href="#">4</a></li>
+					    <li class="page-item"><a class="page-link" href="#">5</a></li>
+					    <li class="page-item">
+					      <a class="page-link" href="#" aria-label="Next">
+					        <span aria-hidden="true">&raquo;</span>
+					      </a>
+					    </li>
+					  </ul>
+					</div>											
 				</div>			
 			</div>
 			</c:if>
