@@ -236,13 +236,13 @@ window.addEventListener("DOMContentLoaded", function() {
 		width: auto;
 		height: auto;
 		padding: 12px 20px;
-		background-image: linear-gradient(98deg,#00c261,#008f47);
+		background-image: linear-gradient(30deg,#00b078,#00b067);
 		font-size: 0.9em;
 		font-weight: 500;
 	}
     
     .registerButton:hover {
-    	background-image: linear-gradient(98deg,#008f47,#006633);
+    	background-image: linear-gradient(98deg,#1e9f58,#0e8a69);
     	color: #f0f0f0;
 	}
     
@@ -284,8 +284,8 @@ window.addEventListener("DOMContentLoaded", function() {
 	.customCard3{
         width: auto;
         height: auto;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+        border-radius: 5px;
         overflow: hidden;
         
     }
@@ -296,14 +296,69 @@ window.addEventListener("DOMContentLoaded", function() {
 <body>
 
     <div class="container">
-		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		<div class="row fw-bold justify-content-center">
+			<div class="col">
+				<nav class="navbar navbar-expand-lg bg-body-tertiary">
+					<div class="container-fluid p-0">
+						<img class="navbar-brand mb-0 " src="/travel/resources/img/tripstationLOGO.png" style="width: 7em;">
+						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+								<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" aria-current="page" data-bs-toggle="dropdown" href="/travel/main" aria-expanded="false">여행</a>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="/travel/main">맞춤여행</a></li>
+										<li><a class="dropdown-item" href="/travel/package">패키지</a></li>
+									</ul>
+								</li>
+								<li class="nav-item"><a class="nav-link" href="/travel/plan/planPage">플래너</a></li>
+								<li class="nav-item"><a class="nav-link" href="#" role="button">크루</a></li>
+								<li class="nav-item"><a class="nav-link" href="/travel/hotel/hotelPage" role="button">숙소</a></li>
+								<li class="nav-item"><a class="nav-link" href="/travel/planPlace/placePage">플레이스</a></li>
+							</ul>
+							<c:choose>
+								<c:when test="${!empty sessionuser}">
+									<ul class="navbar-nav align-items-center">
+										<li>
+											<c:choose>
+												<c:when test="${sessionuser.user_image != null}">
+													<img alt="썸네일" src="/uploadFiles/profileImage/${sessionuser.user_image}" style="width: 2em; height: 2em; border-radius: 50%;">
+												</c:when>
+												<c:otherwise>
+													<img alt="썸네일" src="/travel/resources/img/icon.png" style="width: 2em; height: 2em; border-radius: 50%;">
+												</c:otherwise>
+											</c:choose>
+										</li>
+										<li class="nav-item dropdown">
+											<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ${sessionuser.user_nickname} </a>
+											<ul class="dropdown-menu" aria-labelledby="userDropdown">
+												<li><a class="dropdown-item" href="/travel/myPage">마이페이지</a></li>
+												<li><a class="dropdown-item" href="/travel/crew/main">크루페이지</a></li>
+												<li><a class="dropdown-item" href="/travel/allCouponPage">쿠폰</a></li>
+												<li><a class="dropdown-item" href="/travel/messageGot">쪽지</a></li>
+												<li><a class="dropdown-item" href="javascript:logout();">로그아웃</a></li>
+											</ul>
+										</li>
+									</ul>
+								</c:when>
+								<c:otherwise>
+									<a class="nav-link" href="/travel/login">로그인</a>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>
 		
         <div class="row mt-4 mb-2">
 			<div class="col">
 				 <!-- Swiper -->
 				<div class="swiper">
 				    <div class="swiper-wrapper">
-				      <div class="swiper-slide"><a href="#">전체</a></div>
+				      <div class="swiper-slide"><a href="/travel/planPlace/placePage">전체</a></div>
 				      <div class="swiper-slide"><a href="/travel/planPlace/placePage?sortType=seoul">서울특별시</a></div>
 				      <div class="swiper-slide"><a href="#">경기도</a></div>
 				      <div class="swiper-slide"><a href="#">강원도</a></div>
@@ -331,7 +386,7 @@ window.addEventListener("DOMContentLoaded", function() {
         	<div class="col text-center">
         		<c:if test="${!empty sessionuser}">
 					<a class="registerButton" href="./registerPlacePage">
-						<span>나만의 명소 등록하기</span>
+						<span>나만의 플레이스 등록하기</span>
 						<i style="font-size: 15px;" class="bi bi-pencil-square"></i>
 					</a>
 				</c:if>
@@ -363,10 +418,10 @@ window.addEventListener("DOMContentLoaded", function() {
 			                    </div>
 			                    <div class="row px-3 mb-3 align-items-center">
 			                        <div class="col-auto pe-0">
-			                            <i class="bi bi-geo-alt-fill" style="font-size: 0.9em; color: rgba(255, 30, 0, 0.83);"></i>
+			                            <i class="bi bi-geo-alt-fill" style="font-size: 0.85em; color: rgba(255, 30, 0, 0.83);"></i>
 			                        </div>
-			                        <div class="col ps-1">
-			                            <span style="font-size: 0.75em; font-weight: 500; color: rgb(122, 122, 122); overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display: -webkit-box;  -webkit-line-clamp: 1;">
+			                        <div class="col ps-1 pt-1">
+			                            <span style="font-size: 0.75em; font-weight: 400; color: rgb(122, 122, 122); overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display: -webkit-box;  -webkit-line-clamp: 1;">
 			                                ${list.planPlaceDto.plan_place_address}
 			                            </span>
 			                        </div>

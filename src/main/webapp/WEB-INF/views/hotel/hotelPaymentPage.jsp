@@ -40,14 +40,13 @@ function returnPage() {
         width: 6.5em;
         height: 5em;
         border: none;
-        border-radius: 10px;
+        border-radius: 5px;
     }
 
     .reserveButton {
 	    width: 100%;
 	    height: 100%;
 	    background-image: linear-gradient(30deg,#00b078,#00b067);
-	    /* background-color: #00d478; */
 	    border-radius: 10px;
 	    border: none;
 	    padding: 10px 20px;
@@ -270,16 +269,16 @@ function returnPage() {
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row" style="position: relative; top: 0.35em;">
                                             <div class="col">
                                                 <span class="align-text-top" style="font-size: 0.85em;">
                                                 	${hotelMap.hotelDto.hotel_title}
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="row" style="bottom: 0;">
+                                        <div class="row" style="position: relative; top: 0.7em;">
                                             <div class="col-auto pe-1">
-                                                <i style="font-size: 0.6em;" class="bi bi-star-fill"></i>
+                                                <i style="font-size: 0.7em;" class="bi bi-star-fill"></i>
                                             </div>
                                             <div class="col-auto px-0">
                                                 <span style="font-size: 0.8em;">
@@ -307,7 +306,7 @@ function returnPage() {
                                     </div>
                                     <div class="row my-2">
                                         <div class="col-auto pe-0">
-                                            <span style="font-size: 0.9em;">\</span>
+                                            <img style="width: 100%; height: 0.8em; margin-bottom: 0.2em;" alt="" src="/travel/resources/img/pngegg.png/">
                                         </div>
                                         <div class="col-auto px-0">
                                             <span style="font-size: 0.9em;">
@@ -325,8 +324,8 @@ function returnPage() {
                                         <div class="col-auto ps-0">
                                             <span style="font-size: 0.9em;">박</span>
                                         </div>
-                                        <div class="col text-end pe-0">
-                                            <span style="font-size: 0.9em;">\</span>
+                                        <div class="col-auto ms-auto pe-0">
+                                            <img style="width: 100%; height: 0.8em; margin-bottom: 0.2em;" alt="" src="/travel/resources/img/pngegg.png/">
                                         </div>
                                         <div class="col-auto ps-0">
                                             <span style="font-size: 0.9em;">
@@ -354,7 +353,7 @@ function returnPage() {
                                             <span style="font-size: 1.15em; font-weight: 500;">(KRW)</span>
                                         </div>
                                         <div class="col-auto text-end pe-0">
-                                            <span style="font-size: 1.15em; font-weight: 600;">\</span>
+                                            <img style="width: 100%; height: 1.1em; " alt="" src="/travel/resources/img/pngegg.png/">
                                         </div>
                                         <div class="col-auto text-end ps-0">
                                             <span style="font-size: 1.15em; font-weight: 600;">
@@ -370,9 +369,9 @@ function returnPage() {
             </div>
         </div>
     </div>
-<div class="container-fluid" >
+<div class="container-fluid" style="background-color: #ededed;" >
     <div class="row">
-        <div class="col" style="background-color: #ededed;">
+        <div class="col" style="padding-left: 5em; padding-right: 9em;">
             <div class="row mt-4">
                 <div class="col"></div>
                 <div class="col-10">

@@ -280,13 +280,13 @@
     .reserveButton {
         width: 100%;
         height: 100%;
-        background-image: linear-gradient(98deg,#03c75a,#38a877);
+        background-image: linear-gradient(30deg,#00b078,#00b067);
         border-radius: 10px;
         border: none;
         padding: 0.8em;
         color: rgb(255, 255, 255);
         font-weight: 500;
-        font-size: 1em;
+        font-size: 1.1em;
     }
     
     .reserveButton:hover {
@@ -349,12 +349,12 @@
     /* 이미지 스타일 */
     .mainImgBox {
     	width: 100%;
-    	height: 32em;
+    	height: 30em;
     }
     
     .subImgBox {
     	width: 100%;
-    	height: 16em;
+    	height: 15em;
     }
 </style>
 </head>
@@ -367,7 +367,7 @@
 			<div class="col-10">
 				<nav class="navbar navbar-expand-lg bg-body-tertiary">
 					<div class="container-fluid p-0">
-						<span class="fw-bold navbar-brand mb-0 h1" style="font-size: 30px; font-weight: 700;"> TripStation</span>
+						<img class="navbar-brand mb-0 " src="/travel/resources/img/logobro.png" style="width: 1em;">
 						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 							<span class="navbar-toggler-icon"></span>
 						</button>
@@ -620,11 +620,11 @@
                     <div class="row">
                         <div class="col">
                             <div class="reserveCard">
-                                <div class="row align-items-center">
+                                <div class="row align-items-end">
                                     <div class="col">
-                                        <div class="row">
+                                        <div class="row align-items-center">
                                             <div class="col-auto pe-0">
-                                                <span style="font-size: 1.4em; font-weight: 600;">\</span>
+                                                <img style="width: 100%; height: 1.2em; margin-bottom: 0.1em;" alt="" src="/travel/resources/img/pngegg.png/">
                                             </div>
                                             <div class="col px-0">
                                                 <span style="font-size: 1.4em; font-weight: 600;">
@@ -657,7 +657,7 @@
                                                 <span>∙</span>
                                             </div>
                                             <div class="col-auto px-0">
-                                                <span style="font-size: 0.85em; color: gray;">∙후기</span>
+                                                <span style="font-size: 0.9em; color: gray;">∙후기</span>
                                             </div>
                                             <div class="col-auto ps-0">
                                             	<c:choose>
@@ -734,7 +734,7 @@
                                 </div>
                                 <div class="row py-2" style="font-size: 1em; ">
                                     <div class="col-auto pe-0">
-                                        <span >\</span>
+                                        <img style="width: 100%; height: 0.8em; margin-bottom: 0.2em;" alt="" src="/travel/resources/img/pngegg.png/">
                                     </div>
                                     <div class="col-auto px-0">
                                         <span>
@@ -753,7 +753,7 @@
                                     <div class="col d-flex justify-content-end" >
                                         <div class="row">
                                             <div class="col px-0">
-                                                <span >\</span>
+                                                <img style="width: 100%; height: 0.8em; margin-bottom: 0.2em;" alt="" src="/travel/resources/img/pngegg.png/">
                                             </div>
                                             <div class="col-auto ps-0">
                                                 <span>
@@ -776,8 +776,8 @@
                                     <div class="col text-start">
                                         <span>총 합계</span>
                                     </div>
-                                    <div class="col px-0 text-end">
-                                        <span>\</span>
+                                    <div class="col-auto px-0 text-end">
+                                        <img style="width: 100%; height: 0.95em; margin-bottom: 0.2em;" alt="" src="/travel/resources/img/pngegg.png/">
                                     </div>
                                     <div class="col-auto ps-0">
                                     	<span id="reservationTotal"></span>
@@ -1015,9 +1015,9 @@
         </div>
     </div>
 </div>
-<div class="container" >
+<div class="container-fluid" >
     <div class="row justify-content-center">
-        <div class="col-10" style="background-color: #ededed;">
+        <div class="col" style="background-color: #ededed; padding-left: 14.5em; padding-right: 14.5em;">
             <div class="row mt-4">
                 <div class="col">
                     <div class="row">
@@ -1033,8 +1033,7 @@
                         </div>
                     </div>
                     <hr class="my-2">
-                </div>
-                <div class="col"></div>
+                </div>               
             </div>
             <div class="row mb-3">
                 <div class="col">

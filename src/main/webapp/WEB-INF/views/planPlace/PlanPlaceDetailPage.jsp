@@ -222,7 +222,7 @@ function logout() {
 				
 				const response = JSON.parse(xhr.responseText);
 				
-				const countCommentBox = document.getElementById("countComment");
+				const countCommentBox = document.querySelectorAll(".commentCount");
 				
 				countCommentBox.innerText = response.commentCount;
 			}
@@ -365,13 +365,13 @@ function logout() {
 	.listBox {
 		background-color: #f2f2f2;
 		text-decoration: none;
-		padding: 0.8em 1.2em;
+		padding: 0.6em 0.9em;
 		border: none;
 		border-radius: 5px;
 		width: auto;
 		height: auto;
-		font-size: 0.8em;
-		font-weight: 500;
+		font-size: 0.85em;
+		font-weight: 400;
 		color: black;
 	}
 	
@@ -403,7 +403,7 @@ function logout() {
 	.commentContainer {
 		border: 2px solid #e6e6e6;
 		border-radius: 5px;
- 		padding: 1em 1em;
+ 		padding: 0.7em 1em;
 	}
 	
 	.commentBox {
@@ -506,13 +506,13 @@ function logout() {
             			</a>
             		</div>
             		<div class="col-auto">
-            			<a class="listBox">목록</a>
+            			<a href="/travel/planPlace/placePage" class="listBox">목록</a>
             		</div>
             	</div>
             	<hr class="my-3 hrStyle">
             	<div class="row align-items-center">
             		<div class="col-auto pe-1">
-            			<span style="font-size: 0.9em; font-weight: 500; color: rgb(255, 90, 90);">서울특별시</span>
+            			<span style="font-size: 0.9em; font-weight: 400; color: #00942b;">서울특별시</span>
             		</div>
             		<div class="col ps-0">
             			<i style="font-size: 0.7em;" class="bi bi-chevron-right"></i>
@@ -548,7 +548,7 @@ function logout() {
                         </div>
                     </div>
                     <div class="col">
-                        <div class="row justify-content-end align-items-center">
+                        <div class="row justify-content-end" style="position: relative; top: 50%;">
                             <div class="col-auto ps-2 pe-1">
                             	<i style="font-size: 0.9em;" class="bi bi-chat"></i>
                             </div>
@@ -556,40 +556,42 @@ function logout() {
                          		<span style="font-size: 0.9em; font-weight: 500;">댓글</span>
                          	</div>
                             <div class="col-auto px-1">
-                            	<span id="countComment" style="font-size: 0.9em; font-weight: 500;"></span>
+                            	<span id="commentCount" style="font-size: 0.9em; font-weight: 500;"></span>
                            	</div>
                            	<div class="col-auto ps-2 pe-0">
                            		<span style="font-size: 0.85em;">URL 복사</span>
                            	</div>
                            	<div class="col-auto ps-1">
-                           		<i style="font-size: 1.2em;" class="bi bi-three-dots-vertical"></i>
+                           		<i style="font-size: 1.2em; position: relative; bottom: 3px;" class="bi bi-three-dots-vertical"></i>
                            	</div>
                         </div>
                     </div>
                 </div>
                 <hr class="my-4 hrStyle">
-                <div class="row mt-3 mb-4">
-                    <div class="col-4">
-                        <img style="width:100%; height: 17em; overflow: hidden; border-radius: 5px;" src="/uploadFiles/mainImage/${map.planPlaceDto.plan_place_photo}" alt="">
+                <div class="row mt-3 mb-5">
+                    <div class="col">
+                        <img style="width:100%; height: 42em; overflow: hidden; border-radius: 5px;" src="/uploadFiles/mainImage/${map.planPlaceDto.plan_place_photo}" alt="">
                     </div>
+                </div>
+                <div class="row py-5">
            			<div class="col">
-           				<div class="row">
+           				<div class="row align-items-center">
            					<div class="col">
            						<div class="row">
-           							<div class="col">
-           								<span style="font-size: 1em; font-weight: 500;">${map.planPlaceDto.plan_place_content}</span>
+           							<div class="col px-5">
+           								<span style="font-size: 0.9em; font-weight: 500;">"${map.planPlaceDto.plan_place_content}"</span>
            							</div>
            						</div>
            					</div>
            				</div>
-           				<div class="row align-items-end">
-           					<div class="col" >
-           						<i class="bi bi-geo-alt-fill" style="color: rgb(255, 90, 90);"></i>
-           						<span class="ps-0" style="font-size: 0.9em; font-weight: 500; color: gray;">${map.planPlaceDto.plan_place_address}</span>
-           					</div>
-           				</div>
            			</div>
-                </div>
+           		</div>	
+   				<div class="row mt-4">
+   					<div class="col text-end" >
+   						<i class="bi bi-geo-alt-fill" style="color: rgb(255, 90, 90);"></i>
+   						<span class="ps-0" style="font-size: 0.9em; font-weight: 500; color: gray;">${map.planPlaceDto.plan_place_address}</span>
+   					</div>
+   				</div>
                 <c:forEach items="${detailPhotoList}" var="list">
 	                <div class="row my-2">
 	                    <div class="col">
@@ -623,16 +625,16 @@ function logout() {
                          		<span style="font-size: 0.85em; font-weight: 500;">좋아요</span>
                          	</div>
                          	<div class="col-auto px-1">
-                                 <span id="countHeart" style="font-size: 0.9em; font-weight: 500;"></span>
+                                 <span id="countHeart" style="font-size: 0.85em; font-weight: 500;"></span>
                             </div>
                             <div class="col-auto ps-2 pe-1">
                             	<i style="font-size: 0.85em;" class="bi bi-chat"></i>
                             </div>
-                            <div class="col-auto px-0">
+                            <div class="col-auto px-0 commentCount">
                          		<span style="font-size: 0.85em; font-weight: 500;">댓글</span>
                          	</div>
                             <div class="col-auto ps-1">
-                            	<span id="countComment" style="font-size: 0.8em; font-weight: 500;"></span>
+                            	<span id="commentCount" style="font-size: 0.8em; font-weight: 500;"></span>
                            	</div>
                            	<div class="col text-end pe-1">
                            		<i class="bi bi-box-arrow-up-right"></i>
@@ -672,7 +674,7 @@ function logout() {
                 				</div>
                 				<div class="row">
                 					<div class="col">
-                						<span style="font-size: 0.9em; font-weight: 500;">
+                						<span style="font-size: 0.9em;">
                 							테스트 댓글 입니다.
                 						</span>
                 					</div>
@@ -691,12 +693,12 @@ function logout() {
                     <div class="col">
                			<div class="commentContainer">
 	                    	<div class="row">
-	                    		<div class="col">
-	                    			<span style="font-size: 0.9em; font-weight: 600;">${sessionuser.user_nickname }</span>
+	                    		<div class="col ps-2">
+	                    			<span style="font-size: 0.9em; font-weight: 500;">${sessionuser.user_nickname }</span>
 	                    		</div>
 	                    	</div>
 	                    	<div class="row">
-	                    		<div class="col">
+	                    		<div class="col ps-1">
 		                        	<input class="commentBox" id="commentBox" type="text" placeholder="댓글을 남겨보세요">
 	                    		</div>
 	                    	</div>
@@ -716,7 +718,7 @@ function logout() {
                 		</a>
                 	</div>
                 	<div class="col-auto">
-                		<a class="listBox">
+                		<a href="/travel/planPlace/placePage" class="listBox">
                 			목록
                 		</a>
                 	</div>
@@ -733,7 +735,7 @@ function logout() {
                     </div>
                 </div>
                 <div class="row mb-4">
-                	<c:forEach items="${listOrderByLove}" var="list">
+                	<c:forEach items="${listOrderByLove}" var="list" begin="0" end="8">
 	                	<div class="col-4">
 	                		<div class="row">
 	                			<div class="col-auto pe-0">
@@ -752,21 +754,21 @@ function logout() {
 	                				</div>
 	                				<div class="row">
 	                					<div class="col-auto">
-	                						<span style="font-size: 0.8em; color: gray;">
+	                						<span style="font-size: 0.75em; color: gray;">
 	                							${list.userDto.user_nickname }
 	                						</span>
 	                					</div>
 	                					<div class="col pe-1 text-end">
-	                						<i class="bi bi-heart" style="font-size: 0.8em; color: gray;"></i>	                					
+	                						<i class="bi bi-heart" style="font-size: 0.7em; color: gray;"></i>	                					
 	                					</div>
 	                					<div class="col-auto ps-0">
-	                						<span style="font-size: 0.8em; color: gray;">23</span>
+	                						<span style="font-size: 0.75em; color: gray;">23</span>
 	                					</div>
 	                					<div class="col-auto ps-0 pe-1">
-	                						<i style="font-size: 0.8em; color: gray;" class="bi bi-chat"></i>
+	                						<i style="font-size: 0.7em; color: gray;" class="bi bi-chat"></i>
 	                					</div>
 	                					<div class="col-auto ps-0">
-	                						<span style="font-size: 0.8em; color: gray;">23</span>
+	                						<span style="font-size: 0.75em; color: gray;">23</span>
 	                					</div>
 	                				</div>
 	                			</div>
@@ -778,15 +780,41 @@ function logout() {
             </div>
         </div>
     </div>
-    <div class="container-fluid" style="background-color: #f2f2f2; height: 10em;">
-    	<div class="row">
-    		<div class="col"></div>
-    		<div class="col-8">
-    		
-    		</div>
-    		<div class="col"></div>
+    
+    <div class="container-fluid" >
+	    <div class="row">
+	        <div class="col" style="background-color: #ededed;">
+	            <div class="row mt-4">
+	                <div class="col"></div>
+	                <div class="col-7">
+	                    <div class="row">
+	                        <div class="col-auto">
+	                            <span style="font-size: 0.8em;">
+	                                © 2023 TripStation, Inc. · 개인정보 처리방침  · 이용약관  · 사이트맵  · 환불 정책  · 회사 세부정보
+	                            </span>
+	                        </div>
+	                        <div class="col d-flex justify-content-end">
+	                            <i class="bi bi-instagram"></i>
+	                            <i class="bi bi-twitter px-3"></i>
+	                            <i class="bi bi-envelope"></i>
+	                        </div>
+	                     </div>
+	                     <hr class="my-2">
+	                </div>
+	                <div class="col"></div>
+	             </div>
+	             <div class="row mb-3">
+	                <div class="col"></div>
+	                <div class="col-7">
+	                    <span style="font-size: 0.5em; color: gray;">
+	                        웹사이트 제공자: Tripstation Ireland KOREA, private unlimited company, 8 Hanover Quay Dublin 2, D02 DP23 Ireland | 이사: hoyeong shin | VAT 번호: IE982232384L | 사업자 등록 번호: IE 123125 | 연락처: terms@tripstation.com, 웹사이트, 080-822-0230 | 호스팅 서비스 제공업체: 아마존 웹서비스 | 트립스테이션은 통신판매 중개자로 트립스테이션 플랫폼을 통하여 게스트와 호스트 사이에 이루어지는 통신판매의 당사자가 아닙니다. 트립스테이션 플랫폼을 통하여 예약된 숙소, 체험, 호스트 서비스에 관한 의무와 책임은 해당 서비스를 제공하는 호스트에게 있습니다.
+	                    </span>
+	                </div>
+	                <div class="col"></div>
+	            </div>
+	        </div>
     	</div>
-    </div>
+	</div>
     
 
 

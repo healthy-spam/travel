@@ -12,6 +12,7 @@
 	rel="stylesheet"
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@300;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <!-- bootstrap icon CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <!-- Link Swiper's CSS -->
@@ -49,6 +50,10 @@
 </script>
 
 <style type="text/css">
+
+	body {
+		font-family: 'Noto Sans KR', sans-serif;	
+	}
 	
 	/* 등록 버튼 박스 관련 스타일 */
 	.registerButton {
@@ -61,11 +66,10 @@
 		width: auto;
 		height: auto;
 		padding: 12px 20px;
-		background-image: linear-gradient(98deg,#03c75a,#38a877);
-		
+		background-image: linear-gradient(30deg,#00b078,#00b067);
 		color: white; 
 		font-size: 0.9em;
-		font-weight: 600;
+		font-weight: 500;
 		text-decoration: none;
 	}
 	
@@ -81,69 +85,73 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		
 		text-decoration: none;
 	}
 	
 	/* 카테고리 박스 호버 관련 스타일 */
 	.categoryIcon:hover span {
 		color: black;
-		font-weight: 800;
+		font-weight: 600;
 		text-decoration: underline;
 	}
 	
 	/* 카테고리 폰트 박스 관련 스타일 */
 	.categoryIconFont {
 		padding-top: 0.5em;
-		
 		color: gray;
 		font-size: 0.8em;
+		font-weight: 500;
 	}
 	
 	/* 제목 박스 관련 스타일 */
 	.titleBox {
-		font-weight: 600;
-		font-size: 0.9em;
+		font-weight: 500;
+		font-size: 0.95em;
+		overflow: hidden; 
+		-webkit-box-orient: vertical; 
+		text-overflow: ellipsis; 
+		display: -webkit-box;  
+		-webkit-line-clamp: 1;
 	}
 	
 	/* 리뷰 평균점수 관련 스타일 */
 	.reviewAvgCountBox {
-		font-weight: 600;
+		font-weight: 500;
 		font-size: 0.9em;
 	}
 	
 	/* 리뷰갯수 관련 스타일 */
 	.reviewCountBox {
-		font-size: 0.9em;
+		font-size: 0.85em;
 	}
 	
 	/* 예약날짜 관련 스타일 */
 	.reserveDateBox {		
-		font-size: 0.9em;
+		font-size: 0.85em;
 		color: gray;
 	}
 	
 	/* 주소 관련 스타일 */
 	.addressBox {
-		font-size: 0.9em;
+		font-size: 0.85em;
 		color: gray;
 	}
 	
 	/* 가격 관련 스타일 */
 	.priceBox {
 		font-size: 0.9em;
-		font-weight: 600;
+		font-weight: 500;
 	}
 	
 	/* 일자 관련 스타일 */
 	.dayBox {
-		font-size: 0.9em;
+		font-size: 0.85em;
 	}
 	
 	/* 이미지 관련 스타일 */
 	.imgBox {
 		width: 100%; 
-		height: 19em; 
+		height: 18.5em; 
 		object-fit: cover; 
 		border-radius: 10px;
 	}
@@ -191,9 +199,62 @@
 <body>
 
 	<div class="container">
-			<div class="container">
-				<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		<div class="row fw-bold justify-content-center">
+			<div class="col">
+				<nav class="navbar navbar-expand-lg bg-body-tertiary">
+					<div class="container-fluid p-0">
+						<img class="navbar-brand mb-0 " src="/travel/resources/img/tripstationLOGO.png" style="width: 7em;">
+						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+								<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" aria-current="page" data-bs-toggle="dropdown" href="/travel/main" aria-expanded="false">여행</a>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="/travel/main">맞춤여행</a></li>
+										<li><a class="dropdown-item" href="/travel/package">패키지</a></li>
+									</ul>
+								</li>
+								<li class="nav-item"><a class="nav-link" href="/travel/plan/planPage">플래너</a></li>
+								<li class="nav-item"><a class="nav-link" href="#" role="button">크루</a></li>
+								<li class="nav-item"><a class="nav-link" href="/travel/hotel/hotelPage" role="button">숙소</a></li>
+								<li class="nav-item"><a class="nav-link" href="/travel/planPlace/placePage">플레이스</a></li>
+							</ul>
+							<c:choose>
+								<c:when test="${!empty sessionuser}">
+									<ul class="navbar-nav align-items-center">
+										<li>
+											<c:choose>
+												<c:when test="${sessionuser.user_image != null}">
+													<img alt="썸네일" src="/uploadFiles/profileImage/${sessionuser.user_image}" style="width: 2em; height: 2em; border-radius: 50%;">
+												</c:when>
+												<c:otherwise>
+													<img alt="썸네일" src="/travel/resources/img/icon.png" style="width: 2em; height: 2em; border-radius: 50%;">
+												</c:otherwise>
+											</c:choose>
+										</li>
+										<li class="nav-item dropdown">
+											<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ${sessionuser.user_nickname} </a>
+											<ul class="dropdown-menu" aria-labelledby="userDropdown">
+												<li><a class="dropdown-item" href="/travel/myPage">마이페이지</a></li>
+												<li><a class="dropdown-item" href="/travel/crew/main">크루페이지</a></li>
+												<li><a class="dropdown-item" href="/travel/allCouponPage">쿠폰</a></li>
+												<li><a class="dropdown-item" href="/travel/messageGot">쪽지</a></li>
+												<li><a class="dropdown-item" href="javascript:logout();">로그아웃</a></li>
+											</ul>
+										</li>
+									</ul>
+								</c:when>
+								<c:otherwise>
+									<a class="nav-link" href="/travel/login">로그인</a>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+				</nav>
 			</div>
+		</div>
 	
 		<div class="row mt-4">
 			<div class="col">
@@ -335,14 +396,14 @@
 											<c:choose>
 												<c:when test="${!empty hotelList.hotelReviewPointCount}">
 													<div class="col text-end">
-														<i class="bi bi-star-fill" style="color: #fcc203; font-size: 0.9em;"></i>
+														<i class="bi bi-star-fill" style="color: #fcc203; font-size: 0.85em;"></i>
 														<span class="p-0 reviewAvgCountBox">${hotelList.hotelReviewPointCount}</span>
 														<span class="reviewCountBox">(${hotelList.hotelReviewCount})</span>
 													</div>
 												</c:when>
 												<c:otherwise>
 													<div class="col text-end">
-														<i class="bi bi-star-fill" style="color: #b8b8b8; font-size: 0.9em;"></i>
+														<i class="bi bi-star-fill" style="color: #b8b8b8; font-size: 0.85em;"></i>
 														<span class="p-0 reviewAvgCountBox">0.0</span>
 													</div>
 												</c:otherwise>
@@ -367,7 +428,7 @@
 										</div>
 										<div class="row">
 											<div class="col-auto pe-0 priceBox">
-												<span>\</span>
+												<img style="width: 100%; height: 0.9em; margin-bottom: 0.25em;" alt="" src="/travel/resources/img/pngegg.png/">
 											</div>
 											<div class="col-auto px-0 priceBox">
 												<fmt:formatNumber pattern="#,###" value="${hotelList.hotelDto.hotel_price}" var="price"/>${price }
