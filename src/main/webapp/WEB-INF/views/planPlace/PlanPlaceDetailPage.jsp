@@ -12,7 +12,8 @@
 	rel="stylesheet"
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@300;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script>
 
@@ -221,7 +222,7 @@ function logout() {
 				
 				const response = JSON.parse(xhr.responseText);
 				
-				const countCommentBox = document.getElementById("countComment");
+				const countCommentBox = document.querySelectorAll(".commentCount");
 				
 				countCommentBox.innerText = response.commentCount;
 			}
@@ -273,7 +274,7 @@ function logout() {
 					
 					const spanDiv1 = document.createElement("span");
 					spanDiv1.style.fontSize = "0.9em";
-					spanDiv1.style.fontWeight = "600";
+					spanDiv1.style.fontWeight = "500";
 					spanDiv1.textContent = data.userDto.user_nickname;
 					colDiv3.appendChild(spanDiv1);
 					
@@ -310,7 +311,7 @@ function logout() {
 					const formattedDate = `${year}.${month}.${day} ${hours}:${minutes}`;
 
 					const spanDiv3 = document.createElement("span");
-					spanDiv3.style.fontSize = "0.8em";
+					spanDiv3.style.fontSize = "0.75em";
 					spanDiv3.style.color = "gray";
 					spanDiv3.textContent = formattedDate;
 					colDiv5.appendChild(spanDiv3);
@@ -340,85 +341,90 @@ function logout() {
 </script>
 
 <style>
-        .userImage {
-  		width: 2.7em; 
- 		height: 2.7em;
-  		border-radius: 50%; 
-  		overflow: hidden; 
-		}
+
+	body {
+		font-family: 'Noto Sans KR', sans-serif;	
+	}
 		
-		.cardBox {
-			width: auto;
-			height: auto;
-			border: none;
-			border-radius: 10px;
-			background-color: #f2f2f2;
-			padding: 2em;
-		}
-		
-		.listBox {
-			background-color: #f2f2f2;
-			text-decoration: none;
-			padding: 0.8em 1.2em;
-			border: none;
-			border-radius: 5px;
-			width: auto;
-			height: auto;
-			font-size: 0.8em;
-			font-weight: 600;
-			color: black;
-		}
-		
-		.listBox:hover {
-			background-color: #dbdbdb;
-			color: black;
-			cursor: pointer;
-		}
-		
-		.registerBox{
-			background-color: #e0ffe9;
-			text-decoration: none;
-			padding: 0.8em 1.2em;
-			border: none;
-			border-radius: 5px;
-			width: auto;
-			height: auto;
-			font-size: 0.8em;
-			font-weight: 600;
-			color: #00942b;
-		}
-		
-		.registerBox:hover{
-			background-color: #ceebd6;
-			color: #21472c;
-			cursor: pointer;	
-		}
-		
-		.commentContainer {
-			border: 2px solid #e6e6e6;
-			border-radius: 5px;
-  			padding: 1em 1em;
-		}
-		
-		.commentBox {
-			border: none;
-			outline: none;
-			background: transparent;
-			font-size: 0.9em;
-			padding: 5px;
-			width: 100%;
-		}
-		
-		.registerCommentBox {
-			color: gray;
-			font-size: 0.9em;
-			border: none;
-			background-color: white;
-		}
-		
-		.hrStyle {
-			color: gray;
-		}
+     .userImage {
+		width: 2.7em; 
+		height: 2.7em;
+		border-radius: 50%; 
+		overflow: hidden; 
+	}
+	
+	.cardBox {
+		width: auto;
+		height: auto;
+		border: none;
+		border-radius: 10px;
+		background-color: #f2f2f2;
+		padding: 2em;
+	}
+	
+	.listBox {
+		background-color: #f2f2f2;
+		text-decoration: none;
+		padding: 0.6em 0.9em;
+		border: none;
+		border-radius: 5px;
+		width: auto;
+		height: auto;
+		font-size: 0.85em;
+		font-weight: 400;
+		color: black;
+	}
+	
+	.listBox:hover {
+		background-color: #dbdbdb;
+		color: black;
+		cursor: pointer;
+	}
+	
+	.registerBox{
+		background-color: #e0ffe9;
+		text-decoration: none;
+		padding: 0.8em 1.2em;
+		border: none;
+		border-radius: 5px;
+		width: auto;
+		height: auto;
+		font-size: 0.8em;
+		font-weight: 500;
+		color: #00942b;
+	}
+	
+	.registerBox:hover{
+		background-color: #ceebd6;
+		color: #21472c;
+		cursor: pointer;	
+	}
+	
+	.commentContainer {
+		border: 2px solid #e6e6e6;
+		border-radius: 5px;
+ 		padding: 0.7em 1em;
+	}
+	
+	.commentBox {
+		border: none;
+		outline: none;
+		background: transparent;
+		font-size: 0.9em;
+		padding: 5px;
+		width: 100%;
+	}
+	
+	.registerCommentBox {
+		color: gray;
+		font-size: 0.9em;
+		border: none;
+		background-color: white;
+	}
+	
+	.hrStyle {
+		color: gray;
+	}
 		
 
 </style>
@@ -500,13 +506,13 @@ function logout() {
             			</a>
             		</div>
             		<div class="col-auto">
-            			<a class="listBox">목록</a>
+            			<a href="/travel/planPlace/placePage" class="listBox">목록</a>
             		</div>
             	</div>
             	<hr class="my-3 hrStyle">
             	<div class="row align-items-center">
             		<div class="col-auto pe-1">
-            			<span style="font-size: 0.9em; font-weight: 600; color: #88b393;">서울특별시</span>
+            			<span style="font-size: 0.9em; font-weight: 400; color: #00942b;">서울특별시</span>
             		</div>
             		<div class="col ps-0">
             			<i style="font-size: 0.7em;" class="bi bi-chevron-right"></i>
@@ -514,7 +520,7 @@ function logout() {
             	</div>
             	<div class="row mb-2">
             		<div class="col">
-            			<span style="font-size: 1.5em; font-weight: 600;">${map.planPlaceDto.plan_place_name}</span>
+            			<span style="font-size: 1.6em; font-weight: 500;">${map.planPlaceDto.plan_place_name}</span>
             		</div>
             	</div>
                 <div class="row">
@@ -526,66 +532,73 @@ function logout() {
                             <div class="col-auto ps-0">
                                 <div class="row">
                                     <div class="col">
-                                        <span style="font-size: 0.9em; font-weight: 600;">${map.userDto.user_nickname}</span>
+                                        <span style="font-size: 0.9em; font-weight: 500;">${map.userDto.user_nickname}</span>
                                     </div>
                                 </div>
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <span style="font-size: 0.8em; color: gray;"><fmt:formatDate value="${map.planPlaceDto.plan_place_reg_date}" pattern="yyyy.MM.dd HH:mm"/></span>
+                                        <span style="font-size: 0.75em; color: gray;"><fmt:formatDate value="${map.planPlaceDto.plan_place_reg_date}" pattern="yyyy.MM.dd HH:mm"/></span>
                                     </div>
                                     <div class="col-auto ps-0">
-                                    	<span style="font-size: 0.8em; color: gray;">조회</span>
-                                    	<span style="font-size: 0.8em; color: gray;">207</span>
+                                    	<span style="font-size: 0.75em; color: gray;">조회</span>
+                                    	<span style="font-size: 0.75em; color: gray;">207</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="row justify-content-end align-items-center">
+                        <div class="row justify-content-end" style="position: relative; top: 50%;">
                             <div class="col-auto ps-2 pe-1">
                             	<i style="font-size: 0.9em;" class="bi bi-chat"></i>
                             </div>
                             <div class="col-auto px-0">
-                         		<span style="font-size: 0.9em; font-weight: 600;">댓글</span>
+                         		<span style="font-size: 0.9em; font-weight: 500;">댓글</span>
                          	</div>
                             <div class="col-auto px-1">
-                            	<span id="countComment" style="font-size: 0.9em; font-weight: 600;"></span>
+                            	<span id="commentCount" style="font-size: 0.9em; font-weight: 500;"></span>
                            	</div>
                            	<div class="col-auto ps-2 pe-0">
-                           		<span style="font-size: 0.8em;">URL 복사</span>
+                           		<span style="font-size: 0.85em;">URL 복사</span>
                            	</div>
                            	<div class="col-auto ps-1">
-                           		<i style="font-size: 1.2em;" class="bi bi-three-dots-vertical"></i>
+                           		<i style="font-size: 1.2em; position: relative; bottom: 3px;" class="bi bi-three-dots-vertical"></i>
                            	</div>
                         </div>
                     </div>
                 </div>
                 <hr class="my-4 hrStyle">
-                <div class="row mt-3">
-                    <div class="col-4">
-                        <img style="width:100%; max-height: 24em; overflow: hidden; border-radius: 5px;" src="/uploadFiles/mainImage/${map.planPlaceDto.plan_place_photo}" alt="">
+                <div class="row mt-3 mb-5">
+                    <div class="col">
+                        <img style="width:100%; height: 42em; overflow: hidden; border-radius: 5px;" src="/uploadFiles/mainImage/${map.planPlaceDto.plan_place_photo}" alt="">
                     </div>
+                </div>
+                <div class="row py-5">
            			<div class="col">
-           				<div class="row">
+           				<div class="row align-items-center">
            					<div class="col">
-           						<span style="font-size: 1em; font-weight: 600;">${map.planPlaceDto.plan_place_content}</span>
-           					</div>
-           				</div>
-           				<div class="row">
-           					<div class="col">
-           						<span style="font-size: 0.9em; font-weight: 500; color: gray;">${map.planPlaceDto.plan_place_address}</span>
+           						<div class="row">
+           							<div class="col px-5">
+           								<span style="font-size: 0.9em; font-weight: 500;">"${map.planPlaceDto.plan_place_content}"</span>
+           							</div>
+           						</div>
            					</div>
            				</div>
            			</div>
-                </div>
-                <div class="row mt-5">
-                    <c:forEach items="${detailPhotoList}" var="list">
-                    <div class="col-4 my-2">
-                        <img style="width: 100%; height: 100%; max-height: 24em; max-width:24em; border-radius: 5px;" src="/uploadFiles/${list.planPlacePhotoDto.plan_place_photo_link}" alt="">
-                    </div>
-                    </c:forEach>
-                </div>
+           		</div>	
+   				<div class="row mt-4">
+   					<div class="col text-end" >
+   						<i class="bi bi-geo-alt-fill" style="color: rgb(255, 90, 90);"></i>
+   						<span class="ps-0" style="font-size: 0.9em; font-weight: 500; color: gray;">${map.planPlaceDto.plan_place_address}</span>
+   					</div>
+   				</div>
+                <c:forEach items="${detailPhotoList}" var="list">
+	                <div class="row my-2">
+	                    <div class="col">
+	                        <img style="width: 100%; height: 42em;" src="/uploadFiles/${list.planPlacePhotoDto.plan_place_photo_link}" alt="">
+	                    </div>
+	                </div>
+                </c:forEach>
                 <div class="row mt-5">                
                     <div class="col">
                         <div class="row align-items-center">
@@ -593,15 +606,15 @@ function logout() {
                                 <img class="userImage" src="/uploadFiles/profileImage/${map.userDto.user_image}" alt="">
                             </div>
                             <div class="col-auto px-0">
-                                <span style="font-size: 0.9em; font-weight: 600;">${map.userDto.user_nickname}</span>
+                                <span style="font-size: 0.9em; font-weight: 500;">${map.userDto.user_nickname}</span>
                             </div>
                             <div class="col-auto px-1">
                             	<span style="font-size: 0.9em;">
                             		님의 게시글 더보기
                             	</span>
                             </div>
-                            <div class="col-auto ps-1">
-                            	<span style="font-size: 0.9em; font-weight: 600">〉</span>
+                            <div class="col-auto ps-0">
+                            	<i style="font-size: 0.8em;" class="bi bi-chevron-right"></i>
                             </div>
                         </div>
                         <div class="row mt-3 align-items-center">
@@ -609,19 +622,19 @@ function logout() {
                          		<i onclick="clickHeart()" id="heartBox" class="bi bi-heart" style="font-size: 0.9em; color: red;"></i>
                          	</div>
                          	<div class="col-auto px-1">
-                         		<span style="font-size: 0.9em; font-weight: 500;">좋아요</span>
+                         		<span style="font-size: 0.85em; font-weight: 500;">좋아요</span>
                          	</div>
                          	<div class="col-auto px-1">
-                                 <span id="countHeart" style="font-size: 0.9em; color: gray; font-weight: 600;"></span>
+                                 <span id="countHeart" style="font-size: 0.85em; font-weight: 500;"></span>
                             </div>
                             <div class="col-auto ps-2 pe-1">
-                            	<i style="font-size: 0.8em;" class="bi bi-chat"></i>
+                            	<i style="font-size: 0.85em;" class="bi bi-chat"></i>
                             </div>
-                            <div class="col-auto px-0">
-                         		<span style="font-size: 0.8em; font-weight: 500;">댓글</span>
+                            <div class="col-auto px-0 commentCount">
+                         		<span style="font-size: 0.85em; font-weight: 500;">댓글</span>
                          	</div>
                             <div class="col-auto ps-1">
-                            	<span id="countComment" style="font-size: 0.8em; color: gray; font-weight: 600;"></span>
+                            	<span id="commentCount" style="font-size: 0.8em; font-weight: 500;"></span>
                            	</div>
                            	<div class="col text-end pe-1">
                            		<i class="bi bi-box-arrow-up-right"></i>
@@ -639,7 +652,7 @@ function logout() {
                 </div>
                 <div class="row my-2">
                 	<div class="col">
-                		<span style="font-size: 1em; font-weight: 600;">댓글</span>
+                		<span style="font-size: 1.2em; font-weight: 500;">댓글</span>
                 	</div>
                 </div>
                 <div class="row">
@@ -654,21 +667,21 @@ function logout() {
                 			<div class="col">
                 				<div class="row">
                 					<div class="col">
-                						<span style="font-size: 0.9em; font-weight: 600;">
+                						<span style="font-size: 0.9em; font-weight: 500;">
                 							${map.userDto.user_nickname}
                 						</span>
                 					</div>
                 				</div>
                 				<div class="row">
                 					<div class="col">
-                						<span style="font-size: 0.9em; font-weight: 500;">
+                						<span style="font-size: 0.9em;">
                 							테스트 댓글 입니다.
                 						</span>
                 					</div>
                 				</div>
                 				<div class="row mt-1">
                 					<div class="col">
-                						<span style="font-size: 0.8em; color: gray;"><fmt:formatDate value="${map.planPlaceDto.plan_place_reg_date}" pattern="yyyy.MM.dd HH:mm"/></span>
+                						<span style="font-size: 0.75em; color: gray;"><fmt:formatDate value="${map.planPlaceDto.plan_place_reg_date}" pattern="yyyy.MM.dd HH:mm"/></span>
                 					</div>
                 				</div>
                 			</div>
@@ -680,12 +693,12 @@ function logout() {
                     <div class="col">
                			<div class="commentContainer">
 	                    	<div class="row">
-	                    		<div class="col">
-	                    			<span style="font-size: 0.9em; font-weight: 600;">${sessionuser.user_nickname }</span>
+	                    		<div class="col ps-2">
+	                    			<span style="font-size: 0.9em; font-weight: 500;">${sessionuser.user_nickname }</span>
 	                    		</div>
 	                    	</div>
 	                    	<div class="row">
-	                    		<div class="col">
+	                    		<div class="col ps-1">
 		                        	<input class="commentBox" id="commentBox" type="text" placeholder="댓글을 남겨보세요">
 	                    		</div>
 	                    	</div>
@@ -705,7 +718,7 @@ function logout() {
                 		</a>
                 	</div>
                 	<div class="col-auto">
-                		<a class="listBox">
+                		<a href="/travel/planPlace/placePage" class="listBox">
                 			목록
                 		</a>
                 	</div>
@@ -718,11 +731,11 @@ function logout() {
                 </div>
                 <div class="row mt-5 mb-3">
                     <div class="col">
-                        <span style="font-size: 1.2em; font-weight: 600;">플레이스 인기글</span>
+                        <span style="font-size: 1.2em; font-weight: 500;">플레이스 인기글</span>
                     </div>
                 </div>
                 <div class="row mb-4">
-                	<c:forEach items="${listOrderByLove}" var="list">
+                	<c:forEach items="${listOrderByLove}" var="list" begin="0" end="8">
 	                	<div class="col-4">
 	                		<div class="row">
 	                			<div class="col-auto pe-0">
@@ -731,7 +744,7 @@ function logout() {
 	                			<div class="col">
 	                				<div class="row">
 	                					<div class="col">
-	                						<span style="font-size: 0.8em; font-weight: 600;">${list.planPlaceDto.plan_place_name }</span>	                					
+	                						<span style="font-size: 0.8em; font-weight: 500;">${list.planPlaceDto.plan_place_name }</span>	                					
 	                					</div>
 	                				</div>
 	                				<div class="row">
@@ -741,21 +754,21 @@ function logout() {
 	                				</div>
 	                				<div class="row">
 	                					<div class="col-auto">
-	                						<span style="font-size: 0.8em; color: gray;">
+	                						<span style="font-size: 0.75em; color: gray;">
 	                							${list.userDto.user_nickname }
 	                						</span>
 	                					</div>
 	                					<div class="col pe-1 text-end">
-	                						<i class="bi bi-heart" style="font-size: 0.8em; color: gray;"></i>	                					
+	                						<i class="bi bi-heart" style="font-size: 0.7em; color: gray;"></i>	                					
 	                					</div>
 	                					<div class="col-auto ps-0">
-	                						<span style="font-size: 0.8em; color: gray;">23</span>
+	                						<span style="font-size: 0.75em; color: gray;">23</span>
 	                					</div>
 	                					<div class="col-auto ps-0 pe-1">
-	                						<i style="font-size: 0.8em; color: gray;" class="bi bi-chat"></i>
+	                						<i style="font-size: 0.7em; color: gray;" class="bi bi-chat"></i>
 	                					</div>
 	                					<div class="col-auto ps-0">
-	                						<span style="font-size: 0.8em; color: gray;">23</span>
+	                						<span style="font-size: 0.75em; color: gray;">23</span>
 	                					</div>
 	                				</div>
 	                			</div>
@@ -767,15 +780,41 @@ function logout() {
             </div>
         </div>
     </div>
-    <div class="container-fluid" style="background-color: #f2f2f2; height: 10em;">
-    	<div class="row">
-    		<div class="col"></div>
-    		<div class="col-8">
-    		
-    		</div>
-    		<div class="col"></div>
+    
+    <div class="container-fluid" >
+	    <div class="row">
+	        <div class="col" style="background-color: #ededed;">
+	            <div class="row mt-4">
+	                <div class="col"></div>
+	                <div class="col-7">
+	                    <div class="row">
+	                        <div class="col-auto">
+	                            <span style="font-size: 0.8em;">
+	                                © 2023 TripStation, Inc. · 개인정보 처리방침  · 이용약관  · 사이트맵  · 환불 정책  · 회사 세부정보
+	                            </span>
+	                        </div>
+	                        <div class="col d-flex justify-content-end">
+	                            <i class="bi bi-instagram"></i>
+	                            <i class="bi bi-twitter px-3"></i>
+	                            <i class="bi bi-envelope"></i>
+	                        </div>
+	                     </div>
+	                     <hr class="my-2">
+	                </div>
+	                <div class="col"></div>
+	             </div>
+	             <div class="row mb-3">
+	                <div class="col"></div>
+	                <div class="col-7">
+	                    <span style="font-size: 0.5em; color: gray;">
+	                        웹사이트 제공자: Tripstation Ireland KOREA, private unlimited company, 8 Hanover Quay Dublin 2, D02 DP23 Ireland | 이사: hoyeong shin | VAT 번호: IE982232384L | 사업자 등록 번호: IE 123125 | 연락처: terms@tripstation.com, 웹사이트, 080-822-0230 | 호스팅 서비스 제공업체: 아마존 웹서비스 | 트립스테이션은 통신판매 중개자로 트립스테이션 플랫폼을 통하여 게스트와 호스트 사이에 이루어지는 통신판매의 당사자가 아닙니다. 트립스테이션 플랫폼을 통하여 예약된 숙소, 체험, 호스트 서비스에 관한 의무와 책임은 해당 서비스를 제공하는 호스트에게 있습니다.
+	                    </span>
+	                </div>
+	                <div class="col"></div>
+	            </div>
+	        </div>
     	</div>
-    </div>
+	</div>
     
 
 

@@ -5,38 +5,41 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@300;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
    
-     .startButton {
+   body {
+		font-family: 'Noto Sans KR', sans-serif;	
+	}
+   
+   .startButton {
 	     width: auto;
 	     height: auto;
-	     background-image: linear-gradient(98deg,#03c75a,#38a877);
+	     background-image: linear-gradient(30deg,#00b078,#00b067);
 	     border-radius: 10px;
 	     border: none;
 	     color: rgb(255, 255, 255);
-	     padding: 10px 30px;
-	     font-weight: 600;
-	     font-size: 14px;
+	     padding: 0.8em 0.9em;
+	     font-size: 0.9em;
 	     text-align: center;
 	     text-decoration: none;
-    }
-    
-    .startButton:hover {
+  }
+   
+   .startButton:hover {
 	   	background-image: linear-gradient(98deg,#1e9f58,#0e8a69);
 	   	
 	   	color: #f0f0f0;
-	}
+}
 
-    .box {
-        width: auto;
-        height: auto;
-        border: solid rgb(205, 205, 205) 1px;
-        border-radius: 10px;
-        padding: 17px 15px;
+   .box {
+       width: auto;
+       height: auto;
+       border: solid rgb(205, 205, 205) 1px;
+       border-radius: 10px;
+       padding: 17px 15px;
 
-    }
+   }
     </style>
 </head>
 <body>
@@ -51,7 +54,7 @@
             </div>
         </div>
 
-        <div class="row" style="padding-top: 200px;">
+        <div class="row" style="padding-top: 10em;">
             <div class="col"></div>
             <div class="col-auto pe-5 me-5">
                 <div class="row">
@@ -161,7 +164,7 @@
             <div class="col"></div>
         </div>
                 
-        <div class="row align-items-center py-4" style="position: fixed; bottom: 0; width: 100%; z-index: 1; background-color: white;">
+        <div class="row align-items-center py-4" style="position: fixed; bottom: 0; width: 100%; z-index: 1;">
             <div class="col-auto px-5">
             	<a href="./hotelPage" style="text-decoration: none; color: gray;">
             		 <span style="font-size: 14px; font-weight: 500;">취소하기</span>

@@ -5,7 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@300;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
  
 <script type="text/javascript">
 
@@ -58,6 +59,20 @@
 </script>
  
     <style>
+    
+    body {
+		font-family: 'Noto Sans KR', sans-serif;	
+	}
+	
+	.categoryFont {
+		font-size: 0.8em;
+		font-weight: 500;
+		overflow: hidden; 
+		-webkit-box-orient: vertical; 
+		text-overflow: ellipsis; 
+		display: -webkit-box;  
+		-webkit-line-clamp: 1;
+	}
 
     .nextButton {
 	    width: auto;
@@ -66,9 +81,8 @@
 	    border-radius: 10px;
 	    border: none;
 	    color: rgb(255, 255, 255);
-	    padding: 10px 30px;
-	    font-weight: 600;
-	    font-size: 14px;
+	    padding: 0.8em 1.2em;
+	    font-size: 0.9em;
 	    text-align: center;
     }
     
@@ -81,23 +95,13 @@
         height: auto;
         border: solid rgb(205, 205, 205) 1px;
         border-radius: 10px;
-        padding: 17px 15px;
+        padding: 1.1em 2em;
 
     }
     
     .box:hover {
     	border: 2px solid black;
-    	padding: 16px 14px;
-    }
-    
-    
-    .box1MouseOver {
-        width: auto;
-        height: auto;
-        border: solid rgb(205, 205, 205) 2px;
-        border-radius: 10px;
-        padding: 17px 15px;
-
+    	padding: 1em 2em;
     }
     
     a {
@@ -128,12 +132,12 @@
             </div>
         </div>
 		<form action="./hotelRegisterPage2Process" method="post">
-        <div class="row" style="padding-top: 10em; padding-bottom: 10em;">
+        <div class="row" style="padding-top: 5em; padding-bottom: 5em;">
             <div class="col"></div>
             <div class="col">
                 <div class="row my-4">
                     <div class="col">
-                        <div style="font-size: 24px; font-weight: 600;">다음 중 숙소를 가장 잘 설명한 것은 무엇인가요?</div>
+                        <div style="font-size: 1.6em; font-weight: 500;">다음 중 숙소를 가장 잘 설명한 것은 무엇인가요?</div>
                     </div>
                 </div>
                 <div class="row">
@@ -151,7 +155,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="주택">
-                                            <span style="font-size: 14px; font-weight: 600;" id="1">주택</span>
+                                            <span class="categoryFont" id="1">주택</span>
                                         </div>
                                     </div>
                                 </div>
@@ -167,7 +171,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="아파트">
-                                            <span style="font-size: 14px; font-weight: 600;" id="2">아파트</span>
+                                            <span class="categoryFont" id="2">아파트</span>
                                         </div>
                                     </div>
                                 </div>
@@ -182,7 +186,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="통나무집">
-                                            <span style="font-size: 14px; font-weight: 600;" id="3">통나무집</span>
+                                            <span class="categoryFont" id="3">통나무집</span>
                                         </div>
                                     </div>
                                 </div>
@@ -197,7 +201,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="캠핑카">
-                                            <span style="font-size: 14px; font-weight: 600;" id="4">캠핑카</span>
+                                            <span class="categoryFont" id="4">캠핑카</span>
                                         </div>
                                     </div>
                                 </div>
@@ -212,7 +216,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="호텔">
-                                            <span style="font-size: 14px; font-weight: 600;" id="5">호텔</span>
+                                            <span class="categoryFont" id="5">호텔</span>
                                         </div>
                                     </div>
                                 </div>
@@ -227,7 +231,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="농장">
-                                            <span style="font-size: 14px; font-weight: 600;" id="6">농장</span>
+                                            <span class="categoryFont" id="6">농장</span>
                                         </div>
                                     </div>
                                 </div>
@@ -242,7 +246,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="텐트">
-                                            <span style="font-size: 14px; font-weight: 600;" id="7">텐트</span>
+                                            <span class="categoryFont" id="7">텐트</span>
                                         </div>
                                     </div>
                                 </div>
@@ -257,7 +261,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="게스트용 별채">
-                                            <span style="font-size: 14px; font-weight: 600;" id="8">게스트용 별채</span>
+                                            <span class="categoryFont" id="8">게스트용 별채</span>
                                         </div>
                                     </div>
                                 </div>
@@ -272,7 +276,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="캐슬">
-                                            <span style="font-size: 14px; font-weight: 600;" id="9">캐슬</span>
+                                            <span class="categoryFont" id="9">캐슬</span>
                                         </div>
                                     </div>
                                 </div>
@@ -287,7 +291,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="보트">
-                                            <span style="font-size: 14px; font-weight: 600;" id="10">보트</span>
+                                            <span class="categoryFont" id="10">보트</span>
                                         </div>
                                     </div>
                                 </div>
@@ -302,7 +306,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="트리하우스">
-                                            <span style="font-size: 14px; font-weight: 600;" id="11">트리하우스</span>
+                                            <span class="categoryFont" id="11">트리하우스</span>
                                         </div>
                                     </div>
                                 </div>
@@ -317,7 +321,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="초소형 주택">
-                                            <span style="font-size: 14px; font-weight: 600;" id="12">초소형 주택</span>
+                                            <span class="categoryFont" id="12">초소형 주택</span>
                                         </div>
                                     </div>
                                 </div>
@@ -332,7 +336,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="풍차">
-                                            <span style="font-size: 14px; font-weight: 600;" id="13">풍차</span>
+                                            <span class="categoryFont" id="13">풍차</span>
                                         </div>
                                     </div>
                                 </div>
@@ -347,7 +351,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="동굴">
-                                            <span style="font-size: 14px; font-weight: 600;" id="14">동굴</span>
+                                            <span class="categoryFont" id="14">동굴</span>
                                         </div>
                                     </div>
                                 </div>
@@ -362,7 +366,7 @@
                                     <div class="row pt-1">
                                         <div class="col">
                                         	<input type="radio" name="hotel_category" value="컨테이너하우스">
-                                            <span style="font-size: 14px; font-weight: 600;" id="15">컨테이너하우스</span>
+                                            <span class="categoryFont" id="15">컨테이너하우스</span>
                                         </div>
                                     </div>
                                 </div>
@@ -382,7 +386,7 @@
 
         <div class="row align-items-center py-4" style="position: fixed; bottom: 0; width: 100%; z-index: 1;">
             <div class="col-auto px-5">
-                <span style="font-size: 14px; font-weight: 600;">뒤로</span>
+                <span style="font-size: 1em; font-weight: 500;">뒤로</span>
             </div>
             <div class="col"></div>
             <div class="col-auto px-5">
