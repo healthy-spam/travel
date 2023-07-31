@@ -309,7 +309,7 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 	                                        <div class="row crewname">
 	                                            ${crewDto.crew_name }
 	                                        </div>
-	                                        <div class="row">
+	                                        <div class="row text-container">
 	                                            ${crewDto.crew_desc }
 	                                        </div>
 	                                    </div>

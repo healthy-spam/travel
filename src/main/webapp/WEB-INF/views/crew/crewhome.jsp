@@ -355,8 +355,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
             
         });
 
+    </script>
+    <script>
+    function opendetails(userDto, CrewBoardDto, boardAttached, commentList) {
+    	console.log(CrewBoardDto.crew_board_id);
+    	var boardTitle = CrewBoardDto.crew_board_title;
+    	document.getElementById("boardDetailTitle").innerHTML = `\${boardTitle}`;
+    	bootstrap.Modal.getOrCreateInstance("#boardDetailModal").show();
 
-
+    }
     </script>
 
 <style>
@@ -595,7 +602,86 @@ strong#Createnewpost {
 </head>
 
 <body>
+	<!--Modify Detail Modal -->
 
+	<div class="modal fade" id="boardDetailModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div
+			class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body mx-5">
+
+					<div class="row  mt-5 pt-5 title" id="boardDetailTitle">
+						<strong>${boardDto.crew_board_title }</strong>
+					</div>
+					<div class="row  mt-5">
+						<div class="col" id="boardDetailWriter">
+							작성자 <strong> 작성자입니당 </strong>
+						</div>
+						<div class="col text-end">
+							작성일자 <strong> 날짜입니당 </strong>
+						</div>
+					</div>
+					<div class="row text-end">
+						<c:choose>
+							<c:when test="${userDto.user_id == sessionuser.user_id }">
+								<div class="col">
+									<div class="row justify-content-end">
+										<div class="col-auto">
+											<i class="bi bi-pencil icon-button" onclick="modifyboard()"
+												title="modify"></i>
+										</div>
+										<div class="col-auto">
+											<i class="bi bi-trash3 icon-button"
+												onclick="deleteboard('${boardDto.crew_board_id}')"
+												title="remove"></i>
+										</div>
+									</div>
+								</div>
+							</c:when>
+							<c:otherwise>
+							</c:otherwise>
+						</c:choose>
+					</div>
+					<div class="row mb-3">
+						<div class="card my-3 py-3">
+							<div class="content m-4">${boardDto.crew_board_content }
+							</div>
+						</div>
+					</div>
+					<div class="row title2">
+						<strong>댓글</strong>
+					</div>
+					<div class="row  mt-3">
+						<div class="card mb-5">
+							<div class="row m-2 mt-3">
+								<textarea placeholder="댓글 내용을 입력하세요."
+									class="textarea_input input_txt form-control"
+									style="height: 100px;" name="board_comment_content"
+									id="comment"></textarea>
+							</div>
+							<div class="row m-2">
+								<div class="col text-end">
+									<button id="writecomment" class="btn btn-success writecomment">작성하기</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="commentlist">
+
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- modal end -->
 	<div class="container-fluid ">
 		<div class="container fixed-top top-navi maintopnavi px-0">
 			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
@@ -655,7 +741,7 @@ strong#Createnewpost {
 							<c:choose>
 								<c:when test="${!empty list }">
 									<c:forEach var="list" items="${list}" varStatus="status">
-										<div class="card boardlist mt-3 p-2 pb-3">
+										<div class="card boardlist mt-3 p-2 pb-3" onclick="opendetails('${list.userDto }', '${list.c }', '${list.files }','${list.commentlist }')">
 											<div class="row mx-2 ">
 												<div
 													class="col-auto d-flex justify-content-center align-items-center">
@@ -996,8 +1082,8 @@ strong#Createnewpost {
 					</div>
 					<div>
 						<input type="text" class="form-control" name="crew_board_title"
-							id="crew_board_title" placeholder="제목을 입력해주세요"> <br>
-						<textarea class="form-control" placeholder="오늘도 힘찬 하루를!"
+							id="crew_board_title" placeholder="제목을 입력해주세요">
+						<textarea class="form-control mt-2" placeholder="오늘도 힘찬 하루를!"
 							name="crew_board_content" id="crew_board_content"
 							style="height: 150px" required></textarea>
 					</div>
