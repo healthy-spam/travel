@@ -8,11 +8,16 @@
 <title>Insert title here</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@300;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=818488f03bbc3c53eaa216d3aaf39e13&libraries=services"></script>
     
     
     
     <style>
+    
+    body {
+		font-family: 'Noto Sans KR', sans-serif;	
+	}
 
     .registerButton {
         /* 박스 모델 관련 스타일 */
@@ -24,7 +29,7 @@
         padding: 8px 12px;
         color: white;
         font-size: 0.8em;
-        font-weight: 600;
+        font-weight: 500;
     }
     
     .registerButton:hover {
@@ -42,7 +47,7 @@
         padding: 8px 12px;
         color: gray;
         font-size: 0.8em;
-        font-weight: 600;
+        font-weight: 500;
         text-decoration: none;
     }
     
@@ -101,8 +106,8 @@
 
         /* 플레이스홀더 스타일 */
         ::placeholder {
-            color: #4f4f4f;
-            border: 1px solid rgb(165, 165, 165);
+        color: #4f4f4f;
+        border: 1px solid rgb(165, 165, 165);
 
         }
     }
@@ -253,13 +258,7 @@
             <form action="./registerPlaceProcess" method="post" enctype="multipart/form-data">
                 <div class="row align-items-center mt-5">
                     <div class="col">
-                        <span class="titleBox">플레이스 등록하기</span>
-                    </div>
-                    <div class="col pe-0 text-end">
-                        <a href="/travel/planPlace/placePage" class="exitButton">나가기</a>
-                    </div>
-                    <div class="col-auto">
-                        <button class="registerButton">등록</button>
+                        <span class="titleBox mb-3">플레이스 등록하기</span>
                     </div>
                 </div>
                 <hr>
@@ -306,9 +305,14 @@
                     <div class="col">
                         <input class="addressBox" type="text" name="plan_place_address" id="addressInput" placeholder="주소를 입력하세요.">
                     </div>
-                   <!--  <div class="col-auto ps-0">
-                        <button class="searchButton" id="searchButton">검색</button>
-                    </div> -->
+                </div>
+                <div class="row mt-3 mb-5 align-items-center">
+                	 <div class="col pe-0 text-end">
+                        <a href="/travel/planPlace/placePage" class="exitButton">나가기</a>
+                    </div>
+                    <div class="col-auto">
+                        <button class="registerButton">등록</button>
+                    </div>
                 </div>
             </form>
         </div>

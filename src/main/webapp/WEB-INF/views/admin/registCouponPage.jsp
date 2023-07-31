@@ -11,58 +11,14 @@ pageEncoding="UTF-8"%>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@100;300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/admin/leftNavi.css">
 <title>Insert title here</title>
 <style>
-
-	body {
-		font-family: 'Nanum Gothic', sans-serif;
-		font-family: 'Noto Sans KR', sans-serif;
-		
-	}
-
 	#naviBack {
 		background-color:#303030;
 		color:white;
-		height: 120vh;
+		height: 110vh;
 	}
-	
-	#naviTS {
-		font-size : 150%;		
-	}
-	
-	.icon1 {
-		font-size : 150%;
-		cursor: pointer;
-		color: white;
-	}
-	
-	.naviIcon {
-		font-size : 150%;		
-		color:#ebebeb;
-	}
-	
-	.naviIconText {
-		font-size : 150%;
-		font-weight: bold;
-		color:#ebebeb;
-				
-	}	
-	
-	.smallCategory:hover {
-		background-color:#303030;
-	}
-	
-	.smallCategory {
-		font-size : 120%;
-		color:#ebebeb;
-	}
-	
-	.pageTitle {
-		font-weight:bold;
-		font-size: 25px;
-	}
-	
-
 </style>
 </head>
 <body>
