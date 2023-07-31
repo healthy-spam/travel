@@ -29,6 +29,12 @@ body {
 	font-size:12px;
 }
 
+
+.maintopnavi {
+	background-color: #f2f2f2;
+}
+
+
 .sidebar {
 	width: 19vw;
 }
@@ -120,6 +126,13 @@ font-size: 30px
 	font-size:13px;
 	color: grey;
 }
+
+.aa {
+	margin-top: 75px;
+	overflow: scroll;
+}
+
+
 </style>
 
 
@@ -129,15 +142,12 @@ font-size: 30px
 
 <body>
 	<div class="container-fluid">
-		<div class="container">
+		<div class="container fixed-top top-navi maintopnavi">
 			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 		</div>
-	</div>
-	
-		<div class="container-fluid">
-		<div class="container">
+		<div class="container aa">
 	<div class="row">
-		<div class="col-3">
+		<div class="col-3 px-0">
 		<jsp:include page="../common/crewSettingNavi.jsp"></jsp:include>
 
 		</div>

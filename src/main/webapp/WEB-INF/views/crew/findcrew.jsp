@@ -98,9 +98,14 @@
             font-size: 23px;
             font-weight: bold;
         }
+        
+       .crewname2 {
+            font-size: 15px;
+            font-weight: bold;
+        }
 
         .crewlistcard {
-            height: 160px;
+
             transition: transform 0.3s ease; /* 변화가 일어날 때 애니메이션 효과를 주기 위한 CSS transition 속성 */
         }
         .crewlistcard:hover {
@@ -138,9 +143,20 @@
 overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display: -webkit-box;  -webkit-line-clamp: 3;
 }
 
+.text-container2 {
+overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display: -webkit-box;  -webkit-line-clamp: 2;
+}
+
 .name {
 	font-weight: bold;
 	font-size:18px;
+
+}
+
+.textoverflow {
+  white-space: nowrap; /* 줄 바꿈 없이 한 줄로 표시 */
+  overflow: hidden; /* 넘치는 부분을 숨김 */
+  text-overflow: ellipsis; /* 넘치는 부분에 ... 표시 */
 }
 
 .text-grey {
@@ -148,6 +164,14 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 	font-size:15px;
 }
 
+.background-color-change{
+    background-color: var(--tier2SurfaceBoxLv04);
+}
+
+.categoryname{
+	font-weight: bold;
+	font-size: 24px;
+}
 </style>
 <script type="text/javascript">
 
@@ -242,16 +266,19 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 	
 	
 	<div class="container py-4 px-5">
-		<div class="row">
+		<div class="row mb-3">
 			<div class="col">
-				<h1>나의 크루</h1>
+				<span class="categoryname">나의 크루</span>
 			</div>
 		</div>
 		
 		
 		<div class="row">
 			<div class="col">
-				<div class="card mb-5">
+				<div class="card mb-5" style="
+    border-style: none;
+    border-radius: 20px;
+">
 				<div class="row">
                     <div class="col-6">
                     	<div class="card card-mycrew shadow-sm bg-body-tertiary rounded">
@@ -413,9 +440,9 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 				</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row mb-3">
 			<div class="col">
-				<h1>오늘의 인기글</h1>
+				<span class="categoryname">오늘의 인기글</span>
 			</div>
 			<div class="col text-end">
 				<span>모두보기</span>
@@ -425,13 +452,22 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 			
 			<c:forEach var="ppost" items="${ppost}" varStatus="status">
 			<div class="col-6">
-				<div  class="card cSearchStyleItem p-4">
+				<div  class="card cSearchStyleItem px-4 pb-4 shadow-sm" style="
+    border-style: none;
+    border-radius: 20px;
+">
 
     				<div class="content-photo">
     					<div class="row">
+    						<div class="col">
+    							<span class="crewname2">${ppost.crewDto.crew_name }</span>
+    						</div>
+    					</div>
+    					<hr style="margin-top: 5px;">
+    					<div class="row">
     						<div class="col-9">
     							<div class="row">
-    								<span class="name pb-2">${ppost.crewBoardDto.crew_board_title }</span>
+    								<span class="name textoverflow pb-2">${ppost.crewBoardDto.crew_board_title }</span>
     							</div>
     							<div class="row">
     								<span class="text-container">${ppost.crewBoardDto.crew_board_content }</span>
@@ -457,9 +493,10 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 			<div class="col">
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-9">
-				<h1>이런 크루는 어때요</h1>
+
+		<div class="row mb-3">
+			<div class="col-9 categoryname">
+				이런 크루는 어때요
 			</div>
 			<div class="col text-end">
 			
@@ -470,19 +507,21 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 			<c:forEach var="crew" items="${crewList}" varStatus="status">
 			
 			<div class="col-6">
+							<div  class="card cSearchStyleItem crewlistcard shadow-sm p-4" style="
+    border-style: none;
+    border-radius: 20px;
+">
 				<a href="/travel/crew/crewhome/${crew.crew.crew_domain }">
-               		<div class="card crewlistcard  shadow-sm p-3 mb-3 bg-body-tertiary rounded" >
-                    <div class="card-body">
                         <div class="row">
-                            <div class="col-3">
-                                <img src="/uploadFiles/crewFiles/crewthumbnail/${crew.crew.crew_thumbnail }" width="100px" height="100px">
+                            <div class="col-auto">
+                                <img src="/uploadFiles/crewFiles/crewthumbnail/${crew.crew.crew_thumbnail }" width="100px" height="100px" style="border-radius: 10px;">
                             </div>
                             <div class="col">
-                                <div class="row crewname">
+                                <div class="row name">
                                     ${crew.crew.crew_name }
                                 </div>
                                 <div class="row">
-                                    ${crew.crew.crew_desc }
+                                    <span class="text-container2 ps-0">${crew.crew.crew_desc }</span>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col text-secondary ps-0 crewmember">
@@ -493,12 +532,13 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+
                 </a>
+                </div>
             </div>
 			</c:forEach>
 		</div>
+
 	</div>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

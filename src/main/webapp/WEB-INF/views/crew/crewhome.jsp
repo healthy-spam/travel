@@ -578,6 +578,15 @@ strong#Createnewpost {
 	overflow-x: hidden;
 	overflow-y: auto;
 }
+
+        .thumbnail {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px; /* Adding round border */
+            margin-right: 10px; /* Adding margin for separation */
+            margin-top:10px;
+            object-fit: cover;
+        }
 </style>
 
 
@@ -588,7 +597,7 @@ strong#Createnewpost {
 <body>
 
 	<div class="container-fluid ">
-		<div class="container fixed-top top-navi maintopnavi">
+		<div class="container fixed-top top-navi maintopnavi px-0">
 			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 		</div>
 		<div class="container aa">
@@ -849,6 +858,8 @@ strong#Createnewpost {
 							</div>
 						</div>
 						<div class="card chatarea">
+						<c:choose>
+						<c:when test="${!empty crewMemberDto && crewMemberDto.crew_domain == crewDto.crew_domain }">
 							<c:forEach var="chat" items="${chatlist}">
 								<c:choose>
 									<c:when test="${chat.sender.user_id != userDto.user_id }">
@@ -903,11 +914,28 @@ strong#Createnewpost {
 								</c:choose>
 	
 							</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<div class="row mt-5 pt-5 pb-0">
+									<div class="col text-center pt-5 mt-3">
+										<span>지금 크루에 가입하여 채팅을 확인해보세요!</span>
+									</div>
+								</div>
+							</c:otherwise>
+							</c:choose>
 						</div>
 						<div class="chatwrittingarea">
 							<div class="row sticky-header">
 								<div class="col-9 ms-4 px-0">
-									<input type="text" class="form-control" id="chatcontent">
+									<c:choose>
+										<c:when test="${!empty crewMemberDto && crewMemberDto.crew_domain == crewDto.crew_domain }">
+											<input type="text" class="form-control" id="chatcontent">
+										</c:when>
+										<c:otherwise>
+											<input type="text" class="form-control" id="chatcontent" readonly style="background-color:#f2f2f2;">
+										</c:otherwise>
+									</c:choose>
+									
 								</div>
 								<div class="col-auto ps-0">
 									<button class="btn btn-sm btn-success-outline" id="sendchat">send</button>
@@ -975,9 +1003,9 @@ strong#Createnewpost {
 					</div>
 					<hr>
 					<form id="uploadForm" enctype="multipart/form-data">
-						<input type="file" name="image-upload" id="image-upload" multiple>
+						<input type="file" class="form-control" name="image-upload" id="fileInput" multiple>
 					</form>
-					<div id="preview-container" class="sortable-container"></div>
+					<div id="thumbnailsContainer" class="sortable-container"></div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -1020,17 +1048,17 @@ strong#Createnewpost {
 	<div class="modal fade" id="joincrewmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
-				<div class="modal-header" style="display: block;">
+				<div class="modal-header pb-1" style="display: block;">
 					<div class="row">
 						<div class="col-auto">
 							<div class="row">
 								<div class="col">
-									<h1 class="modal-title fs-5" id="joincrewmodal_crewname">${crewDto.crew_name}</h1>
+									<h1 class="modal-title fs-5" id="joincrewmodal_crewname" style="font-weight:bold;">${crewDto.crew_name}</h1>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col">
-									<div class="text-secondary"> 크루 가입을 위한 정보를 입력해주세요.</div>
+									<div class="text-secondary pt-1" style="font-size:13px;"> 크루 가입을 위한 정보를 입력해주세요.</div>
 								</div>
 							</div>
 						</div>
@@ -1039,9 +1067,9 @@ strong#Createnewpost {
 						</div>
 					</div>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body pb-1">
 					<div class="row">
-						<div class="col" id="joincrewmodal_crewdesc">
+						<div class="col pb-3" id="joincrewmodal_crewdesc">
 							${crewDto.crew_desc}
 						</div>
 					</div>
@@ -1050,12 +1078,12 @@ strong#Createnewpost {
 					        <div class="input-group">
                                 <textarea placeholder="크루에게 본인을 소개하세요!" class="textarea_input input_txt form-control" style="height: 60px;" id="crew_join_request_intro"></textarea>
 					        </div>
-                            <p class="txt">
+                            <p class="text-secondary" style="font-size:13px">
                                 입력한 내용이 크루 운영진에게 전달됩니다.
                             </p>
 					    </div>
 					</div>
-					<div class="row">
+					<div class="row pb-1">
 					    <div class="col-auto">
 					        <div class="input_title mt-1">
 					            <strong class="tit">정책 동의<span class="mandatory">*</span></strong>
@@ -1067,7 +1095,7 @@ strong#Createnewpost {
 					</div>
 					<div class="row">
                         <div class="col">
-                            <div class="form-check">
+                            <div class="form-check mb-3">
                                 <input class="form-check-input" type="checkbox" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     크루 개인정보보호정책에 동의합니다.
@@ -1076,7 +1104,7 @@ strong#Createnewpost {
                         </div>					
 					</div>
 
-				<div class="modal-footer">
+				<div class="modal-footer pe-0">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
 					<button class="btn btn-success" id="joincrewrequest">신청</button>
@@ -1130,6 +1158,38 @@ strong#Createnewpost {
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
 		crossorigin="anonymous"></script>
+		
+		
+    <script>
+        function handleFileSelect(evt) {
+            var files = evt.target.files;
+            var thumbnailsContainer = document.getElementById('thumbnailsContainer');
+
+            // Clear existing thumbnails
+            thumbnailsContainer.innerHTML = '';
+
+            for (var i = 0, f; f = files[i]; i++) {
+                if (!f.type.match('image.*')) {
+                    continue;
+                }
+
+                var reader = new FileReader();
+
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                        var thumbnail = document.createElement('img');
+                        thumbnail.className = 'thumbnail'; // Add thumbnail class
+                        thumbnail.src = e.target.result;
+                        thumbnailsContainer.appendChild(thumbnail);
+                    };
+                })(f);
+
+                reader.readAsDataURL(f);
+            }
+        }
+
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
+    </script>
 </body>
 
 </html>

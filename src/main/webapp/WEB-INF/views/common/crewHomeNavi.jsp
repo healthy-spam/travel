@@ -20,7 +20,7 @@
 			</div>
 			<c:choose>
 				<c:when test="${!empty crewMemberDto && crewMemberDto.crew_domain == crewDto.crew_domain}">
-					<button class="btn btn-success form-control">글쓰기</button>
+					<button class="btn btn-success form-control">크루 설정</button>
 				</c:when>
 				<c:when test="${!empty crewMemberDto && crewMemberDto.crew_domain != crewDto.crew_domain}">
 					<a href="/travel/crew/crewhome/${crewMemberDto.crew_domain }"><button class="btn btn-success form-control">내크루가기</button></a>
