@@ -738,7 +738,7 @@ window.addEventListener("DOMContentLoaded", () => {
    
 	<div class="row">
 		<div class="col-12">		
-			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+			<jsp:include page="../common/mainTopNavi2.jsp"></jsp:include>
 		</div>
 	</div>
     

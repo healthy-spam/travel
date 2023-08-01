@@ -260,7 +260,7 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 <body>
 	<div class="container-fluid">
 		<div class="container">
-			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+			<jsp:include page="../common/mainTopNavi2.jsp"></jsp:include>
 		</div>
 	</div>
 	

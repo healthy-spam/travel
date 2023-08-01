@@ -199,62 +199,7 @@
 <body>
 
 	<div class="container">
-		<div class="row fw-bold justify-content-center">
-			<div class="col">
-				<nav class="navbar navbar-expand-lg bg-body-tertiary">
-					<div class="container-fluid p-0">
-						<img class="navbar-brand mb-0 " src="/travel/resources/img/tripstationLOGO.png" style="width: 7em;">
-						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-							<span class="navbar-toggler-icon"></span>
-						</button>
-						<div class="collapse navbar-collapse" id="navbarSupportedContent">
-							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-								<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" aria-current="page" data-bs-toggle="dropdown" href="/travel/main" aria-expanded="false">여행</a>
-									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="/travel/main">맞춤여행</a></li>
-										<li><a class="dropdown-item" href="/travel/package">패키지</a></li>
-									</ul>
-								</li>
-								<li class="nav-item"><a class="nav-link" href="/travel/plan/planPage">플래너</a></li>
-								<li class="nav-item"><a class="nav-link" href="#" role="button">크루</a></li>
-								<li class="nav-item"><a class="nav-link" href="/travel/hotel/hotelPage" role="button">숙소</a></li>
-								<li class="nav-item"><a class="nav-link" href="/travel/planPlace/placePage">플레이스</a></li>
-							</ul>
-							<c:choose>
-								<c:when test="${!empty sessionuser}">
-									<ul class="navbar-nav align-items-center">
-										<li>
-											<c:choose>
-												<c:when test="${sessionuser.user_image != null}">
-													<img alt="썸네일" src="/uploadFiles/profileImage/${sessionuser.user_image}" style="width: 2em; height: 2em; border-radius: 50%;">
-												</c:when>
-												<c:otherwise>
-													<img alt="썸네일" src="/travel/resources/img/icon.png" style="width: 2em; height: 2em; border-radius: 50%;">
-												</c:otherwise>
-											</c:choose>
-										</li>
-										<li class="nav-item dropdown">
-											<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ${sessionuser.user_nickname} </a>
-											<ul class="dropdown-menu" aria-labelledby="userDropdown">
-												<li><a class="dropdown-item" href="/travel/myPage">마이페이지</a></li>
-												<li><a class="dropdown-item" href="/travel/crew/main">크루페이지</a></li>
-												<li><a class="dropdown-item" href="/travel/allCouponPage">쿠폰</a></li>
-												<li><a class="dropdown-item" href="/travel/messageGot">쪽지</a></li>
-												<li><a class="dropdown-item" href="javascript:logout();">로그아웃</a></li>
-											</ul>
-										</li>
-									</ul>
-								</c:when>
-								<c:otherwise>
-									<a class="nav-link" href="/travel/login">로그인</a>
-								</c:otherwise>
-							</c:choose>
-						</div>
-					</div>
-				</nav>
-			</div>
-		</div>
+		<jsp:include page="../common/mainTopNavi2.jsp"></jsp:include>
 	
 		<div class="row mt-4">
 			<div class="col">
