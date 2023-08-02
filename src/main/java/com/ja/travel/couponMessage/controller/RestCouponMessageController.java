@@ -239,4 +239,20 @@ public class RestCouponMessageController {
 		
 	}
 	
+	@RequestMapping("getUnreadMessageCount")
+	public Map<String, Object> getUnreadMessageCount(HttpSession session) {
+	
+		Map<String, Object> map = new HashMap<>();
+		
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		int userId = sessionUser.getUser_id();
+		
+		int count = couponMessageService.getUnreadMessageCount(userId);
+		
+		map.put("result", "success");
+		map.put("count", count);
+		return map;
+		
+	}
+	
 }

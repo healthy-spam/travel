@@ -373,5 +373,17 @@ public class CouponMessageService {
 		}
 	}
 
+	public int getUnreadMessageCount(int userId) {
+		// TODO Auto-generated method stub
+		
+		UserDto userDto = couponMessageSqlMapper.getUserDtoByUserId(userId);
+		String userNickname = userDto.getUser_nickname();
+		int count = couponMessageSqlMapper.getUnreadMessageCount(userNickname);
+		System.out.println(count);
+		return count;
+	}
+
+
+
 
 }

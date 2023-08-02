@@ -102,6 +102,8 @@ public interface CouponMessageSqlMapper {
 	public void restoreMessageGet(@Param("messageId") int messageId);
 
 	public void restoreMessageSend(@Param("messageId") int messageId);
+
+	public int getUnreadMessageCount(String userNickname);
 	
 	
 

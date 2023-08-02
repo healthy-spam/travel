@@ -297,7 +297,8 @@
 	  window.addEventListener("DOMContentLoaded", function(){
 			//사실상 시작 시점...
 			getSessionId();
-			
+			var logoImage = document.querySelector('.navbar-brand.mb-0');
+			logoImage.src = "/travel/resources/img/tripstationLOGO.png";
 		});
 	  
 </script>

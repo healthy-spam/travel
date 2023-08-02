@@ -85,10 +85,14 @@
 		color: black;
 	}
 	
+
+	
 	</style>
 	<script type="text/javascript">
 			var changeBackColor = true;
 			
+			const logo = document.querySelector(".navbar-brand");
+			console.log(logo);
 			
 			function formatDate(date, format) {
 				  var year = date.getFullYear();
@@ -221,6 +225,7 @@
 				
 				refreshMessageRead(messageId);
 				readMessageGetModal.show();
+				getUnreadMessageCount();
 				
 			}
 			// 보낸쪽지 내용 읽기(모달)
@@ -1099,12 +1104,14 @@
 
 				
 			}
-			
+			// 답장
 			function replyMessage(){
 				
 				const messageGetSender = document.getElementById("messageGetSender").textContent;
 				const messageWriteSender = document.getElementById("messageWriteSender");
 				messageWriteSender.value = messageGetSender;
+				const messageWritetitle = document.getElementById("messageWritetitle");
+				messageWritetitle.value = "";
 				
 				const readMessageGetModal = bootstrap.Modal.getOrCreateInstance("#readMessageGetModal");
 				const messageWriteModal = bootstrap.Modal.getOrCreateInstance("#messageWriteModal");
@@ -1267,11 +1274,48 @@
 
 		    	}
 		    }
+		    function getUnreadMessageCount() {
+		    	const xhr = new XMLHttpRequest();
+				
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200){
+						const response = JSON.parse(xhr.responseText);
+						// js 작업..
+						const unreadCount = response.count;
+						
+						console.log(unreadCount);
+						
+						const unreadMessagesAlert = document.getElementById('unread-messages-alert');
+			            const unreadCountMessage = document.getElementById('unread-count-message');
+						
+						// 받아온 읽지 않은 쪽지의 개수가 0보다 크다면 알림 메시지를 표시
+			            if (unreadCount > 0) {
+			                
+			            	unreadCountMessage.innerText = '읽지 않은 쪽지가 ' + unreadCount + '개 있습니다.';
+			            	unreadCountMessage.classList.remove('d-none');
+			            }  else {
+			                // 읽지 않은 쪽지가 없는 경우 메시지를 숨김
+			                unreadCountMessage.classList.add('d-none');
+			            }
+					}
+				}
+				
+				//get
+				xhr.open("get", "getUnreadMessageCount");
+				xhr.send();
+				
+		    }
+		    
+		    setInterval(getUnreadMessageCount, 10000);
+		    
 		    
 			
 			window.addEventListener("DOMContentLoaded", function(){
 				//사실상 시작 시점...
 				reloadMessageGet();
+				getUnreadMessageCount();
+				var logoImage = document.querySelector('.navbar-brand.mb-0');
+				logoImage.src = "/travel/resources/img/tripstationLOGO.png";
 			});
 								
 		</script>
@@ -1284,7 +1328,7 @@
 			<div class="container-fluid border-1 border-top border-black">
 	
 				<div class="row">
-					<div class="col-2 border-1 border-end border-black"	style="background-color: #e6e9f099; height: 110vh; width : 15%;">						
+					<div class="col-2 border-1 border-end border-black"	style="background-color: #e6e9f099; height: 100vh; width : 15%;">						
 						<div class="row">
 							<div class="col text-center p-3 border-2 border-bottom">
 								<button class="btn writeBtn" type="button" onclick="openMessageWritePage()">쪽지쓰기</button>
@@ -1348,13 +1392,13 @@
 								<div class="row mb-3 h2">
 									<div class="col" id="messageType">받은 쪽지함</div>
 								</div>
-								<div class="row mb-3">
+								<div class="row mb-2">
 									<div class="col-auto mx-3 align-self-center me-0">
 										<input class="form-check-input" type="checkbox" onclick="allChecked()"
 											id="allCheckBox">
 									</div>
 	
-									<div class="col-2">
+									<div class="col-2 mt-1">
 									<span class="deleteAll">
 										<button class="btn btn-sm btn-default border border-dark deletebtn"
 											type="button" onclick="deleteSelectedMessages()">
@@ -1381,6 +1425,9 @@
 								</div>
 							</div>
 						</div>
+						<c:if test="${empty sessionuser}">
+						dd
+						</c:if>
 						<div class="row mx-auto mt-2">
 							<div class="col">
 							<ul class="pagination justify-content-center pageAction">
@@ -1406,10 +1453,9 @@
 				</div>
 			</div>
 	
-		<div class="fixed-bottom" role="alert">
+		<div class="fixed-bottom" role="alert" id="unread-messages-alert">
 			<div class="row">
-				<div class="ms-auto col-3 alert alert-success">읽지 않은 쪽지가 3개
-					있습니다.</div>
+				<div class="ms-auto col-3 alert alert-success d-none" id="unread-count-message"></div>
 				<div class="col-1"></div>
 			</div>	
 		</div>
@@ -1482,7 +1528,7 @@
 								<label for="title" class="col-form-label">제목</label>
 							</div>
 							<div class="col">
-								<input type="text" class="form-control" id="title" name="message_title">
+								<input type="text" class="form-control" id="messageWritetitle" name="message_title">
 							</div>
 						</div>
 						<div class="row mt-3">
