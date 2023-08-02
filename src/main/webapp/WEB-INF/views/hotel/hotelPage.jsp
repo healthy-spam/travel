@@ -21,8 +21,27 @@
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
+<script type="text/javascript">
+	// SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해야 합니다.
+	document.addEventListener("DOMContentLoaded", function() {
+		Kakao.init('93ae12d4c0f00044228cbd5b5f2f588b'); // 여기에 JavaScript 키를 붙여넣으세요.
+	
+	    // SDK 초기화 여부를 판단합니다.
+		console.log(Kakao.isInitialized());
+	});
+	
+    function logout() {
+        Kakao.Auth.logout(function() {
+            console.log('로그아웃이 완료되었습니다.');
+            // 로그아웃이 완료되면 서버 측 로그아웃 URL로 리다이렉트
+            location.href = '/travel/logoutProcess';
+        });
+    }
+
+
+
 <!-- Initialize Swiper -->
-<script>
+
 	document.addEventListener("DOMContentLoaded", function() {
 
 		var swiper = new Swiper('.swiper', {
@@ -203,12 +222,12 @@
 			<div class="col">
 				<nav class="navbar navbar-expand-lg bg-body-tertiary">
 					<div class="container-fluid p-0">
-						<img class="navbar-brand mb-0 " src="/travel/resources/img/tripstationLOGO.png" style="width: 7em;">
+						<img class="navbar-brand" src="/travel/resources/img/tripstationLOGO.png" style="width: 7em;">
 						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 							<span class="navbar-toggler-icon"></span>
 						</button>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
-							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+							<ul class="navbar-nav ms-3 me-auto mb-2 mb-lg-0">
 								<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" aria-current="page" data-bs-toggle="dropdown" href="/travel/main" aria-expanded="false">여행</a>
 									<ul class="dropdown-menu">
@@ -256,7 +275,7 @@
 			</div>
 		</div>
 	
-		<div class="row mt-4">
+		<div class="row mt-2">
 			<div class="col">
 				<!-- 카테고리 스와이퍼입니다. -->
 				<div class="swiper">

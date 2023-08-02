@@ -122,7 +122,7 @@
  <div class="container-fluid">
         <div class="row align-items-center py-4" style="position: fixed; top: 0; width: 100%; z-index: 1;">
             <div class="col px-5">
-                <span style="color: #e7104a; font-size: 25px; font-weight: 600;">LOGO</span>
+                <img class="navbar-brand" src="/travel/resources/img/tripstationLOGO.png" style="width: 6em;">
             </div>
             <div class="col"></div>
             <div class="col-auto px-5">
