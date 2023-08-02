@@ -738,11 +738,11 @@ window.addEventListener("DOMContentLoaded", () => {
    
 	<div class="row">
 		<div class="col-12">		
-			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+			<jsp:include page="../common/mainTopNavi2.jsp"></jsp:include>
 		</div>
 	</div>
     
-    <div class="row">
+    <div class="row mt-3">
        <div class="col-12">
                 
          <div class="row-auto mt-2" style="background-image: url('/travel/resources/img/plan7rere.jpeg'); background-size: 100%; min-height: 400px; width: auto; background-repeat: no-repeat; border-radius: 13px">
@@ -993,9 +993,17 @@ window.addEventListener("DOMContentLoaded", () => {
          </div>
             
       </div>
-   
+      
+   	<div class="row mt-3"><br><br></div>	
+   		
+   	<div class="row align-items-center justify-content-center">
+   		<div class="col-12 text-center justify-content-center" style="color: #00b04f; ">
+   			<i class="bi bi-plus-circle-fill" style="font-size: 30px;"></i>
+   			<span style="font-size: 25px; font-weight: 400;"> 더보기</span>
+   		</div>
+   	</div>
+   	   	
 </div>
-
 <jsp:include page="../common/bottomNavi.jsp"></jsp:include>
 
 

@@ -910,7 +910,7 @@ body {
 </head>
 <body>
 	<div class="container">
-		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		<jsp:include page="../common/mainTopNavi2.jsp"></jsp:include>
 		
 		<div class="row">
 			<div class="col">

@@ -686,7 +686,7 @@ pageEncoding="UTF-8"%>
 
    <div class="row mt-2">
       <div class="col-5" style="box-shadow: 10px 0 5px -2px rgba(0, 0, 0, 0.2);">
-          <div class="row align-items-center">
+          <div class="row p-3 align-items-center">
           
 			<div class="col">
               
@@ -697,7 +697,7 @@ pageEncoding="UTF-8"%>
 						<div class="row align-items-center justify-content-center">
                           
 							<div class="col-6 align-items-center justify-content-center">
-								<span class="" style="font-weight: 700; font-size: 17px;">${data.planDto.plan_title}</span>
+								<span class="" style="font-weight: 700; font-size: 20px;">${data.planDto.plan_title}</span>
 							</div>
                         
 							<c:if test="${!empty sessionuser && sessionuser.user_id == data.userDto.user_id}">                                                    
@@ -811,7 +811,7 @@ pageEncoding="UTF-8"%>
 	</div>
       
 	<div class="col-7">                    
-		<div id="map" style="width: 1000px; height: 1000px"></div>
+		<div id="map" style="width: 730px; height: 820px"></div>
 	</div>
       
 	</div>

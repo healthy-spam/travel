@@ -39,8 +39,7 @@ public class RestPackageController {
 	public Map<String, Object> updateGuideApplicationaStatusByUser(
 			GuidePlanningApplicationDto guidePlanningApplicationDto, String value) {
 
-		Map<String, Object> map = packageService.updateGuideApplicationaStatusByUser(guidePlanningApplicationDto,
-				value);
+		Map<String, Object> map = packageService.updateGuideApplicationaStatusByUser(guidePlanningApplicationDto, value);
 
 		return map;
 	}
