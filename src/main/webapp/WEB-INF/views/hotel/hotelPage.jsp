@@ -218,6 +218,7 @@
 <body>
 
 	<div class="container">
+
 		<div class="row fw-bold justify-content-center">
 			<div class="col">
 				<nav class="navbar navbar-expand-lg bg-body-tertiary">

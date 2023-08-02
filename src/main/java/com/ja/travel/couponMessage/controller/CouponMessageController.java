@@ -25,8 +25,13 @@ public class CouponMessageController {
 
 	@RequestMapping("/allCouponPage")
 	public String allCouponPage(HttpSession session, Model model) {
-
+		
+		
 		UserDto sessionuser = (UserDto) session.getAttribute("sessionuser");
+		
+		if(sessionuser == null) {
+			return "login/login";
+		}else {
 		int userId = sessionuser.getUser_id();
 		
 		
@@ -42,6 +47,7 @@ public class CouponMessageController {
 
 
 		return "couponMessage/allCouponPage";
+		}
 	}
 
 	@RequestMapping("/registerCoupon")
@@ -56,12 +62,19 @@ public class CouponMessageController {
 	@RequestMapping("/messageGot")
 	public String messageGot(HttpSession session, Model model) {
 		UserDto sessionuser = (UserDto) session.getAttribute("sessionuser");
+		System.out.println(sessionuser);
+		if(sessionuser == null) {
+			return "login/login";
+		}else {
+			
+		
 		int userId = sessionuser.getUser_id();
 		List<Map<String, Object>> list = couponMessageService.getMessageGotById(userId);
 
 		model.addAttribute("list", list);
 
 		return "couponMessage/messageGot";
+		}
 	}
 
 	@RequestMapping("/messageWrote")

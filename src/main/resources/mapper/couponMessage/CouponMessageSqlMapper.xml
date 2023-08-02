@@ -182,10 +182,29 @@
 	ORDER BY message_reg_date DESC
 </select>
 
-<delete id="deleteMessagePerman">
-	DELETE FROM message
+<update id="deleteMessageGetPerman">
+	UPDATE message
+	SET message_status = REPLACE(message_status, '받은쪽지삭제', '받은쪽지영구삭제')
 	WHERE message_id = #{messageId}
-</delete>
+</update>
+
+<update id="deleteMessageSendPerman">
+	UPDATE message
+	SET message_status = REPLACE(message_status, '보낸쪽지삭제', '보낸쪽지영구삭제')
+	WHERE message_id = #{messageId}
+</update>
+
+<update id="restoreMessageGet">
+	UPDATE message
+	SET message_status = REPLACE(message_status, '받은쪽지삭제', '')
+	WHERE message_id = #{messageId}
+</update>
+
+<update id="restoreMessageSend">
+	UPDATE message
+	SET message_status = REPLACE(message_status, '보낸쪽지삭제', '')
+	WHERE message_id = #{messageId}
+</update>
 
 <select id="getMessageInStorageList" resultType="com.ja.travel.dto.MessageDto">
 	SELECT * FROM message
@@ -221,5 +240,10 @@
 	SELECT COUNT(*) from message
 	WHERE (user_id = #{userId} and message_status like '%보낸쪽지보관%') OR (user_nickname = #{userNickName} and message_status like '%받은쪽지보관%')
 			AND (message_id = #{messageId})
+</select>
+
+<select id="getUnreadMessageCount" resultType="int">
+	select count(*) from message
+	where user_nickname = #{userNickname} and message_read_date is null
 </select>
 </mapper>

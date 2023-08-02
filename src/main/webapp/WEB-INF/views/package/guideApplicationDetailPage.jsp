@@ -1105,7 +1105,7 @@ width : 100px; height:100px; border-radius:50px;
 <body>
 	<div class="container-fluid p-0">
 		<div class="container">
-			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+			<jsp:include page="../common/mainTopNavi2.jsp"></jsp:include>
 		</div>
 		<div class="row">
 			<div class="col">

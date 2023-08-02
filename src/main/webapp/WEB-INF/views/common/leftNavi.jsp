@@ -8,7 +8,7 @@ pageEncoding="UTF-8"%>
 			<div class="col">
 				<div class="row mb-3">
 
-					<div class="col-9" id="naviTS">
+					<div class="col-8" id="naviTS">
 						<div class="row">
 							<div class="col">
 								TripStation
@@ -30,8 +30,17 @@ pageEncoding="UTF-8"%>
 						</div>
 					</c:when>
 					<c:otherwise>
-					<div class="col-3 my-auto icon1">
-						<i class="bi bi-box-arrow-up-right" onclick = "location.href='./adminLogoutProcess'"></i>		
+					<div class="col-4 my-auto icon1" style="padding-left:20px;">
+						<div class="row">
+							<div class="col">
+								<i class="bi bi-box-arrow-up-right" onclick = "location.href='./adminLogoutProcess'"></i>
+							</div>
+						</div>
+						<div class="row" style="font-size:13px;">
+							<div class="col logoutText" style="margin-left:-14px">
+							로그아웃
+							</div>
+						</div>		
 					</div>
 					</c:otherwise>
 					</c:choose>

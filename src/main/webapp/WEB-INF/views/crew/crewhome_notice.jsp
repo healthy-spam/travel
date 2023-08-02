@@ -499,7 +499,8 @@ strong#Createnewpost {
 }
 
 .writercard {
-	background-color: green;
+	background-color: #17b75e;
+	color: white;
 }
 </style>
 
@@ -510,7 +511,7 @@ strong#Createnewpost {
 
 <body>
 	<div class="container-fluid">
-		<div class="container fixed-top top-navi maintopnavi">
+		<div class="container fixed-top top-navi maintopnavi px-0">
 			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
 		</div>
 
@@ -558,8 +559,8 @@ strong#Createnewpost {
 										<div class="col-auto">
 											<i class="bi bi-folder-plus"></i>
 										</div>
-										<div class="col text-end">
-											<button class="btn btn-success btn-sm">Publish</button>
+										<div class="col text-end pe-0">
+											<button class="btn btn-success btn-sm">등록</button>
 										</div>
 									</div>
 								</div>
@@ -582,7 +583,8 @@ strong#Createnewpost {
 												<div class="col-auto">
 													<div class="row mt-3">
 														<div class="col-auto">
-															<Strong class="postwriter">${list.userDto.user_nickname }</Strong>
+															<Strong class="postwriter">${list.userDto.user_nickname }
+															</Strong>
 														</div>
 													</div>
 													<div class="row">
@@ -664,11 +666,13 @@ strong#Createnewpost {
 				<div class="col-3 ps-4">
 					<div class="card calendarcard">
 						<div class="row mx-1 sticky-header">
-							<div class="col p-2">
+							<div class="col p-2" style="font-weight: bold;">
 								크루 전체 채팅
 							</div>
 						</div>
 						<div class="card chatarea">
+						<c:choose>
+						<c:when test="${!empty crewMemberDto && crewMemberDto.crew_domain == crewDto.crew_domain }">
 							<c:forEach var="chat" items="${chatlist}">
 								<c:choose>
 									<c:when test="${chat.sender.user_id != userDto.user_id }">
@@ -684,7 +688,7 @@ strong#Createnewpost {
 												</div>
 												<div class="row">
 													<div class="col-auto">
-														<div class="card chatcard p-1">
+														<div class="card chatcard px-2 py-1">
 															${chat.chatDto.crew_chat_text }
 														</div>
 													</div>
@@ -700,18 +704,18 @@ strong#Createnewpost {
 									</c:when>
 									<c:otherwise>
 										<div class="row">
-											<div class="col me-2">
+											<div class="col me-2 pt-4">
 												<div class="row">
 													<div class="col">
 													</div>
-													<div class="col-auto text-end">
-														<div class="card writercard p-1">
+													<div class="col-auto">
+														<div class="card writercard p-1 px-2 ms-5" style="font-size:14px;">
 															${chat.chatDto.crew_chat_text }
 														</div>
 													</div>
 												</div>
 												<div class="row">
-													<div class="col text-end">
+													<div class="col text-end" style="font-size: 13px; padding-top: 4px;">
 														<fmt:formatDate value="${chat.chatDto.crew_chat_date }" pattern="MM.dd HH:mm" var="crew_chat_date" />
 															${crew_chat_date }
 													</div>
@@ -723,11 +727,28 @@ strong#Createnewpost {
 								</c:choose>
 	
 							</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<div class="row mt-5 pt-5 pb-0">
+									<div class="col text-center pt-5 mt-3">
+										<span>지금 크루에 가입하여 채팅을 확인해보세요!</span>
+									</div>
+								</div>
+							</c:otherwise>
+							</c:choose>
 						</div>
 						<div class="chatwrittingarea">
 							<div class="row sticky-header">
 								<div class="col-9 ms-4 px-0">
-									<input type="text" class="form-control" id="chatcontent">
+									<c:choose>
+										<c:when test="${!empty crewMemberDto && crewMemberDto.crew_domain == crewDto.crew_domain }">
+											<input type="text" class="form-control" id="chatcontent">
+										</c:when>
+										<c:otherwise>
+											<input type="text" class="form-control" id="chatcontent" readonly style="background-color:#f2f2f2;">
+										</c:otherwise>
+									</c:choose>
+									
 								</div>
 								<div class="col-auto ps-0">
 									<button class="btn btn-sm btn-success-outline" id="sendchat">send</button>
@@ -762,7 +783,8 @@ strong#Createnewpost {
 						<div class="col-auto">
 							<div class="row">
 								<div class="col-auto">
-									<Strong class="postwriter">${userDto.user_nickname }</Strong>
+									<Strong class="postwriter">${userDto.user_nickname }
+									</Strong>
 								</div>
 							</div>
 							<div class="row">
@@ -785,22 +807,21 @@ strong#Createnewpost {
 					</div>
 					<div>
 						<input type="text" class="form-control" name="crew_board_title"
-							id="crew_board_title" placeholder="제목을 입력해주세요"> <br>
-						<textarea class="form-control" placeholder="오늘도 힘찬 하루를!"
+							id="crew_board_title" placeholder="제목을 입력해주세요">
+						<textarea class="form-control mt-2" placeholder="오늘도 힘찬 하루를!"
 							name="crew_board_content" id="crew_board_content"
 							style="height: 150px" required></textarea>
 					</div>
 					<hr>
-					<i class="bi bi-images txt"> <input type="file"
-						id="image-upload" multiple>클릭해 사진을 추가해보세요!
-					</i>
+					<input type="file" class="form-control"
+						id="image-upload" multiple>
 
 					<div id="preview-container" class="sortable-container"></div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-primary"
+					<button type="submit" class="btn btn-success"
 						onclick="boardwrite()">등록</button>
 				</div>
 			</div>

@@ -514,7 +514,7 @@ h3 {
 <body>
    <div class="container-fluid p-0">
       <div class="container">
-      	<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+      	<jsp:include page="../common/mainTopNavi2.jsp"></jsp:include>
       </div>
 
       <div class="container">

@@ -84,10 +84,15 @@
 		background-color: white;
 		color: black;
 	}
+	
+
+	
 	</style>
 	<script type="text/javascript">
 			var changeBackColor = true;
 			
+			const logo = document.querySelector(".navbar-brand");
+			console.log(logo);
 			
 			function formatDate(date, format) {
 				  var year = date.getFullYear();
@@ -220,6 +225,7 @@
 				
 				refreshMessageRead(messageId);
 				readMessageGetModal.show();
+				getUnreadMessageCount();
 				
 			}
 			// 보낸쪽지 내용 읽기(모달)
@@ -349,8 +355,24 @@
 									const targetCol = document.getElementById("targetCol");
 													
 									const messageType = document.getElementById("messageType");
-									
+							
 									messageType.innerText = "받은 쪽지함";
+									
+									// 삭제 버튼 요소 선택
+									const deleteButton = document.querySelector('.deleteAll .deletebtn');
+
+									// 내용 변경
+									deleteButton.textContent = '삭제';
+									
+									const restoreAllElements = document.querySelectorAll('.restoreAll');
+
+									// NodeList의 각 요소에 대해 클래스를 제거
+									restoreAllElements.forEach((element) => {
+									  element.classList.add('d-none');
+									});							
+
+		
+									
 									
 									// 기존의 쪽지 목록을 찾아 제거
 									
@@ -365,7 +387,7 @@
 									
 									for(let data of response.messageGetList){
 									console.log(response);
-									if (data.messageDto.message_status && data.messageDto.message_status.indexOf("받은쪽지삭제") >= 0) {
+									if (data.messageDto.message_status && (data.messageDto.message_status.indexOf("받은쪽지삭제") >= 0 || data.messageDto.message_status.indexOf("받은쪽지영구삭제") >= 0 )) {
 										
 									}else{									
 										
@@ -391,8 +413,9 @@
 									const input1 = document.createElement("input");
 									input1.classList.add("form-check-input");
 									input1.type = "checkbox";
-									input1.value = "";
+									input1.value = data.messageDto.message_id;
 									input1.id = "flexCheckDefault";
+									input1.setAttribute("onclick", "chkClicked()");
 									row1col1.appendChild(input1);
 									
 									const row1col2 = document.createElement("div");
@@ -500,6 +523,20 @@
 									const messageType = document.getElementById("messageType")
 									messageType.innerText = "보낸 쪽지함";
 									
+									// 삭제 버튼 요소 선택
+									const deleteButton = document.querySelector('.deleteAll .deletebtn');
+
+									// 내용 변경
+									deleteButton.textContent = '삭제';
+									
+									const restoreAllElements = document.querySelectorAll('.restoreAll');
+
+									// NodeList의 각 요소에 대해 클래스를 제거
+									restoreAllElements.forEach((element) => {
+									  element.classList.add('d-none');
+									});							
+
+		
 									
 									// 기존의 쪽지 목록을 찾아 제거
 								      const existingRows = targetCol.querySelectorAll(".row.border-top.border-1.p-3");
@@ -508,7 +545,7 @@
 								      });
 									
 									for(data of response.messageSendList){
-									if (data.message_status && data.message_status.indexOf("보낸쪽지삭제") >= 0) {
+									if (data.message_status && (data.message_status.indexOf("보낸쪽지삭제") >= 0 || data.message_status.indexOf("보낸쪽지영구삭제") >= 0)) {
 										
 									}
 									else{
@@ -530,14 +567,19 @@
 									const input1 = document.createElement("input");
 									input1.classList.add("form-check-input");
 									input1.type = "checkbox";
-									input1.value = "";
+									input1.value = data.message_id;
 									input1.id = "flexCheckDefault";
+									input1.setAttribute("onclick", "chkClicked()");
 									row1col1.appendChild(input1);
 									
 									const row1col2 = document.createElement("div");
-									row1col2.classList.add("col-auto", "d-flex", "align-self-center");
+									row1col2.classList.add("col-2", "d-flex", "align-self-center");
 									row1col2.id = "row1col2";
+									row1col2.style = "margin-right: -104px";
 									row1.appendChild(row1col2);
+									
+									const row1col2span = document.createElement("span");
+									row1col2.appendChild(row1col2span);
 									
 									const istar2 = document.createElement("i");
 									if(data.message_status && data.message_status.indexOf("보낸쪽지보관") >= 0){
@@ -547,22 +589,20 @@
 									}
 									istar2.setAttribute("id", "restoreStar");
 									istar2.setAttribute("onclick", "toggleStarSend(" + messageId + ")");
-									row1col2.appendChild(istar2);
+									row1col2span.appendChild(istar2);
 									
-									const row1col3 = document.createElement("div");
-									row1col3.classList.add("col-2", "align-self-center", "text-center");																
-									row1.appendChild(row1col3);
+
 									
 									if(data.message_read_date == null) {
 									const notReadMark = document.createElement("span");
-									notReadMark.classList.add("badge", "text-wrap", "bg-secondary");
+									notReadMark.classList.add("badge", "text-wrap", "bg-secondary", "ms-2");
 									notReadMark.innerText = "읽지않음";	
-									row1col3.appendChild(notReadMark);
+									row1col2.appendChild(notReadMark);
 									} else {
 									const readMark = document.createElement("span");
-									readMark.classList.add("badge", "text-wrap", "bg-primary");
+									readMark.classList.add("badge", "text-wrap", "bg-primary", "ms-2");
 									readMark.innerText = "읽음";
-									row1col3.appendChild(readMark);
+									row1col2.appendChild(readMark);
 									}
 									
 
@@ -633,8 +673,27 @@
 							if(xhr.readyState == 4 && xhr.status == 200){
 								const response = JSON.parse(xhr.responseText);
 								// js 작업..
-								const messageType = document.getElementById("messageType")
+								const messageType = document.getElementById("messageType")										
 								messageType.innerText = "휴지통";
+								
+								
+								// 삭제 버튼 요소 선택
+								const deleteButton = document.querySelector('.deleteAll .deletebtn');
+
+								// 내용 변경
+								deleteButton.textContent = '영구삭제';
+
+								
+								const restoreAllElements = document.querySelectorAll('.restoreAll');
+
+								// NodeList의 각 요소에 대해 클래스를 제거
+								restoreAllElements.forEach((element) => {
+								  element.classList.remove('d-none');
+								});							
+
+
+								
+								
 								const userId = response.userId;
 								
 								const targetCol = document.getElementById("targetCol");
@@ -677,8 +736,9 @@
 								const checkboxInput = document.createElement('input');
 								checkboxInput.type = 'checkbox';
 								checkboxInput.classList.add('form-check-input');
-								checkboxInput.value = '';
+								checkboxInput.value = data.messageDto.message_id;
 								checkboxInput.id = 'flexCheckDefault';
+								checkboxInput.setAttribute("onclick", "chkClicked()");
 								checkboxDiv.appendChild(checkboxInput);
 
 								// 닉네임 div 생성
@@ -691,22 +751,33 @@
 									
 									
 									
-									const messageSendMark = document.createElement("span");
-									messageSendMark.classList.add("badge", "text-wrap", "bg-secondary");
+									const messageSendMark = document.createElement("div");
+									messageSendMark.classList.add("col-auto","align-self-center", "badge", "text-wrap", "bg-secondary");
 									messageSendMark.innerText = "보낸쪽지";
+									messageSendMark.style = "margin-left:25px";
+									containerDiv.appendChild(messageSendMark);
 									
-									nicknameDiv.appendChild(messageSendMark);
-									
-									const receiverNickname = document.createElement("span");
-									receiverNickname.classList.add("text", "ms-2");
+									const receiverNickname = document.createElement("div");
+									receiverNickname.classList.add("col", "text");
 									receiverNickname.innerText = data.messageDto.user_nickname;
-									
+									receiverNickname.style = "margin-left: 20px;"
 									nicknameDiv.appendChild(receiverNickname);
 									
 									
 									
 								}else{ //받는 쪽지일 경우
-									nicknameDiv.innerText = data.userDto.user_nickname;						
+									const messageSendMark = document.createElement("div");
+									messageSendMark.classList.add("col-auto","align-self-center", "badge", "text-wrap");
+									messageSendMark.innerText = "받은쪽지";
+									messageSendMark.style = "margin-left:25px; background-color:#03c75a;";
+									containerDiv.appendChild(messageSendMark);
+									
+									const receiverNickname = document.createElement("div");
+									receiverNickname.classList.add("col", "text");
+									receiverNickname.innerText = data.userDto.user_nickname;
+									receiverNickname.style = "margin-left: 20px;"
+									
+									nicknameDiv.appendChild(receiverNickname);				
 								}								
 								
 								containerDiv.appendChild(nicknameDiv);
@@ -716,6 +787,7 @@
 								// 제목 div 생성
 								const titleDiv = document.createElement('div');
 								titleDiv.classList.add('col', 'd-flex', 'align-self-center');
+								titleDiv.style="margin-left:16px;"
 								//보낸 메시지일 경우
 								if(parseInt(data.messageDto.user_id) === parseInt(userId)){
 								console.log(data.messageDto.user_id);
@@ -735,19 +807,15 @@
 
 								// 전송일 div 생성
 								const sendDateDiv = document.createElement('div');
-								sendDateDiv.classList.add('col', 'align-self-center', 'text-center', 'ms-2');
+								sendDateDiv.classList.add('col', 'align-self-center', 'text-center');
+								sendDateDiv.style="margin-left:30px;"
 								sendDateDiv.id = 'messageInTrashSendDate';
 								sendDateDiv.innerText = messageSendDateFormatted;
 								containerDiv.appendChild(sendDateDiv);
-								
-								// 빈 col 생성
-								const blankDiv = document.createElement('div');
-								blankDiv.classList.add('col-1');
-								containerDiv.appendChild(blankDiv);
+																
 								
 								const colDiv = document.createElement("div");
-								colDiv.classList.add("col-3");
-
+								colDiv.classList.add("col-3", "text-center");
 								
 								const deleteButtonSpan = document.createElement("span");
 								
@@ -817,6 +885,20 @@
 						const response = JSON.parse(xhr.responseText);
 						// js 작업..
 						
+						// 삭제 버튼 요소 선택
+						const deleteButton = document.querySelector('.deleteAll .deletebtn');
+
+						// 내용 변경
+						deleteButton.textContent = '보관해제';
+						
+						const restoreAllElements = document.querySelectorAll('.restoreAll');
+
+						// NodeList의 각 요소에 대해 클래스를 제거
+						restoreAllElements.forEach((element) => {
+						  element.classList.add('d-none');
+						});							
+
+						
 						const messageType = document.getElementById("messageType")
 						messageType.innerText = "보관함";
 						const userId = response.userId;
@@ -875,14 +957,14 @@
 							
 							
 							
-							const messageSendMark = document.createElement("span");
-							messageSendMark.classList.add("badge", "text-wrap", "bg-secondary");
+							const messageSendMark = document.createElement("div");
+							messageSendMark.classList.add("col-auto","align-self-center", "badge", "text-wrap", "bg-secondary");
 							messageSendMark.innerText = "보낸쪽지";
+							messageSendMark.style = "margin-left:24px";
+							containerDiv.appendChild(messageSendMark);
 							
-							nicknameDiv.appendChild(messageSendMark);
-							
-							const receiverNickname = document.createElement("span");
-							receiverNickname.classList.add("text", "ms-2");
+							const receiverNickname = document.createElement("div");
+							receiverNickname.classList.add("col", "text", "ms-2");
 							receiverNickname.innerText = data.messageDto.user_nickname;
 							
 							nicknameDiv.appendChild(receiverNickname);
@@ -890,7 +972,17 @@
 							
 							
 						}else{ //받는 쪽지일 경우
-							nicknameDiv.innerText = data.userDto.user_nickname;						
+							const messageSendMark = document.createElement("div");
+							messageSendMark.classList.add("col-auto","align-self-center", "badge", "text-wrap");
+							messageSendMark.innerText = "받은쪽지";
+							messageSendMark.style = "margin-left:24px; background-color:#03c75a;";
+							containerDiv.appendChild(messageSendMark);
+							
+							const receiverNickname = document.createElement("div");
+							receiverNickname.classList.add("col", "text", "ms-2");
+							receiverNickname.innerText = data.userDto.user_nickname;
+							
+							nicknameDiv.appendChild(receiverNickname);				
 						}								
 						
 						containerDiv.appendChild(nicknameDiv);
@@ -1012,12 +1104,14 @@
 
 				
 			}
-			
+			// 답장
 			function replyMessage(){
 				
 				const messageGetSender = document.getElementById("messageGetSender").textContent;
 				const messageWriteSender = document.getElementById("messageWriteSender");
 				messageWriteSender.value = messageGetSender;
+				const messageWritetitle = document.getElementById("messageWritetitle");
+				messageWritetitle.value = "";
 				
 				const readMessageGetModal = bootstrap.Modal.getOrCreateInstance("#readMessageGetModal");
 				const messageWriteModal = bootstrap.Modal.getOrCreateInstance("#messageWriteModal");
@@ -1028,9 +1122,200 @@
 				
 			}
 			
+		    //체크박스 전체 선택 클릭 이벤트
+		    function allChecked(target){
+
+		        //전체 체크박스 버튼
+		        const checkbox = document.getElementById('allCheckBox');
+
+		        //전체 체크박스 버튼 체크 여부
+		        const is_checked = checkbox.checked;
+
+		        //전체 체크박스 제외한 모든 체크박스a
+		        if(is_checked){
+		            //체크박스 전체 체크
+		            chkAllChecked()
+		        }
+
+		        else{
+		            //체크박스 전체 해제
+		            chkAllUnChecked()
+		        }
+		    }
+		    
+		    //자식 체크박스 클릭 이벤트
+		    function chkClicked(){
+
+		        //체크박스 전체개수
+		        const allCount = document.querySelectorAll(".form-check-input").length;
+
+		        //체크된 체크박스 전체개수
+		        const query = 'input[name="form-check-input"]:checked'
+		        const selectedElements = document.querySelectorAll(query)
+		        const selectedElementsCnt = selectedElements.length;
+
+		        //체크박스 전체개수와 체크된 체크박스 전체개수가 같으면 전체 체크박스 체크
+		        if(allCount == selectedElementsCnt){
+		             document.getElementById('allCheckBox').checked = true;
+		        }
+
+		        //같지않으면 전체 체크박스 해제
+		        else{
+		            document.getElementById('allCheckBox').checked = false;
+		        }
+		    }
+
+		    //체크박스 전체 체크
+		    function chkAllChecked(){
+		        document.querySelectorAll(".form-check-input").forEach(function(v, i) {
+		            v.checked = true;
+		        });
+		    }
+
+		    //체크박스 전체 체크 해제
+		    function chkAllUnChecked(){
+		        document.querySelectorAll(".form-check-input").forEach(function(v, i) {
+		            v.checked = false;
+		        });
+		    }
+		    
+		    function deleteSelectedMessages(){
+		        // 쪽지에 대한 모든 체크박스를 가져옵니다.
+		        console.log("dd")
+		        const checkboxes = document.querySelectorAll(".form-check-input");
+
+		        // 선택된 쪽지의 ID를 저장할 배열
+		        const selectedMessageIds = [];
+				
+		        // 체크된 체크박스를 찾아냅니다.
+		        checkboxes.forEach(function (checkbox) {
+		            if (checkbox.checked) {
+		                // data-id 속성을 사용하여 쪽지 ID를 가져와 배열에 추가합니다.
+		                const messageId = checkbox.getAttribute("value");
+		                selectedMessageIds.push(messageId);
+		            }
+		        });
+		        // 선택된 쪽지를 삭제하는 실제 로직을 수행합니다. (실제 삭제 로직은 백엔드에서 구현해야 합니다)
+					if (selectedMessageIds.length > 0) {
+					        const messageType = document.getElementById("messageType");
+					        const messageTypeText = messageType.innerText;
+					        console.log(messageTypeText);
+					        console.log(selectedMessageIds);
+					        if (messageTypeText === "받은 쪽지함") {
+					            deleteMessagesGet(selectedMessageIds); // 선택된 쪽지들을 한 번에 삭제하는 함수를 호출합니다.
+					        } else if (messageTypeText === "보낸 쪽지함") {
+					            // 보낸 쪽지함에 대한 삭제 로직을 수행하거나 필요한 작업을 수행합니다.
+					            deleteMessagesSend(selectedMessageIds);
+					        }
+					    }
+		    }
+		    
+
+		    function deleteMessagesGet(selectedMessageIds){
+		    	// 선택된 쪽지의 개수 확인
+		        const numSelectedMessages = selectedMessageIds.length;
+		        // 확인 대화 상자 표시
+		        const isConfirmed = confirm("선택한 " + numSelectedMessages + "개의 쪽지를 삭제하시겠습니까?");
+		        if (isConfirmed) {
+					const xhr = new XMLHttpRequest();
+					
+					xhr.onreadystatechange = function(){
+						if(xhr.readyState == 4 && xhr.status == 200){
+							const response = JSON.parse(xhr.responseText);
+							
+							reloadMessageGet();
+						}
+					}
+					
+					//get
+					xhr.open("get", "deleteMessagesGet?selectedMessageIds=" + encodeURIComponent(selectedMessageIds.join(',')));
+					xhr.send();
+					
+				}
+		    }
+		    
+		    function deleteMessagesSend(selectedMessageIds){
+		    	// 선택된 쪽지의 개수 확인
+		        const numSelectedMessages = selectedMessageIds.length;
+		        // 확인 대화 상자 표시
+		        const isConfirmed = confirm("선택한 " + numSelectedMessages + "개의 쪽지를 삭제하시겠습니까?");
+		        if (isConfirmed) {
+					const xhr = new XMLHttpRequest();
+					
+					xhr.onreadystatechange = function(){
+						if(xhr.readyState == 4 && xhr.status == 200){
+							const response = JSON.parse(xhr.responseText);
+							
+							reloadMessageSend();
+						}
+					}
+					
+					//get
+					xhr.open("get", "deleteMessagesSend?selectedMessageIds=" + encodeURIComponent(selectedMessageIds.join(',')));
+					xhr.send();
+					
+				}
+		    }
+		    
+		    function restoreMessageInTrash(messageId){
+		    	const xhr = new XMLHttpRequest();
+		    	if(confirm("해당 쪽지를 복구하시겠습니까?")){
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200){
+						const response = JSON.parse(xhr.responseText);
+						// js 작업..
+						reloadTrash();
+					}
+				}
+				
+				//get
+				xhr.open("get", "restoreMessageInTrash?messageId=" + messageId);
+				xhr.send();
+
+		    	}
+		    }
+		    function getUnreadMessageCount() {
+		    	const xhr = new XMLHttpRequest();
+				
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200){
+						const response = JSON.parse(xhr.responseText);
+						// js 작업..
+						const unreadCount = response.count;
+						
+						console.log(unreadCount);
+						
+						const unreadMessagesAlert = document.getElementById('unread-messages-alert');
+			            const unreadCountMessage = document.getElementById('unread-count-message');
+						
+						// 받아온 읽지 않은 쪽지의 개수가 0보다 크다면 알림 메시지를 표시
+			            if (unreadCount > 0) {
+			                
+			            	unreadCountMessage.innerText = '읽지 않은 쪽지가 ' + unreadCount + '개 있습니다.';
+			            	unreadCountMessage.classList.remove('d-none');
+			            }  else {
+			                // 읽지 않은 쪽지가 없는 경우 메시지를 숨김
+			                unreadCountMessage.classList.add('d-none');
+			            }
+					}
+				}
+				
+				//get
+				xhr.open("get", "getUnreadMessageCount");
+				xhr.send();
+				
+		    }
+		    
+		    setInterval(getUnreadMessageCount, 10000);
+		    
+		    
+			
 			window.addEventListener("DOMContentLoaded", function(){
 				//사실상 시작 시점...
 				reloadMessageGet();
+				getUnreadMessageCount();
+				var logoImage = document.querySelector('.navbar-brand.mb-0');
+				logoImage.src = "/travel/resources/img/tripstationLOGO.png";
 			});
 								
 		</script>
@@ -1042,8 +1327,8 @@
 		</div>
 			<div class="container-fluid border-1 border-top border-black">
 	
-				<div class="row mb-3">
-					<div class="col-2 border-1 border-end border-black"	style="background-color: #e6e9f099; height: 200vh; width : 15%;">						
+				<div class="row">
+					<div class="col-2 border-1 border-end border-black"	style="background-color: #e6e9f099; height: 100vh; width : 15%;">						
 						<div class="row">
 							<div class="col text-center p-3 border-2 border-bottom">
 								<button class="btn writeBtn" type="button" onclick="openMessageWritePage()">쪽지쓰기</button>
@@ -1107,32 +1392,42 @@
 								<div class="row mb-3 h2">
 									<div class="col" id="messageType">받은 쪽지함</div>
 								</div>
-								<div class="row mb-3">
+								<div class="row mb-2">
 									<div class="col-auto mx-3 align-self-center me-0">
-										<input class="form-check-input" type="checkbox" value=""
-											id="flexCheckDefault">
+										<input class="form-check-input" type="checkbox" onclick="allChecked()"
+											id="allCheckBox">
 									</div>
 	
-									<div class="col-auto">
-										<button class="btn btn-sm btn-default border border-dark"
-											type="button" onclick="location.href='./deleteMessageAllProcess'">
+									<div class="col-2 mt-1">
+									<span class="deleteAll">
+										<button class="btn btn-sm btn-default border border-dark deletebtn"
+											type="button" onclick="deleteSelectedMessages()">
 										삭제</button>
+									</span>
+									<span class="restoreAll d-none">
+										<button class="btn btn-sm btn-default border border-dark"
+											type="button" onclick="deleteSelectedMessages()">
+										복구</button>
+									</span>
 									</div>
-									<div class="col-6">
-									
+									<div class="col-6" style="margin-right:-145px;">
+											
 									</div>
 									<div class="col-auto my-auto" style="margin-right: -10px;">
-									    <i class="bi bi-search"></i>
+									    <i class="bi bi-search" style="padding-right:-20px;"></i>
 									  </div>
 									  <div class="col-auto">
 									    <input type="text" id="inputPassword6" class="form-control" aria-labelledby="passwordHelpInline">
 									  </div>
-									  <div class="col-auto my-auto">
+									  <div class="col-auto my-auto" style="margin-right:10px;">
 									    <button type="button" class="btn border border-dark-sutle btn-sm search">검색</button>
 									  </div>
 								</div>
 							</div>
 						</div>
+						<c:if test="${empty sessionuser}">
+						dd
+						</c:if>
 						<div class="row mx-auto mt-2">
 							<div class="col">
 							<ul class="pagination justify-content-center pageAction">
@@ -1158,10 +1453,9 @@
 				</div>
 			</div>
 	
-		<div class="fixed-bottom" role="alert">
+		<div class="fixed-bottom" role="alert" id="unread-messages-alert">
 			<div class="row">
-				<div class="ms-auto col-3 alert alert-success">읽지 않은 쪽지가 3개
-					있습니다.</div>
+				<div class="ms-auto col-3 alert alert-success d-none" id="unread-count-message"></div>
 				<div class="col-1"></div>
 			</div>	
 		</div>
@@ -1234,7 +1528,7 @@
 								<label for="title" class="col-form-label">제목</label>
 							</div>
 							<div class="col">
-								<input type="text" class="form-control" id="title" name="message_title">
+								<input type="text" class="form-control" id="messageWritetitle" name="message_title">
 							</div>
 						</div>
 						<div class="row mt-3">
@@ -1380,7 +1674,7 @@
 				<div class="modal-content">
 					<div class="modal-header"
 						style="background-color: #17b75e; color: white;">
-						<h1 class="modal-title fs-5" id="exampleModalLabel">삭제된 쪽지</h1>
+						<h1 class="modal-title fs-5" id="exampleModalLabel">보관중인 쪽지</h1>
 						<button type="button" class="btn-close btn-light"
 							data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
 					</div>
@@ -1418,7 +1712,7 @@
 				<div class="modal-content">
 					<div class="modal-header"
 						style="background-color: #17b75e; color: white;">
-						<h1 class="modal-title fs-5" id="exampleModalLabel">삭제된 쪽지</h1>
+						<h1 class="modal-title fs-5" id="exampleModalLabel">보관중인 쪽지</h1>
 						<button type="button" class="btn-close btn-light"
 							data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
 					</div>

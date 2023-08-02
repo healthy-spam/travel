@@ -15,6 +15,7 @@ import com.ja.travel.couponMessage.service.CouponMessageService;
 import com.ja.travel.dto.CouponDto;
 import com.ja.travel.dto.MessageDto;
 import com.ja.travel.dto.UserDto;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class RestCouponMessageController {
@@ -133,10 +134,13 @@ public class RestCouponMessageController {
 	}
 	
 	@RequestMapping("/deleteMessageInTrash")
-	public Map<String, Object> deleteMessageInTrash(@RequestParam("messageId") Integer messageId) {
+	public Map<String, Object> deleteMessageInTrash(HttpSession session ,@RequestParam("messageId") Integer messageId) {
 		Map<String, Object> map = new HashMap<>();
 		
-		couponMessageService.deleteMessageInTrash(messageId);
+		
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		int userId = sessionUser.getUser_id();
+		couponMessageService.deleteMessageInTrash(userId, messageId);
 		
 		map.put("result", "success");
 		return map;
@@ -187,4 +191,68 @@ public class RestCouponMessageController {
 		
 		return map;
 	}
+	
+	@RequestMapping("/deleteMessagesGet")
+	public Map<String, Object> deleteMessagesGet(@RequestParam("selectedMessageIds") String[] selectedMessageIds){
+		
+		Map<String, Object> map = new HashMap<>();
+		System.out.println("dd");
+		System.out.println(selectedMessageIds);
+		
+		for (String messageId : selectedMessageIds) {
+			// 문자열로 된 messageId를 int값으로 변환합니다.
+	        int messageIdInt = Integer.parseInt(messageId);
+	        // messageId를 이용하여 휴지통으로 이동하는 로직을 적용합니다.
+	        couponMessageService.moveMessageGetToTrashCan(messageIdInt);
+	    }		map.put("result", "success");
+		return map;
+	}
+	
+	@RequestMapping("/deleteMessagesSend")
+	public Map<String, Object> deleteMessagesSend(@RequestParam("selectedMessageIds") String[] selectedMessageIds){
+		
+		Map<String, Object> map = new HashMap<>();
+		System.out.println("dd");
+		System.out.println(selectedMessageIds);
+		
+		for (String messageId : selectedMessageIds) {
+			// 문자열로 된 messageId를 int값으로 변환합니다.
+	        int messageIdInt = Integer.parseInt(messageId);
+	        // messageId를 이용하여 휴지통으로 이동하는 로직을 적용합니다.
+	        couponMessageService.moveMessageSendToTrashCan(messageIdInt);
+	    }		map.put("result", "success");
+		return map;
+	}
+	
+	@RequestMapping("/restoreMessageInTrash")
+	public Map<String, Object> restoreMessageInTrash(HttpSession session ,@RequestParam("messageId") Integer messageId) {
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		int userId = sessionUser.getUser_id();
+		
+		couponMessageService.restoreMessageInTrash(userId, messageId);
+		
+		map.put("result", "success");
+		return map;
+		
+	}
+	
+	@RequestMapping("getUnreadMessageCount")
+	public Map<String, Object> getUnreadMessageCount(HttpSession session) {
+	
+		Map<String, Object> map = new HashMap<>();
+		
+		UserDto sessionUser = (UserDto) session.getAttribute("sessionuser");
+		int userId = sessionUser.getUser_id();
+		
+		int count = couponMessageService.getUnreadMessageCount(userId);
+		
+		map.put("result", "success");
+		map.put("count", count);
+		return map;
+		
+	}
+	
 }
