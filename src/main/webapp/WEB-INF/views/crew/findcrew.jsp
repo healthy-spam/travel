@@ -359,7 +359,7 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
                                         <div class="row crewname">
                                             ${crewDto.crew_name }
                                         </div>
-                                        <div class="row">
+                                        <div class="row text-container">
                                             ${crewDto.crew_desc }
                                         </div>
                                         <div class="row">
@@ -411,7 +411,7 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 			                        				<img src="${notifications.sender_image }" width="40px" height="40px" class="rounded-circle">
 			                        			</div>
 			                        			<div class="col">
-			                        				<div class="row">
+			                        				<div class="row pe-3">
 			                        					${notifications.user_notification_content }
 			                        				</div>
 			                        				<div class="row text-secondary">
@@ -509,7 +509,7 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 			<c:forEach var="crew" items="${crewList}" varStatus="status">
 			
 			<div class="col-6">
-							<div  class="card cSearchStyleItem crewlistcard shadow-sm p-4" style="
+							<div  class="card cSearchStyleItem crewlistcard shadow-sm p-4 mb-3" style="
     border-style: none;
     border-radius: 20px;
 ">
