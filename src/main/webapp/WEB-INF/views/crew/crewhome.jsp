@@ -70,7 +70,7 @@
 				"crew_board_notice" : crew_board_notice
 				}),
 				success : function() {
-					if( document.getElementById("image-upload").value != null) {
+					if( document.getElementById("fileInput").value != null) {
 						console.log("사진있음")
 						uploadPhotos();
 					}
@@ -91,7 +91,7 @@
 <script>
 function uploadPhotos() {
 	var formData = new FormData();
-	var files = document.getElementById("image-upload").files;
+	var files = document.getElementById("fileInput").files;
 	for(var i = 0; i<files.length;i++) {
 		formData.append('files', files[i]);
 	}
@@ -684,10 +684,10 @@ strong#Createnewpost {
 	<!-- modal end -->
 	<div class="container-fluid ">
 		<div class="container fixed-top top-navi maintopnavi px-0">
-			<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+			<jsp:include page="../common/mainTopNavi2.jsp"></jsp:include>
 		</div>
 		<div class="container aa">
-			<div class="row">
+			<div class="row pt-4">
 				<div class="col-3 px-0">
 					<aside id="info" style="transform: none;">
 						<div id="infoInner" data-viewname="DBandCoverItemView" class="infoInner -sticky" style="position: relative; overflow: visible;">

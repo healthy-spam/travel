@@ -293,7 +293,7 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 									</div>
 									<div class="row">
 										<div class="col text-end pt-3">
-											또는 <a href="/travel/crew/createcrew">크루만들기</a>
+											또는 <a href="/travel/crew/createcrew" id="noti">크루만들기</a>
 										</div>
 									</div>
 									
@@ -451,6 +451,7 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 		<div class="row  mb-5">
 			
 			<c:forEach var="ppost" items="${ppost}" varStatus="status">
+			<c:if test= "${status.index==0 || status.index == 1 }">
 			<div class="col-6">
 				<div  class="card cSearchStyleItem px-4 pb-4 shadow-sm" style="
     border-style: none;
@@ -488,6 +489,7 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
     				</div>
     			</div>
     			</div>
+    			</c:if>
     			</c:forEach>
 			
 			<div class="col">
