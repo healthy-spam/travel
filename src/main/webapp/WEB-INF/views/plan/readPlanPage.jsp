@@ -33,7 +33,7 @@ pageEncoding="UTF-8"%>
         var container = document.getElementById('map');
         var options = {
         center: new kakao.maps.LatLng(37.5100, 127.0980),
-        level: 6
+        level: 7
         };
 
         map = new kakao.maps.Map(container, options);
