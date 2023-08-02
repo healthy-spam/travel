@@ -682,7 +682,7 @@ pageEncoding="UTF-8"%>
 <body>
 <div class="container">
 
-   <jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+   <jsp:include page="../common/mainTopNavi2.jsp"></jsp:include>
 
    <div class="row mt-2">
       <div class="col-5" style="box-shadow: 10px 0 5px -2px rgba(0, 0, 0, 0.2);">
