@@ -1016,7 +1016,7 @@ body {
 										<div class="col-2">
 											<div>
 												<a href="./travelApplicationDetailPage?planning_id=${data.planning.planning_id}">
-													<img class="img-fluid" src="/uploadFiles/${data.plan2.plan_thumbnail}" style="border-radius: 0.375rem;">
+													<img class="img-fluid" src="/uploadFiles/${data.plan2.plan_thumbnail}" style="border-radius: 0.375rem; height: 6em;">
 												</a>
 												<div class="text-truncate" style="font-weight: 700; margin-top: 0.2em;">${data.planning.planning_title}</div>
 												<div class="text-truncate" style="font-size: 0.7em;">${data.planning.planning_content}</div>
