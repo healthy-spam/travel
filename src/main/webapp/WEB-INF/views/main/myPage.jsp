@@ -292,7 +292,7 @@ a {
 </head>
 <body>
 	<div class="container" style="border-left: 1px solid #E6E6E6;">
-		<jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+		<jsp:include page="../common/mainTopNavi2.jsp"></jsp:include>
 
 		<div class="row">
 			<div class="col-4" style="padding: 0 0 0 5em;">
