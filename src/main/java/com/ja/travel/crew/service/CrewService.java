@@ -581,7 +581,7 @@ public class CrewService {
 		sendnotification(userDto.getUser_id(), 
 				"/uploadFiles/profileImage/"+userDto.getUser_image(),
 				"/travel/crew/crewhome/"+crewMapper.getCrewDomainByCrewBoardId(crew_board_id),
-				"["+crewMapper.getCrewDtoByCrewDomain(crewMapper.getCrewDomainByCrewBoardId(crew_board_id)).getCrew_name()+ "] "+userDto2.getUser_nickname()+" 님이 본인의 게시글에 좋아요를 누르셨습니다.");
+				"["+crewMapper.getCrewDtoByUserId(userDto.getUser_id()).getCrew_name()+ "] "+userDto.getUser_nickname()+" 님이 본인의 게시글에 댓글을 남겼습니다.");
 		return getcommentlist(crew_board_id);
 	}
 

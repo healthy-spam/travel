@@ -17,166 +17,23 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 <script type="text/javascript">
 
-/* const categoryValue = 'recent';
 
-//플레이스 목록을 보여줍니다.
-function showPlaceList() {
-	
-	const xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function() {
-		
-		if(xhr.readyState == 4 && xhr.status == 200) {
-			
-			const response = JSON.parse(xhr.responseText);
-			
-			//반복문을 실행할 row를 가져오고 안의 html요소들을 초기화 합니다.
-			const listStartRow = document.getElementById("listStartRow");
-			
-			listStartRow.innerHTML = "";
-			
-			//반복문을 시작합니다.
-			for(data of response.list) {
-				
-				const divCol = document.createElement("div");
-				divCol.className = "col-2 mb-4";
-				listStartRow.appendChild(divCol);
-				
-				const divCard = document.createElement("div");
-				divCard.className = "card";
-				divCard.style.border = "none";
-				divCol.appendChild(divCard);
-				
-				const divRow1 = document.createElement("div");
-				divRow1.className = "row";
-				divCard.appendChild(divRow1);
-				
-				const divCol2 = document.createElement("div");
-				divCol2.className = "col";
-				divRow1.appendChild(divCol2);
-				
-				const anchor = document.createElement("a");
-				anchor.href="./PlanPlaceDetailPage?plan_place_id=" + data.planPlaceDto.plan_place_id;
-				divCol2.appendChild(anchor);
-				
-				const image = document.createElement("img");
-				image.src = "/uploadFiles/mainImage/" + data.planPlaceDto.plan_place_photo;
-				image.style.width = "100%";
-				image.style.height = "12em";
-				image.style.objectFit = "cover";
-				image.style.borderRadius = "10px";
-				anchor.appendChild(image);
-				
-				const divRow2 = document.createElement("div");
-				divRow2.className = "row align-items-center my-2";
-				divCard.appendChild(divRow2);
-				
-				const divCol3 = document.createElement("div");
-				divCol3.className = "col-auto";
-				divRow2.appendChild(divCol3);
-				
-				const span1 = document.createElement("span");
-				span1.style.fontSize = "0.9em";
-				span1.style.fontWeight = "bold";
-				span1.style.display = "-webkit-box";
-				span1.style.webkitLineClamp = "1";
-				span1.style.webkitBoxOrient = "vertical";
-				span1.style.overflow = "hidden";
-				span1.style.textOverflow = "ellipsis";
-				span1.textContent = data.planPlaceDto.plan_place_name;
-				divCol3.appendChild(span1);
-				
-				const divCol4 = document.createElement("div");
-				divCol4.className = "col text-end pe-1";
-				divRow2.appendChild(divCol4);
-				
-				const span2 = document.createElement("span");
-				span2.className = "bi bi-heart-fill";
-				span2.style.color = "#ff4f78";
-				span2.style.fontSize = "12px";
-				divCol4.appendChild(span2);
-				
-				const divCol5 = document.createElement("div");
-				divCol5.className = "col-auto p-0";
-				divRow2.appendChild(divCol5);
-				
-				const span3 = document.createElement("span");
-				span3.style.fontSize = "0.9em";
-				span3.style.fontWeight = "bold";
-				span3.textContent = data.loveCount;
-				divCol5.appendChild(span3);
-				
-				const divCol6 = document.createElement("div");
-				divCol6.className = "col-auto pe-1";
-				divRow2.appendChild(divCol6);
-				
-				const icon = document.createElement("i");
-				icon.style.fontSize = "0.9em";
-				icon.className = "bi bi-chat";
-				divCol6.appendChild(icon);
-				
-				const divCol7 = document.createElement("div");
-				divCol7.className = "col-auto ps-0";
-				divRow2.appendChild(divCol7);
-				
-				const span5 = document.createElement("span");
-				span5.style.fontSize = "0.9em";
-				span5.style.fontWeight = "bold";
-				span5.textContent = data.commentCount;
-				divCol7.appendChild(span5);
-				
-				const divRow3 = document.createElement("div");
-				divRow3.className = "row";
-				divCard.appendChild(divRow3);
-				
-				const divCol8 = document.createElement("div");
-				divCol8.className = "col";
-				divRow3.appendChild(divCol8);
-				
-				const span6 = document.createElement("span");
-				span6.style.fontSize = "0.9em"
-				span6.style.color = "gray"
-				span6.style.display = "-webkit-box"
-				span6.style.webkitLineClamp = "3"
-				span6.style.webkitBoxOrient = "vertical"
-				span6.style.overflow = "hidden"
-				span6.style.textOverflow = "ellipsis"
-				span6.textContent = data.planPlaceDto.plan_place_content;
-				divCol8.appendChild(span6);
-				
-				const divRow4 = document.createElement("div");
-				divRow4.className = "row my-2";
-				divCard.appendChild(divRow4);
-				
-				const divCol9 = document.createElement("div");
-				divCol9.className = "col";
-				divRow4.appendChild(divCol9);
-				
-				const span7 = document.createElement("span");
-				span7.style.fontSize = "0.9em"
-				span7.style.display = "-webkit-box"
-				span7.style.webkitLimeClamp = "1"
-				span7.style.webkitBoxOrient = "vertical"
-				span7.style.overflow = "hidden"
-				span7.style.textOverflow = "ellipsis"
-				span7.textContent = data.planPlaceDto.plan_place_address;
-				divCol9.appendChild(span7);
-				
-			}
-			
-		}
+// SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해야 합니다.
+document.addEventListener("DOMContentLoaded", function() {
+	Kakao.init('93ae12d4c0f00044228cbd5b5f2f588b'); // 여기에 JavaScript 키를 붙여넣으세요.
 
-	}
-		xhr.open("post", "./getPlaceList");
-		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhr.send("sortType=" + categoryValue);
+    // SDK 초기화 여부를 판단합니다.
+	console.log(Kakao.isInitialized());
+});
+
+function logout() {
+    Kakao.Auth.logout(function() {
+        console.log('로그아웃이 완료되었습니다.');
+        // 로그아웃이 완료되면 서버 측 로그아웃 URL로 리다이렉트
+        location.href = '/travel/logoutProcess';
+    });
 }
 
-window.addEventListener("DOMContentLoaded", function() {
-	
-	showPlaceList();
-	
-}); */
 
 </script>
 
@@ -296,7 +153,63 @@ window.addEventListener("DOMContentLoaded", function() {
 <body>
 
     <div class="container">
-    	<jsp:include page="../common/mainTopNavi2.jsp"></jsp:include>
+		<div class="row fw-bold justify-content-center">
+			<div class="col">
+				<nav class="navbar navbar-expand-lg bg-body-tertiary">
+					<div class="container-fluid p-0">
+						<img class="navbar-brand mb-0 " src="/travel/resources/img/tripstationLOGO.png" style="width: 7em;">
+						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav ms-3 me-auto mb-2 mb-lg-0">
+								<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" aria-current="page" data-bs-toggle="dropdown" href="/travel/main" aria-expanded="false">여행</a>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="/travel/main">맞춤여행</a></li>
+										<li><a class="dropdown-item" href="/travel/package">패키지</a></li>
+									</ul>
+								</li>
+								<li class="nav-item"><a class="nav-link" href="/travel/plan/planPage">플래너</a></li>
+								<li class="nav-item"><a class="nav-link" href="#" role="button">크루</a></li>
+								<li class="nav-item"><a class="nav-link" href="/travel/hotel/hotelPage" role="button">숙소</a></li>
+								<li class="nav-item"><a class="nav-link" href="/travel/planPlace/placePage">플레이스</a></li>
+							</ul>
+							<c:choose>
+								<c:when test="${!empty sessionuser}">
+									<ul class="navbar-nav align-items-center">
+										<li>
+											<c:choose>
+												<c:when test="${sessionuser.user_image != null}">
+													<img alt="썸네일" src="/uploadFiles/profileImage/${sessionuser.user_image}" style="width: 2em; height: 2em; border-radius: 50%;">
+												</c:when>
+												<c:otherwise>
+													<img alt="썸네일" src="/travel/resources/img/icon.png" style="width: 2em; height: 2em; border-radius: 50%;">
+												</c:otherwise>
+											</c:choose>
+										</li>
+										<li class="nav-item dropdown">
+											<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ${sessionuser.user_nickname} </a>
+											<ul class="dropdown-menu" aria-labelledby="userDropdown">
+												<li><a class="dropdown-item" href="/travel/myPage">마이페이지</a></li>
+												<li><a class="dropdown-item" href="/travel/crew/main">크루페이지</a></li>
+												<li><a class="dropdown-item" href="/travel/allCouponPage">쿠폰</a></li>
+												<li><a class="dropdown-item" href="/travel/messageGot">쪽지</a></li>
+												<li><a class="dropdown-item" href="javascript:logout();">로그아웃</a></li>
+											</ul>
+										</li>
+									</ul>
+								</c:when>
+								<c:otherwise>
+									<a class="nav-link" href="/travel/login">로그인</a>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>
+        <div class="row mt-2">
 		
         <div class="row mt-4 mb-2">
 			<div class="col">

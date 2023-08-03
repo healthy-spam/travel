@@ -356,15 +356,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
 
     </script>
-    <script>
-    function opendetails(userDto, CrewBoardDto, boardAttached, commentList) {
-    	console.log(CrewBoardDto.crew_board_id);
-    	var boardTitle = CrewBoardDto.crew_board_title;
-    	document.getElementById("boardDetailTitle").innerHTML = `\${boardTitle}`;
-    	bootstrap.Modal.getOrCreateInstance("#boardDetailModal").show();
 
-    }
-    </script>
 
 <style>
 body {
@@ -779,11 +771,18 @@ strong#Createnewpost {
 												<div class="col text-end mt-3">
 													<i class="bi bi-three-dots" data-bs-toggle="dropdown"></i>
 													<ul class="dropdown-menu">
-														<li class="dropdown-item" id="commentmodify">수정</li>
-														<li class="dropdown-item"
-															onclick="deleteboard('${list.c.crew_board_id}')">삭제</li>
-														<li class="dropdown-item"
+													<c:choose>
+														<c:when test="${list.userDto.user_id == sessionuser.user_id}">
+															<li class="dropdown-item" id="commentmodify">수정</li>
+															<li class="dropdown-item" onclick="deleteboard('${list.c.crew_board_id}')">삭제</li>
+														</c:when>
+														<c:otherwise>
+																												<li class="dropdown-item"
 															onclick="reportuser('${list.userDto.user_id}')">신고</li>
+														</c:otherwise>
+													</c:choose>
+
+
 													</ul>
 												</div>
 											</div>
@@ -898,15 +897,21 @@ strong#Createnewpost {
 																		${formattedDate }
 																	</div>
 																	<div class="col text-end">
-																		<c:if
-																			test="${comment.crewBoardCommentDto.crew_member_id == crewMemberDto.crew_member_id }">
-																			<i class="bi bi-three-dots" data-bs-toggle="dropdown"></i>
+																		<i class="bi bi-three-dots" data-bs-toggle="dropdown"></i>
 																			<ul class="dropdown-menu">
+																			<c:choose>
+																			
+																		<c:when
+																			test="${comment.crewBoardCommentDto.crew_member_id == crewMemberDto.crew_member_id }">
 																				<li class="dropdown-item" id="commentmodify">수정</li>
 																				<li class="dropdown-item"
 																					onclick="commentdelete('${comment.crewBoardCommentDto.board_comment_id}')">삭제</li>
+																		</c:when>
+																		<c:otherwise>
+																			<li class="dropdown-item" onclick="reportuser('${comment.commentWriter.user_id}')">신고</li>
+																		</c:otherwise>
+																		</c:choose>
 																			</ul>
-																		</c:if>
 																	</div>
 																</div>
 															</div>

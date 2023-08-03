@@ -367,7 +367,7 @@
 			<div class="col-10">
 				<nav class="navbar navbar-expand-lg bg-body-tertiary">
 					<div class="container-fluid p-0">
-						<img class="navbar-brand mb-0 " src="/travel/resources/img/logobro.png" style="width: 1em;">
+						<img class="navbar-brand" src="/travel/resources/img/tripstationLOGO.png" style="width: 7em;">
 						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 							<span class="navbar-toggler-icon"></span>
 						</button>

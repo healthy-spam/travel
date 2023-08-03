@@ -32,8 +32,8 @@ pageEncoding="UTF-8"%>
         // 지도 api
         var container = document.getElementById('map');
         var options = {
-        center: new kakao.maps.LatLng(37.5100, 127.0980),
-        level: 6
+        center: new kakao.maps.LatLng(33.4100, 126.6000),
+        level: 10
         };
 
         map = new kakao.maps.Map(container, options);
@@ -682,7 +682,7 @@ pageEncoding="UTF-8"%>
 <body>
 <div class="container">
 
-   <jsp:include page="../common/mainTopNavi.jsp"></jsp:include>
+   <jsp:include page="../common/mainTopNavi2.jsp"></jsp:include>
 
    <div class="row mt-2">
       <div class="col-5" style="box-shadow: 10px 0 5px -2px rgba(0, 0, 0, 0.2);">
