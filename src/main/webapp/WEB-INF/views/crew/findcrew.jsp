@@ -286,24 +286,63 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 							<c:when test="${empty crewDto}">
 								<div class="card-body">
 									<div class="row ">
-										<div class="col py-3" style="font-size:20px">
-											아직 가입한 크루가 없습니다.<br>
-											나에게 맞는 크루를 찾아보세요.
+										<div class="col-3">
+											<img src="/travel/resources/img/padeng.png" width="100px" height="100px">
+										</div>
+										<div class="col pt-3">
+											<div class="row pb-3">
+												<span style=" font-size: 19px;font-weight: bold;">가입된 크루가 없습니다</span>
+											</div>
+											<div class="row">
+												<div class="col-6">
+													<button class="btn btn-outline-success form-control">크루 찾아보기</button>	
+												</div>
+												<div class="col">
+													<a href="/travel/crew/createcrew"><button class="btn btn-success form-control">크루 생성하기</button></a>
+												</div>
+											</div>
+											
 										</div>
 									</div>
+									<hr>
 									<div class="row">
-										<div class="col text-end pt-3">
-											또는 <a href="/travel/crew/createcrew" id="noti">크루만들기</a>
+										<div class="col"  style=" font-size: 17px;font-weight: bold;">
+											이런 크루는 어때요?
 										</div>
 									</div>
-									
+																<div  class="card cSearchStyleItem crewlistcard shadow-sm p-3 mt-3" style="
+    border-style: none;
+    background-color: #f2f2f2;
+    border-radius: 20px;
+">
+							<div class="row">
+                            <div class="col-auto">
+                                <img src="/uploadFiles/crewFiles/crewthumbnail/dailytrip.jpg" width="100px" height="100px" style="border-radius: 10px;">
+                            </div>
+                            <div class="col">
+                                <div class="row name">
+                                    둘레여행
+                                </div>
+                                <div class="row">
+                                    <span class="text-container2 ps-0">카페탐방.폰카사진.둘레길산책.여행정보</span>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col text-secondary ps-0 crewmember">
+                                        인원수 <em class="crewmembercount">1 / 20</em>
+                                    </div>
+                                    <div class="col text-end">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
 								</div>
 							</c:when>
 							<c:when test="${!empty crewDto && applied == null}">
 								<div class="card-body ">
 	                                <div class="row">
 	                                    <div class="col-3">
-	                                        <img src="/uploadFiles/crewFiles/crewthumbnail/${crewDto.crew_thumbnail }" width="100px" height="100px">
+	                                        <img src="/uploadFiles/crewFiles/crewthumbnail/dailytrip.jpg" width="100px" height="100px">
 	                                    </div>
 	                                    <div class="col">
 	                                        <div class="row crewname">
