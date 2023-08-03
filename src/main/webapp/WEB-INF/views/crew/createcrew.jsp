@@ -230,7 +230,10 @@ function uploadPhotos() {
         <div class="row my-3">
         	<div class="col"></div>
         	<div class="col-10">
-        		<h3>크루 만들기</h3>
+        		<h3 style="font-weight:bold;">크루 만들기</h3>
+        		<div class="row">
+        			<div class="col txt mt-0">크루를 생성할 수 있습니다.</div>
+        		</div>
         	</div>
     	    <div class="col"></div>
         </div>
