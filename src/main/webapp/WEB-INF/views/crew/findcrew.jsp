@@ -317,7 +317,7 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 ">
 							<div class="row">
                             <div class="col-auto">
-                                <img src="/uploadFiles/crewFiles/crewthumbnail/dailytrip.jpg" width="100px" height="100px" style="border-radius: 10px;">
+                                <img src="/travel/resources/img/롯데타워.png" width="100px" height="100px" style="border-radius: 10px;">
                             </div>
                             <div class="col">
                                 <div class="row name">
@@ -342,7 +342,7 @@ overflow: hidden; -webkit-box-orient: vertical; text-overflow: ellipsis; display
 								<div class="card-body ">
 	                                <div class="row">
 	                                    <div class="col-3">
-	                                        <img src="/uploadFiles/crewFiles/crewthumbnail/dailytrip.jpg" width="100px" height="100px">
+	                                        <img src="/uploadFiles/crewFiles/crewthumbnail/${crewDto.crew_thumbnail }" width="100px" height="100px">
 	                                    </div>
 	                                    <div class="col">
 	                                        <div class="row crewname">
