@@ -32,8 +32,8 @@ pageEncoding="UTF-8"%>
         // 지도 api
         var container = document.getElementById('map');
         var options = {
-        center: new kakao.maps.LatLng(37.5100, 127.0980),
-        level: 7
+        center: new kakao.maps.LatLng(33.4100, 126.6000),
+        level: 10
         };
 
         map = new kakao.maps.Map(container, options);
