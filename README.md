@@ -41,7 +41,7 @@ TripStation은 사용자가 여행을 계획하고 동행을 찾을 수 있는 �
 **4. 패키지 여행:** 가이드가 작성한 플랜에 신청을 하면, 패키지 여행에 참여할 수 있습니다.<br>
 **5. 크루 기능:** 사용자는 크루를 만들거나 기존 크루에 가입할 수 있습니다. 크루의 회원들은 동행 모집 기능을 통해 같이 여행을 갈 수 있습니다.  
 <h2>ERD</h2>
-URL: [https://www.erdcloud.com/d/KNbGrYcK7uniAjFyH](https://www.erdcloud.com/d/KNbGrYcK7uniAjFyH)
+URL: https://www.erdcloud.com/d/KNbGrYcK7uniAjFyH
 <br>
 
 ![전체 erd화이트](https://github.com/knagki/web-portfolio/assets/125181086/266ba3d7-7f6b-4726-b188-aaac883096d3)
