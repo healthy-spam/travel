@@ -48,4 +48,39 @@ URL: https://www.erdcloud.com/d/KNbGrYcK7uniAjFyH
 
 <h2>프로젝트에서의 나의 역할</h2>
 
-**1. 플레이스 메인 페이지:** 
+**1. 플레이스 메인 페이지:** 사용자가 여행 장소를 등록하고 공유할 수 있는 페이지입니다. 페이지 상단에 Swiper API를 이용하여 카테고리 메뉴를 제공해 사용자가 원하는 지역을 쉽게 선택할 수 있도록 구현해보았습니다.로그인하면 "플레이스 등록" 버튼이 나타나, 사용자들이 간편하게 자신의 여행 장소를 등록할 수 있습니다.  
+<br>
+![localhost_8181_travel_planPlace_placePage (2)](https://github.com/healthy-spam/travel/assets/139120334/7f618e3e-03ae-441b-9843-23bcef49eebb)
+
+**2. 플레이스 상세 페이지:** 사용자가 장소를 공유할 수 있게 좋아요와 댓글기능을 구현해보았습니다. 페이지 하단의 인기글은 SQL count 함수를 사용해서 임의로 좋아요는 4, 댓글은 1로 설정하여 출력해 보았습니다.
+<br>
+![localhost_8181_travel_planPlace_PlanPlaceDetailPage_plan_place_id=22](https://github.com/healthy-spam/travel/assets/139120334/94bbbc20-84b0-4161-b19c-43c069cdda0d)
+
+**2. 플레이스 등록 페이지:** 로그인시 사용자가 여행 장소에 관련된 데이터들을 등록할 수 있게 구현해봤습니다.
+<br>
+![localhost_8181_travel_planPlace_registerPlacePage (1)](https://github.com/healthy-spam/travel/assets/139120334/e0c0a351-e155-4a15-a455-f31cd993d380)
+
+**2. 숙소 메인 페이지:** 사용자가 숙소를 등록하고 예약할 수 있는 페이지입니다. 에어비엔비 사이트를 많이 참고했습니다. 플레이스와 동일하게 Swiper API를 이용하였고 로그인시 "숙소 등록" 버튼이 나타나 숙소를 등록할 수 있습니다. 
+<br>
+![localhost_8181_travel_hotel_hotelPage (3)](https://github.com/healthy-spam/travel/assets/139120334/fece7869-d3f9-4edd-b1ed-dea21c0a41de)
+
+**2. 숙소 상세 페이지:** 사용자가 입력한 숙소 관련 데이터를 출력하며, 사용자 경험을 향상시키기 위해 숙소 이용 날짜를 클릭하면 일수에 맞는 총 금액이 계산되고, 이를 비동기적으로 Ajax를 사용하여 동적으로 응답하도록 구현하였습니다. 또한, 숙소의 주소를 지도에 표시하기 위해 카카오 지도 API를 활용하여 해당 숙소의 위치에 핀을 나타나게 하였습니다. 
+<br>
+![hotelDetailPage](https://github.com/healthy-spam/travel/assets/139120334/2085fd11-069b-4356-ab7e-303bf633d3ec)
+
+**2. 숙소 예약 페이지:** 이 페이지는 결제로 이동하기 전에 사용자에게 최종 확인과 결정을 내릴 기회를 제공하기 위해 만들어보았습니다. 사용자가 예약한 숙소 정보를 요약하고, 예약 날짜, 가격  등의 세부 정보를 표시합니다
+<br>
+![localhost_8181_travel_hotel_hotelPaymentPage_hotel_id=2 guestNum=1 checkInDate=2023-08-15 checkOutDate=2023-08-16 totalFee=160000 numDays=1](https://github.com/healthy-spam/travel/assets/139120334/846a94b6-4382-4858-8bbb-953dc0086038)
+
+**2. 숙소 등록 페이지들** 
+![localhost_8181_travel_hotel_hotelRegisterPage1](https://github.com/healthy-spam/travel/assets/139120334/00ba5612-a81a-437b-aa85-447ec7d88281)
+![localhost_8181_travel_hotel_hotelRegisterPage2 (1)](https://github.com/healthy-spam/travel/assets/139120334/09fb20ce-227f-4e54-b723-94e2d598ca67)
+![localhost_8181_travel_hotel_hotelRegisterPage3](https://github.com/healthy-spam/travel/assets/139120334/e6ec7921-fc8b-4382-a546-eb7df76ada67)
+
+이렇게 사용자의 입장에서 UI에 대해 생각해보고 백엔드까지 여행서비스와 관련된 프로젝트를 개발해봤습니다. 감사합니다.
+![localhost_8181_travel_hotel_hotelRegisterPage4](https://github.com/healthy-spam/travel/assets/139120334/af83f2ee-bf63-43a0-a9d3-552778276d8d)
+![localhost_8181_travel_hotel_hotelRegisterPage5](https://github.com/healthy-spam/travel/assets/139120334/6890da6c-8b16-4cb2-bbee-8e4a8a45eb74)
+
+
+
+
