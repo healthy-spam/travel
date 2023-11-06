@@ -76,10 +76,10 @@ URL: https://www.erdcloud.com/d/KNbGrYcK7uniAjFyH
 ![localhost_8181_travel_hotel_hotelRegisterPage1](https://github.com/healthy-spam/travel/assets/139120334/00ba5612-a81a-437b-aa85-447ec7d88281)
 ![localhost_8181_travel_hotel_hotelRegisterPage2 (1)](https://github.com/healthy-spam/travel/assets/139120334/09fb20ce-227f-4e54-b723-94e2d598ca67)
 ![localhost_8181_travel_hotel_hotelRegisterPage3](https://github.com/healthy-spam/travel/assets/139120334/e6ec7921-fc8b-4382-a546-eb7df76ada67)
-
-이렇게 사용자의 입장에서 UI에 대해 생각해보고 백엔드까지 여행서비스와 관련된 프로젝트를 개발해봤습니다. 감사합니다.
 ![localhost_8181_travel_hotel_hotelRegisterPage4](https://github.com/healthy-spam/travel/assets/139120334/af83f2ee-bf63-43a0-a9d3-552778276d8d)
 ![localhost_8181_travel_hotel_hotelRegisterPage5](https://github.com/healthy-spam/travel/assets/139120334/6890da6c-8b16-4cb2-bbee-8e4a8a45eb74)
+<br>
+이렇게 사용자의 입장에서 UI에 대해 생각해보고 백엔드까지 여행서비스와 관련된 프로젝트를 개발해봤습니다. 감사합니다.
 
 
 
