@@ -24,12 +24,6 @@
  	<br>
   	<br>
 	
-🌱 My Github State 🌱
-<br>
-<br>
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=healthy-spam&layout=compact)](https://github.com/healthy-spam)  
-
-<br>
 <br>
 
 </div>
